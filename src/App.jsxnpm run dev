@@ -5,7 +5,7 @@ import {
   ArrowUpRight, Clock, Target, Settings, BarChart3, Search, Zap, Layers, 
   Share2, MessageCircle, Gift, RefreshCw, Rocket, Briefcase, Smartphone, 
   Lock, LayoutDashboard, Users2, Plus, ArrowLeft, Save, Building2,
-  TrendingDown, Bot, Landmark
+  TrendingDown, Bot, Landmark, Image as ImageIcon, FileText, Timer, Tag
 } from 'lucide-react';
 
 // Firebase Imports
@@ -13,29 +13,32 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
 
-// --- CONFIGURACIÓN DE FIREBASE (IMPORTANTE) ---
+// --- CONFIGURACIÓN DE FIREBASE (CONECTADO) ---
 const firebaseConfig = {
-  apiKey: "TU_API_KEY_AQUI",
-  authDomain: "tu-proyecto.firebaseapp.com",
-  projectId: "tu-proyecto",
-  storageBucket: "tu-proyecto.firebasestorage.app",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef"
+  apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
+  authDomain: "landing-growth4u.firebaseapp.com",
+  projectId: "landing-growth4u",
+  storageBucket: "landing-growth4u.firebasestorage.app",
+  messagingSenderId: "562728954202",
+  appId: "1:562728954202:web:90cff4aa486f38b4b62b63",
+  measurementId: "G-4YBYPVQDT6"
 };
 
 // Inicialización segura
 let app, auth, db;
 try {
+  // Verificación para entornos que inyectan config (opcional)
   if (typeof __firebase_config !== 'undefined') {
      const internalConfig = JSON.parse(__firebase_config);
      app = initializeApp(internalConfig);
   } else {
+     // Inicialización estándar con tus claves
      app = initializeApp(firebaseConfig); 
   }
   auth = getAuth(app);
   db = getFirestore(app);
 } catch (e) {
-  console.warn("Firebase no configurado correctamente. El blog usará modo solo lectura/demo.");
+  console.warn("Error inicializando Firebase. Revisa la consola.");
 }
 
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'growth4u-public-app';
@@ -54,6 +57,7 @@ export default function App() {
   
   const [isAdminMode, setIsAdminMode] = useState(false);
 
+  // Estado del formulario de nuevo post
   const [newPost, setNewPost] = useState({
     title: '',
     category: 'Estrategia',
@@ -66,6 +70,7 @@ export default function App() {
   const bookingLink = "https://now.growth4u.io/widget/bookings/growth4u_demo";
 
   // --- DETECTAR MODO ADMIN ---
+  // Para activar, agrega ?admin=true al final de tu URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('admin') === 'true') {
@@ -88,7 +93,7 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // --- DATA FETCHING ---
+  // --- DATA FETCHING (BLOG POSTS) ---
   useEffect(() => {
     if (!db) return;
     try {
@@ -103,7 +108,7 @@ export default function App() {
         }));
         setPosts(fetchedPosts);
       }, (error) => {
-        console.log("Usando posts por defecto");
+        console.log("Usando posts por defecto (Error o Offline)");
       });
       return () => unsubscribe();
     } catch (e) {
@@ -113,21 +118,32 @@ export default function App() {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  // --- CREAR POST (Lógica de envío) ---
   const handleCreatePost = async (e) => {
     e.preventDefault();
-    if (!db) return;
+    if (!db) {
+        alert("Error de conexión con la base de datos.");
+        return;
+    }
     setIsSubmitting(true);
     try {
-      await addDoc(collection(db, 'blog_posts'), {
+      // Usar imagen por defecto si está vacía
+      const postData = {
         ...newPost,
+        image: newPost.image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
         createdAt: serverTimestamp(),
         author: "Equipo Growth4U"
-      });
-      setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min' });
+      };
+
+      await addDoc(collection(db, 'blog_posts'), postData);
+      
+      setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
       setView('home');
+      // Scroll automático al blog después de publicar
       setTimeout(() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' }), 100);
     } catch (error) {
       console.error("Error creating post:", error);
+      alert("Error al publicar. Asegúrate de que la Base de Datos está en modo 'Test Mode' en Firebase.");
     } finally {
       setIsSubmitting(false);
     }
@@ -191,36 +207,131 @@ export default function App() {
   ];
 
   const defaultPosts = [
-    { id: 'd1', category: "Estrategia", title: "La muerte del Paid Media en Fintech", excerpt: "Por qué el modelo de alquiler de atención ya no es rentable en 2024 y cómo pivotar hacia activos propios.", content: "Contenido...", readTime: "5 min lectura", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
-    { id: 'd2', category: "Data & Analytics", title: "Cómo calcular tu CAC real sin trampas", excerpt: "La guía definitiva para entender cuánto te cuesta realmente cada usuario activado, más allá del CPC.", content: "Contenido...", readTime: "7 min lectura", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" },
-    { id: 'd3', category: "Trust Engine", title: "Confianza: La nueva moneda de cambio", excerpt: "Cómo construir activos de marca que reduzcan la fricción en la conversión y aumenten el LTV.", content: "Contenido...", readTime: "4 min lectura", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800" }
+    { id: 'd1', category: "Estrategia", title: "La muerte del Paid Media en Fintech", excerpt: "Por qué el modelo de alquiler de atención ya no es rentable en 2024 y cómo pivotar hacia activos propios.", content: "Este es un contenido de ejemplo. En un caso real, aquí iría el texto completo del artículo explicando los detalles de la estrategia.", readTime: "5 min lectura", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
+    { id: 'd2', category: "Data & Analytics", title: "Cómo calcular tu CAC real sin trampas", excerpt: "La guía definitiva para entender cuánto te cuesta realmente cada usuario activado, más allá del CPC.", content: "Contenido de ejemplo sobre métricas...", readTime: "7 min lectura", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" },
+    { id: 'd3', category: "Trust Engine", title: "Confianza: La nueva moneda de cambio", excerpt: "Cómo construir activos de marca que reduzcan la fricción en la conversión y aumenten el LTV.", content: "Contenido de ejemplo sobre confianza...", readTime: "4 min lectura", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800" }
   ];
 
   const displayPosts = posts.length > 0 ? posts : defaultPosts;
 
   // --- RENDER VIEWS ---
 
-  // 1. ADMIN VIEW
+  // 1. ADMIN VIEW (Panel de Creación)
   if (view === 'admin') {
     return (
-      <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 p-8">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold">Agregar Nuevo Artículo</h2>
-            <button onClick={() => setView('home')} className="text-slate-400 hover:text-[#6351d5]">
+      <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
+        <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 p-8">
+          <div className="flex justify-between items-center mb-8 border-b border-slate-100 pb-4">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <Plus className="w-6 h-6 text-[#6351d5]" /> Nuevo Artículo
+            </h2>
+            <button onClick={() => setView('home')} className="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-slate-50 rounded-full">
               <X className="w-6 h-6" />
             </button>
           </div>
+          
           <form onSubmit={handleCreatePost} className="space-y-6">
-            <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="Título" />
-            <button type="submit" disabled={isSubmitting} className="w-full bg-[#6351d5] text-white font-bold py-4 rounded-xl">{isSubmitting ? 'Publicando...' : 'Publicar Artículo'}</button>
+            {/* Título */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">Título del Artículo</label>
+              <input 
+                required 
+                type="text" 
+                value={newPost.title} 
+                onChange={e => setNewPost({...newPost, title: e.target.value})} 
+                className="w-full p-4 rounded-xl border border-slate-300 outline-none focus:border-[#6351d5] focus:ring-2 focus:ring-[#6351d5]/20 transition-all font-bold text-lg placeholder:font-normal" 
+                placeholder="Ej: Cómo reducir el Churn en B2B..." 
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               {/* Categoría */}
+               <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2"><Tag className="w-4 h-4"/> Categoría</label>
+                  <select 
+                    value={newPost.category} 
+                    onChange={e => setNewPost({...newPost, category: e.target.value})}
+                    className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:border-[#6351d5]"
+                  >
+                    <option value="Estrategia">Estrategia</option>
+                    <option value="Data & Analytics">Data & Analytics</option>
+                    <option value="Trust Engine">Trust Engine</option>
+                    <option value="Casos de Éxito">Casos de Éxito</option>
+                    <option value="Tecnología">Tecnología</option>
+                  </select>
+               </div>
+               
+               {/* Tiempo de lectura */}
+               <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2"><Timer className="w-4 h-4"/> Tiempo de lectura</label>
+                  <input 
+                    type="text" 
+                    value={newPost.readTime} 
+                    onChange={e => setNewPost({...newPost, readTime: e.target.value})} 
+                    className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:border-[#6351d5]" 
+                    placeholder="Ej: 5 min lectura" 
+                  />
+               </div>
+            </div>
+
+            {/* URL Imagen */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2"><ImageIcon className="w-4 h-4"/> URL de la Imagen</label>
+              <input 
+                type="url" 
+                value={newPost.image} 
+                onChange={e => setNewPost({...newPost, image: e.target.value})} 
+                className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:border-[#6351d5] text-sm font-mono text-slate-500" 
+                placeholder="https://..." 
+              />
+              <p className="text-xs text-slate-400 ml-1">Tip: Usa Unsplash o Imgur para alojar tu imagen y pega el link aquí.</p>
+            </div>
+
+            {/* Resumen (Excerpt) */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2"><FileText className="w-4 h-4"/> Resumen Corto (Card)</label>
+              <textarea 
+                required
+                maxLength={180}
+                rows="2"
+                value={newPost.excerpt} 
+                onChange={e => setNewPost({...newPost, excerpt: e.target.value})} 
+                className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:border-[#6351d5] resize-none" 
+                placeholder="Breve descripción que aparecerá en la tarjeta del blog (Máx 180 caracteres)..." 
+              />
+            </div>
+
+            {/* Contenido Completo */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700 ml-1">Contenido del Artículo</label>
+              <textarea 
+                required
+                rows="10"
+                value={newPost.content} 
+                onChange={e => setNewPost({...newPost, content: e.target.value})} 
+                className="w-full p-4 rounded-xl border border-slate-300 outline-none focus:border-[#6351d5]" 
+                placeholder="Escribe aquí el contenido completo. Los saltos de línea crearán nuevos párrafos..." 
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={isSubmitting} 
+              className={`w-full font-bold py-4 rounded-xl shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2 ${isSubmitting ? 'bg-slate-400 cursor-not-allowed' : 'bg-[#6351d5] hover:bg-[#3f45fe] text-white hover:shadow-[#6351d5]/30'}`}
+            >
+              {isSubmitting ? (
+                <>Publicando...</>
+              ) : (
+                <> <Save className="w-5 h-5" /> Publicar Artículo </>
+              )}
+            </button>
           </form>
         </div>
       </div>
     );
   }
 
-  // 2. SINGLE POST VIEW
+  // 2. SINGLE POST VIEW (Vista de lectura)
   if (view === 'post' && selectedPost) {
     return (
       <div className="min-h-screen bg-white text-[#032149] font-sans selection:bg-[#45b6f7] selection:text-white">
@@ -233,12 +344,32 @@ export default function App() {
             </div>
          </nav>
          <article className="pt-32 pb-20 max-w-3xl mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-extrabold mt-4 mb-6 text-[#032149]">{selectedPost.title}</h1>
-            <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-64 md:h-96 object-cover rounded-3xl shadow-2xl mb-12" />
-            <div className="prose prose-lg prose-slate mx-auto"><p>{selectedPost.excerpt}</p></div>
-            <div className="mt-20 pt-10 border-t border-slate-200 text-center">
-               <h3 className="text-2xl font-bold mb-4">¿Te interesa aplicar esto en tu Fintech?</h3>
-               <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all">
+            <span className="inline-block px-3 py-1 bg-[#6351d5]/10 text-[#6351d5] rounded-full text-xs font-bold uppercase tracking-wider mb-6">{selectedPost.category}</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#032149] leading-tight">{selectedPost.title}</h1>
+            
+            <div className="flex items-center gap-4 mb-8 border-b border-slate-100 pb-8">
+               <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-[#032149] font-bold">G</div>
+               <div>
+                  <p className="text-sm font-bold text-[#032149]">Growth4U Team</p>
+                  <p className="text-xs text-slate-500 flex items-center gap-1"><Clock className="w-3 h-3"/> {selectedPost.readTime}</p>
+               </div>
+            </div>
+
+            <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-64 md:h-96 object-cover rounded-3xl shadow-xl mb-12" />
+            
+            <div className="prose prose-lg prose-slate mx-auto prose-headings:text-[#032149] prose-a:text-[#6351d5]">
+              {/* Renderizado de párrafos */}
+              {selectedPost.content.split('\n').map((paragraph, idx) => (
+                <p key={idx} className="mb-4 text-slate-600 leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            <div className="mt-20 pt-10 border-t border-slate-200 text-center bg-slate-50 rounded-3xl p-8 md:p-12">
+               <h3 className="text-2xl font-bold mb-4 text-[#032149]">¿Te interesa aplicar esto en tu Fintech?</h3>
+               <p className="text-slate-600 mb-8 max-w-md mx-auto">Nuestra metodología ha ayudado a escalar a empresas como Bnext o Bit2Me.</p>
+               <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">
                   Agendar Llamada <ArrowRight className="w-5 h-5" />
                </a>
             </div>

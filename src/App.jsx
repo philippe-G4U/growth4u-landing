@@ -13,15 +13,15 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
 
-// --- CONFIGURACIÓN DE FIREBASE ---
-// 🔴 🔴 🔴 PEGA AQUÍ TUS CLAVES DE FIREBASE (PASO 1) 🔴 🔴 🔴
+// --- CONFIGURACIÓN DE FIREBASE (CONECTADO) ---
 const firebaseConfig = {
-  apiKey: "PEGA_TU_API_KEY_AQUI",
-  authDomain: "PEGA_TU_AUTH_DOMAIN_AQUI",
-  projectId: "PEGA_TU_PROJECT_ID_AQUI",
-  storageBucket: "PEGA_TU_STORAGE_BUCKET_AQUI",
-  messagingSenderId: "PEGA_TU_MESSAGING_SENDER_ID",
-  appId: "PEGA_TU_APP_ID"
+  apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
+  authDomain: "landing-growth4u.firebaseapp.com",
+  projectId: "landing-growth4u",
+  storageBucket: "landing-growth4u.firebasestorage.app",
+  messagingSenderId: "562728954202",
+  appId: "1:562728954202:web:90cff4aa486f38b4b62b63",
+  measurementId: "G-4YBYPVQDT6"
 };
 
 // Inicialización segura
@@ -32,13 +32,13 @@ try {
      const internalConfig = JSON.parse(__firebase_config);
      app = initializeApp(internalConfig);
   } else {
-     // Inicialización estándar
+     // Inicialización estándar con tus claves
      app = initializeApp(firebaseConfig); 
   }
   auth = getAuth(app);
   db = getFirestore(app);
 } catch (e) {
-  console.warn("Firebase no configurado o claves incorrectas. El blog está en modo solo lectura.");
+  console.warn("Error inicializando Firebase. Revisa la consola.");
 }
 
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'growth4u-public-app';
@@ -122,7 +122,7 @@ export default function App() {
   const handleCreatePost = async (e) => {
     e.preventDefault();
     if (!db) {
-        alert("Falta configurar las claves de Firebase en el código.");
+        alert("Error de conexión con la base de datos.");
         return;
     }
     setIsSubmitting(true);
@@ -143,7 +143,7 @@ export default function App() {
       setTimeout(() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' }), 100);
     } catch (error) {
       console.error("Error creating post:", error);
-      alert("Error al publicar. Revisa la consola (F12) para más detalles.");
+      alert("Error al publicar. Asegúrate de que la Base de Datos está en modo 'Test Mode' en Firebase.");
     } finally {
       setIsSubmitting(false);
     }
