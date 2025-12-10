@@ -5,7 +5,7 @@ import {
   ArrowUpRight, Clock, Target, Settings, BarChart3, Search, Zap, Layers, 
   Share2, MessageCircle, Gift, RefreshCw, Rocket, Briefcase, Smartphone, 
   Lock, LayoutDashboard, Users2, Plus, ArrowLeft, Save, Building2,
-  TrendingDown, Bot, Landmark, Globe, Trash2, Edit2
+  TrendingDown, Bot, Landmark, Globe, Trash2, Edit2, Link as LinkIcon, CheckCircle
 } from 'lucide-react';
 
 // --- FIREBASE IMPORTS ---
@@ -125,7 +125,7 @@ const translations = {
       subtitle: "Resultados reales auditados.",
       list: [
         { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." },
-        { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Coste de adquisición disparado por saturación publicitaria y desconfianza en el sector cripto.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." },
+        { company: "BIT2ME", stat: "-70%", label: "CAC Reduction", highlight: "implementing Trust Engine", summary: "We reduced CAC by 70% implementing the Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "We optimized data, segmentation and activation to double the value of each client." },
         { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." }
       ],
       btnRead: "Leer caso completo",
@@ -262,7 +262,7 @@ const translations = {
       cta: "View all articles",
       readTime: "min read",
       admin: "Admin",
-      empty: "Coming soon...",
+      empty: "Próximamente nuevos artículos...",
       defaults: []
     },
     footer: {
@@ -279,18 +279,13 @@ const translations = {
 // --- HELPER PARA RENDERIZAR TEXTO RICO (FORMATO) ---
 const renderFormattedContent = (content) => {
   if (!content) return null;
-  // Separa por líneas
   return content.split('\n').map((line, index) => {
-    // Títulos H2 (Detecta "## Texto")
     if (line.trim().startsWith('##')) {
       return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-[#032149]">{line.replace('##', '').trim()}</h2>;
     }
-    // Si la línea está vacía, renderiza un espacio
     if (line.trim() === '') {
       return <div key={index} className="h-4"></div>;
     }
-    
-    // Procesa negritas: "**texto**"
     const parts = line.split(/(\*\*.*?\*\*)/g);
     return (
       <p key={index} className="mb-4 text-slate-600 leading-relaxed text-lg">
@@ -319,6 +314,7 @@ export default function App() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [user, setUser] = useState(null);
   const [isAdminMode, setIsAdminMode] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   // Estado para edición
   const [editingPostId, setEditingPostId] = useState(null);
@@ -357,6 +353,7 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
+  // Carga de posts y Gestión de URL
   useEffect(() => {
     if (!user || !db) return;
     try {
@@ -365,7 +362,22 @@ export default function App() {
         orderBy('createdAt', 'desc')
       );
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        setPosts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        const loadedPosts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setPosts(loadedPosts);
+        
+        // CHECK URL PARAM FOR DIRECT LINKING
+        // Verificamos si hay un parámetro ?article=ID en la URL al cargar los posts
+        const params = new URLSearchParams(window.location.search);
+        const articleId = params.get('article');
+        
+        if (articleId && loadedPosts.length > 0) {
+           const foundPost = loadedPosts.find(p => p.id === articleId);
+           if (foundPost) {
+             setSelectedPost(foundPost);
+             setView('post');
+           }
+        }
+
       }, (error) => {
         if(error.code !== 'permission-denied') console.log("Error al cargar posts:", error);
       });
@@ -377,7 +389,6 @@ export default function App() {
 
   // --- FUNCIONES CRUD ---
   
-  // Guardar o Actualizar Post
   const handleSavePost = async (e) => {
     e.preventDefault();
     if (!db || !user) { alert("Error: Conexión no disponible"); return; }
@@ -385,22 +396,16 @@ export default function App() {
     setIsSubmitting(true);
     try {
       const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts');
-      
       if (editingPostId) {
-        // MODO EDICIÓN
         const docRef = doc(collectionRef, editingPostId);
         await updateDoc(docRef, { ...newPost, updatedAt: serverTimestamp() });
         alert("¡Artículo actualizado!");
         setEditingPostId(null);
       } else {
-        // MODO CREACIÓN
         await addDoc(collectionRef, { ...newPost, createdAt: serverTimestamp(), author: "Equipo Growth4U" });
         alert("¡Artículo publicado!");
       }
-      
-      // Reset form
       setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
-      
     } catch (error) {
       console.error(error);
       alert("Error: " + error.message);
@@ -409,7 +414,6 @@ export default function App() {
     }
   };
 
-  // Cargar post para editar
   const handleEditClick = (post) => {
     setNewPost({
       title: post.title,
@@ -420,10 +424,9 @@ export default function App() {
       readTime: post.readTime
     });
     setEditingPostId(post.id);
-    window.scrollTo(0,0); // Subir al formulario
+    window.scrollTo(0,0);
   };
 
-  // Borrar post
   const handleDeleteClick = async (id) => {
     if(!window.confirm("¿Seguro que quieres borrar este artículo? No se puede deshacer.")) return;
     try {
@@ -443,15 +446,32 @@ export default function App() {
     setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
   };
 
+  // NAVEGACIÓN CON URL MANAGER
   const handleViewPost = (post) => {
+    // Actualizamos la URL sin recargar la página
+    const newUrl = `${window.location.pathname}?article=${post.id}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+    
     setSelectedPost(post);
     setView('post');
     window.scrollTo(0, 0);
   };
 
-  const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
+  const handleClosePost = () => {
+    // Limpiamos la URL al volver
+    window.history.pushState({}, '', window.location.pathname);
+    setView('home');
+  };
+  
+  const copyLinkToClipboard = () => {
+      if (!selectedPost) return;
+      const url = `${window.location.origin}${window.location.pathname}?article=${selectedPost.id}`;
+      navigator.clipboard.writeText(url);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+  };
 
-  // Display posts: DB posts OR Defaults (fallback/demo)
+  const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
 
   // --- VISTAS ---
@@ -460,14 +480,12 @@ export default function App() {
     return (
       <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
           {/* Columna Izquierda: Formulario */}
           <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit sticky top-8">
              <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
                 <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
              </div>
-             
              <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-200">
                <strong>Guía de Formato:</strong>
                <ul className="list-disc ml-5 mt-2 space-y-1">
@@ -476,7 +494,6 @@ export default function App() {
                  <li>Deja líneas en blanco para separar párrafos.</li>
                </ul>
              </div>
-
              <form onSubmit={handleSavePost} className="space-y-6">
                 <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="Título del artículo" />
                 <div className="grid grid-cols-2 gap-4">
@@ -494,14 +511,11 @@ export default function App() {
                     {isSubmitting ? 'Guardando...' : (editingPostId ? 'Actualizar Artículo' : 'Publicar Ahora')}
                   </button>
                   {editingPostId && (
-                    <button type="button" onClick={cancelEdit} className="px-6 py-4 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300">
-                      Cancelar
-                    </button>
+                    <button type="button" onClick={cancelEdit} className="px-6 py-4 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300">Cancelar</button>
                   )}
                 </div>
              </form>
           </div>
-
           {/* Columna Derecha: Lista de Artículos */}
           <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos Publicados ({posts.length})</h2>
@@ -522,7 +536,6 @@ export default function App() {
               {posts.length === 0 && <p className="text-center text-slate-400 py-10">No hay artículos aún.</p>}
             </div>
           </div>
-
         </div>
       </div>
     );
@@ -533,10 +546,17 @@ export default function App() {
       <div className="min-h-screen bg-white text-[#032149] font-sans selection:bg-[#45b6f7] selection:text-white">
          <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
             <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
-               <div className="flex items-center gap-0 cursor-pointer" onClick={() => setView('home')}>
+               <div className="flex items-center gap-0 cursor-pointer" onClick={handleClosePost}>
                   <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" className="h-6 w-auto" />
                </div>
-               <button onClick={() => setView('home')} className="text-sm font-bold text-[#6351d5] flex items-center gap-2 hover:underline"><ArrowLeft className="w-4 h-4" /> Volver</button>
+               <div className="flex items-center gap-4">
+                 {/* BOTÓN COPIAR ENLACE */}
+                 <button onClick={copyLinkToClipboard} className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${copiedLink ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
+                    {copiedLink ? <CheckCircle className="w-4 h-4" /> : <LinkIcon className="w-4 h-4" />}
+                    {copiedLink ? 'Enlace copiado' : 'Copiar enlace'}
+                 </button>
+                 <button onClick={handleClosePost} className="text-sm font-bold text-[#6351d5] flex items-center gap-2 hover:underline"><ArrowLeft className="w-4 h-4" /> Volver</button>
+               </div>
             </div>
          </nav>
          <article className="pt-32 pb-20 max-w-3xl mx-auto px-4">
@@ -553,7 +573,6 @@ export default function App() {
             
             <div className="prose prose-lg prose-slate mx-auto text-[#032149]">
               <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">{selectedPost.excerpt}</p>
-              {/* Renderizado con formato mejorado */}
               {renderFormattedContent(selectedPost.content)}
             </div>
             
