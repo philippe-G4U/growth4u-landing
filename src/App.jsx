@@ -131,7 +131,7 @@ const translations = {
           tag: "Trust Engine",
           borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] },
           review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] },
-          promise: { title: "Promise Flywheel", items: ["Landing Page Incentivo", "Activar Usuarios", "Member Get Member"] }
+          promise: { title: "Promise Flywheel", items: ["Landing Page Incentive", "Activate Users", "Member Get Member"] }
         }
       }
     },
@@ -159,15 +159,11 @@ const translations = {
       cta: "Ver todos los artículos",
       readTime: "min lectura",
       admin: "Admin",
-      defaults: [
-        { id: 'd1', category: "Estrategia", title: "La muerte del Paid Media en Fintech", excerpt: "Por qué el modelo de alquiler de atención ya no es rentable en 2024 y cómo pivotar hacia activos propios." },
-        { id: 'd2', category: "Data & Analytics", title: "Cómo calcular tu CAC real sin trampas", excerpt: "La guía definitiva para entender cuánto te cuesta realmente cada usuario activado, más allá del CPC." },
-        { id: 'd3', category: "Trust Engine", title: "Confianza: La nueva moneda de cambio", excerpt: "Cómo construir activos de marca que reduzcan la fricción en la conversión y aumenten el LTV." }
-      ]
+      empty: "Próximamente nuevos artículos..."
     },
     footer: {
       title: "Escala tu Fintech hoy.",
-      ctaEmail: "clients@growth4u.io",
+      ctaEmail: "accounts@growth4u.io",
       ctaCall: "Agendar Llamada",
       rights: "© 2025 Growth4U. Todos los derechos reservados.",
       privacy: "Política de Privacidad",
@@ -308,15 +304,11 @@ const translations = {
       cta: "View all articles",
       readTime: "min read",
       admin: "Admin",
-      defaults: [
-        { id: 'd1', category: "Estrategia", title: "The death of Paid Media in Fintech", excerpt: "Why the attention rental model is no longer profitable in 2024 and how to pivot to owned assets.", content: "Content...", readTime: "5 min read", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
-        { id: 'd2', category: "Data & Analytics", title: "How to calculate your real CAC without traps", excerpt: "The definitive guide to understanding how much each activated user really costs you, beyond CPC.", content: "Content...", readTime: "7 min read", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" },
-        { id: 'd3', category: "Trust Engine", title: "Trust: The new currency", excerpt: "How to build brand assets that reduce conversion friction and increase LTV.", content: "Content...", readTime: "4 min read", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800" }
-      ]
+      empty: "Coming soon..."
     },
     footer: {
       title: "Scale your Fintech today.",
-      ctaEmail: "clients@growth4u.io",
+      ctaEmail: "accounts@growth4u.io",
       ctaCall: "Book a Call",
       rights: "© 2025 Growth4U. All rights reserved.",
       privacy: "Privacy Policy",
@@ -372,8 +364,6 @@ export default function App() {
 
   useEffect(() => {
     if (!user) return;
-    // Usar la ruta correcta según las reglas de seguridad
-    // Regla: /artifacts/{appId}/public/data/{collectionName}
     const q = query(
       collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts'),
       orderBy('createdAt', 'desc')
@@ -410,8 +400,8 @@ export default function App() {
 
   const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
 
-  // Determine posts to display (Real from DB + Defaults for fallback/demo)
-  const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
+  // Determine posts to display (Only real posts, no defaults)
+  const displayPosts = posts;
 
   // --- RENDER VIEWS ---
 
@@ -838,14 +828,20 @@ export default function App() {
             <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {displayPosts.map((post, index) => (
-                    <div key={index} onClick={() => handleViewPost(post)} className="group cursor-pointer">
-                        <div className="relative overflow-hidden rounded-xl mb-4 aspect-video bg-slate-100"><img src={post.image} alt={post.title} className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"/><div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">{post.category}</div></div>
-                        <h3 className="text-xl font-bold mb-2 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">{post.title}</h3>
-                        <p className="text-slate-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
-                        <div className="flex items-center text-sm text-slate-500 font-medium"><Clock className="w-4 h-4 mr-2" />{post.readTime}</div>
+                {displayPosts.length > 0 ? (
+                    displayPosts.map((post, index) => (
+                        <div key={index} onClick={() => handleViewPost(post)} className="group cursor-pointer">
+                            <div className="relative overflow-hidden rounded-xl mb-4 aspect-video bg-slate-100"><img src={post.image} alt={post.title} className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"/><div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">{post.category}</div></div>
+                            <h3 className="text-xl font-bold mb-2 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">{post.title}</h3>
+                            <p className="text-slate-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                            <div className="flex items-center text-sm text-slate-500 font-medium"><Clock className="w-4 h-4 mr-2" />{post.readTime}</div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="col-span-3 text-center py-12 text-slate-500">
+                        <p>{t.blog.empty}</p>
                     </div>
-                ))}
+                )}
             </div>
         </div>
       </section>
