@@ -12,73 +12,292 @@ import {
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
-import { getAnalytics } from "firebase/analytics";
 
 // --- CONFIGURACIÓN DE FIREBASE ---
-// Credenciales proporcionadas por el usuario para producción (Netlify)
-const userFirebaseConfig = {
-  apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
-  authDomain: "landing-growth4u.firebaseapp.com",
-  projectId: "landing-growth4u",
-  storageBucket: "landing-growth4u.firebasestorage.app",
-  messagingSenderId: "562728954202",
-  appId: "1:562728954202:web:90cff4aa486f38b4b62b63",
-  measurementId: "G-4YBYPVQDT6"
-};
-
-// --- INICIALIZACIÓN INTELIGENTE ---
-// Detectamos si estamos en el entorno de edición (Preview) o en Producción (Netlify)
-let app, auth, db;
-let isInternalEnv = false;
-
+// Intenta usar la configuración del entorno, si no, usa un objeto vacío para evitar crashes inmediatos
+let firebaseConfig = {};
 try {
-  // Si existe la variable __firebase_config, estamos en el editor
   if (typeof __firebase_config !== 'undefined') {
-     const internalConfig = JSON.parse(__firebase_config);
-     app = initializeApp(internalConfig, 'previewApp'); // Nombre único para evitar conflictos
-     isInternalEnv = true;
-  } else {
-     // Si no existe, estamos en Netlify -> Usamos tus credenciales reales
-     app = initializeApp(userFirebaseConfig);
-     const analytics = getAnalytics(app); // Iniciamos analytics solo en prod
+    firebaseConfig = JSON.parse(__firebase_config);
   }
-  
-  auth = getAuth(app);
-  db = getFirestore(app);
-
 } catch (e) {
-  console.warn("Firebase ya inicializado o error de config:", e);
-  // Fallback para evitar crash si algo falla
-  if (!app) { 
-      try { app = initializeApp(userFirebaseConfig); auth = getAuth(app); db = getFirestore(app); } catch(e2){}
-  }
+  console.warn("No firebase config found");
 }
 
-// Función para obtener la colección correcta según el entorno
-// En Preview usamos una ruta segura temporal. En Prod usamos tu colección 'blog_posts' limpia.
-const getBlogCollection = () => {
-    if (isInternalEnv) {
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'growth4u-public-app';
-        return collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts');
-    } else {
-        return collection(db, 'blog_posts');
+// Inicialización segura
+let app, auth, db;
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+} catch (e) {
+  console.warn("Firebase running in demo mode (offline)");
+}
+
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'growth4u-public-app';
+
+// --- TRADUCCIONES ---
+const translations = {
+  es: {
+    nav: {
+      problem: "Problema",
+      results: "Resultados",
+      methodology: "Metodología",
+      cases: "Casos",
+      team: "Equipo",
+      blog: "Blog",
+      cta: "Agendar Llamada"
+    },
+    hero: {
+      tag: "Especialistas en Growth Fintech B2B & B2C",
+      title: "Tu fintech puede crecer más rápido, ",
+      titleHighlight: "sin invertir más en marketing.",
+      subtitle: "Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.",
+      ctaPrimary: "Empezar ahora",
+      ctaSecondary: "Ver metodología",
+      trust: "Empresas validadas por la confianza"
+    },
+    problem: {
+      title: "El modelo tradicional está roto",
+      subtitle: "En un mercado saturado, depender 100% de Paid Media es insostenible.",
+      cards: [
+        { title: "Alquiler de Atención", desc: "Si cortas el presupuesto de anuncios, las ventas mueren instantáneamente." },
+        { title: "CAC Incontrolable", desc: "El coste por clic no para de subir. Sin activos propios, tu rentabilidad se erosiona." },
+        { title: "Fricción de Confianza", desc: "El usuario Fintech es escéptico. Atraes tráfico, pero no conviertes por falta de autoridad." },
+        { title: "Churn Silencioso", desc: "Captas registros, no clientes. El LTV nunca llega a cubrir el coste de adquisición." }
+      ]
+    },
+    results: {
+      title: "Resultados del Trust Engine",
+      subtitle: "Crecimiento predecible y escalable.",
+      cards: [
+        { title: "Reducción del 70% en CAC", desc: "Sustituimos el gasto publicitario inflado por sistemas de confianza orgánica y viralidad estructurada." },
+        { title: "Usuarios Activados", desc: "Dejamos atrás las vanity metrics. Atraemos clientes ideales (ICP) listos para usar y pagar." },
+        { title: "Máquina 24/7", desc: "Implementamos automatización e IA para que la captación funcione sin depender de trabajo manual." },
+        { title: "Activos que perduran", desc: "Construimos un motor de crecimiento que gana tracción con el tiempo, aumentando el LTV." }
+      ]
+    },
+    methodology: {
+      title: "Una metodología adaptada a tu momento",
+      subtitle: "Selecciona tu etapa para ver cómo aplicamos el sistema.",
+      initial: {
+        title: "Fase Inicial",
+        tag: "0 → PMF",
+        desc: "Para fintechs que tienen producto y necesitan estructurar su crecimiento.",
+        btnShow: "Ver Proceso de Fundamentos",
+        btnHide: "Ocultar Proceso",
+        items: [
+          "Primera 500 clientes cualificados en 90-60 días con retorno ROI inmediato.",
+          "Construcción de Trust Fortress (Blogs/Foros).",
+          "Creación de producto y su customer journey.",
+          "Implementación de herramientas de automatización y CRM."
+        ],
+        detailsTitle: "El Camino a la Tracción",
+        detailsSubtitle: "Los pasos críticos para validar tu modelo y producto.",
+        detailCards: [
+          { title: "Competidores & Nichos", desc: "Análisis de mercado, competidores, nichos y nivel de dolor." },
+          { title: "ICP & Mensaje", desc: "Definición de Ideal Customer Profile, canales, mensajes y keywords." },
+          { title: "Activación", desc: "Definición de incentivos y puntos de activación clave." },
+          { title: "Dashboard", desc: "Configuración de métricas clave para seguimiento de tracción." }
+        ]
+      },
+      scale: {
+        title: "Fase Escala",
+        tag: "10k → 500k Users",
+        desc: "Para fintechs con tracción que quieren escalar sin disparar costes.",
+        btnShow: "Ver Motor de Crecimiento",
+        btnHide: "Ocultar Sistema",
+        items: [
+          "Optimización de paid/ads: 3x de resultados.",
+          "Estrategia comercial con 10-15 automatizaciones.",
+          "Escalado de CAC de 40-60 días a 3-6 meses."
+        ],
+        flywheel: {
+          tag: "Trust Engine",
+          borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] },
+          review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] },
+          promise: { title: "Promise Flywheel", items: ["Landing Page Incentivo", "Activar Usuarios", "Member Get Member"] }
+        }
+      }
+    },
+    cases: {
+      title: "Casos de Éxito",
+      subtitle: "Resultados reales auditados.",
+      list: [
+        { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." },
+        { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Coste de adquisición disparado por saturación publicitaria y desconfianza en el sector cripto.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." },
+        { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." }
+      ],
+      btnRead: "Leer caso completo",
+      btnHide: "Ver menos",
+      challengeLabel: "Reto",
+      solutionLabel: "Solución"
+    },
+    team: {
+      title: "Trust es lo importante, conócenos",
+      bioAlfonso: "Especialista en growth con más de diez años lanzando y escalando productos en fintech.",
+      bioMartin: "Especialista en growth técnico con más de diez años creando sistemas de automatización y datos que escalan operaciones."
+    },
+    blog: {
+      title: "Blog & Insights",
+      subtitle: "Recursos estratégicos para escalar tu fintech.",
+      cta: "Ver todos los artículos",
+      readTime: "min lectura",
+      admin: "Admin",
+      empty: "Próximamente nuevos artículos...",
+      defaults: [
+        { id: 'd1', category: "Estrategia", title: "La muerte del Paid Media en Fintech", excerpt: "Por qué el modelo de alquiler de atención ya no es rentable en 2024 y cómo pivotar hacia activos propios.", content: "Contenido...", readTime: "5 min lectura", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
+        { id: 'd2', category: "Data & Analytics", title: "Cómo calcular tu CAC real sin trampas", excerpt: "La guía definitiva para entender cuánto te cuesta realmente cada usuario activado, más allá del CPC.", content: "Contenido...", readTime: "7 min lectura", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" },
+        { id: 'd3', category: "Trust Engine", title: "Confianza: La nueva moneda de cambio", excerpt: "Cómo construir activos de marca que reduzcan la fricción en la conversión y aumenten el LTV.", content: "Contenido...", readTime: "4 min lectura", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800" }
+      ]
+    },
+    footer: {
+      title: "Escala tu Fintech hoy.",
+      ctaEmail: "accounts@growth4u.io",
+      ctaCall: "Agendar Llamada",
+      rights: "© 2025 Growth4U. Todos los derechos reservados.",
+      privacy: "Política de Privacidad",
+      terms: "Términos de Servicio"
     }
+  },
+  en: {
+    nav: {
+      problem: "Problem",
+      results: "Results",
+      methodology: "Methodology",
+      cases: "Cases",
+      team: "Team",
+      blog: "Blog",
+      cta: "Book a Call"
+    },
+    hero: {
+      tag: "Specialists in B2B & B2C Fintech Growth",
+      title: "Your fintech can grow faster, ",
+      titleHighlight: "without spending more on marketing.",
+      subtitle: "We help you create a growth engine that lasts over time and reduces your CAC by leveraging the value of trust.",
+      ctaPrimary: "Start now",
+      ctaSecondary: "View methodology",
+      trust: "Companies validated by trust"
+    },
+    problem: {
+      title: "The traditional model is broken",
+      subtitle: "In a saturated market, relying 100% on Paid Media is unsustainable.",
+      cards: [
+        { title: "Renting Attention", desc: "If you cut the ad budget, sales die instantly." },
+        { title: "Uncontrollable CAC", desc: "Cost per click keeps rising. Without owned assets, your profitability erodes." },
+        { title: "Trust Friction", desc: "The Fintech user is skeptical. You attract traffic, but don't convert due to lack of authority." },
+        { title: "Silent Churn", desc: "You capture registrations, not clients. LTV never covers the acquisition cost." }
+      ]
+    },
+    results: {
+      title: "Trust Engine Results",
+      subtitle: "Predictable and scalable growth.",
+      cards: [
+        { title: "70% Reduction in CAC", desc: "We replace inflated ad spend with organic trust systems and structured virality." },
+        { title: "Activated Users", desc: "We leave vanity metrics behind. We attract ideal customers (ICP) ready to use and pay." },
+        { title: "24/7 Machine", desc: "We implement automation and AI so that acquisition works without depending on manual labor." },
+        { title: "Assets that last", desc: "We build a growth engine that gains traction over time, increasing LTV." }
+      ]
+    },
+    methodology: {
+      title: "A methodology adapted to your stage",
+      subtitle: "Select your stage to see how we apply the system.",
+      initial: {
+        title: "Initial Phase",
+        tag: "0 → PMF",
+        desc: "For fintechs that have a product and need to structure their growth.",
+        btnShow: "View Foundation Process",
+        btnHide: "Hide Process",
+        items: [
+          "First 500 qualified clients in 90-60 days with immediate ROI return.",
+          "Construction of Trust Fortress (Blogs/Forums).",
+          "Product creation and its customer journey.",
+          "Implementation of automation and CRM tools."
+        ],
+        detailsTitle: "The Road to Traction",
+        detailsSubtitle: "Critical steps to validate your model and product.",
+        detailCards: [
+          { title: "Competitors & Niches", desc: "Market analysis, competitors, niches and pain level." },
+          { title: "ICP & Messaging", desc: "Definition of Ideal Customer Profile, channels, messages and keywords." },
+          { title: "Activation", desc: "Definition of incentives and key activation points." },
+          { title: "Dashboard", desc: "Configuration of key metrics for traction tracking." }
+        ]
+      },
+      scale: {
+        title: "Scale Phase",
+        tag: "10k → 500k Users",
+        desc: "For fintechs with traction that want to scale without skyrocketing costs.",
+        btnShow: "View Growth Engine",
+        btnHide: "Hide System",
+        items: [
+          "Paid/ads optimization: 3x results.",
+          "Commercial strategy with 10-15 automations.",
+          "CAC scaling from 40-60 days to 3-6 months."
+        ],
+        flywheel: {
+          tag: "Trust Engine",
+          borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] },
+          review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] },
+          promise: { title: "Promise Flywheel", items: ["Landing Page Incentive", "Activate Users", "Member Get Member"] }
+        }
+      }
+    },
+    cases: {
+      title: "Success Stories",
+      subtitle: "Real audited results.",
+      list: [
+        { company: "BNEXT", stat: "500K", label: "Active users", highlight: "achieved in 30 months", summary: "From 0 to 500,000 users in 30 months, without spending millions on advertising.", challenge: "Scaling the user base in a competitive market without relying exclusively on massive paid media.", solution: "We built a growth system based on trust and virality." },
+        { company: "BIT2ME", stat: "-70%", label: "CAC Reduction", highlight: "implementing Trust Engine", summary: "We reduced CAC by 70% implementing the Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "We optimized data, segmentation and activation to double the value of each client." },
+        { company: "GOCARDLESS", stat: "10K €", label: "MRR reached", highlight: "in 6 months from launch", summary: "Launch from scratch in Spain and Portugal reaching 10k MRR quickly.", challenge: "Entry into new markets without previous brand presence.", solution: "Strategy focused on content, alliances and intelligent sales." }
+      ],
+      btnRead: "Read full case",
+      btnHide: "Show less",
+      challengeLabel: "Challenge",
+      solutionLabel: "Solution"
+    },
+    team: {
+      title: "Trust is what matters, get to know us",
+      bioAlfonso: "Growth specialist with more than ten years launching and scaling fintech products.",
+      bioMartin: "Technical growth specialist with more than ten years creating automation and data systems that scale operations."
+    },
+    blog: {
+      title: "Blog & Insights",
+      subtitle: "Strategic resources to scale your fintech.",
+      cta: "View all articles",
+      readTime: "min read",
+      admin: "Admin",
+      empty: "Coming soon...",
+      defaults: [
+        { id: 'd1', category: "Estrategia", title: "The death of Paid Media in Fintech", excerpt: "Why the attention rental model is no longer profitable in 2024 and how to pivot to owned assets.", content: "Content...", readTime: "5 min read", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
+        { id: 'd2', category: "Data & Analytics", title: "How to calculate your real CAC without traps", excerpt: "The definitive guide to understanding how much each activated user really costs you, beyond CPC.", content: "Content...", readTime: "7 min read", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" },
+        { id: 'd3', category: "Trust Engine", title: "Trust: The new currency", excerpt: "How to build brand assets that reduce conversion friction and increase LTV.", content: "Content...", readTime: "4 min read", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800" }
+      ]
+    },
+    footer: {
+      title: "Scale your Fintech today.",
+      ctaEmail: "accounts@growth4u.io",
+      ctaCall: "Book a Call",
+      rights: "© 2025 Growth4U. All rights reserved.",
+      privacy: "Privacy Policy",
+      terms: "Terms of Service"
+    }
+  }
 };
 
 export default function App() {
   const [view, setView] = useState('home');
+  const [lang, setLang] = useState('es'); 
+  const t = translations[lang]; 
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedCase, setExpandedCase] = useState(null);
   
-  // Estados independientes para cada fase
   const [showFlywheel, setShowFlywheel] = useState(false); 
   const [showInitialPhase, setShowInitialPhase] = useState(false);
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [user, setUser] = useState(null);
-  
   const [isAdminMode, setIsAdminMode] = useState(false);
-  const [lang, setLang] = useState('es'); 
 
   const [newPost, setNewPost] = useState({
     title: '',
@@ -86,38 +305,10 @@ export default function App() {
     excerpt: '',
     content: '',
     image: '',
-    readTime: '5 min lectura'
+    readTime: '5 min'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const bookingLink = "https://now.growth4u.io/widget/bookings/growth4u_demo";
-
-  // --- TRADUCCIONES ---
-  const translations = {
-    es: {
-      nav: { problem: "Problema", solutions: "Soluciones", methodology: "Metodología", cases: "Casos", team: "Equipo", blog: "Blog", cta: "Agendar Llamada" },
-      hero: { tag: "Especialistas en Growth Fintech B2B & B2C", title: "Tu fintech puede crecer más rápido, ", titleHighlight: "sin invertir más en marketing.", subtitle: "Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.", ctaPrimary: "Empezar ahora", ctaSecondary: "Ver metodología", trust: "Empresas validadas por la confianza" },
-      problem: { title: "El modelo tradicional está roto", subtitle: "En un mercado saturado, depender 100% de Paid Media es insostenible.", cards: [ { title: "Alquiler de Atención", desc: "Si cortas el presupuesto de anuncios, las ventas mueren instantáneamente." }, { title: "CAC Incontrolable", desc: "El coste por clic no para de subir. Sin activos propios, tu rentabilidad se erosiona." }, { title: "Fricción de Confianza", desc: "El usuario Fintech es escéptico. Atraes tráfico, pero no conviertes por falta de autoridad." }, { title: "Churn Silencioso", desc: "Captas registros, no clientes. El LTV nunca llega a cubrir el coste de adquisición." } ] },
-      solutions: { title: "Soluciones a medida", subtitle: "Estrategias específicas para tu modelo de negocio.", b2b: { title: "GROWTH4U FOR", highlight: "B2B", sub: "FINTECHS", foundation: "Organization • GTM • Data • Activation", acquisition: [ "Linkedin Thought Leadership", "Signal-Based Outbound", "Content Marketing & SEO", "Partnership & Affiliate Growth" ], engagement: [ "Engagement & Retention MKT", "Behavioral & Data-Driven Nurturing", "Customer Success Intelligence" ] }, b2c: { title: "GROWTH4U FOR", highlight: "B2C", sub: "FINTECHS", foundation: "Organization • GTM • Data • Activation", acquisition: [ "Affiliate & Influencer Growth", "Social Ads & Performance", "Content Marketing & SEO", "Partnership & Affiliate Growth" ], engagement: [ "Engagement & Retention MKT", "Behavioral & Data-Driven Nurturing", "Customer Success Intelligence" ] } },
-      methodology: { title: "Una metodología adaptada a tu momento", subtitle: "Selecciona tu etapa para ver cómo aplicamos el sistema.", initial: { title: "Fase Inicial", tag: "0 → PMF", desc: "Para fintechs que tienen producto y necesitan estructurar su crecimiento.", btnShow: "Ver Proceso de Fundamentos", btnHide: "Ocultar Proceso", items: [ "Primera 500 clientes cualificados en 90-60 días con retorno ROI inmediato.", "Construcción de Trust Fortress (Blogs/Foros).", "Creación de producto y su customer journey.", "Implementación de herramientas de automatización y CRM." ], detailsTitle: "El Camino a la Tracción", detailsSubtitle: "Los pasos críticos para validar tu modelo y producto.", detailCards: [ { title: "Competidores & Nichos", desc: "Análisis de mercado, competidores, nichos y nivel de dolor." }, { title: "ICP & Mensaje", desc: "Definición de Ideal Customer Profile, canales, mensajes y keywords." }, { title: "Activación", desc: "Definición de incentivos y puntos de activación clave." }, { title: "Dashboard", desc: "Configuración de métricas clave para seguimiento de tracción." } ] }, scale: { title: "Fase Escala", tag: "10k → 500k Users", desc: "Para fintechs con tracción que quieren escalar sin disparar costes.", btnShow: "Ver Motor de Crecimiento", btnHide: "Ocultar Sistema", items: [ "Optimización de paid/ads: 3x de resultados.", "Estrategia comercial con 10-15 automatizaciones.", "Escalado de CAC de 40-60 días a 3-6 meses." ], flywheel: { tag: "Trust Engine", borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] }, review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] }, promise: { title: "Promise Flywheel", items: ["Landing Page Incentivo", "Activar Usuarios", "Member Get Member"] } } } },
-      cases: { title: "Casos de Éxito", subtitle: "Resultados reales auditados.", list: [ { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." }, { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Coste de adquisición disparado por saturación publicitaria y desconfianza en el sector cripto.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." } ], btnRead: "Leer caso completo", btnHide: "Ver menos", challengeLabel: "Reto", solutionLabel: "Solución" },
-      team: { title: "Lo importante es la confianza, conócenos", bioAlfonso: "Especialista en growth con más de diez años lanzando y escalando productos en fintech.", bioMartin: "Especialista en growth técnico con más de diez años creando sistemas de automatización y datos que escalan operaciones." },
-      blog: { title: "Blog & Insights", subtitle: "Recursos estratégicos para escalar tu fintech.", cta: "Ver todos los artículos", readTime: "min lectura", admin: "Admin", empty: "Próximamente nuevos artículos..." },
-      footer: { title: "Escala tu Fintech hoy.", ctaEmail: "accounts@growth4u.io", ctaCall: "Agendar Llamada", rights: "© 2025 Growth4U. Todos los derechos reservados.", privacy: "Política de Privacidad", terms: "Términos de Servicio" }
-    },
-    en: {
-      nav: { problem: "Problem", solutions: "Solutions", methodology: "Methodology", cases: "Cases", team: "Team", blog: "Blog", cta: "Book a Call" },
-      hero: { tag: "Specialists in B2B & B2C Fintech Growth", title: "Your fintech can grow faster, ", titleHighlight: "without spending more on marketing.", subtitle: "We help you create a growth engine that lasts over time and reduces your CAC by leveraging the value of trust.", ctaPrimary: "Start now", ctaSecondary: "View methodology", trust: "Companies validated by trust" },
-      problem: { title: "The traditional model is broken", subtitle: "In a saturated market, relying 100% on Paid Media is unsustainable.", cards: [ { title: "Renting Attention", desc: "If you cut the ad budget, sales die instantly." }, { title: "Uncontrollable CAC", desc: "Cost per click keeps rising. Without owned assets, your profitability erodes." }, { title: "Trust Friction", desc: "The Fintech user is skeptical. You attract traffic, but don't convert due to lack of authority." }, { title: "Silent Churn", desc: "You capture registrations, not clients. LTV never covers the acquisition cost." } ] },
-      solutions: { title: "Tailored Solutions", subtitle: "Specific strategies for your business model.", b2b: { title: "GROWTH4U FOR", highlight: "B2B", sub: "FINTECHS", foundation: "Organization • GTM • Data • Activation", acquisition: [ "Linkedin Thought Leadership", "Signal-Based Outbound", "Content Marketing & SEO", "Partnership & Affiliate Growth" ], engagement: [ "Engagement & Retention MKT", "Behavioral & Data-Driven Nurturing", "Customer Success Intelligence" ] }, b2c: { title: "GROWTH4U FOR", highlight: "B2C", sub: "FINTECHS", foundation: "Organization • GTM • Data • Activation", acquisition: [ "Affiliate & Influencer Growth", "Social Ads & Performance", "Content Marketing & SEO", "Partnership & Affiliate Growth" ], engagement: [ "Engagement & Retention MKT", "Behavioral & Data-Driven Nurturing", "Customer Success Intelligence" ] } },
-      methodology: { title: "A methodology adapted to your stage", subtitle: "Select your stage to see how we apply the system.", initial: { title: "Initial Phase", tag: "0 → PMF", desc: "For fintechs that have a product and need to structure their growth.", btnShow: "View Foundation Process", btnHide: "Hide Process", items: [ "First 500 qualified clients in 90-60 days with immediate ROI return.", "Construction of Trust Fortress (Blogs/Forums).", "Product creation and its customer journey.", "Implementation of automation and CRM tools." ], detailsTitle: "The Road to Traction", detailsSubtitle: "Critical steps to validate your model and product.", detailCards: [ { title: "Competitors & Niches", desc: "Market analysis, competitors, niches and pain level." }, { title: "ICP & Messaging", desc: "Definition of Ideal Customer Profile, channels, messages and keywords." }, { title: "Activation", desc: "Definition of incentives and key activation points." }, { title: "Dashboard", desc: "Configuration of key metrics for traction tracking." } ] }, scale: { title: "Scale Phase", tag: "10k → 500k Users", desc: "For fintechs with traction that want to scale without skyrocketing costs.", btnShow: "View Growth Engine", btnHide: "Hide System", items: [ "Paid/ads optimization: 3x results.", "Commercial strategy with 10-15 automations.", "CAC scaling from 40-60 days to 3-6 months." ], flywheel: { tag: "Trust Engine", borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] }, review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] }, promise: { title: "Promise Flywheel", items: ["Landing Page Incentive", "Activate Users", "Member Get Member"] } } } },
-      cases: { title: "Success Stories", subtitle: "Real audited results.", list: [ { company: "BNEXT", stat: "500K", label: "Active users", highlight: "achieved in 30 months", summary: "From 0 to 500,000 users in 30 months, without spending millions on advertising.", challenge: "Scaling the user base in a competitive market without relying exclusively on massive paid media.", solution: "We built a growth system based on trust and virality." }, { company: "BIT2ME", stat: "-70%", label: "CAC Reduction", highlight: "implementing Trust Engine", summary: "We reduced CAC by 70% implementing the Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "We optimized data, segmentation and activation to double the value of each client." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR reached", highlight: "in 6 months from launch", summary: "Launch from scratch in Spain and Portugal reaching 10k MRR quickly.", challenge: "Entry into new markets without previous brand presence.", solution: "Strategy focused on content, alliances and intelligent sales." } ], btnRead: "Read full case", btnHide: "Show less", challengeLabel: "Challenge", solutionLabel: "Solution" },
-      team: { title: "Trust is what matters, get to know us", bioAlfonso: "Growth specialist with more than ten years launching and scaling fintech products.", bioMartin: "Technical growth specialist with more than ten years creating automation and data systems that scale operations." },
-      blog: { title: "Blog & Insights", subtitle: "Strategic resources to scale your fintech.", cta: "View all articles", readTime: "min read", admin: "Admin", empty: "Coming soon..." },
-      footer: { title: "Scale your Fintech today.", ctaEmail: "accounts@growth4u.io", ctaCall: "Book a Call", rights: "© 2025 Growth4U. All rights reserved.", privacy: "Privacy Policy", terms: "Terms of Service" }
-    }
-  };
-
-  const t = translations[lang];
 
   // --- HOOKS ---
   useEffect(() => {
@@ -129,7 +320,7 @@ export default function App() {
     if (!auth) return;
     const initAuth = async () => {
       try {
-        if (isInternalEnv && typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
            await signInWithCustomToken(auth, __initial_auth_token);
         } else {
            await signInAnonymously(auth);
@@ -144,16 +335,16 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!db) return;
+    if (!user || !db) return;
     try {
       const q = query(
-        getBlogCollection(),
+        collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts'),
         orderBy('createdAt', 'desc')
       );
       const unsubscribe = onSnapshot(q, (snapshot) => {
         setPosts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       }, (error) => {
-        console.log("Error al cargar posts (probablemente permisos o colección vacía):", error);
+        console.log("Error al cargar posts:", error);
       });
       return () => unsubscribe();
     } catch (e) {
@@ -161,25 +352,18 @@ export default function App() {
     }
   }, [user]);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
-
   const handleCreatePost = async (e) => {
     e.preventDefault();
-    if (!db) return;
+    if (!user || !db) return;
     setIsSubmitting(true);
     try {
-      await addDoc(getBlogCollection(), {
-        ...newPost,
-        createdAt: serverTimestamp(),
-        author: "Equipo Growth4U"
-      });
+      await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts'), { ...newPost, createdAt: serverTimestamp(), author: "Equipo Growth4U" });
       setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
       setView('home');
       setTimeout(() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' }), 100);
     } catch (error) {
-      console.error("Error creating post:", error);
-      alert("Error al crear post: " + error.message);
+      console.error(error);
+      alert("Error creando el post: " + error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -191,7 +375,10 @@ export default function App() {
     window.scrollTo(0, 0);
   };
 
-  const displayPosts = posts; // Solo mostramos los posts reales de la BD
+  const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
+
+  // Display posts: DB posts OR Defaults (fallback/demo)
+  const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
 
   // --- RENDER VIEWS ---
 
@@ -237,7 +424,7 @@ export default function App() {
             <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-64 md:h-96 object-cover rounded-3xl shadow-2xl mb-12" />
             <div className="prose prose-lg prose-slate mx-auto"><p>{selectedPost.excerpt}</p><p className="mt-4 whitespace-pre-wrap">{selectedPost.content}</p></div>
             <div className="mt-12 text-center">
-               <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all">{t.nav.cta}</a>
+               <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all whitespace-nowrap">{t.nav.cta}</a>
             </div>
          </article>
       </div>
@@ -273,7 +460,7 @@ export default function App() {
               <div className="hidden md:flex items-center gap-6">
                 <div className="flex items-baseline space-x-6">
                   <a href="#problema" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.problem}</a>
-                  <a href="#soluciones" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.solutions}</a>
+                  <a href="#resultados" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.results}</a>
                   <a href="#etapas" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.methodology}</a>
                   <a href="#casos" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.cases}</a>
                   <a href="#team" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.team}</a>
@@ -285,7 +472,7 @@ export default function App() {
               </div>
               
               <div className="hidden md:flex items-center gap-4">
-                <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5">{t.nav.cta}</a>
+                <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5 whitespace-nowrap">{t.nav.cta}</a>
               </div>
               <div className="md:hidden flex items-center gap-4">
                  <button onClick={toggleLang} className="text-[#032149] font-bold text-sm">{lang === 'es' ? 'EN' : 'ES'}</button>
@@ -297,12 +484,12 @@ export default function App() {
             <div className="absolute top-20 left-0 right-0 mx-4 bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden animate-in slide-in-from-top-2">
               <div className="px-4 pt-4 pb-6 space-y-2">
                 <a href="#problema" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.problem}</a>
-                <a href="#soluciones" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.solutions}</a>
+                <a href="#resultados" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.results}</a>
                 <a href="#etapas" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.methodology}</a>
                 <a href="#casos" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.cases}</a>
                 <a href="#team" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.team}</a>
                 <a href="#blog" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.blog}</a>
-                <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center">{t.nav.cta}</a>
+                <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center whitespace-nowrap">{t.nav.cta}</a>
               </div>
             </div>
           )}
@@ -365,115 +552,28 @@ export default function App() {
         </div>
       </section>
 
-      {/* SOLUCIONES A MEDIDA B2B / B2C */}
-      <section id="soluciones" className="py-24 bg-white relative border-t border-slate-200">
+      {/* Results Section */}
+      <section id="resultados" className="py-24 bg-white relative border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.solutions.title}</h2>
-            <p className="text-slate-600 text-lg">{t.solutions.subtitle}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.results.title}</h2>
+            <p className="text-slate-600 text-lg">{t.results.subtitle}</p>
           </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* B2B Solution Card */}
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl opacity-50 group-hover:opacity-100 transition duration-500 blur"></div>
-              <div className="relative bg-white p-8 rounded-3xl h-full flex flex-col border border-slate-100 shadow-lg">
-                <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-blue-50 p-3 rounded-xl"><Briefcase className="w-8 h-8 text-blue-600"/></div>
-                    <div>
-                      <h3 className="text-2xl font-extrabold text-[#032149]">{t.solutions.b2b.title} <span className="text-blue-600">{t.solutions.b2b.highlight}</span></h3>
-                      <p className="text-xs text-slate-400 font-bold tracking-widest uppercase mt-1">{t.solutions.b2b.sub}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+             {t.results.cards.map((card, i) => {
+                 const Icons = [TrendingDown, Users2, Bot, Landmark];
+                 const Icon = Icons[i];
+                 const color = i % 3 === 0 ? '#6351d5' : '#3f45fe'; // Alternate colors
+                 return (
+                    <div key={i} className="bg-slate-50 p-8 rounded-3xl border-l-4 flex items-start gap-6 hover:shadow-lg transition-shadow" style={{borderColor: color}}>
+                        <div className="bg-white p-3 rounded-xl shadow-sm"><Icon className="w-8 h-8" style={{color: color}}/></div>
+                        <div>
+                            <h3 className="text-xl font-bold text-[#032149] mb-2">{card.title}</h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">{card.desc}</p>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-8 flex-grow">
-                  {/* Foundation */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><Layers className="w-3 h-3"/> Foundation</h4>
-                    <div className="bg-slate-50 p-4 rounded-xl text-sm text-slate-700 font-medium border border-slate-100">
-                      {t.solutions.b2b.foundation}
-                    </div>
-                  </div>
-                  
-                  {/* Acquisition */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><Target className="w-3 h-3"/> Acquisition</h4>
-                    <ul className="space-y-2">
-                      {t.solutions.b2b.acquisition.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0"/> {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Engagement */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><RefreshCw className="w-3 h-3"/> Engagement</h4>
-                    <ul className="space-y-2">
-                      {t.solutions.b2b.engagement.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0"/> {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* B2C Solution Card */}
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-3xl opacity-50 group-hover:opacity-100 transition duration-500 blur"></div>
-              <div className="relative bg-white p-8 rounded-3xl h-full flex flex-col border border-slate-100 shadow-lg">
-                <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-cyan-50 p-3 rounded-xl"><Smartphone className="w-8 h-8 text-cyan-600"/></div>
-                    <div>
-                      <h3 className="text-2xl font-extrabold text-[#032149]">{t.solutions.b2c.title} <span className="text-cyan-500">{t.solutions.b2c.highlight}</span></h3>
-                      <p className="text-xs text-slate-400 font-bold tracking-widest uppercase mt-1">{t.solutions.b2c.sub}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-8 flex-grow">
-                  {/* Foundation */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><Layers className="w-3 h-3"/> Foundation</h4>
-                    <div className="bg-slate-50 p-4 rounded-xl text-sm text-slate-700 font-medium border border-slate-100">
-                      {t.solutions.b2c.foundation}
-                    </div>
-                  </div>
-                  
-                  {/* Acquisition */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><Target className="w-3 h-3"/> Acquisition</h4>
-                    <ul className="space-y-2">
-                      {t.solutions.b2c.acquisition.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-cyan-500 flex-shrink-0"/> {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Engagement */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><RefreshCw className="w-3 h-3"/> Engagement</h4>
-                    <ul className="space-y-2">
-                      {t.solutions.b2c.engagement.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-cyan-500 flex-shrink-0"/> {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+                 )
+             })}
           </div>
         </div>
       </section>
@@ -642,7 +742,7 @@ export default function App() {
           <h2 className="text-3xl md:text-5xl font-bold mb-6">{t.footer.title}</h2>
           <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
             <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
-            <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
+            <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
           </div>
           <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm"><p>{t.footer.rights}</p></div>
         </div>
