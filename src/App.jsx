@@ -5,16 +5,16 @@ import {
   ArrowUpRight, Clock, Target, Settings, BarChart3, Search, Zap, Layers, 
   Share2, MessageCircle, Gift, RefreshCw, Rocket, Briefcase, Smartphone, 
   Lock, LayoutDashboard, Users2, Plus, ArrowLeft, Save, Building2,
-  TrendingDown, Bot, Landmark, Globe
+  TrendingDown, Bot, Landmark, Globe, Trash2, Edit2
 } from 'lucide-react';
 
 // --- FIREBASE IMPORTS ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
 
-// --- CONFIGURACIÓN DE FIREBASE (Tus credenciales) ---
+// --- CONFIGURACIÓN DE FIREBASE ---
 const firebaseConfig = {
   apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
   authDomain: "landing-growth4u.firebaseapp.com",
@@ -25,19 +25,14 @@ const firebaseConfig = {
   measurementId: "G-4YBYPVQDT6"
 };
 
-// --- INICIALIZACIÓN DE FIREBASE ---
-// Inicializamos la app directamente con tus credenciales
+// --- INICIALIZACIÓN ---
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Analytics opcional (protegido por si falla en local)
+// Analytics opcional
 let analytics;
-try {
-  analytics = getAnalytics(app);
-} catch (e) {
-  console.log("Analytics no pudo iniciarse (posiblemente entorno local)");
-}
+try { analytics = getAnalytics(app); } catch (e) { console.log("Analytics offline"); }
 
 const appId = 'growth4u-public-app';
 
@@ -150,11 +145,7 @@ const translations = {
       readTime: "min lectura",
       admin: "Admin",
       empty: "Próximamente nuevos artículos...",
-      defaults: [
-        { id: 'd1', category: "Estrategia", title: "La muerte del Paid Media en Fintech", excerpt: "Por qué el modelo de alquiler de atención ya no es rentable en 2024 y cómo pivotar hacia activos propios.", content: "Contenido...", readTime: "5 min lectura", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
-        { id: 'd2', category: "Data & Analytics", title: "Cómo calcular tu CAC real sin trampas", excerpt: "La guía definitiva para entender cuánto te cuesta realmente cada usuario activado, más allá del CPC.", content: "Contenido...", readTime: "7 min lectura", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" },
-        { id: 'd3', category: "Trust Engine", title: "Confianza: La nueva moneda de cambio", excerpt: "Cómo construir activos de marca que reduzcan la fricción en la conversión y aumenten el LTV.", content: "Contenido...", readTime: "4 min lectura", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800" }
-      ]
+      defaults: []
     },
     footer: {
       title: "Escala tu Fintech hoy.",
@@ -272,11 +263,7 @@ const translations = {
       readTime: "min read",
       admin: "Admin",
       empty: "Coming soon...",
-      defaults: [
-        { id: 'd1', category: "Estrategia", title: "The death of Paid Media in Fintech", excerpt: "Why the attention rental model is no longer profitable in 2024 and how to pivot to owned assets.", content: "Content...", readTime: "5 min read", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
-        { id: 'd2', category: "Data & Analytics", title: "How to calculate your real CAC without traps", excerpt: "The definitive guide to understanding how much each activated user really costs you, beyond CPC.", content: "Content...", readTime: "7 min read", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" },
-        { id: 'd3', category: "Trust Engine", title: "Trust: The new currency", excerpt: "How to build brand assets that reduce conversion friction and increase LTV.", content: "Content...", readTime: "4 min read", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800" }
-      ]
+      defaults: []
     },
     footer: {
       title: "Scale your Fintech today.",
@@ -287,6 +274,35 @@ const translations = {
       terms: "Terms of Service"
     }
   }
+};
+
+// --- HELPER PARA RENDERIZAR TEXTO RICO (FORMATO) ---
+const renderFormattedContent = (content) => {
+  if (!content) return null;
+  // Separa por líneas
+  return content.split('\n').map((line, index) => {
+    // Títulos H2 (Detecta "## Texto")
+    if (line.trim().startsWith('##')) {
+      return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-[#032149]">{line.replace('##', '').trim()}</h2>;
+    }
+    // Si la línea está vacía, renderiza un espacio
+    if (line.trim() === '') {
+      return <div key={index} className="h-4"></div>;
+    }
+    
+    // Procesa negritas: "**texto**"
+    const parts = line.split(/(\*\*.*?\*\*)/g);
+    return (
+      <p key={index} className="mb-4 text-slate-600 leading-relaxed text-lg">
+        {parts.map((part, i) => {
+          if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={i} className="text-[#032149] font-bold">{part.slice(2, -2)}</strong>;
+          }
+          return part;
+        })}
+      </p>
+    );
+  });
 };
 
 export default function App() {
@@ -304,6 +320,8 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [isAdminMode, setIsAdminMode] = useState(false);
 
+  // Estado para edición
+  const [editingPostId, setEditingPostId] = useState(null);
   const [newPost, setNewPost] = useState({
     title: '',
     category: 'Estrategia',
@@ -321,7 +339,6 @@ export default function App() {
     if (params.get('admin') === 'true') setIsAdminMode(true);
   }, []);
 
-  // Auth Effect
   useEffect(() => {
     if (!auth) return;
     const initAuth = async () => {
@@ -340,7 +357,6 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Fetch Posts Effect
   useEffect(() => {
     if (!user || !db) return;
     try {
@@ -351,7 +367,6 @@ export default function App() {
       const unsubscribe = onSnapshot(q, (snapshot) => {
         setPosts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       }, (error) => {
-        // Ignoramos errores de permisos iniciales para no molestar al usuario que solo visita
         if(error.code !== 'permission-denied') console.log("Error al cargar posts:", error);
       });
       return () => unsubscribe();
@@ -360,45 +375,72 @@ export default function App() {
     }
   }, [user]);
 
-  const handleCreatePost = async (e) => {
+  // --- FUNCIONES CRUD ---
+  
+  // Guardar o Actualizar Post
+  const handleSavePost = async (e) => {
     e.preventDefault();
-    
-    // --- DIAGNÓSTICO DE ERRORES ---
-    if (!db) {
-        alert("Error crítico: No hay conexión con la base de datos de Firebase.");
-        return;
-    }
-    if (!user) {
-        alert("Autenticación pendiente: Espera unos segundos e intenta de nuevo.");
-        return;
-    }
+    if (!db || !user) { alert("Error: Conexión no disponible"); return; }
 
     setIsSubmitting(true);
     try {
-      // Intentar guardar el post
-      await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts'), { 
-          ...newPost, 
-          createdAt: serverTimestamp(), 
-          author: "Equipo Growth4U" 
-      });
-
-      // Éxito
+      const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts');
+      
+      if (editingPostId) {
+        // MODO EDICIÓN
+        const docRef = doc(collectionRef, editingPostId);
+        await updateDoc(docRef, { ...newPost, updatedAt: serverTimestamp() });
+        alert("¡Artículo actualizado!");
+        setEditingPostId(null);
+      } else {
+        // MODO CREACIÓN
+        await addDoc(collectionRef, { ...newPost, createdAt: serverTimestamp(), author: "Equipo Growth4U" });
+        alert("¡Artículo publicado!");
+      }
+      
+      // Reset form
       setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
-      setView('home');
-      setTimeout(() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' }), 100);
-      alert("¡Artículo publicado con éxito!");
-
+      
     } catch (error) {
       console.error(error);
-      // Feedback específico para error de permisos
-      if (error.code === 'permission-denied') {
-        alert("ERROR DE PERMISOS: Firebase ha bloqueado la escritura. \n\nSolución: Ve a la consola de Firebase -> Firestore Database -> Reglas y cámbialas a 'allow read, write: if true;' para pruebas.");
-      } else {
-        alert("Error desconocido creando el post: " + error.message);
-      }
+      alert("Error: " + error.message);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Cargar post para editar
+  const handleEditClick = (post) => {
+    setNewPost({
+      title: post.title,
+      category: post.category,
+      excerpt: post.excerpt,
+      content: post.content,
+      image: post.image,
+      readTime: post.readTime
+    });
+    setEditingPostId(post.id);
+    window.scrollTo(0,0); // Subir al formulario
+  };
+
+  // Borrar post
+  const handleDeleteClick = async (id) => {
+    if(!window.confirm("¿Seguro que quieres borrar este artículo? No se puede deshacer.")) return;
+    try {
+      await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'blog_posts', id));
+      alert("Artículo eliminado.");
+      if (editingPostId === id) {
+         setEditingPostId(null);
+         setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
+      }
+    } catch (error) {
+      alert("Error eliminando: " + error.message);
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingPostId(null);
+    setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
   };
 
   const handleViewPost = (post) => {
@@ -412,29 +454,75 @@ export default function App() {
   // Display posts: DB posts OR Defaults (fallback/demo)
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
 
-  // --- RENDER VIEWS ---
+  // --- VISTAS ---
 
   if (view === 'admin') {
     return (
-      <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 p-8">
+      <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          {/* Columna Izquierda: Formulario */}
+          <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit sticky top-8">
              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-bold">Agregar Nuevo Artículo</h2>
-                <button onClick={() => setView('home')}><X className="w-6 h-6" /></button>
+                <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
+                <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
              </div>
-             <form onSubmit={handleCreatePost} className="space-y-6">
-                <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="Título" />
+             
+             <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-200">
+               <strong>Guía de Formato:</strong>
+               <ul className="list-disc ml-5 mt-2 space-y-1">
+                 <li>Usa <code>## Título</code> al principio de una línea para subtítulos.</li>
+                 <li>Usa <code>**texto**</code> para poner palabras en <strong>negrita</strong>.</li>
+                 <li>Deja líneas en blanco para separar párrafos.</li>
+               </ul>
+             </div>
+
+             <form onSubmit={handleSavePost} className="space-y-6">
+                <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="Título del artículo" />
                 <div className="grid grid-cols-2 gap-4">
                   <select value={newPost.category} onChange={e => setNewPost({...newPost, category: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none">
                     <option>Estrategia</option><option>Data & Analytics</option><option>Trust Engine</option>
                   </select>
-                  <input type="text" value={newPost.readTime} onChange={e => setNewPost({...newPost, readTime: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="Tiempo lectura" />
+                  <input type="text" value={newPost.readTime} onChange={e => setNewPost({...newPost, readTime: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="Ej: 5 min" />
                 </div>
-                <input required type="url" value={newPost.image} onChange={e => setNewPost({...newPost, image: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="URL Imagen" />
-                <textarea required value={newPost.excerpt} onChange={e => setNewPost({...newPost, excerpt: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-20" placeholder="Resumen..." />
-                <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-40" placeholder="Contenido..." />
-                <button type="submit" disabled={isSubmitting} className="w-full bg-[#6351d5] text-white font-bold py-4 rounded-xl hover:bg-[#4b3db1] transition-colors">{isSubmitting ? 'Publicando...' : 'Publicar'}</button>
+                <input required type="url" value={newPost.image} onChange={e => setNewPost({...newPost, image: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="URL de la imagen (debe terminar en .png o .jpg)" />
+                <textarea required value={newPost.excerpt} onChange={e => setNewPost({...newPost, excerpt: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-24 focus:ring-2 focus:ring-[#6351d5]" placeholder="Breve resumen (excerpt)..." />
+                <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-64 font-mono text-sm focus:ring-2 focus:ring-[#6351d5]" placeholder="Escribe aquí tu contenido. Usa ## para subtítulos..." />
+                
+                <div className="flex gap-4">
+                  <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#6351d5] text-white font-bold py-4 rounded-xl hover:bg-[#4b3db1] transition-colors shadow-lg">
+                    {isSubmitting ? 'Guardando...' : (editingPostId ? 'Actualizar Artículo' : 'Publicar Ahora')}
+                  </button>
+                  {editingPostId && (
+                    <button type="button" onClick={cancelEdit} className="px-6 py-4 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300">
+                      Cancelar
+                    </button>
+                  )}
+                </div>
              </form>
+          </div>
+
+          {/* Columna Derecha: Lista de Artículos */}
+          <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos Publicados ({posts.length})</h2>
+            <div className="space-y-4">
+              {posts.map(post => (
+                <div key={post.id} className={`p-4 rounded-xl border flex gap-4 items-start transition-all ${editingPostId === post.id ? 'border-[#6351d5] bg-blue-50' : 'border-slate-100 hover:border-slate-300'}`}>
+                  <img src={post.image} alt="" className="w-16 h-16 rounded-lg object-cover bg-slate-200" />
+                  <div className="flex-1">
+                    <h4 className="font-bold text-sm text-[#032149] line-clamp-1">{post.title}</h4>
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">{post.excerpt}</p>
+                    <div className="flex items-center gap-2 mt-3">
+                      <button onClick={() => handleEditClick(post)} className="text-xs flex items-center gap-1 font-bold text-[#6351d5] hover:underline"><Edit2 className="w-3 h-3"/> Editar</button>
+                      <button onClick={() => handleDeleteClick(post.id)} className="text-xs flex items-center gap-1 font-bold text-red-500 hover:underline"><Trash2 className="w-3 h-3"/> Borrar</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {posts.length === 0 && <p className="text-center text-slate-400 py-10">No hay artículos aún.</p>}
+            </div>
+          </div>
+
         </div>
       </div>
     );
@@ -452,18 +540,33 @@ export default function App() {
             </div>
          </nav>
          <article className="pt-32 pb-20 max-w-3xl mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-extrabold mt-4 mb-6 text-[#032149]">{selectedPost.title}</h1>
-            <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-64 md:h-96 object-cover rounded-3xl shadow-2xl mb-12" />
-            <div className="prose prose-lg prose-slate mx-auto"><p>{selectedPost.excerpt}</p><p className="mt-4 whitespace-pre-wrap">{selectedPost.content}</p></div>
-            <div className="mt-12 text-center">
-               <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all whitespace-nowrap">{t.nav.cta}</a>
+            <span className="inline-block px-3 py-1 bg-[#6351d5]/10 text-[#6351d5] rounded-full text-xs font-bold uppercase tracking-wider mb-6">{selectedPost.category}</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#032149] leading-tight">{selectedPost.title}</h1>
+            
+            <div className="flex items-center gap-4 text-slate-500 text-sm mb-8 border-b border-slate-100 pb-8">
+              <span className="flex items-center gap-1"><Clock className="w-4 h-4"/> {selectedPost.readTime}</span>
+              <span>•</span>
+              <span>{new Date(selectedPost.createdAt?.seconds * 1000).toLocaleDateString()}</span>
+            </div>
+
+            <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" />
+            
+            <div className="prose prose-lg prose-slate mx-auto text-[#032149]">
+              <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">{selectedPost.excerpt}</p>
+              {/* Renderizado con formato mejorado */}
+              {renderFormattedContent(selectedPost.content)}
+            </div>
+            
+            <div className="mt-16 pt-10 border-t border-slate-200 text-center">
+               <h3 className="text-2xl font-bold mb-6">¿Quieres aplicar esto en tu Fintech?</h3>
+               <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">{t.nav.cta} <ArrowRight className="w-5 h-5"/></a>
             </div>
          </article>
       </div>
     );
   }
 
-  // MAIN VIEW
+  // MAIN VIEW (HOME)
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white overflow-x-hidden">
       <style>{`
