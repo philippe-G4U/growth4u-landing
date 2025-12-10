@@ -8,33 +8,38 @@ import {
   TrendingDown, Bot, Landmark, Globe
 } from 'lucide-react';
 
-// Firebase Imports
+// --- FIREBASE IMPORTS ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { getAnalytics } from "firebase/analytics";
 
-// --- CONFIGURACIÓN DE FIREBASE ---
-// Intenta usar la configuración del entorno, si no, usa un objeto vacío para evitar crashes inmediatos
-let firebaseConfig = {};
+// --- CONFIGURACIÓN DE FIREBASE (Tus credenciales) ---
+const firebaseConfig = {
+  apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
+  authDomain: "landing-growth4u.firebaseapp.com",
+  projectId: "landing-growth4u",
+  storageBucket: "landing-growth4u.firebasestorage.app",
+  messagingSenderId: "562728954202",
+  appId: "1:562728954202:web:90cff4aa486f38b4b62b63",
+  measurementId: "G-4YBYPVQDT6"
+};
+
+// --- INICIALIZACIÓN DE FIREBASE ---
+// Inicializamos la app directamente con tus credenciales
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Analytics opcional (protegido por si falla en local)
+let analytics;
 try {
-  if (typeof __firebase_config !== 'undefined') {
-    firebaseConfig = JSON.parse(__firebase_config);
-  }
+  analytics = getAnalytics(app);
 } catch (e) {
-  console.warn("No firebase config found");
+  console.log("Analytics no pudo iniciarse (posiblemente entorno local)");
 }
 
-// Inicialización segura
-let app, auth, db;
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-} catch (e) {
-  console.warn("Firebase running in demo mode (offline)");
-}
-
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'growth4u-public-app';
+const appId = 'growth4u-public-app';
 
 // --- TRADUCCIONES ---
 const translations = {
@@ -316,6 +321,7 @@ export default function App() {
     if (params.get('admin') === 'true') setIsAdminMode(true);
   }, []);
 
+  // Auth Effect
   useEffect(() => {
     if (!auth) return;
     const initAuth = async () => {
@@ -334,6 +340,7 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
+  // Fetch Posts Effect
   useEffect(() => {
     if (!user || !db) return;
     try {
@@ -344,26 +351,51 @@ export default function App() {
       const unsubscribe = onSnapshot(q, (snapshot) => {
         setPosts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       }, (error) => {
-        console.log("Error al cargar posts:", error);
+        // Ignoramos errores de permisos iniciales para no molestar al usuario que solo visita
+        if(error.code !== 'permission-denied') console.log("Error al cargar posts:", error);
       });
       return () => unsubscribe();
     } catch (e) {
-      console.log("Modo offline para el blog");
+      console.log("Error en conexión a DB", e);
     }
   }, [user]);
 
   const handleCreatePost = async (e) => {
     e.preventDefault();
-    if (!user || !db) return;
+    
+    // --- DIAGNÓSTICO DE ERRORES ---
+    if (!db) {
+        alert("Error crítico: No hay conexión con la base de datos de Firebase.");
+        return;
+    }
+    if (!user) {
+        alert("Autenticación pendiente: Espera unos segundos e intenta de nuevo.");
+        return;
+    }
+
     setIsSubmitting(true);
     try {
-      await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts'), { ...newPost, createdAt: serverTimestamp(), author: "Equipo Growth4U" });
+      // Intentar guardar el post
+      await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts'), { 
+          ...newPost, 
+          createdAt: serverTimestamp(), 
+          author: "Equipo Growth4U" 
+      });
+
+      // Éxito
       setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
       setView('home');
       setTimeout(() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' }), 100);
+      alert("¡Artículo publicado con éxito!");
+
     } catch (error) {
       console.error(error);
-      alert("Error creando el post: " + error.message);
+      // Feedback específico para error de permisos
+      if (error.code === 'permission-denied') {
+        alert("ERROR DE PERMISOS: Firebase ha bloqueado la escritura. \n\nSolución: Ve a la consola de Firebase -> Firestore Database -> Reglas y cámbialas a 'allow read, write: if true;' para pruebas.");
+      } else {
+        alert("Error desconocido creando el post: " + error.message);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -401,7 +433,7 @@ export default function App() {
                 <input required type="url" value={newPost.image} onChange={e => setNewPost({...newPost, image: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="URL Imagen" />
                 <textarea required value={newPost.excerpt} onChange={e => setNewPost({...newPost, excerpt: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-20" placeholder="Resumen..." />
                 <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-40" placeholder="Contenido..." />
-                <button type="submit" disabled={isSubmitting} className="w-full bg-[#6351d5] text-white font-bold py-4 rounded-xl">{isSubmitting ? '...' : 'Publicar'}</button>
+                <button type="submit" disabled={isSubmitting} className="w-full bg-[#6351d5] text-white font-bold py-4 rounded-xl hover:bg-[#4b3db1] transition-colors">{isSubmitting ? 'Publicando...' : 'Publicar'}</button>
              </form>
         </div>
       </div>
