@@ -28,7 +28,7 @@ const translations = {
   es: {
     nav: {
       problem: "Problema",
-      solutions: "Soluciones",
+      results: "Resultados",
       methodology: "Metodología",
       cases: "Casos",
       team: "Equipo",
@@ -54,43 +54,15 @@ const translations = {
         { title: "Churn Silencioso", desc: "Captas registros, no clientes. El LTV nunca llega a cubrir el coste de adquisición." }
       ]
     },
-    solutions: {
-      title: "Soluciones a medida",
-      subtitle: "Estrategias específicas para tu modelo de negocio.",
-      b2b: {
-        title: "GROWTH4U FOR",
-        highlight: "B2B",
-        sub: "FINTECHS",
-        foundation: "Organization • GTM • Data • Activation",
-        acquisition: [
-          "Linkedin Thought Leadership",
-          "Signal-Based Outbound",
-          "Content Marketing & SEO",
-          "Partnership & Affiliate Growth"
-        ],
-        engagement: [
-          "Engagement & Retention MKT",
-          "Behavioral & Data-Driven Nurturing",
-          "Customer Success Intelligence"
-        ]
-      },
-      b2c: {
-        title: "GROWTH4U FOR",
-        highlight: "B2C",
-        sub: "FINTECHS",
-        foundation: "Organization • GTM • Data • Activation",
-        acquisition: [
-          "Affiliate & Influencer Growth",
-          "Social Ads & Performance",
-          "Content Marketing & SEO",
-          "Partnership & Affiliate Growth"
-        ],
-        engagement: [
-          "Engagement & Retention MKT",
-          "Behavioral & Data-Driven Nurturing",
-          "Customer Success Intelligence"
-        ]
-      }
+    results: {
+      title: "Resultados del Trust Engine",
+      subtitle: "Crecimiento predecible y escalable.",
+      cards: [
+        { title: "Reducción del 70% en CAC", desc: "Sustituimos el gasto publicitario inflado por sistemas de confianza orgánica y viralidad estructurada." },
+        { title: "Usuarios Activados", desc: "Dejamos atrás las vanity metrics. Atraemos clientes ideales (ICP) listos para usar y pagar." },
+        { title: "Máquina 24/7", desc: "Implementamos automatización e IA para que la captación funcione sin depender de trabajo manual." },
+        { title: "Activos que perduran", desc: "Construimos un motor de crecimiento que gana tracción con el tiempo, aumentando el LTV." }
+      ]
     },
     methodology: {
       title: "Una metodología adaptada a tu momento",
@@ -131,7 +103,7 @@ const translations = {
           tag: "Trust Engine",
           borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] },
           review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] },
-          promise: { title: "Promise Flywheel", items: ["Landing Page Incentive", "Activate Users", "Member Get Member"] }
+          promise: { title: "Promise Flywheel", items: ["Landing Page Incentivo", "Activar Usuarios", "Member Get Member"] }
         }
       }
     },
@@ -173,7 +145,7 @@ const translations = {
   en: {
     nav: {
       problem: "Problem",
-      solutions: "Solutions",
+      results: "Results",
       methodology: "Methodology",
       cases: "Cases",
       team: "Team",
@@ -199,43 +171,15 @@ const translations = {
         { title: "Silent Churn", desc: "You capture registrations, not clients. LTV never covers the acquisition cost." }
       ]
     },
-    solutions: {
-      title: "Tailored Solutions",
-      subtitle: "Specific strategies for your business model.",
-      b2b: {
-        title: "GROWTH4U FOR",
-        highlight: "B2B",
-        sub: "FINTECHS",
-        foundation: "Organization • GTM • Data • Activation",
-        acquisition: [
-          "Linkedin Thought Leadership",
-          "Signal-Based Outbound",
-          "Content Marketing & SEO",
-          "Partnership & Affiliate Growth"
-        ],
-        engagement: [
-          "Engagement & Retention MKT",
-          "Behavioral & Data-Driven Nurturing",
-          "Customer Success Intelligence"
-        ]
-      },
-      b2c: {
-        title: "GROWTH4U FOR",
-        highlight: "B2C",
-        sub: "FINTECHS",
-        foundation: "Organization • GTM • Data • Activation",
-        acquisition: [
-          "Affiliate & Influencer Growth",
-          "Social Ads & Performance",
-          "Content Marketing & SEO",
-          "Partnership & Affiliate Growth"
-        ],
-        engagement: [
-          "Engagement & Retention MKT",
-          "Behavioral & Data-Driven Nurturing",
-          "Customer Success Intelligence"
-        ]
-      }
+    results: {
+      title: "Trust Engine Results",
+      subtitle: "Predictable and scalable growth.",
+      cards: [
+        { title: "70% Reduction in CAC", desc: "We replace inflated ad spend with organic trust systems and structured virality." },
+        { title: "Activated Users", desc: "We leave vanity metrics behind. We attract ideal customers (ICP) ready to use and pay." },
+        { title: "24/7 Machine", desc: "We implement automation and AI so that acquisition works without depending on manual labor." },
+        { title: "Assets that last", desc: "We build a growth engine that gains traction over time, increasing LTV." }
+      ]
     },
     methodology: {
       title: "A methodology adapted to your stage",
@@ -364,6 +308,7 @@ export default function App() {
 
   useEffect(() => {
     if (!user) return;
+    // Use the correct path for public data: /artifacts/{appId}/public/data/{collectionName}
     const q = query(
       collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts'),
       orderBy('createdAt', 'desc')
@@ -483,7 +428,7 @@ export default function App() {
               <div className="hidden md:flex items-center gap-6">
                 <div className="flex items-baseline space-x-6">
                   <a href="#problema" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.problem}</a>
-                  <a href="#soluciones" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.solutions}</a>
+                  <a href="#resultados" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.results}</a>
                   <a href="#etapas" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.methodology}</a>
                   <a href="#casos" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.cases}</a>
                   <a href="#team" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.team}</a>
@@ -507,7 +452,7 @@ export default function App() {
             <div className="absolute top-20 left-0 right-0 mx-4 bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden animate-in slide-in-from-top-2">
               <div className="px-4 pt-4 pb-6 space-y-2">
                 <a href="#problema" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.problem}</a>
-                <a href="#soluciones" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.solutions}</a>
+                <a href="#resultados" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.results}</a>
                 <a href="#etapas" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.methodology}</a>
                 <a href="#casos" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.cases}</a>
                 <a href="#team" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.team}</a>
@@ -575,115 +520,28 @@ export default function App() {
         </div>
       </section>
 
-      {/* SOLUCIONES A MEDIDA B2B / B2C */}
-      <section id="soluciones" className="py-24 bg-white relative border-t border-slate-200">
+      {/* Results Section */}
+      <section id="resultados" className="py-24 bg-white relative border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.solutions.title}</h2>
-            <p className="text-slate-600 text-lg">{t.solutions.subtitle}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.results.title}</h2>
+            <p className="text-slate-600 text-lg">{t.results.subtitle}</p>
           </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* B2B Solution Card */}
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl opacity-50 group-hover:opacity-100 transition duration-500 blur"></div>
-              <div className="relative bg-white p-8 rounded-3xl h-full flex flex-col border border-slate-100 shadow-lg">
-                <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-blue-50 p-3 rounded-xl"><Briefcase className="w-8 h-8 text-blue-600"/></div>
-                    <div>
-                      <h3 className="text-2xl font-extrabold text-[#032149]">{t.solutions.b2b.title} <span className="text-blue-600">{t.solutions.b2b.highlight}</span></h3>
-                      <p className="text-xs text-slate-400 font-bold tracking-widest uppercase mt-1">{t.solutions.b2b.sub}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+             {t.results.cards.map((card, i) => {
+                 const Icons = [TrendingDown, Users2, Bot, Landmark];
+                 const Icon = Icons[i];
+                 const color = i % 3 === 0 ? '#6351d5' : '#3f45fe'; // Alternate colors
+                 return (
+                    <div key={i} className="bg-slate-50 p-8 rounded-3xl border-l-4 flex items-start gap-6 hover:shadow-lg transition-shadow" style={{borderColor: color}}>
+                        <div className="bg-white p-3 rounded-xl shadow-sm"><Icon className="w-8 h-8" style={{color: color}}/></div>
+                        <div>
+                            <h3 className="text-xl font-bold text-[#032149] mb-2">{card.title}</h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">{card.desc}</p>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-8 flex-grow">
-                  {/* Foundation */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><Layers className="w-3 h-3"/> Foundation</h4>
-                    <div className="bg-slate-50 p-4 rounded-xl text-sm text-slate-700 font-medium border border-slate-100">
-                      {t.solutions.b2b.foundation}
-                    </div>
-                  </div>
-                  
-                  {/* Acquisition */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><Target className="w-3 h-3"/> Acquisition</h4>
-                    <ul className="space-y-2">
-                      {t.solutions.b2b.acquisition.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0"/> {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Engagement */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><RefreshCw className="w-3 h-3"/> Engagement</h4>
-                    <ul className="space-y-2">
-                      {t.solutions.b2b.engagement.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0"/> {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* B2C Solution Card */}
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-3xl opacity-50 group-hover:opacity-100 transition duration-500 blur"></div>
-              <div className="relative bg-white p-8 rounded-3xl h-full flex flex-col border border-slate-100 shadow-lg">
-                <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-cyan-50 p-3 rounded-xl"><Smartphone className="w-8 h-8 text-cyan-600"/></div>
-                    <div>
-                      <h3 className="text-2xl font-extrabold text-[#032149]">{t.solutions.b2c.title} <span className="text-cyan-500">{t.solutions.b2c.highlight}</span></h3>
-                      <p className="text-xs text-slate-400 font-bold tracking-widest uppercase mt-1">{t.solutions.b2c.sub}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-8 flex-grow">
-                  {/* Foundation */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><Layers className="w-3 h-3"/> Foundation</h4>
-                    <div className="bg-slate-50 p-4 rounded-xl text-sm text-slate-700 font-medium border border-slate-100">
-                      {t.solutions.b2c.foundation}
-                    </div>
-                  </div>
-                  
-                  {/* Acquisition */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><Target className="w-3 h-3"/> Acquisition</h4>
-                    <ul className="space-y-2">
-                      {t.solutions.b2c.acquisition.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-cyan-500 flex-shrink-0"/> {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Engagement */}
-                  <div>
-                    <h4 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><RefreshCw className="w-3 h-3"/> Engagement</h4>
-                    <ul className="space-y-2">
-                      {t.solutions.b2c.engagement.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-cyan-500 flex-shrink-0"/> {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+                 )
+             })}
           </div>
         </div>
       </section>
