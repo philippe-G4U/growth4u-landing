@@ -30,11 +30,48 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Analytics opcional
 let analytics;
 try { analytics = getAnalytics(app); } catch (e) { console.log("Analytics offline"); }
 
 const appId = 'growth4u-public-app';
+
+// --- UTILIDADES ---
+
+// Convierte "Hola Mundo: ¿Cómo estás?" -> "hola-mundo-como-estas"
+const createSlug = (text) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Quita acentos
+    .trim()
+    .replace(/\s+/g, '-')     // Reemplaza espacios con guiones
+    .replace(/[^\w\-]+/g, '') // Elimina caracteres no alfanuméricos
+    .replace(/\-\-+/g, '-');  // Reemplaza guiones múltiples
+};
+
+// Renderizado de texto rico
+const renderFormattedContent = (content) => {
+  if (!content) return null;
+  return content.split('\n').map((line, index) => {
+    if (line.trim().startsWith('##')) {
+      return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-[#032149]">{line.replace('##', '').trim()}</h2>;
+    }
+    if (line.trim() === '') {
+      return <div key={index} className="h-4"></div>;
+    }
+    const parts = line.split(/(\*\*.*?\*\*)/g);
+    return (
+      <p key={index} className="mb-4 text-slate-600 leading-relaxed text-lg">
+        {parts.map((part, i) => {
+          if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={i} className="text-[#032149] font-bold">{part.slice(2, -2)}</strong>;
+          }
+          return part;
+        })}
+      </p>
+    );
+  });
+};
 
 // --- TRADUCCIONES ---
 const translations = {
@@ -125,7 +162,7 @@ const translations = {
       subtitle: "Resultados reales auditados.",
       list: [
         { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." },
-        { company: "BIT2ME", stat: "-70%", label: "CAC Reduction", highlight: "implementing Trust Engine", summary: "We reduced CAC by 70% implementing the Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "We optimized data, segmentation and activation to double the value of each client." },
+        { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." },
         { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." }
       ],
       btnRead: "Leer caso completo",
@@ -234,7 +271,7 @@ const translations = {
           tag: "Trust Engine",
           borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] },
           review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] },
-          promise: { title: "Promise Flywheel", items: ["Landing Page Incentive", "Activate Users", "Member Get Member"] }
+          promise: { title: "Promise Flywheel", items: ["Landing Page Incentivo", "Activar Usuarios", "Member Get Member"] }
         }
       }
     },
@@ -262,7 +299,7 @@ const translations = {
       cta: "View all articles",
       readTime: "min read",
       admin: "Admin",
-      empty: "Próximamente nuevos artículos...",
+      empty: "Coming soon...",
       defaults: []
     },
     footer: {
@@ -274,30 +311,6 @@ const translations = {
       terms: "Terms of Service"
     }
   }
-};
-
-// --- HELPER PARA RENDERIZAR TEXTO RICO (FORMATO) ---
-const renderFormattedContent = (content) => {
-  if (!content) return null;
-  return content.split('\n').map((line, index) => {
-    if (line.trim().startsWith('##')) {
-      return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-[#032149]">{line.replace('##', '').trim()}</h2>;
-    }
-    if (line.trim() === '') {
-      return <div key={index} className="h-4"></div>;
-    }
-    const parts = line.split(/(\*\*.*?\*\*)/g);
-    return (
-      <p key={index} className="mb-4 text-slate-600 leading-relaxed text-lg">
-        {parts.map((part, i) => {
-          if (part.startsWith('**') && part.endsWith('**')) {
-            return <strong key={i} className="text-[#032149] font-bold">{part.slice(2, -2)}</strong>;
-          }
-          return part;
-        })}
-      </p>
-    );
-  });
 };
 
 export default function App() {
@@ -365,19 +378,18 @@ export default function App() {
         const loadedPosts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setPosts(loadedPosts);
         
-        // CHECK URL PARAM FOR DIRECT LINKING
-        // Verificamos si hay un parámetro ?article=ID en la URL al cargar los posts
+        // --- LOGICA DE URL AMIGABLE ---
         const params = new URLSearchParams(window.location.search);
-        const articleId = params.get('article');
+        const urlSlug = params.get('articulo'); // Buscamos ?articulo=titulo-del-post
         
-        if (articleId && loadedPosts.length > 0) {
-           const foundPost = loadedPosts.find(p => p.id === articleId);
+        if (urlSlug && loadedPosts.length > 0) {
+           // Buscamos un post cuyo título genere ese slug
+           const foundPost = loadedPosts.find(p => createSlug(p.title) === urlSlug);
            if (foundPost) {
              setSelectedPost(foundPost);
              setView('post');
            }
         }
-
       }, (error) => {
         if(error.code !== 'permission-denied') console.log("Error al cargar posts:", error);
       });
@@ -446,10 +458,10 @@ export default function App() {
     setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
   };
 
-  // NAVEGACIÓN CON URL MANAGER
+  // NAVEGACIÓN CON URL SLUGS
   const handleViewPost = (post) => {
-    // Actualizamos la URL sin recargar la página
-    const newUrl = `${window.location.pathname}?article=${post.id}`;
+    const slug = createSlug(post.title);
+    const newUrl = `${window.location.pathname}?articulo=${slug}`;
     window.history.pushState({ path: newUrl }, '', newUrl);
     
     setSelectedPost(post);
@@ -458,14 +470,14 @@ export default function App() {
   };
 
   const handleClosePost = () => {
-    // Limpiamos la URL al volver
     window.history.pushState({}, '', window.location.pathname);
     setView('home');
   };
   
   const copyLinkToClipboard = () => {
       if (!selectedPost) return;
-      const url = `${window.location.origin}${window.location.pathname}?article=${selectedPost.id}`;
+      const slug = createSlug(selectedPost.title);
+      const url = `${window.location.origin}${window.location.pathname}?articulo=${slug}`;
       navigator.clipboard.writeText(url);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
@@ -480,7 +492,6 @@ export default function App() {
     return (
       <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Columna Izquierda: Formulario */}
           <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit sticky top-8">
              <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
@@ -516,7 +527,6 @@ export default function App() {
                 </div>
              </form>
           </div>
-          {/* Columna Derecha: Lista de Artículos */}
           <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos Publicados ({posts.length})</h2>
             <div className="space-y-4">
@@ -550,7 +560,6 @@ export default function App() {
                   <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" className="h-6 w-auto" />
                </div>
                <div className="flex items-center gap-4">
-                 {/* BOTÓN COPIAR ENLACE */}
                  <button onClick={copyLinkToClipboard} className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${copiedLink ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
                     {copiedLink ? <CheckCircle className="w-4 h-4" /> : <LinkIcon className="w-4 h-4" />}
                     {copiedLink ? 'Enlace copiado' : 'Copiar enlace'}
@@ -585,7 +594,7 @@ export default function App() {
     );
   }
 
-  // MAIN VIEW (HOME)
+  // MAIN VIEW
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white overflow-x-hidden">
       <style>{`
