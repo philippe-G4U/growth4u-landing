@@ -26,12 +26,19 @@ const firebaseConfig = {
 };
 
 // --- INICIALIZACIÓN ---
+// Nota: En un entorno real de producción, asegúrate de inicializar esto solo una vez.
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 let analytics;
-try { analytics = getAnalytics(app); } catch (e) { console.log("Analytics offline"); }
+try { 
+  if (typeof window !== 'undefined') {
+    analytics = getAnalytics(app); 
+  }
+} catch (e) { 
+  console.log("Analytics offline or environment not supported"); 
+}
 
 const appId = 'growth4u-public-app';
 
@@ -49,9 +56,29 @@ const createSlug = (text) => {
     .replace(/\-\-+/g, '-');  // Reemplaza guiones múltiples
 };
 
-// Renderizado de texto rico
+// Renderizado de texto rico (Soporta **negrita**)
 const renderFormattedContent = (content) => {
   if (!content) return null;
+  // Si es un array (como en las garantías), renderizamos lista
+  if (Array.isArray(content)) {
+    return content.map((line, i) => {
+        const parts = line.split(/(\*\*.*?\*\*)/g);
+        return (
+            <div key={i} className="flex items-start gap-2 mb-2">
+                <CheckCircle2 className="w-4 h-4 text-[#0faec1] mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-slate-700">
+                    {parts.map((part, j) => {
+                        if (part.startsWith('**') && part.endsWith('**')) {
+                            return <strong key={j} className="text-[#032149] font-bold">{part.slice(2, -2)}</strong>;
+                        }
+                        return part;
+                    })}
+                </p>
+            </div>
+        );
+    });
+  }
+  // Si es string normal (descripciones)
   return content.split('\n').map((line, index) => {
     if (line.trim().startsWith('##')) {
       return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-[#032149]">{line.replace('##', '').trim()}</h2>;
@@ -61,14 +88,14 @@ const renderFormattedContent = (content) => {
     }
     const parts = line.split(/(\*\*.*?\*\*)/g);
     return (
-      <p key={index} className="mb-4 text-slate-600 leading-relaxed text-lg">
+      <span key={index}>
         {parts.map((part, i) => {
           if (part.startsWith('**') && part.endsWith('**')) {
             return <strong key={i} className="text-[#032149] font-bold">{part.slice(2, -2)}</strong>;
           }
           return part;
         })}
-      </p>
+      </span>
     );
   });
 };
@@ -79,7 +106,7 @@ const translations = {
     nav: {
       problem: "Problema",
       results: "Resultados",
-      methodology: "Metodología",
+      methodology: "Servicios",
       cases: "Casos",
       team: "Equipo",
       blog: "Blog",
@@ -91,7 +118,7 @@ const translations = {
       titleHighlight: "sin invertir más en marketing.",
       subtitle: "Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.",
       ctaPrimary: "Empezar ahora",
-      ctaSecondary: "Ver metodología",
+      ctaSecondary: "Ver servicios",
       trust: "Empresas validadas por la confianza"
     },
     problem: {
@@ -115,47 +142,46 @@ const translations = {
       ]
     },
     methodology: {
-      title: "Una metodología adaptada a tu momento",
-      subtitle: "Selecciona tu etapa para ver cómo aplicamos el sistema.",
-      initial: {
-        title: "Fase Inicial",
-        tag: "0 → PMF",
-        desc: "Para fintechs que tienen producto y necesitan estructurar su crecimiento.",
-        btnShow: "Ver Proceso de Fundamentos",
-        btnHide: "Ocultar Proceso",
-        items: [
-          "Primera 500 clientes cualificados en 90-60 días con retorno ROI inmediato.",
-          "Construcción de Trust Fortress (Blogs/Foros).",
-          "Creación de producto y su customer journey.",
-          "Implementación de herramientas de automatización y CRM."
-        ],
-        detailsTitle: "El Camino a la Tracción",
-        detailsSubtitle: "Los pasos críticos para validar tu modelo y producto.",
-        detailCards: [
-          { title: "Competidores & Nichos", desc: "Análisis de mercado, competidores, nichos y nivel de dolor." },
-          { title: "ICP & Mensaje", desc: "Definición de Ideal Customer Profile, canales, mensajes y keywords." },
-          { title: "Activación", desc: "Definición de incentivos y puntos de activación clave." },
-          { title: "Dashboard", desc: "Configuración de métricas clave para seguimiento de tracción." }
-        ]
-      },
-      scale: {
-        title: "Fase Escala",
-        tag: "10k → 500k Users",
-        desc: "Para fintechs con tracción que quieren escalar sin disparar costes.",
-        btnShow: "Ver Motor de Crecimiento",
-        btnHide: "Ocultar Sistema",
-        items: [
-          "Optimización de paid/ads: 3x de resultados.",
-          "Estrategia comercial con 10-15 automatizaciones.",
-          "Escalado de CAC de 40-60 días a 3-6 meses."
-        ],
-        flywheel: {
-          tag: "Trust Engine",
-          borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] },
-          review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] },
-          promise: { title: "Promise Flywheel", items: ["Landing Page Incentivo", "Activar Usuarios", "Member Get Member"] }
+      title: "El motor de crecimiento adecuado.",
+      subtitle: "Infraestructura escalable según la etapa de tu negocio.",
+      stages: [
+        {
+          step: "Etapa 1",
+          title: "BUSCANDO PMF",
+          tag: "0 → Tracción Real",
+          desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.",
+          icon: Search,
+          guaranteeTitle: "OBJETIVO & GARANTÍA",
+          guarantees: [
+            "Validación de **Propuesta de Valor** y posicionamiento único.",
+            "Generación de los primeros **usuarios que pagan**."
+          ]
+        },
+        {
+          step: "Etapa 2",
+          title: "ESCALANDO",
+          tag: "10K → 500K Users",
+          desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.",
+          icon: TrendingUp,
+          guaranteeTitle: "OBJETIVO & GARANTÍA",
+          guarantees: [
+            "Tracción orgánica y reconocimiento de marca vía **Referral**.",
+            "Conversión de **Clientes que pagan** y alto LTV."
+          ]
+        },
+        {
+          step: "Etapa 3",
+          title: "EXPANSIÓN",
+          tag: "Nuevo Mercado / Producto",
+          desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.",
+          icon: Globe,
+          guaranteeTitle: "OBJETIVO & GARANTÍA",
+          guarantees: [
+            "Tracción inicial asegurada en **nichos de alta conversión**.",
+            "Penetración rápida con **estrategia localizada**."
+          ]
         }
-      }
+      ]
     },
     cases: {
       title: "Casos de Éxito",
@@ -197,7 +223,7 @@ const translations = {
     nav: {
       problem: "Problem",
       results: "Results",
-      methodology: "Methodology",
+      methodology: "Services",
       cases: "Cases",
       team: "Team",
       blog: "Blog",
@@ -209,7 +235,7 @@ const translations = {
       titleHighlight: "without spending more on marketing.",
       subtitle: "We help you create a growth engine that lasts over time and reduces your CAC by leveraging the value of trust.",
       ctaPrimary: "Start now",
-      ctaSecondary: "View methodology",
+      ctaSecondary: "View services",
       trust: "Companies validated by trust"
     },
     problem: {
@@ -233,47 +259,46 @@ const translations = {
       ]
     },
     methodology: {
-      title: "A methodology adapted to your stage",
-      subtitle: "Select your stage to see how we apply the system.",
-      initial: {
-        title: "Initial Phase",
-        tag: "0 → PMF",
-        desc: "For fintechs that have a product and need to structure their growth.",
-        btnShow: "View Foundation Process",
-        btnHide: "Hide Process",
-        items: [
-          "First 500 qualified clients in 90-60 days with immediate ROI return.",
-          "Construction of Trust Fortress (Blogs/Forums).",
-          "Product creation and its customer journey.",
-          "Implementation of automation and CRM tools."
-        ],
-        detailsTitle: "The Road to Traction",
-        detailsSubtitle: "Critical steps to validate your model and product.",
-        detailCards: [
-          { title: "Competitors & Niches", desc: "Market analysis, competitors, niches and pain level." },
-          { title: "ICP & Messaging", desc: "Definition of Ideal Customer Profile, channels, messages and keywords." },
-          { title: "Activation", desc: "Definition of incentives and key activation points." },
-          { title: "Dashboard", desc: "Configuration of key metrics for traction tracking." }
-        ]
-      },
-      scale: {
-        title: "Scale Phase",
-        tag: "10k → 500k Users",
-        desc: "For fintechs with traction that want to scale without skyrocketing costs.",
-        btnShow: "View Growth Engine",
-        btnHide: "Hide System",
-        items: [
-          "Paid/ads optimization: 3x results.",
-          "Commercial strategy with 10-15 automations.",
-          "CAC scaling from 40-60 days to 3-6 months."
-        ],
-        flywheel: {
-          tag: "Trust Engine",
-          borrowed: { title: "Borrowed Flywheel", items: ["Influencers / UGC", "Trust Fortress"] },
-          review: { title: "Review Flywheel", items: ["Reviews & Feedback", "NPS Loop"] },
-          promise: { title: "Promise Flywheel", items: ["Landing Page Incentivo", "Activar Usuarios", "Member Get Member"] }
+      title: "The right growth engine.",
+      subtitle: "Scalable infrastructure according to your business stage.",
+      stages: [
+        {
+          step: "Stage 1",
+          title: "SEEKING PMF",
+          tag: "0 → Real Traction",
+          desc: "We perform **rapid iteration**: channel testing, messaging, and competitor analysis to find your positioning. A value proposition that guides product development.",
+          icon: Search,
+          guaranteeTitle: "OBJECTIVE & GUARANTEE",
+          guarantees: [
+            "Validation of **Value Proposition** and unique positioning.",
+            "Generation of the first **paying users**."
+          ]
+        },
+        {
+          step: "Stage 2",
+          title: "SCALING",
+          tag: "10K → 500K Users",
+          desc: "We implement the **Trust Engine**: building trust by positioning the brand in **authoritative media and influencers**. A growth engine that prioritizes real customers.",
+          icon: TrendingUp,
+          guaranteeTitle: "OBJECTIVE & GUARANTEE",
+          guarantees: [
+            "Organic traction and brand recognition via **Referral**.",
+            "Conversion of **Paying Clients** and high LTV."
+          ]
+        },
+        {
+          step: "Stage 3",
+          title: "EXPANSION",
+          tag: "New Market / Product",
+          desc: "**Go-to-Market** plan to launch new products or start operations in **Spain**. We identify competitive niches to ensure strategic traction.",
+          icon: Globe,
+          guaranteeTitle: "OBJECTIVE & GUARANTEE",
+          guarantees: [
+            "Initial traction secured in **high-conversion niches**.",
+            "Rapid penetration with **localized strategy**."
+          ]
         }
-      }
+      ]
     },
     cases: {
       title: "Success Stories",
@@ -321,8 +346,6 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedCase, setExpandedCase] = useState(null);
   
-  const [showFlywheel, setShowFlywheel] = useState(false); 
-  const [showInitialPhase, setShowInitialPhase] = useState(false);
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [user, setUser] = useState(null);
@@ -478,9 +501,19 @@ export default function App() {
       if (!selectedPost) return;
       const slug = createSlug(selectedPost.title);
       const url = `${window.location.origin}${window.location.pathname}?articulo=${slug}`;
-      navigator.clipboard.writeText(url);
-      setCopiedLink(true);
-      setTimeout(() => setCopiedLink(false), 2000);
+      // Usar execCommand como fallback
+      try {
+        const dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = url;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        setCopiedLink(true);
+        setTimeout(() => setCopiedLink(false), 2000);
+      } catch (e) {
+         console.error("Clipboard fail", e);
+      }
   };
 
   const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
@@ -638,8 +671,8 @@ export default function App() {
                 <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5 whitespace-nowrap">{t.nav.cta}</a>
               </div>
               <div className="md:hidden flex items-center gap-4">
-                 <button onClick={toggleLang} className="text-[#032149] font-bold text-sm">{lang === 'es' ? 'EN' : 'ES'}</button>
-                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-[#032149] hover:text-[#6351d5] focus:outline-none"><Menu className="h-6 w-6" /></button>
+                  <button onClick={toggleLang} className="text-[#032149] font-bold text-sm">{lang === 'es' ? 'EN' : 'ES'}</button>
+                  <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-[#032149] hover:text-[#6351d5] focus:outline-none"><Menu className="h-6 w-6" /></button>
               </div>
             </div>
           </div>
@@ -741,96 +774,49 @@ export default function App() {
         </div>
       </section>
 
-      {/* METHODOLOGY & STAGES */}
+      {/* METHODOLOGY & STAGES (NEW) */}
       <section id="etapas" className="py-24 relative bg-slate-50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-20">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.methodology.title}</h2>
             <p className="text-slate-600 text-lg">{t.methodology.subtitle}</p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            {/* INITIAL PHASE */}
-            <div className={`relative group transition-all duration-500 cursor-pointer ${showInitialPhase ? 'ring-2 ring-[#45b6f7]' : 'hover:-translate-y-1'}`} onClick={() => setShowInitialPhase(!showInitialPhase)}>
-              <div className="relative bg-white p-8 rounded-3xl h-full flex flex-col shadow-xl border border-slate-100 hover:border-[#45b6f7] transition-colors">
-                <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-3"><div className="bg-[#45b6f7]/10 p-2 rounded-lg"><Target className="w-6 h-6 text-[#45b6f7]"/></div><h3 className="text-2xl font-bold text-[#032149] uppercase tracking-wider">{t.methodology.initial.title}</h3></div>
-                  <span className="px-3 py-1 bg-[#45b6f7]/10 text-[#1a3690] text-xs font-bold rounded-full border border-[#45b6f7]/20">{t.methodology.initial.tag}</span>
-                </div>
-                <p className="text-slate-600 text-sm mb-6 font-medium">{t.methodology.initial.desc}</p>
-                <div className="space-y-4 flex-grow mb-6">
-                   {t.methodology.initial.items.map((item,i) => (
-                      <div key={i} className="flex items-start gap-3"><div className="mt-1 bg-[#45b6f7]/10 p-1 rounded-full"><Check className="w-3 h-3 text-[#45b6f7]"/></div><span className="text-slate-600 text-sm">{item}</span></div>
-                   ))}
-                </div>
-                <div className="mt-auto pt-6 border-t border-slate-100 flex justify-center">
-                   <button className={`flex items-center gap-2 text-sm font-bold transition-all ${showInitialPhase ? 'text-[#45b6f7]' : 'text-slate-400 hover:text-[#45b6f7]'}`}>{showInitialPhase ? t.methodology.initial.btnHide : t.methodology.initial.btnShow} <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showInitialPhase ? 'rotate-180' : ''}`} /></button>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {t.methodology.stages.map((stage, i) => (
+              <div key={i} className="relative group hover:-translate-y-2 transition-all duration-300">
+                <div className="bg-white rounded-3xl p-8 h-full flex flex-col shadow-lg border border-slate-100 hover:shadow-2xl hover:border-[#45b6f7]/30 transition-all">
+                  
+                  {/* Header Card */}
+                  <div className="mb-6">
+                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">{stage.step}</div>
+                    <div className="flex items-center gap-3 mb-4">
+                         <h3 className="text-2xl font-extrabold text-[#032149] uppercase">{stage.title}</h3>
+                         {stage.icon && <stage.icon className="w-6 h-6 text-[#45b6f7]" />}
+                    </div>
+                    <span className="inline-block px-3 py-1 bg-[#0faec1]/10 text-[#0faec1] text-xs font-bold rounded-full border border-[#0faec1]/20">
+                      {stage.tag}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <div className="text-slate-600 text-sm leading-relaxed mb-8">
+                    {renderFormattedContent(stage.desc)}
+                  </div>
+
+                  {/* Guarantee Box */}
+                  <div className="mt-auto bg-[#effcfd] rounded-2xl p-6 border border-[#0faec1]/10">
+                     <div className="flex items-center gap-2 mb-4">
+                        <Target className="w-4 h-4 text-[#0faec1]" />
+                        <span className="text-xs font-bold text-[#0faec1] uppercase tracking-wider">{stage.guaranteeTitle}</span>
+                     </div>
+                     <div className="space-y-1">
+                        {renderFormattedContent(stage.guarantees)}
+                     </div>
+                  </div>
+
                 </div>
               </div>
-            </div>
-            {/* SCALE PHASE */}
-            <div className={`relative group transition-all duration-500 cursor-pointer ${showFlywheel ? 'ring-2 ring-[#6351d5]' : 'hover:-translate-y-1'}`} onClick={() => setShowFlywheel(!showFlywheel)}>
-              <div className="relative bg-white p-8 rounded-3xl h-full flex flex-col shadow-xl border border-slate-100 hover:border-[#6351d5] transition-colors">
-                <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-3"><div className="bg-[#6351d5]/10 p-2 rounded-lg"><Rocket className="w-6 h-6 text-[#6351d5]"/></div><h3 className="text-2xl font-bold text-[#032149] uppercase tracking-wider">{t.methodology.scale.title}</h3></div>
-                  <span className="px-3 py-1 bg-[#6351d5]/10 text-[#6351d5] text-xs font-bold rounded-full border border-[#6351d5]/20">{t.methodology.scale.tag}</span>
-                </div>
-                <p className="text-slate-600 text-sm mb-6 font-medium">{t.methodology.scale.desc}</p>
-                <div className="space-y-4 flex-grow mb-6">
-                   {t.methodology.scale.items.map((item, i) => (
-                      <div key={i} className="flex items-start gap-3"><div className="mt-1 bg-[#6351d5]/10 p-1 rounded-full"><Check className="w-3 h-3 text-[#6351d5]"/></div><span className="text-slate-600 text-sm">{item}</span></div>
-                   ))}
-                </div>
-                <div className="mt-auto pt-6 border-t border-slate-100 flex justify-center">
-                   <button className={`flex items-center gap-2 text-sm font-bold transition-all ${showFlywheel ? 'text-[#6351d5]' : 'text-slate-400 hover:text-[#6351d5]'}`}>{showFlywheel ? t.methodology.scale.btnHide : t.methodology.scale.btnShow} <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showFlywheel ? 'rotate-180' : ''}`} /></button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* EXPANDABLE: INITIAL PHASE DETAILS */}
-          <div className={`transition-all duration-700 ease-in-out overflow-hidden mb-8 ${showInitialPhase ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0'}`}>
-             <div className="bg-white rounded-3xl p-8 md:p-12 border border-[#45b6f7]/20 shadow-inner relative">
-                <div className="text-center mb-10"><h3 className="text-3xl font-bold text-[#032149]">{t.methodology.initial.detailsTitle}</h3><p className="text-slate-500 mt-2">{t.methodology.initial.detailsSubtitle}</p></div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-                   {t.methodology.initial.detailCards.map((c,i) => {
-                      const Icon = [Users2, Target, Rocket, LayoutDashboard][i];
-                      return (
-                      <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-md">
-                         <div className="bg-blue-50 w-10 h-10 rounded-lg flex items-center justify-center mb-4"><Icon className="w-5 h-5 text-blue-500"/></div>
-                         <h4 className="font-bold text-[#032149] mb-2">{c.title}</h4>
-                         <p className="text-slate-500 text-xs">{c.desc}</p>
-                      </div>
-                   )})}
-                </div>
-             </div>
-          </div>
-
-          {/* EXPANDABLE: SCALE PHASE FLYWHEEL */}
-          <div className={`transition-all duration-700 ease-in-out overflow-hidden ${showFlywheel ? 'max-h-[1500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-             <div className="bg-white rounded-3xl p-8 md:p-12 border border-[#6351d5]/20 shadow-inner relative">
-                <div className="flex flex-col items-center justify-center mb-16 relative z-10">
-                   <span className="bg-[#6351d5] text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-8 inline-block shadow-lg shadow-[#6351d5]/30">{t.methodology.scale.flywheel.tag}</span>
-                   <div className="bg-white p-2 rounded-full shadow-2xl border-4 border-white relative overflow-hidden max-w-2xl w-full">
-                      <div className="absolute inset-0 bg-[#6351d5]/5 mix-blend-multiply pointer-events-none"></div>
-                      <img src="https://i.imgur.com/HwLnSrQ.png" alt="Trust Flywheel System" className="w-full h-auto object-contain mix-blend-multiply"/>
-                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-                   <div className="hidden md:block absolute top-12 left-0 w-full h-1 bg-gradient-to-r from-[#45b6f7]/30 via-[#3f45fe]/30 to-[#0faec1]/30 z-0"></div>
-                   <div className="bg-slate-50 p-6 rounded-2xl border-t-4 border-[#45b6f7] relative z-10 shadow-lg">
-                      <div className="flex items-center gap-3 mb-4"><div className="bg-[#45b6f7]/10 p-2 rounded-lg"><Megaphone className="w-6 h-6 text-[#45b6f7]" /></div><h3 className="text-lg font-bold text-[#032149]">{t.methodology.scale.flywheel.borrowed.title}</h3></div>
-                      <ul className="space-y-3">{t.methodology.scale.flywheel.borrowed.items.map((it,i)=><li key={i} className="text-slate-600 text-xs flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#45b6f7] rounded-full"></span> {it}</li>)}</ul>
-                   </div>
-                   <div className="bg-slate-50 p-6 rounded-2xl border-t-4 border-[#3f45fe] relative z-10 shadow-lg">
-                      <div className="flex items-center gap-3 mb-4"><div className="bg-[#3f45fe]/10 p-2 rounded-lg"><RefreshCw className="w-6 h-6 text-[#3f45fe]" /></div><h3 className="text-lg font-bold text-[#032149]">{t.methodology.scale.flywheel.review.title}</h3></div>
-                      <ul className="space-y-3">{t.methodology.scale.flywheel.review.items.map((it,i)=><li key={i} className="text-slate-600 text-xs flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#3f45fe] rounded-full"></span> {it}</li>)}</ul>
-                   </div>
-                   <div className="bg-slate-50 p-6 rounded-2xl border-t-4 border-[#0faec1] relative z-10 shadow-lg">
-                      <div className="flex items-center gap-3 mb-4"><div className="bg-[#0faec1]/10 p-2 rounded-lg"><Gift className="w-6 h-6 text-[#0faec1]" /></div><h3 className="text-lg font-bold text-[#032149]">{t.methodology.scale.flywheel.promise.title}</h3></div>
-                      <ul className="space-y-3">{t.methodology.scale.flywheel.promise.items.map((it,i)=><li key={i} className="text-slate-600 text-xs flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#0faec1] rounded-full"></span> {it}</li>)}</ul>
-                   </div>
-                </div>
-             </div>
+            ))}
           </div>
         </div>
       </section>
