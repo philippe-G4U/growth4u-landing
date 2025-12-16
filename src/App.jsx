@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet, HelmetProvider } from 'react-helmet-async'; // <--- NUEVO IMPORT
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+import Markdown from 'react-markdown'; // <--- Motor de Markdown
+import remarkGfm from 'remark-gfm';    // <--- Plugin para Tablas
 import { 
   TrendingUp, ArrowRight, Megaphone, ShieldAlert, Users, ArrowDownRight, 
   CheckCircle2, Cpu, Check, Mail, Calendar, Menu, X, ChevronDown, ChevronUp, 
@@ -44,22 +46,20 @@ const appId = 'growth4u-public-app';
 
 // --- UTILIDADES ---
 
-// Convierte "Hola Mundo" -> "hola-mundo"
 const createSlug = (text) => {
   return text
     .toString()
     .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Quita acentos
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .trim()
-    .replace(/\s+/g, '-')     // Reemplaza espacios con guiones
-    .replace(/[^\w\-]+/g, '') // Elimina caracteres no alfanuméricos
-    .replace(/\-\-+/g, '-');  // Reemplaza guiones múltiples
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
 };
 
-// Renderizado de texto rico
+// MANTENEMOS ESTA FUNCIÓN SOLO PARA LA HOME (CARDS Y LISTAS PEQUEÑAS)
 const renderFormattedContent = (content) => {
   if (!content) return null;
-  // Si es un array (como en las garantías), renderizamos lista
   if (Array.isArray(content)) {
     return content.map((line, i) => {
         const parts = line.split(/(\*\*.*?\*\*)/g);
@@ -78,14 +78,11 @@ const renderFormattedContent = (content) => {
         );
     });
   }
-  // Si es string normal (descripciones)
   return content.split('\n').map((line, index) => {
     if (line.trim().startsWith('##')) {
       return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-[#032149]">{line.replace('##', '').trim()}</h2>;
     }
-    if (line.trim() === '') {
-      return <div key={index} className="h-4"></div>;
-    }
+    if (line.trim() === '') return <div key={index} className="h-4"></div>;
     const parts = line.split(/(\*\*.*?\*\*)/g);
     return (
       <span key={index}>
@@ -103,238 +100,26 @@ const renderFormattedContent = (content) => {
 // --- TRADUCCIONES ---
 const translations = {
   es: {
-    nav: {
-      problem: "Problema",
-      results: "Resultados",
-      methodology: "Servicios",
-      cases: "Casos",
-      team: "Equipo",
-      blog: "Blog",
-      cta: "Agendar Llamada"
-    },
-    hero: {
-      tag: "Especialistas en Growth Fintech B2B & B2C",
-      title: "Tu fintech puede crecer más rápido, ",
-      titleHighlight: "sin invertir más en marketing.",
-      subtitle: "Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.",
-      ctaPrimary: "Empezar ahora",
-      ctaSecondary: "Ver servicios",
-      trust: "Empresas validadas por la confianza"
-    },
-    problem: {
-      title: "El modelo tradicional está roto",
-      subtitle: "En un mercado saturado, depender 100% de Paid Media es insostenible.",
-      cards: [
-        { title: "Alquiler de Atención", desc: "Si cortas el presupuesto de anuncios, las ventas mueren instantáneamente." },
-        { title: "CAC Incontrolable", desc: "El coste por clic no para de subir. Sin activos propios, tu rentabilidad se erosiona." },
-        { title: "Fricción de Confianza", desc: "El usuario Fintech es escéptico. Atraes tráfico, pero no conviertes por falta de autoridad." },
-        { title: "Churn Silencioso", desc: "Captas registros, no clientes. El LTV nunca llega a cubrir el coste de adquisición." }
-      ]
-    },
-    results: {
-      title: "Resultados del Trust Engine",
-      subtitle: "Crecimiento predecible y escalable.",
-      cards: [
-        { title: "Reducción del 70% en CAC", desc: "Sustituimos el gasto publicitario inflado por sistemas de confianza orgánica y viralidad estructurada." },
-        { title: "Usuarios Activados", desc: "Dejamos atrás las vanity metrics. Atraemos clientes ideales (ICP) listos para usar y pagar." },
-        { title: "Máquina 24/7", desc: "Implementamos automatización e IA para que la captación funcione sin depender de trabajo manual." },
-        { title: "Activos que perduran", desc: "Construimos un motor de crecimiento que gana tracción con el tiempo, aumentando el LTV." }
-      ]
-    },
-    methodology: {
-      title: "El motor de crecimiento adecuado.",
-      subtitle: "Infraestructura escalable según la etapa de tu negocio.",
-      stages: [
-        {
-          step: "Etapa 1",
-          title: "BUSCANDO PMF",
-          tag: "0 → Tracción Real",
-          desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.",
-          icon: Search,
-          guaranteeTitle: "OBJETIVO & GARANTÍA",
-          guarantees: [
-            "Validación de **Propuesta de Valor** y posicionamiento único.",
-            "Generación de los primeros **usuarios que pagan**."
-          ]
-        },
-        {
-          step: "Etapa 2",
-          title: "ESCALANDO",
-          tag: "10K → 500K Users",
-          desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.",
-          icon: TrendingUp,
-          guaranteeTitle: "OBJETIVO & GARANTÍA",
-          guarantees: [
-            "Tracción orgánica y reconocimiento de marca vía **Referral**.",
-            "Conversión de **Clientes que pagan** y alto LTV."
-          ]
-        },
-        {
-          step: "Etapa 3",
-          title: "EXPANSIÓN",
-          tag: "Nuevo Mercado / Producto",
-          desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.",
-          icon: Globe,
-          guaranteeTitle: "OBJETIVO & GARANTÍA",
-          guarantees: [
-            "Tracción inicial asegurada en **nichos de alta conversión**.",
-            "Penetración rápida con **estrategia localizada**."
-          ]
-        }
-      ]
-    },
-    cases: {
-      title: "Casos de Éxito",
-      subtitle: "Resultados reales auditados.",
-      list: [
-        { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." },
-        { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." },
-        { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." }
-      ],
-      btnRead: "Leer caso completo",
-      btnHide: "Ver menos",
-      challengeLabel: "Reto",
-      solutionLabel: "Solución"
-    },
-    team: {
-      title: "Trust es lo importante, conócenos",
-      bioAlfonso: "Especialista en growth con más de diez años lanzando y escalando productos en fintech.",
-      bioMartin: "Especialista en growth técnico con más de diez años creando sistemas de automatización y datos que escalan operaciones."
-    },
-    blog: {
-      title: "Blog & Insights",
-      subtitle: "Recursos estratégicos para escalar tu fintech.",
-      cta: "Ver todos los artículos",
-      readTime: "min lectura",
-      admin: "Admin",
-      empty: "Próximamente nuevos artículos...",
-      defaults: []
-    },
-    footer: {
-      title: "Escala tu Fintech hoy.",
-      ctaEmail: "accounts@growth4u.io",
-      ctaCall: "Agendar Llamada",
-      rights: "© 2025 Growth4U. Todos los derechos reservados.",
-      privacy: "Política de Privacidad",
-      terms: "Términos de Servicio"
-    }
+    nav: { problem: "Problema", results: "Resultados", methodology: "Servicios", cases: "Casos", team: "Equipo", blog: "Blog", cta: "Agendar Llamada" },
+    hero: { tag: "Especialistas en Growth Fintech B2B & B2C", title: "Tu fintech puede crecer más rápido, ", titleHighlight: "sin invertir más en marketing.", subtitle: "Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.", ctaPrimary: "Empezar ahora", ctaSecondary: "Ver servicios", trust: "Empresas validadas por la confianza" },
+    problem: { title: "El modelo tradicional está roto", subtitle: "En un mercado saturado, depender 100% de Paid Media es insostenible.", cards: [ { title: "Alquiler de Atención", desc: "Si cortas el presupuesto de anuncios, las ventas mueren instantáneamente." }, { title: "CAC Incontrolable", desc: "El coste por clic no para de subir. Sin activos propios, tu rentabilidad se erosiona." }, { title: "Fricción de Confianza", desc: "El usuario Fintech es escéptico. Atraes tráfico, pero no conviertes por falta de autoridad." }, { title: "Churn Silencioso", desc: "Captas registros, no clientes. El LTV nunca llega a cubrir el coste de adquisición." } ] },
+    results: { title: "Resultados del Trust Engine", subtitle: "Crecimiento predecible y escalable.", cards: [ { title: "Reducción del 70% en CAC", desc: "Sustituimos el gasto publicitario inflado por sistemas de confianza orgánica y viralidad estructurada." }, { title: "Usuarios Activados", desc: "Dejamos atrás las vanity metrics. Atraemos clientes ideales (ICP) listos para usar y pagar." }, { title: "Máquina 24/7", desc: "Implementamos automatización e IA para que la captación funcione sin depender de trabajo manual." }, { title: "Activos que perduran", desc: "Construimos un motor de crecimiento que gana tracción con el tiempo, aumentando el LTV." } ] },
+    methodology: { title: "El motor de crecimiento adecuado.", subtitle: "Infraestructura escalable según la etapa de tu negocio.", stages: [ { step: "Etapa 1", title: "BUSCANDO PMF", tag: "0 → Tracción Real", desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.", icon: Search, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Validación de **Propuesta de Valor** y posicionamiento único.", "Generación de los primeros **usuarios que pagan**." ] }, { step: "Etapa 2", title: "ESCALANDO", tag: "10K → 500K Users", desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.", icon: TrendingUp, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción orgánica y reconocimiento de marca vía **Referral**.", "Conversión de **Clientes que pagan** y alto LTV." ] }, { step: "Etapa 3", title: "EXPANSIÓN", tag: "Nuevo Mercado / Producto", desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.", icon: Globe, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción inicial asegurada en **nichos de alta conversión**.", "Penetración rápida con **estrategia localizada**." ] } ] },
+    cases: { title: "Casos de Éxito", subtitle: "Resultados reales auditados.", list: [ { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." }, { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." } ], btnRead: "Leer caso completo", btnHide: "Ver menos", challengeLabel: "Reto", solutionLabel: "Solución" },
+    team: { title: "Trust es lo importante, conócenos", bioAlfonso: "Especialista en growth con más de diez años lanzando y escalando productos en fintech.", bioMartin: "Especialista en growth técnico con más de diez años creando sistemas de automatización y datos que escalan operaciones." },
+    blog: { title: "Blog & Insights", subtitle: "Recursos estratégicos para escalar tu fintech.", cta: "Ver todos los artículos", readTime: "min lectura", admin: "Admin", empty: "Próximamente nuevos artículos...", defaults: [] },
+    footer: { title: "Escala tu Fintech hoy.", ctaEmail: "accounts@growth4u.io", ctaCall: "Agendar Llamada", rights: "© 2025 Growth4U. Todos los derechos reservados.", privacy: "Política de Privacidad", terms: "Términos de Servicio" }
   },
   en: {
-    nav: {
-      problem: "Problem",
-      results: "Results",
-      methodology: "Services",
-      cases: "Cases",
-      team: "Team",
-      blog: "Blog",
-      cta: "Book a Call"
-    },
-    hero: {
-      tag: "Specialists in B2B & B2C Fintech Growth",
-      title: "Your fintech can grow faster, ",
-      titleHighlight: "without spending more on marketing.",
-      subtitle: "We help you create a growth engine that lasts over time and reduces your CAC by leveraging the value of trust.",
-      ctaPrimary: "Start now",
-      ctaSecondary: "View services",
-      trust: "Companies validated by trust"
-    },
-    problem: {
-      title: "The traditional model is broken",
-      subtitle: "In a saturated market, relying 100% on Paid Media is unsustainable.",
-      cards: [
-        { title: "Renting Attention", desc: "If you cut the ad budget, sales die instantly." },
-        { title: "Uncontrollable CAC", desc: "Cost per click keeps rising. Without owned assets, your profitability erodes." },
-        { title: "Trust Friction", desc: "The Fintech user is skeptical. You attract traffic, but don't convert due to lack of authority." },
-        { title: "Silent Churn", desc: "You capture registrations, not clients. LTV never covers the acquisition cost." }
-      ]
-    },
-    results: {
-      title: "Trust Engine Results",
-      subtitle: "Predictable and scalable growth.",
-      cards: [
-        { title: "70% Reduction in CAC", desc: "We replace inflated ad spend with organic trust systems and structured virality." },
-        { title: "Activated Users", desc: "We leave vanity metrics behind. We attract ideal customers (ICP) ready to use and pay." },
-        { title: "24/7 Machine", desc: "We implement automation and AI so that acquisition works without depending on manual labor." },
-        { title: "Assets that last", desc: "We build a growth engine that gains traction over time, increasing LTV." }
-      ]
-    },
-    methodology: {
-      title: "The right growth engine.",
-      subtitle: "Scalable infrastructure according to your business stage.",
-      stages: [
-        {
-          step: "Stage 1",
-          title: "SEEKING PMF",
-          tag: "0 → Real Traction",
-          desc: "We perform **rapid iteration**: channel testing, messaging, and competitor analysis to find your positioning. A value proposition that guides product development.",
-          icon: Search,
-          guaranteeTitle: "OBJECTIVE & GUARANTEE",
-          guarantees: [
-            "Validation of **Value Proposition** and unique positioning.",
-            "Generation of the first **paying users**."
-          ]
-        },
-        {
-          step: "Stage 2",
-          title: "SCALING",
-          tag: "10K → 500K Users",
-          desc: "We implement the **Trust Engine**: building trust by positioning the brand in **authoritative media and influencers**. A growth engine that prioritizes real customers.",
-          icon: TrendingUp,
-          guaranteeTitle: "OBJECTIVE & GUARANTEE",
-          guarantees: [
-            "Organic traction and brand recognition via **Referral**.",
-            "Conversion of **Paying Clients** and high LTV."
-          ]
-        },
-        {
-          step: "Stage 3",
-          title: "EXPANSION",
-          tag: "New Market / Product",
-          desc: "**Go-to-Market** plan to launch new products or start operations in **Spain**. We identify competitive niches to ensure strategic traction.",
-          icon: Globe,
-          guaranteeTitle: "OBJECTIVE & GUARANTEE",
-          guarantees: [
-            "Initial traction secured in **high-conversion niches**.",
-            "Rapid penetration with **localized strategy**."
-          ]
-        }
-      ]
-    },
-    cases: {
-      title: "Success Stories",
-      subtitle: "Real audited results.",
-      list: [
-        { company: "BNEXT", stat: "500K", label: "Active users", highlight: "achieved in 30 months", summary: "From 0 to 500,000 users in 30 months, without spending millions on advertising.", challenge: "Scaling the user base in a competitive market without relying exclusively on massive paid media.", solution: "We built a growth system based on trust and virality." },
-        { company: "BIT2ME", stat: "-70%", label: "CAC Reduction", highlight: "implementing Trust Engine", summary: "We reduced CAC by 70% implementing the Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "We optimized data, segmentation and activation to double the value of each client." },
-        { company: "GOCARDLESS", stat: "10K €", label: "MRR reached", highlight: "in 6 months from launch", summary: "Launch from scratch in Spain and Portugal reaching 10k MRR quickly.", challenge: "Entry into new markets without previous brand presence.", solution: "Strategy focused on content, alliances and intelligent sales." }
-      ],
-      btnRead: "Read full case",
-      btnHide: "Show less",
-      challengeLabel: "Challenge",
-      solutionLabel: "Solution"
-    },
-    team: {
-      title: "Trust is what matters, get to know us",
-      bioAlfonso: "Growth specialist with more than ten years launching and scaling fintech products.",
-      bioMartin: "Technical growth specialist with more than ten years creating automation and data systems that scale operations."
-    },
-    blog: {
-      title: "Blog & Insights",
-      subtitle: "Strategic resources to scale your fintech.",
-      cta: "View all articles",
-      readTime: "min read",
-      admin: "Admin",
-      empty: "Coming soon...",
-      defaults: []
-    },
-    footer: {
-      title: "Scale your Fintech today.",
-      ctaEmail: "accounts@growth4u.io",
-      ctaCall: "Book a Call",
-      rights: "© 2025 Growth4U. All rights reserved.",
-      privacy: "Privacy Policy",
-      terms: "Terms of Service"
-    }
+    nav: { problem: "Problem", results: "Results", methodology: "Services", cases: "Cases", team: "Team", blog: "Blog", cta: "Book a Call" },
+    hero: { tag: "Specialists in B2B & B2C Fintech Growth", title: "Your fintech can grow faster, ", titleHighlight: "without spending more on marketing.", subtitle: "We help you create a growth engine that lasts over time and reduces your CAC by leveraging the value of trust.", ctaPrimary: "Start now", ctaSecondary: "View services", trust: "Companies validated by trust" },
+    problem: { title: "The traditional model is broken", subtitle: "In a saturated market, relying 100% on Paid Media is unsustainable.", cards: [ { title: "Renting Attention", desc: "If you cut the ad budget, sales die instantly." }, { title: "Uncontrollable CAC", desc: "Cost per click keeps rising. Without owned assets, your profitability erodes." }, { title: "Trust Friction", desc: "The Fintech user is skeptical. You attract traffic, but don't convert due to lack of authority." }, { title: "Silent Churn", desc: "You capture registrations, not clients. LTV never covers the acquisition cost." } ] },
+    results: { title: "Trust Engine Results", subtitle: "Predictable and scalable growth.", cards: [ { title: "70% Reduction in CAC", desc: "We replace inflated ad spend with organic trust systems and structured virality." }, { title: "Activated Users", desc: "We leave vanity metrics behind. We attract ideal customers (ICP) ready to use and pay." }, { title: "24/7 Machine", desc: "We implement automation and AI so that acquisition works without depending on manual labor." }, { title: "Assets that last", desc: "We build a growth engine that gains traction over time, increasing LTV." } ] },
+    methodology: { title: "The right growth engine.", subtitle: "Scalable infrastructure according to your business stage.", stages: [ { step: "Stage 1", title: "SEEKING PMF", tag: "0 → Real Traction", desc: "We perform **rapid iteration**: channel testing, messaging, and competitor analysis to find your positioning. A value proposition that guides product development.", icon: Search, guaranteeTitle: "OBJECTIVE & GUARANTEE", guarantees: [ "Validation of **Value Proposition** and unique positioning.", "Generation of the first **paying users**." ] }, { step: "Stage 2", title: "SCALING", tag: "10K → 500K Users", desc: "We implement the **Trust Engine**: building trust by positioning the brand in **authoritative media and influencers**. A growth engine that prioritizes real customers.", icon: TrendingUp, guaranteeTitle: "OBJECTIVE & GUARANTEE", guarantees: [ "Organic traction and brand recognition via **Referral**.", "Conversion of **Paying Clients** and high LTV." ] }, { step: "Stage 3", title: "EXPANSION", tag: "New Market / Product", desc: "**Go-to-Market** plan to launch new products or start operations in **Spain**. We identify competitive niches to ensure strategic traction.", icon: Globe, guaranteeTitle: "OBJECTIVE & GUARANTEE", guarantees: [ "Initial traction secured in **high-conversion niches**.", "Rapid penetration with **localized strategy**." ] } ] },
+    cases: { title: "Success Stories", subtitle: "Real audited results.", list: [ { company: "BNEXT", stat: "500K", label: "Active users", highlight: "achieved in 30 months", summary: "From 0 to 500,000 users in 30 months, without spending millions on advertising.", challenge: "Scaling the user base in a competitive market without relying exclusively on massive paid media.", solution: "We built a growth system based on trust and virality." }, { company: "BIT2ME", stat: "-70%", label: "CAC Reduction", highlight: "implementing Trust Engine", summary: "We reduced CAC by 70% implementing the Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "We optimized data, segmentation and activation to double the value of each client." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR reached", highlight: "in 6 months from launch", summary: "Launch from scratch in Spain and Portugal reaching 10k MRR quickly.", challenge: "Entry into new markets without previous brand presence.", solution: "Strategy focused on content, alliances and intelligent sales." } ], btnRead: "Read full case", btnHide: "Show less", challengeLabel: "Challenge", solutionLabel: "Solution" },
+    team: { title: "Trust is what matters, get to know us", bioAlfonso: "Growth specialist with more than ten years launching and scaling fintech products.", bioMartin: "Technical growth specialist with more than ten years creating automation and data systems that scale operations." },
+    blog: { title: "Blog & Insights", subtitle: "Strategic resources to scale your fintech.", cta: "View all articles", readTime: "min read", admin: "Admin", empty: "Coming soon...", defaults: [] },
+    footer: { title: "Scale your Fintech today.", ctaEmail: "accounts@growth4u.io", ctaCall: "Book a Call", rights: "© 2025 Growth4U. All rights reserved.", privacy: "Privacy Policy", terms: "Terms of Service" }
   }
 };
 
@@ -401,12 +186,10 @@ export default function App() {
         const loadedPosts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setPosts(loadedPosts);
         
-        // --- LOGICA DE URL AMIGABLE ---
         const params = new URLSearchParams(window.location.search);
-        const urlSlug = params.get('articulo'); // Buscamos ?articulo=titulo-del-post
+        const urlSlug = params.get('articulo');
         
         if (urlSlug && loadedPosts.length > 0) {
-           // Buscamos un post cuyo título genere ese slug
            const foundPost = loadedPosts.find(p => createSlug(p.title) === urlSlug);
            if (foundPost) {
              setSelectedPost(foundPost);
@@ -481,7 +264,6 @@ export default function App() {
     setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
   };
 
-  // NAVEGACIÓN CON URL SLUGS
   const handleViewPost = (post) => {
     const slug = createSlug(post.title);
     const newUrl = `${window.location.pathname}?articulo=${slug}`;
@@ -501,7 +283,6 @@ export default function App() {
       if (!selectedPost) return;
       const slug = createSlug(selectedPost.title);
       const url = `${window.location.origin}${window.location.pathname}?articulo=${slug}`;
-      // Usar execCommand como fallback
       try {
         const dummy = document.createElement("textarea");
         document.body.appendChild(dummy);
@@ -531,11 +312,13 @@ export default function App() {
                 <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
              </div>
              <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-200">
-               <strong>Guía de Formato:</strong>
+               <strong>Guía de Formato (Markdown):</strong>
                <ul className="list-disc ml-5 mt-2 space-y-1">
-                 <li>Usa <code>## Título</code> al principio de una línea para subtítulos.</li>
-                 <li>Usa <code>**texto**</code> para poner palabras en <strong>negrita</strong>.</li>
-                 <li>Deja líneas en blanco para separar párrafos.</li>
+                 <li><code>## Título</code> para subtítulos.</li>
+                 <li><code>**Negrita**</code> para énfasis.</li>
+                 <li><code>- Lista</code> para viñetas.</li>
+                 <li><code>&gt; Cita</code> para blockquotes.</li>
+                 <li>Para tablas, usa formato Markdown estándar.</li>
                </ul>
              </div>
              <form onSubmit={handleSavePost} className="space-y-6">
@@ -548,7 +331,7 @@ export default function App() {
                 </div>
                 <input required type="url" value={newPost.image} onChange={e => setNewPost({...newPost, image: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="URL de la imagen (debe terminar en .png o .jpg)" />
                 <textarea required value={newPost.excerpt} onChange={e => setNewPost({...newPost, excerpt: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-24 focus:ring-2 focus:ring-[#6351d5]" placeholder="Breve resumen (excerpt)..." />
-                <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-64 font-mono text-sm focus:ring-2 focus:ring-[#6351d5]" placeholder="Escribe aquí tu contenido. Usa ## para subtítulos..." />
+                <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-64 font-mono text-sm focus:ring-2 focus:ring-[#6351d5]" placeholder="Escribe aquí tu contenido usando Markdown..." />
                 
                 <div className="flex gap-4">
                   <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#6351d5] text-white font-bold py-4 rounded-xl hover:bg-[#4b3db1] transition-colors shadow-lg">
@@ -585,7 +368,6 @@ export default function App() {
   }
 
   if (view === 'post' && selectedPost) {
-    // --- NUEVO: Configuración GEO / JSON-LD ---
     const articleSchema = {
       "@context": "https://schema.org",
       "@type": "Article",
@@ -596,7 +378,7 @@ export default function App() {
       "dateModified": selectedPost.updatedAt ? new Date(selectedPost.updatedAt.seconds * 1000).toISOString() : new Date().toISOString(),
       "author": {
         "@type": "Person",
-        "name": "Equipo Growth4U", // Se puede cambiar dinámicamente si guardas el autor
+        "name": "Equipo Growth4U",
         "url": "https://www.linkedin.com/company/growth4u/"
       },
       "publisher": {
@@ -615,24 +397,16 @@ export default function App() {
 
     return (
       <div className="min-h-screen bg-white text-[#032149] font-sans selection:bg-[#45b6f7] selection:text-white">
-         {/* --- INYECCIÓN DE METADATOS EN EL HEAD --- */}
          <Helmet>
             <title>{selectedPost.title} | Blog Growth4U</title>
             <meta name="description" content={selectedPost.excerpt} />
             <link rel="canonical" href={`${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`} />
-            
-            {/* Open Graph para redes sociales */}
             <meta property="og:title" content={selectedPost.title} />
             <meta property="og:description" content={selectedPost.excerpt} />
             <meta property="og:image" content={selectedPost.image} />
             <meta property="og:type" content="article" />
-
-            {/* Schema para Motores de IA (JSON-LD) */}
-            <script type="application/ld+json">
-              {JSON.stringify(articleSchema)}
-            </script>
+            <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
          </Helmet>
-         {/* ----------------------------------------- */}
 
          <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
             <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
@@ -662,7 +436,30 @@ export default function App() {
             
             <div className="prose prose-lg prose-slate mx-auto text-[#032149]">
               <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">{selectedPost.excerpt}</p>
-              {renderFormattedContent(selectedPost.content)}
+              
+              {/* --- RENDERIZADO SEMÁNTICO GEO (IA FRIENDLY) --- */}
+              <Markdown 
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h2: ({node, ...props}) => <h2 className="text-2xl font-bold mt-8 mb-4 text-[#032149]" {...props} />,
+                  h3: ({node, ...props}) => <h3 className="text-xl font-bold mt-6 mb-3 text-[#032149]" {...props} />,
+                  p: ({node, ...props}) => <p className="mb-4 leading-relaxed text-slate-700" {...props} />,
+                  ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-6 space-y-2 text-slate-700" {...props} />,
+                  ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-6 space-y-2 text-slate-700" {...props} />,
+                  li: ({node, ...props}) => <li className="pl-1" {...props} />,
+                  strong: ({node, ...props}) => <strong className="text-[#032149] font-bold" {...props} />,
+                  a: ({node, ...props}) => <a className="text-[#6351d5] underline hover:text-[#3f45fe] font-bold" {...props} />,
+                  blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-[#6351d5] pl-4 italic my-4 text-slate-600 bg-slate-50 py-2 pr-2 rounded-r" {...props} />,
+                  table: ({node, ...props}) => <div className="overflow-x-auto my-6"><table className="min-w-full divide-y divide-slate-200 border border-slate-200 rounded-lg" {...props} /></div>,
+                  thead: ({node, ...props}) => <thead className="bg-slate-50" {...props} />,
+                  th: ({node, ...props}) => <th className="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider" {...props} />,
+                  td: ({node, ...props}) => <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 border-t border-slate-100" {...props} />,
+                }}
+              >
+                {selectedPost.content}
+              </Markdown>
+              {/* ----------------------------------------------- */}
+
             </div>
             
             <div className="mt-16 pt-10 border-t border-slate-200 text-center">
@@ -676,9 +473,8 @@ export default function App() {
 
   // MAIN VIEW
   return (
-    <HelmetProvider> {/* <--- PROVIDER PARA GESTIONAR EL HEAD */}
+    <HelmetProvider>
       <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white overflow-x-hidden">
-        {/* Schema para la Home (Organization) */}
         <Helmet>
           <title>Growth4U | Growth Marketing Fintech B2B & B2C</title>
           <meta name="description" content="Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza." />
