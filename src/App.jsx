@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet, HelmetProvider } from 'react-helmet-async'; // <--- NUEVO IMPORT
 import { 
   TrendingUp, ArrowRight, Megaphone, ShieldAlert, Users, ArrowDownRight, 
   CheckCircle2, Cpu, Check, Mail, Calendar, Menu, X, ChevronDown, ChevronUp, 
@@ -26,7 +27,6 @@ const firebaseConfig = {
 };
 
 // --- INICIALIZACIÓN ---
-// Nota: En un entorno real de producción, asegúrate de inicializar esto solo una vez.
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -44,7 +44,7 @@ const appId = 'growth4u-public-app';
 
 // --- UTILIDADES ---
 
-// Convierte "Hola Mundo: ¿Cómo estás?" -> "hola-mundo-como-estas"
+// Convierte "Hola Mundo" -> "hola-mundo"
 const createSlug = (text) => {
   return text
     .toString()
@@ -56,7 +56,7 @@ const createSlug = (text) => {
     .replace(/\-\-+/g, '-');  // Reemplaza guiones múltiples
 };
 
-// Renderizado de texto rico (Soporta **negrita**)
+// Renderizado de texto rico
 const renderFormattedContent = (content) => {
   if (!content) return null;
   // Si es un array (como en las garantías), renderizamos lista
@@ -342,10 +342,10 @@ export default function App() {
   const [view, setView] = useState('home');
   const [lang, setLang] = useState('es'); 
   const t = translations[lang]; 
-  
+   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedCase, setExpandedCase] = useState(null);
-  
+   
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [user, setUser] = useState(null);
@@ -423,7 +423,7 @@ export default function App() {
   }, [user]);
 
   // --- FUNCIONES CRUD ---
-  
+   
   const handleSavePost = async (e) => {
     e.preventDefault();
     if (!db || !user) { alert("Error: Conexión no disponible"); return; }
@@ -496,7 +496,7 @@ export default function App() {
     window.history.pushState({}, '', window.location.pathname);
     setView('home');
   };
-  
+   
   const copyLinkToClipboard = () => {
       if (!selectedPost) return;
       const slug = createSlug(selectedPost.title);
@@ -585,8 +585,55 @@ export default function App() {
   }
 
   if (view === 'post' && selectedPost) {
+    // --- NUEVO: Configuración GEO / JSON-LD ---
+    const articleSchema = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": selectedPost.title,
+      "description": selectedPost.excerpt,
+      "image": selectedPost.image,
+      "datePublished": selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toISOString() : new Date().toISOString(),
+      "dateModified": selectedPost.updatedAt ? new Date(selectedPost.updatedAt.seconds * 1000).toISOString() : new Date().toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": "Equipo Growth4U", // Se puede cambiar dinámicamente si guardas el autor
+        "url": "https://www.linkedin.com/company/growth4u/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Growth4U",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://i.imgur.com/imHxGWI.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`
+      }
+    };
+
     return (
       <div className="min-h-screen bg-white text-[#032149] font-sans selection:bg-[#45b6f7] selection:text-white">
+         {/* --- INYECCIÓN DE METADATOS EN EL HEAD --- */}
+         <Helmet>
+            <title>{selectedPost.title} | Blog Growth4U</title>
+            <meta name="description" content={selectedPost.excerpt} />
+            <link rel="canonical" href={`${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`} />
+            
+            {/* Open Graph para redes sociales */}
+            <meta property="og:title" content={selectedPost.title} />
+            <meta property="og:description" content={selectedPost.excerpt} />
+            <meta property="og:image" content={selectedPost.image} />
+            <meta property="og:type" content="article" />
+
+            {/* Schema para Motores de IA (JSON-LD) */}
+            <script type="application/ld+json">
+              {JSON.stringify(articleSchema)}
+            </script>
+         </Helmet>
+         {/* ----------------------------------------- */}
+
          <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
             <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                <div className="flex items-center gap-0 cursor-pointer" onClick={handleClosePost}>
@@ -608,7 +655,7 @@ export default function App() {
             <div className="flex items-center gap-4 text-slate-500 text-sm mb-8 border-b border-slate-100 pb-8">
               <span className="flex items-center gap-1"><Clock className="w-4 h-4"/> {selectedPost.readTime}</span>
               <span>•</span>
-              <span>{new Date(selectedPost.createdAt?.seconds * 1000).toLocaleDateString()}</span>
+              <span>{selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toLocaleDateString() : 'Fecha no disponible'}</span>
             </div>
 
             <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" />
@@ -629,273 +676,293 @@ export default function App() {
 
   // MAIN VIEW
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white overflow-x-hidden">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        :root { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-text { background: linear-gradient(to right, #0284c7, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -10px rgba(99, 81, 213, 0.15); }
-        .nav-island { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border-radius: 9999px; transition: all 0.3s ease; }
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-scroll { animation: scroll 40s linear infinite; }
-        .animate-scroll:hover { animation-play-state: paused; }
-        @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
-        .animate-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-      `}</style>
+    <HelmetProvider> {/* <--- PROVIDER PARA GESTIONAR EL HEAD */}
+      <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white overflow-x-hidden">
+        {/* Schema para la Home (Organization) */}
+        <Helmet>
+          <title>Growth4U | Growth Marketing Fintech B2B & B2C</title>
+          <meta name="description" content="Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza." />
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Growth4U",
+              "url": "https://growth4u.io",
+              "logo": "https://i.imgur.com/imHxGWI.png",
+              "sameAs": [
+                "https://www.linkedin.com/company/growth4u/"
+              ]
+            })}
+          </script>
+        </Helmet>
+        
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+          :root { scroll-behavior: smooth; }
+          body { font-family: 'Inter', sans-serif; }
+          .gradient-text { background: linear-gradient(to right, #0284c7, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+          .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -10px rgba(99, 81, 213, 0.15); }
+          .nav-island { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border-radius: 9999px; transition: all 0.3s ease; }
+          @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+          .animate-scroll { animation: scroll 40s linear infinite; }
+          .animate-scroll:hover { animation-play-state: paused; }
+          @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
+          .animate-blob { animation: blob 7s infinite; }
+          .animation-delay-2000 { animation-delay: 2s; }
+        `}</style>
 
-      {/* Navigation */}
-      <div className="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
-        <nav className="nav-island w-full max-w-6xl">
-          <div className="px-6 sm:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-0 cursor-pointer group flex-shrink-0" onClick={() => window.scrollTo(0,0)}>
-                <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U Logo" className="h-5 md:h-6 w-auto object-contain transition-transform group-hover:scale-105" />
-              </div>
-              <div className="hidden md:flex items-center gap-6">
-                <div className="flex items-baseline space-x-6">
-                  <a href="#problema" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.problem}</a>
-                  <a href="#resultados" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.results}</a>
-                  <a href="#etapas" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.methodology}</a>
-                  <a href="#casos" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.cases}</a>
-                  <a href="#team" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.team}</a>
-                  <a href="#blog" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.blog}</a>
+        {/* Navigation */}
+        <div className="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
+          <nav className="nav-island w-full max-w-6xl">
+            <div className="px-6 sm:px-8">
+              <div className="flex items-center justify-between h-16">
+                <div className="flex items-center gap-0 cursor-pointer group flex-shrink-0" onClick={() => window.scrollTo(0,0)}>
+                  <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U Logo" className="h-5 md:h-6 w-auto object-contain transition-transform group-hover:scale-105" />
                 </div>
-                <button onClick={toggleLang} className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full text-xs font-bold text-[#032149] transition-colors border border-slate-200">
-                    <Globe className="w-3 h-3" /> {lang === 'es' ? 'EN' : 'ES'}
-                </button>
-              </div>
-              
-              <div className="hidden md:flex items-center gap-4">
-                <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5 whitespace-nowrap">{t.nav.cta}</a>
-              </div>
-              <div className="md:hidden flex items-center gap-4">
-                  <button onClick={toggleLang} className="text-[#032149] font-bold text-sm">{lang === 'es' ? 'EN' : 'ES'}</button>
-                  <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-[#032149] hover:text-[#6351d5] focus:outline-none"><Menu className="h-6 w-6" /></button>
+                <div className="hidden md:flex items-center gap-6">
+                  <div className="flex items-baseline space-x-6">
+                    <a href="#problema" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.problem}</a>
+                    <a href="#resultados" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.results}</a>
+                    <a href="#etapas" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.methodology}</a>
+                    <a href="#casos" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.cases}</a>
+                    <a href="#team" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.team}</a>
+                    <a href="#blog" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.blog}</a>
+                  </div>
+                  <button onClick={toggleLang} className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full text-xs font-bold text-[#032149] transition-colors border border-slate-200">
+                      <Globe className="w-3 h-3" /> {lang === 'es' ? 'EN' : 'ES'}
+                  </button>
+                </div>
+                
+                <div className="hidden md:flex items-center gap-4">
+                  <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5 whitespace-nowrap">{t.nav.cta}</a>
+                </div>
+                <div className="md:hidden flex items-center gap-4">
+                    <button onClick={toggleLang} className="text-[#032149] font-bold text-sm">{lang === 'es' ? 'EN' : 'ES'}</button>
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-[#032149] hover:text-[#6351d5] focus:outline-none"><Menu className="h-6 w-6" /></button>
+                </div>
               </div>
             </div>
-          </div>
-          {isMenuOpen && (
-            <div className="absolute top-20 left-0 right-0 mx-4 bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden animate-in slide-in-from-top-2">
-              <div className="px-4 pt-4 pb-6 space-y-2">
-                <a href="#problema" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.problem}</a>
-                <a href="#resultados" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.results}</a>
-                <a href="#etapas" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.methodology}</a>
-                <a href="#casos" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.cases}</a>
-                <a href="#team" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.team}</a>
-                <a href="#blog" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.blog}</a>
-                <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center whitespace-nowrap">{t.nav.cta}</a>
+            {isMenuOpen && (
+              <div className="absolute top-20 left-0 right-0 mx-4 bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden animate-in slide-in-from-top-2">
+                <div className="px-4 pt-4 pb-6 space-y-2">
+                  <a href="#problema" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.problem}</a>
+                  <a href="#resultados" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.results}</a>
+                  <a href="#etapas" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.methodology}</a>
+                  <a href="#casos" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.cases}</a>
+                  <a href="#team" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.team}</a>
+                  <a href="#blog" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.blog}</a>
+                  <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center whitespace-nowrap">{t.nav.cta}</a>
+                </div>
               </div>
+            )}
+          </nav>
+        </div>
+
+        {/* Hero Section */}
+        <section className="relative pt-44 pb-20 lg:pt-60 lg:pb-32 overflow-hidden bg-white">
+          <div className="absolute top-0 left-1/2 w-full -translate-x-1/2 h-full z-0 pointer-events-none">
+            <div className="absolute top-20 left-10 w-96 h-96 bg-[#45b6f7]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+            <div className="absolute top-20 right-10 w-96 h-96 bg-[#6351d5]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+          </div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 mb-8">
+              <span className="flex h-2 w-2 rounded-full bg-[#0faec1] animate-pulse"></span>
+              <span className="text-sm text-[#1a3690] font-bold tracking-wide">{t.hero.tag}</span>
             </div>
-          )}
-        </nav>
-      </div>
-
-      {/* Hero Section */}
-      <section className="relative pt-44 pb-20 lg:pt-60 lg:pb-32 overflow-hidden bg-white">
-        <div className="absolute top-0 left-1/2 w-full -translate-x-1/2 h-full z-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-[#45b6f7]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-          <div className="absolute top-20 right-10 w-96 h-96 bg-[#6351d5]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 mb-8">
-            <span className="flex h-2 w-2 rounded-full bg-[#0faec1] animate-pulse"></span>
-            <span className="text-sm text-[#1a3690] font-bold tracking-wide">{t.hero.tag}</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight text-[#032149]">
-            {t.hero.title} <br className="hidden md:block" />
-            <span className="gradient-text">{t.hero.titleHighlight}</span>
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-600 mb-10 leading-relaxed">{t.hero.subtitle}</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#6351d5] text-white hover:bg-[#3f45fe] font-bold py-4 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-xl shadow-[#6351d5]/20">{t.hero.ctaPrimary} <ArrowRight className="w-5 h-5" /></a>
-            <a href="#etapas" className="flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 font-semibold py-4 px-8 rounded-full text-lg transition-all hover:shadow-md">{t.hero.ctaSecondary}</a>
-          </div>
-          <div className="mt-24 border-t border-slate-200 pt-10 overflow-hidden relative w-full max-w-6xl mx-auto">
-            <p className="text-[#1a3690] text-sm font-bold uppercase tracking-wider mb-8">{t.hero.trust}</p>
-            <div className="relative w-full overflow-hidden">
-                <div className="flex animate-scroll whitespace-nowrap gap-16 items-center">
-                    {['bnext','bit2me','GoCardless','Lydia','Criptan','capitalontap','multimarkts','NEXTCHANCE', 'bnext','bit2me','GoCardless','Lydia'].map((logo, i) => (
-                       <span key={i} className="text-3xl font-bold font-sans text-slate-400 hover:text-[#6351d5] transition-colors cursor-default">{logo}</span>
-                    ))}
-                </div>
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight text-[#032149]">
+              {t.hero.title} <br className="hidden md:block" />
+              <span className="gradient-text">{t.hero.titleHighlight}</span>
+            </h1>
+            <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-600 mb-10 leading-relaxed">{t.hero.subtitle}</p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#6351d5] text-white hover:bg-[#3f45fe] font-bold py-4 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-xl shadow-[#6351d5]/20">{t.hero.ctaPrimary} <ArrowRight className="w-5 h-5" /></a>
+              <a href="#etapas" className="flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 font-semibold py-4 px-8 rounded-full text-lg transition-all hover:shadow-md">{t.hero.ctaSecondary}</a>
             </div>
-            <div className="absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-            <div className="absolute top-0 right-0 h-full w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+            <div className="mt-24 border-t border-slate-200 pt-10 overflow-hidden relative w-full max-w-6xl mx-auto">
+              <p className="text-[#1a3690] text-sm font-bold uppercase tracking-wider mb-8">{t.hero.trust}</p>
+              <div className="relative w-full overflow-hidden">
+                  <div className="flex animate-scroll whitespace-nowrap gap-16 items-center">
+                      {['bnext','bit2me','GoCardless','Lydia','Criptan','capitalontap','multimarkts','NEXTCHANCE', 'bnext','bit2me','GoCardless','Lydia'].map((logo, i) => (
+                         <span key={i} className="text-3xl font-bold font-sans text-slate-400 hover:text-[#6351d5] transition-colors cursor-default">{logo}</span>
+                      ))}
+                  </div>
+              </div>
+              <div className="absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute top-0 right-0 h-full w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Problem Section */}
-      <section id="problema" className="py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.problem.title}</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto text-lg">{t.problem.subtitle}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {t.problem.cards.map((item, i) => {
-               const Icon = [Megaphone, TrendingUp, ShieldAlert, Users][i];
-               return (
-                <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 card-hover transition-all group shadow-sm hover:shadow-lg">
-                    <div className="bg-[#3f45fe]/10 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#3f45fe]/20 transition-colors"><Icon className="text-[#3f45fe] w-7 h-7" /></div>
-                    <h3 className="text-xl font-bold mb-3 text-[#032149]">{item.title}</h3>
-                    <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-            )})}
-          </div>
-        </div>
-      </section>
-
-      {/* Results Section */}
-      <section id="resultados" className="py-24 bg-white relative border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.results.title}</h2>
-            <p className="text-slate-600 text-lg">{t.results.subtitle}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-             {t.results.cards.map((card, i) => {
-                 const Icons = [TrendingDown, Users2, Bot, Landmark];
-                 const Icon = Icons[i];
-                 const color = i % 3 === 0 ? '#6351d5' : '#3f45fe'; // Alternate colors
+        {/* Problem Section */}
+        <section id="problema" className="py-20 bg-slate-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.problem.title}</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto text-lg">{t.problem.subtitle}</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {t.problem.cards.map((item, i) => {
+                 const Icon = [Megaphone, TrendingUp, ShieldAlert, Users][i];
                  return (
-                    <div key={i} className="bg-slate-50 p-8 rounded-3xl border-l-4 flex items-start gap-6 hover:shadow-lg transition-shadow" style={{borderColor: color}}>
-                        <div className="bg-white p-3 rounded-xl shadow-sm"><Icon className="w-8 h-8" style={{color: color}}/></div>
-                        <div>
-                            <h3 className="text-xl font-bold text-[#032149] mb-2">{card.title}</h3>
-                            <p className="text-slate-600 text-sm leading-relaxed">{card.desc}</p>
-                        </div>
-                    </div>
-                 )
-             })}
-          </div>
-        </div>
-      </section>
-
-      {/* METHODOLOGY & STAGES (NEW) */}
-      <section id="etapas" className="py-24 relative bg-slate-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.methodology.title}</h2>
-            <p className="text-slate-600 text-lg">{t.methodology.subtitle}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {t.methodology.stages.map((stage, i) => (
-              <div key={i} className="relative group hover:-translate-y-2 transition-all duration-300">
-                <div className="bg-white rounded-3xl p-8 h-full flex flex-col shadow-lg border border-slate-100 hover:shadow-2xl hover:border-[#45b6f7]/30 transition-all">
-                  
-                  {/* Header Card */}
-                  <div className="mb-6">
-                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">{stage.step}</div>
-                    <div className="flex items-center gap-3 mb-4">
-                         <h3 className="text-2xl font-extrabold text-[#032149] uppercase">{stage.title}</h3>
-                         {stage.icon && <stage.icon className="w-6 h-6 text-[#45b6f7]" />}
-                    </div>
-                    <span className="inline-block px-3 py-1 bg-[#0faec1]/10 text-[#0faec1] text-xs font-bold rounded-full border border-[#0faec1]/20">
-                      {stage.tag}
-                    </span>
+                  <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 card-hover transition-all group shadow-sm hover:shadow-lg">
+                      <div className="bg-[#3f45fe]/10 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#3f45fe]/20 transition-colors"><Icon className="text-[#3f45fe] w-7 h-7" /></div>
+                      <h3 className="text-xl font-bold mb-3 text-[#032149]">{item.title}</h3>
+                      <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
                   </div>
-
-                  {/* Description */}
-                  <div className="text-slate-600 text-sm leading-relaxed mb-8">
-                    {renderFormattedContent(stage.desc)}
-                  </div>
-
-                  {/* Guarantee Box */}
-                  <div className="mt-auto bg-[#effcfd] rounded-2xl p-6 border border-[#0faec1]/10">
-                     <div className="flex items-center gap-2 mb-4">
-                        <Target className="w-4 h-4 text-[#0faec1]" />
-                        <span className="text-xs font-bold text-[#0faec1] uppercase tracking-wider">{stage.guaranteeTitle}</span>
-                     </div>
-                     <div className="space-y-1">
-                        {renderFormattedContent(stage.guarantees)}
-                     </div>
-                  </div>
-
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Case Studies */}
-      <section id="casos" className="py-24 bg-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16"><h2 className="text-4xl md:text-5xl font-bold mb-4 text-[#032149]">{t.cases.title}</h2><p className="text-slate-600">{t.cases.subtitle}</p></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {t.cases.list.map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl p-8 relative group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border border-slate-100" onClick={() => setExpandedCase(expandedCase === i ? null : i)}>
-                <div className="absolute -top-6 right-8 w-14 h-14 bg-white rounded-full flex items-center justify-center border-4 border-slate-100 group-hover:border-[#6351d5] transition-colors shadow-lg"><Users className="w-6 h-6 text-[#6351d5]"/></div>
-                <div className="inline-block px-4 py-1.5 bg-slate-100 text-slate-700 text-sm font-bold rounded-full mb-6 uppercase tracking-wider">{item.company}</div>
-                <div className="mb-6"><div className="text-5xl font-extrabold text-[#6351d5] mb-2">{item.stat}</div><div className="text-slate-700 font-bold text-lg leading-tight">{item.label}</div></div>
-                <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedCase === i ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}><div className="bg-slate-50 p-4 rounded-xl mb-4"><p className="text-xs font-bold text-slate-400 uppercase mb-1">{t.cases.challengeLabel}</p><p className="text-slate-700 text-sm mb-3">{item.challenge}</p><p className="text-xs font-bold text-[#6351d5] uppercase mb-1">{t.cases.solutionLabel}</p><p className="text-slate-700 text-sm">{item.solution}</p></div></div>
-                <button className="flex items-center text-[#032149] font-bold text-sm group-hover:text-[#6351d5] transition-colors mt-auto">{expandedCase === i ? t.cases.btnHide : t.cases.btnRead} <ChevronUp className="w-4 h-4 ml-1" /></button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section id="team" className="py-20 bg-slate-50 relative">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-16 text-[#032149]">{t.team.title}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-                <div className="flex flex-col items-center relative">
-                    <div className="relative mb-6"><div className="absolute -top-3 -right-3 w-48 h-48 border-t-4 border-r-4 border-[#45b6f7] rounded-tr-3xl z-0"></div><div className="absolute -bottom-3 -left-3 w-48 h-48 border-b-4 border-l-4 border-[#1a3690] rounded-bl-3xl z-0"></div><img src="https://i.imgur.com/O3vyNQB.png" alt="Alfonso" className="w-48 h-48 object-cover rounded-xl shadow-2xl relative z-10 filter grayscale hover:grayscale-0 transition-all duration-500"/></div>
-                    <h3 className="text-2xl font-bold text-[#032149] mb-2">Alfonso Sainz de Baranda</h3>
-                    <div className="px-6 py-1.5 bg-[#45b6f7]/20 text-[#1a3690] rounded-full font-bold text-sm mb-4">Founder & CEO</div>
-                    <p className="text-slate-600 leading-relaxed text-sm max-w-xs mx-auto">{t.team.bioAlfonso}</p>
-                </div>
-                <div className="flex flex-col items-center relative">
-                    <div className="relative mb-6"><div className="absolute -top-3 -right-3 w-48 h-48 border-t-4 border-r-4 border-[#45b6f7] rounded-tr-3xl z-0"></div><div className="absolute -bottom-3 -left-3 w-48 h-48 border-b-4 border-l-4 border-[#1a3690] rounded-bl-3xl z-0"></div><img src="https://i.imgur.com/CvKj1sd.png" alt="Martin" className="w-48 h-48 object-cover rounded-xl shadow-2xl relative z-10 filter grayscale hover:grayscale-0 transition-all duration-500"/></div>
-                    <h3 className="text-2xl font-bold text-[#032149] mb-2">Martin Fila</h3>
-                    <div className="px-6 py-1.5 bg-[#45b6f7]/20 text-[#1a3690] rounded-full font-bold text-sm mb-4">Founder & COO</div>
-                    <p className="text-slate-600 leading-relaxed text-sm max-w-xs mx-auto">{t.team.bioMartin}</p>
-                </div>
+              )})}
             </div>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Blog Section */}
-      <section id="blog" className="py-20 bg-white border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-end mb-12"><h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.blog.title}</h2>
-            <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
+        {/* Results Section */}
+        <section id="resultados" className="py-24 bg-white relative border-t border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-20">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.results.title}</h2>
+              <p className="text-slate-600 text-lg">{t.results.subtitle}</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               {t.results.cards.map((card, i) => {
+                   const Icons = [TrendingDown, Users2, Bot, Landmark];
+                   const Icon = Icons[i];
+                   const color = i % 3 === 0 ? '#6351d5' : '#3f45fe'; // Alternate colors
+                   return (
+                      <div key={i} className="bg-slate-50 p-8 rounded-3xl border-l-4 flex items-start gap-6 hover:shadow-lg transition-shadow" style={{borderColor: color}}>
+                          <div className="bg-white p-3 rounded-xl shadow-sm"><Icon className="w-8 h-8" style={{color: color}}/></div>
+                          <div>
+                              <h3 className="text-xl font-bold text-[#032149] mb-2">{card.title}</h3>
+                              <p className="text-slate-600 text-sm leading-relaxed">{card.desc}</p>
+                          </div>
+                      </div>
+                   )
+               })}
+            </div>
+          </div>
+        </section>
+
+        {/* METHODOLOGY & STAGES */}
+        <section id="etapas" className="py-24 relative bg-slate-50 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center mb-20">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.methodology.title}</h2>
+              <p className="text-slate-600 text-lg">{t.methodology.subtitle}</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {displayPosts.length > 0 ? (
-                    displayPosts.map((post, index) => (
-                        <div key={index} onClick={() => handleViewPost(post)} className="group cursor-pointer">
-                            <div className="relative overflow-hidden rounded-xl mb-4 aspect-video bg-slate-100"><img src={post.image} alt={post.title} className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"/><div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">{post.category}</div></div>
-                            <h3 className="text-xl font-bold mb-2 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">{post.title}</h3>
-                            <p className="text-slate-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
-                            <div className="flex items-center text-sm text-slate-500 font-medium"><Clock className="w-4 h-4 mr-2" />{post.readTime}</div>
-                        </div>
-                    ))
-                ) : (
-                    <div className="col-span-3 text-center py-12 text-slate-500">
-                        <p>{t.blog.empty}</p>
+              {t.methodology.stages.map((stage, i) => (
+                <div key={i} className="relative group hover:-translate-y-2 transition-all duration-300">
+                  <div className="bg-white rounded-3xl p-8 h-full flex flex-col shadow-lg border border-slate-100 hover:shadow-2xl hover:border-[#45b6f7]/30 transition-all">
+                    
+                    {/* Header Card */}
+                    <div className="mb-6">
+                      <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">{stage.step}</div>
+                      <div className="flex items-center gap-3 mb-4">
+                           <h3 className="text-2xl font-extrabold text-[#032149] uppercase">{stage.title}</h3>
+                           {stage.icon && <stage.icon className="w-6 h-6 text-[#45b6f7]" />}
+                      </div>
+                      <span className="inline-block px-3 py-1 bg-[#0faec1]/10 text-[#0faec1] text-xs font-bold rounded-full border border-[#0faec1]/20">
+                        {stage.tag}
+                      </span>
                     </div>
-                )}
-            </div>
-        </div>
-      </section>
 
-      {/* Footer */}
-      <section id="contacto" className="bg-[#032149] py-20 text-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">{t.footer.title}</h2>
-          <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
-            <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
-            <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
+                    {/* Description */}
+                    <div className="text-slate-600 text-sm leading-relaxed mb-8">
+                      {renderFormattedContent(stage.desc)}
+                    </div>
+
+                    {/* Guarantee Box */}
+                    <div className="mt-auto bg-[#effcfd] rounded-2xl p-6 border border-[#0faec1]/10">
+                       <div className="flex items-center gap-2 mb-4">
+                          <Target className="w-4 h-4 text-[#0faec1]" />
+                          <span className="text-xs font-bold text-[#0faec1] uppercase tracking-wider">{stage.guaranteeTitle}</span>
+                       </div>
+                       <div className="space-y-1">
+                          {renderFormattedContent(stage.guarantees)}
+                       </div>
+                    </div>
+
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm"><p>{t.footer.rights}</p></div>
-        </div>
-      </section>
-    </div>
+        </section>
+
+        {/* Case Studies */}
+        <section id="casos" className="py-24 bg-white relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16"><h2 className="text-4xl md:text-5xl font-bold mb-4 text-[#032149]">{t.cases.title}</h2><p className="text-slate-600">{t.cases.subtitle}</p></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {t.cases.list.map((item, i) => (
+                <div key={i} className="bg-white rounded-2xl p-8 relative group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border border-slate-100" onClick={() => setExpandedCase(expandedCase === i ? null : i)}>
+                  <div className="absolute -top-6 right-8 w-14 h-14 bg-white rounded-full flex items-center justify-center border-4 border-slate-100 group-hover:border-[#6351d5] transition-colors shadow-lg"><Users className="w-6 h-6 text-[#6351d5]"/></div>
+                  <div className="inline-block px-4 py-1.5 bg-slate-100 text-slate-700 text-sm font-bold rounded-full mb-6 uppercase tracking-wider">{item.company}</div>
+                  <div className="mb-6"><div className="text-5xl font-extrabold text-[#6351d5] mb-2">{item.stat}</div><div className="text-slate-700 font-bold text-lg leading-tight">{item.label}</div></div>
+                  <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedCase === i ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}><div className="bg-slate-50 p-4 rounded-xl mb-4"><p className="text-xs font-bold text-slate-400 uppercase mb-1">{t.cases.challengeLabel}</p><p className="text-slate-700 text-sm mb-3">{item.challenge}</p><p className="text-xs font-bold text-[#6351d5] uppercase mb-1">{t.cases.solutionLabel}</p><p className="text-slate-700 text-sm">{item.solution}</p></div></div>
+                  <button className="flex items-center text-[#032149] font-bold text-sm group-hover:text-[#6351d5] transition-colors mt-auto">{expandedCase === i ? t.cases.btnHide : t.cases.btnRead} <ChevronUp className="w-4 h-4 ml-1" /></button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section id="team" className="py-20 bg-slate-50 relative">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+              <h2 className="text-3xl md:text-4xl font-bold mb-16 text-[#032149]">{t.team.title}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+                  <div className="flex flex-col items-center relative">
+                      <div className="relative mb-6"><div className="absolute -top-3 -right-3 w-48 h-48 border-t-4 border-r-4 border-[#45b6f7] rounded-tr-3xl z-0"></div><div className="absolute -bottom-3 -left-3 w-48 h-48 border-b-4 border-l-4 border-[#1a3690] rounded-bl-3xl z-0"></div><img src="https://i.imgur.com/O3vyNQB.png" alt="Alfonso" className="w-48 h-48 object-cover rounded-xl shadow-2xl relative z-10 filter grayscale hover:grayscale-0 transition-all duration-500"/></div>
+                      <h3 className="text-2xl font-bold text-[#032149] mb-2">Alfonso Sainz de Baranda</h3>
+                      <div className="px-6 py-1.5 bg-[#45b6f7]/20 text-[#1a3690] rounded-full font-bold text-sm mb-4">Founder & CEO</div>
+                      <p className="text-slate-600 leading-relaxed text-sm max-w-xs mx-auto">{t.team.bioAlfonso}</p>
+                  </div>
+                  <div className="flex flex-col items-center relative">
+                      <div className="relative mb-6"><div className="absolute -top-3 -right-3 w-48 h-48 border-t-4 border-r-4 border-[#45b6f7] rounded-tr-3xl z-0"></div><div className="absolute -bottom-3 -left-3 w-48 h-48 border-b-4 border-l-4 border-[#1a3690] rounded-bl-3xl z-0"></div><img src="https://i.imgur.com/CvKj1sd.png" alt="Martin" className="w-48 h-48 object-cover rounded-xl shadow-2xl relative z-10 filter grayscale hover:grayscale-0 transition-all duration-500"/></div>
+                      <h3 className="text-2xl font-bold text-[#032149] mb-2">Martin Fila</h3>
+                      <div className="px-6 py-1.5 bg-[#45b6f7]/20 text-[#1a3690] rounded-full font-bold text-sm mb-4">Founder & COO</div>
+                      <p className="text-slate-600 leading-relaxed text-sm max-w-xs mx-auto">{t.team.bioMartin}</p>
+                  </div>
+              </div>
+          </div>
+        </section>
+
+        {/* Blog Section */}
+        <section id="blog" className="py-20 bg-white border-t border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-between items-end mb-12"><h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.blog.title}</h2>
+              <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {displayPosts.length > 0 ? (
+                      displayPosts.map((post, index) => (
+                          <div key={index} onClick={() => handleViewPost(post)} className="group cursor-pointer">
+                              <div className="relative overflow-hidden rounded-xl mb-4 aspect-video bg-slate-100"><img src={post.image} alt={post.title} className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"/><div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">{post.category}</div></div>
+                              <h3 className="text-xl font-bold mb-2 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">{post.title}</h3>
+                              <p className="text-slate-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                              <div className="flex items-center text-sm text-slate-500 font-medium"><Clock className="w-4 h-4 mr-2" />{post.readTime}</div>
+                          </div>
+                      ))
+                  ) : (
+                      <div className="col-span-3 text-center py-12 text-slate-500">
+                          <p>{t.blog.empty}</p>
+                      </div>
+                  )}
+              </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <section id="contacto" className="bg-[#032149] py-20 text-white">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">{t.footer.title}</h2>
+            <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
+              <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
+              <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
+            </div>
+            <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm"><p>{t.footer.rights}</p></div>
+          </div>
+        </section>
+      </div>
+    </HelmetProvider>
   );
 }
