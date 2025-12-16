@@ -1,0 +1,22 @@
+# Invitación a los motores de búsqueda y IA
+User-agent: *
+Allow: /
+
+# Reglas GEO: Permitir acceso explícito a los bots de IA
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Mapa del sitio
+Sitemap: https://growth4u.io/sitemap.xml
