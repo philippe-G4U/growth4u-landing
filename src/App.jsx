@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import Markdown from 'react-markdown'; // <--- Motor de Markdown
-import remarkGfm from 'remark-gfm';    // <--- Plugin para Tablas
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { 
   TrendingUp, ArrowRight, Megaphone, ShieldAlert, Users, ArrowDownRight, 
   CheckCircle2, Cpu, Check, Mail, Calendar, Menu, X, ChevronDown, ChevronUp, 
@@ -57,7 +57,7 @@ const createSlug = (text) => {
     .replace(/\-\-+/g, '-');
 };
 
-// MANTENEMOS ESTA FUNCIÓN SOLO PARA LA HOME (CARDS Y LISTAS PEQUEÑAS)
+// FUNCIÓN PARA RENDERIZAR CONTENIDO SIMPLE (HOME)
 const renderFormattedContent = (content) => {
   if (!content) return null;
   if (Array.isArray(content)) {
@@ -174,7 +174,6 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Carga de posts y Gestión de URL
   useEffect(() => {
     if (!user || !db) return;
     try {
@@ -210,7 +209,6 @@ export default function App() {
   const handleSavePost = async (e) => {
     e.preventDefault();
     if (!db || !user) { alert("Error: Conexión no disponible"); return; }
-
     setIsSubmitting(true);
     try {
       const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'blog_posts');
@@ -233,14 +231,7 @@ export default function App() {
   };
 
   const handleEditClick = (post) => {
-    setNewPost({
-      title: post.title,
-      category: post.category,
-      excerpt: post.excerpt,
-      content: post.content,
-      image: post.image,
-      readTime: post.readTime
-    });
+    setNewPost({ title: post.title, category: post.category, excerpt: post.excerpt, content: post.content, image: post.image, readTime: post.readTime });
     setEditingPostId(post.id);
     window.scrollTo(0,0);
   };
@@ -268,7 +259,6 @@ export default function App() {
     const slug = createSlug(post.title);
     const newUrl = `${window.location.pathname}?articulo=${slug}`;
     window.history.pushState({ path: newUrl }, '', newUrl);
-    
     setSelectedPost(post);
     setView('post');
     window.scrollTo(0, 0);
@@ -300,180 +290,177 @@ export default function App() {
   const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
 
-  // --- VISTAS ---
-
-  if (view === 'admin') {
-    return (
-      <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit sticky top-8">
-             <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
-                <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
-             </div>
-             <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-200">
-               <strong>Guía de Formato (Markdown):</strong>
-               <ul className="list-disc ml-5 mt-2 space-y-1">
-                 <li><code>## Título</code> para subtítulos.</li>
-                 <li><code>**Negrita**</code> para énfasis.</li>
-                 <li><code>- Lista</code> para viñetas.</li>
-                 <li><code>&gt; Cita</code> para blockquotes.</li>
-                 <li>Para tablas, usa formato Markdown estándar.</li>
-               </ul>
-             </div>
-             <form onSubmit={handleSavePost} className="space-y-6">
-                <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="Título del artículo" />
-                <div className="grid grid-cols-2 gap-4">
-                  <select value={newPost.category} onChange={e => setNewPost({...newPost, category: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none">
-                    <option>Estrategia</option><option>Data & Analytics</option><option>Trust Engine</option>
-                  </select>
-                  <input type="text" value={newPost.readTime} onChange={e => setNewPost({...newPost, readTime: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="Ej: 5 min" />
-                </div>
-                <input required type="url" value={newPost.image} onChange={e => setNewPost({...newPost, image: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="URL de la imagen (debe terminar en .png o .jpg)" />
-                <textarea required value={newPost.excerpt} onChange={e => setNewPost({...newPost, excerpt: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-24 focus:ring-2 focus:ring-[#6351d5]" placeholder="Breve resumen (excerpt)..." />
-                <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-64 font-mono text-sm focus:ring-2 focus:ring-[#6351d5]" placeholder="Escribe aquí tu contenido usando Markdown..." />
-                
-                <div className="flex gap-4">
-                  <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#6351d5] text-white font-bold py-4 rounded-xl hover:bg-[#4b3db1] transition-colors shadow-lg">
-                    {isSubmitting ? 'Guardando...' : (editingPostId ? 'Actualizar Artículo' : 'Publicar Ahora')}
-                  </button>
-                  {editingPostId && (
-                    <button type="button" onClick={cancelEdit} className="px-6 py-4 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300">Cancelar</button>
-                  )}
-                </div>
-             </form>
-          </div>
-          <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos Publicados ({posts.length})</h2>
-            <div className="space-y-4">
-              {posts.map(post => (
-                <div key={post.id} className={`p-4 rounded-xl border flex gap-4 items-start transition-all ${editingPostId === post.id ? 'border-[#6351d5] bg-blue-50' : 'border-slate-100 hover:border-slate-300'}`}>
-                  <img src={post.image} alt="" className="w-16 h-16 rounded-lg object-cover bg-slate-200" />
-                  <div className="flex-1">
-                    <h4 className="font-bold text-sm text-[#032149] line-clamp-1">{post.title}</h4>
-                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">{post.excerpt}</p>
-                    <div className="flex items-center gap-2 mt-3">
-                      <button onClick={() => handleEditClick(post)} className="text-xs flex items-center gap-1 font-bold text-[#6351d5] hover:underline"><Edit2 className="w-3 h-3"/> Editar</button>
-                      <button onClick={() => handleDeleteClick(post.id)} className="text-xs flex items-center gap-1 font-bold text-red-500 hover:underline"><Trash2 className="w-3 h-3"/> Borrar</button>
+  // --- RENDERIZADO DE VISTAS (FUNCIÓN HELPER PARA EVITAR EL ERROR DEL PROVIDER) ---
+  const renderContent = () => {
+    if (view === 'admin') {
+        return (
+          <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit sticky top-8">
+                 <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
+                    <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
+                 </div>
+                 <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-200">
+                   <strong>Guía de Formato (Markdown):</strong>
+                   <ul className="list-disc ml-5 mt-2 space-y-1">
+                     <li><code>## Título</code> para subtítulos.</li>
+                     <li><code>**Negrita**</code> para énfasis.</li>
+                     <li><code>- Lista</code> para viñetas.</li>
+                     <li><code>&gt; Cita</code> para blockquotes.</li>
+                     <li>Para tablas, usa formato Markdown estándar.</li>
+                   </ul>
+                 </div>
+                 <form onSubmit={handleSavePost} className="space-y-6">
+                    <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="Título del artículo" />
+                    <div className="grid grid-cols-2 gap-4">
+                      <select value={newPost.category} onChange={e => setNewPost({...newPost, category: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none">
+                        <option>Estrategia</option><option>Data & Analytics</option><option>Trust Engine</option>
+                      </select>
+                      <input type="text" value={newPost.readTime} onChange={e => setNewPost({...newPost, readTime: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="Ej: 5 min" />
                     </div>
-                  </div>
+                    <input required type="url" value={newPost.image} onChange={e => setNewPost({...newPost, image: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="URL de la imagen (debe terminar en .png o .jpg)" />
+                    <textarea required value={newPost.excerpt} onChange={e => setNewPost({...newPost, excerpt: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-24 focus:ring-2 focus:ring-[#6351d5]" placeholder="Breve resumen (excerpt)..." />
+                    <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-64 font-mono text-sm focus:ring-2 focus:ring-[#6351d5]" placeholder="Escribe aquí tu contenido usando Markdown..." />
+                    
+                    <div className="flex gap-4">
+                      <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#6351d5] text-white font-bold py-4 rounded-xl hover:bg-[#4b3db1] transition-colors shadow-lg">
+                        {isSubmitting ? 'Guardando...' : (editingPostId ? 'Actualizar Artículo' : 'Publicar Ahora')}
+                      </button>
+                      {editingPostId && (
+                        <button type="button" onClick={cancelEdit} className="px-6 py-4 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300">Cancelar</button>
+                      )}
+                    </div>
+                 </form>
+              </div>
+              <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
+                <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos Publicados ({posts.length})</h2>
+                <div className="space-y-4">
+                  {posts.map(post => (
+                    <div key={post.id} className={`p-4 rounded-xl border flex gap-4 items-start transition-all ${editingPostId === post.id ? 'border-[#6351d5] bg-blue-50' : 'border-slate-100 hover:border-slate-300'}`}>
+                      <img src={post.image} alt="" className="w-16 h-16 rounded-lg object-cover bg-slate-200" />
+                      <div className="flex-1">
+                        <h4 className="font-bold text-sm text-[#032149] line-clamp-1">{post.title}</h4>
+                        <p className="text-xs text-slate-500 mt-1 line-clamp-2">{post.excerpt}</p>
+                        <div className="flex items-center gap-2 mt-3">
+                          <button onClick={() => handleEditClick(post)} className="text-xs flex items-center gap-1 font-bold text-[#6351d5] hover:underline"><Edit2 className="w-3 h-3"/> Editar</button>
+                          <button onClick={() => handleDeleteClick(post.id)} className="text-xs flex items-center gap-1 font-bold text-red-500 hover:underline"><Trash2 className="w-3 h-3"/> Borrar</button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {posts.length === 0 && <p className="text-center text-slate-400 py-10">No hay artículos aún.</p>}
                 </div>
-              ))}
-              {posts.length === 0 && <p className="text-center text-slate-400 py-10">No hay artículos aún.</p>}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    );
-  }
+        );
+    }
 
-  if (view === 'post' && selectedPost) {
-    const articleSchema = {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": selectedPost.title,
-      "description": selectedPost.excerpt,
-      "image": selectedPost.image,
-      "datePublished": selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toISOString() : new Date().toISOString(),
-      "dateModified": selectedPost.updatedAt ? new Date(selectedPost.updatedAt.seconds * 1000).toISOString() : new Date().toISOString(),
-      "author": {
-        "@type": "Person",
-        "name": "Equipo Growth4U",
-        "url": "https://www.linkedin.com/company/growth4u/"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Growth4U",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://i.imgur.com/imHxGWI.png"
-        }
-      },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`
-      }
-    };
+    if (view === 'post' && selectedPost) {
+        const articleSchema = {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": selectedPost.title,
+          "description": selectedPost.excerpt,
+          "image": selectedPost.image,
+          "datePublished": selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toISOString() : new Date().toISOString(),
+          "dateModified": selectedPost.updatedAt ? new Date(selectedPost.updatedAt.seconds * 1000).toISOString() : new Date().toISOString(),
+          "author": {
+            "@type": "Person",
+            "name": "Equipo Growth4U",
+            "url": "https://www.linkedin.com/company/growth4u/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Growth4U",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://i.imgur.com/imHxGWI.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`
+          }
+        };
 
+        return (
+          <div className="min-h-screen bg-white text-[#032149] font-sans selection:bg-[#45b6f7] selection:text-white">
+             <Helmet>
+                <title>{selectedPost.title} | Blog Growth4U</title>
+                <meta name="description" content={selectedPost.excerpt} />
+                <link rel="canonical" href={`${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`} />
+                <meta property="og:title" content={selectedPost.title} />
+                <meta property="og:description" content={selectedPost.excerpt} />
+                <meta property="og:image" content={selectedPost.image} />
+                <meta property="og:type" content="article" />
+                <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
+             </Helmet>
+
+             <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
+                <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
+                   <div className="flex items-center gap-0 cursor-pointer" onClick={handleClosePost}>
+                      <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" className="h-6 w-auto" />
+                   </div>
+                   <div className="flex items-center gap-4">
+                     <button onClick={copyLinkToClipboard} className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${copiedLink ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
+                        {copiedLink ? <CheckCircle className="w-4 h-4" /> : <LinkIcon className="w-4 h-4" />}
+                        {copiedLink ? 'Enlace copiado' : 'Copiar enlace'}
+                     </button>
+                     <button onClick={handleClosePost} className="text-sm font-bold text-[#6351d5] flex items-center gap-2 hover:underline"><ArrowLeft className="w-4 h-4" /> Volver</button>
+                   </div>
+                </div>
+             </nav>
+             <article className="pt-32 pb-20 max-w-3xl mx-auto px-4">
+                <span className="inline-block px-3 py-1 bg-[#6351d5]/10 text-[#6351d5] rounded-full text-xs font-bold uppercase tracking-wider mb-6">{selectedPost.category}</span>
+                <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#032149] leading-tight">{selectedPost.title}</h1>
+                
+                <div className="flex items-center gap-4 text-slate-500 text-sm mb-8 border-b border-slate-100 pb-8">
+                  <span className="flex items-center gap-1"><Clock className="w-4 h-4"/> {selectedPost.readTime}</span>
+                  <span>•</span>
+                  <span>{selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toLocaleDateString() : 'Fecha no disponible'}</span>
+                </div>
+
+                <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" />
+                
+                <div className="prose prose-lg prose-slate mx-auto text-[#032149]">
+                  <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">{selectedPost.excerpt}</p>
+                  
+                  {/* --- RENDERIZADO SEMÁNTICO GEO (IA FRIENDLY) --- */}
+                  <Markdown 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      h2: ({node, ...props}) => <h2 className="text-2xl font-bold mt-8 mb-4 text-[#032149]" {...props} />,
+                      h3: ({node, ...props}) => <h3 className="text-xl font-bold mt-6 mb-3 text-[#032149]" {...props} />,
+                      p: ({node, ...props}) => <p className="mb-4 leading-relaxed text-slate-700" {...props} />,
+                      ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-6 space-y-2 text-slate-700" {...props} />,
+                      ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-6 space-y-2 text-slate-700" {...props} />,
+                      li: ({node, ...props}) => <li className="pl-1" {...props} />,
+                      strong: ({node, ...props}) => <strong className="text-[#032149] font-bold" {...props} />,
+                      a: ({node, ...props}) => <a className="text-[#6351d5] underline hover:text-[#3f45fe] font-bold" {...props} />,
+                      blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-[#6351d5] pl-4 italic my-4 text-slate-600 bg-slate-50 py-2 pr-2 rounded-r" {...props} />,
+                      table: ({node, ...props}) => <div className="overflow-x-auto my-6"><table className="min-w-full divide-y divide-slate-200 border border-slate-200 rounded-lg" {...props} /></div>,
+                      thead: ({node, ...props}) => <thead className="bg-slate-50" {...props} />,
+                      th: ({node, ...props}) => <th className="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider" {...props} />,
+                      td: ({node, ...props}) => <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 border-t border-slate-100" {...props} />,
+                    }}
+                  >
+                    {selectedPost.content}
+                  </Markdown>
+                </div>
+                
+                <div className="mt-16 pt-10 border-t border-slate-200 text-center">
+                   <h3 className="text-2xl font-bold mb-6">¿Quieres aplicar esto en tu Fintech?</h3>
+                   <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">{t.nav.cta} <ArrowRight className="w-5 h-5"/></a>
+                </div>
+             </article>
+          </div>
+        );
+    }
+
+    // HOME VIEW (DEFAULT)
     return (
-      <div className="min-h-screen bg-white text-[#032149] font-sans selection:bg-[#45b6f7] selection:text-white">
-         <Helmet>
-            <title>{selectedPost.title} | Blog Growth4U</title>
-            <meta name="description" content={selectedPost.excerpt} />
-            <link rel="canonical" href={`${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`} />
-            <meta property="og:title" content={selectedPost.title} />
-            <meta property="og:description" content={selectedPost.excerpt} />
-            <meta property="og:image" content={selectedPost.image} />
-            <meta property="og:type" content="article" />
-            <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-         </Helmet>
-
-         <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
-            <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
-               <div className="flex items-center gap-0 cursor-pointer" onClick={handleClosePost}>
-                  <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" className="h-6 w-auto" />
-               </div>
-               <div className="flex items-center gap-4">
-                 <button onClick={copyLinkToClipboard} className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${copiedLink ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
-                    {copiedLink ? <CheckCircle className="w-4 h-4" /> : <LinkIcon className="w-4 h-4" />}
-                    {copiedLink ? 'Enlace copiado' : 'Copiar enlace'}
-                 </button>
-                 <button onClick={handleClosePost} className="text-sm font-bold text-[#6351d5] flex items-center gap-2 hover:underline"><ArrowLeft className="w-4 h-4" /> Volver</button>
-               </div>
-            </div>
-         </nav>
-         <article className="pt-32 pb-20 max-w-3xl mx-auto px-4">
-            <span className="inline-block px-3 py-1 bg-[#6351d5]/10 text-[#6351d5] rounded-full text-xs font-bold uppercase tracking-wider mb-6">{selectedPost.category}</span>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#032149] leading-tight">{selectedPost.title}</h1>
-            
-            <div className="flex items-center gap-4 text-slate-500 text-sm mb-8 border-b border-slate-100 pb-8">
-              <span className="flex items-center gap-1"><Clock className="w-4 h-4"/> {selectedPost.readTime}</span>
-              <span>•</span>
-              <span>{selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toLocaleDateString() : 'Fecha no disponible'}</span>
-            </div>
-
-            <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" />
-            
-            <div className="prose prose-lg prose-slate mx-auto text-[#032149]">
-              <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">{selectedPost.excerpt}</p>
-              
-              {/* --- RENDERIZADO SEMÁNTICO GEO (IA FRIENDLY) --- */}
-              <Markdown 
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  h2: ({node, ...props}) => <h2 className="text-2xl font-bold mt-8 mb-4 text-[#032149]" {...props} />,
-                  h3: ({node, ...props}) => <h3 className="text-xl font-bold mt-6 mb-3 text-[#032149]" {...props} />,
-                  p: ({node, ...props}) => <p className="mb-4 leading-relaxed text-slate-700" {...props} />,
-                  ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-6 space-y-2 text-slate-700" {...props} />,
-                  ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-6 space-y-2 text-slate-700" {...props} />,
-                  li: ({node, ...props}) => <li className="pl-1" {...props} />,
-                  strong: ({node, ...props}) => <strong className="text-[#032149] font-bold" {...props} />,
-                  a: ({node, ...props}) => <a className="text-[#6351d5] underline hover:text-[#3f45fe] font-bold" {...props} />,
-                  blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-[#6351d5] pl-4 italic my-4 text-slate-600 bg-slate-50 py-2 pr-2 rounded-r" {...props} />,
-                  table: ({node, ...props}) => <div className="overflow-x-auto my-6"><table className="min-w-full divide-y divide-slate-200 border border-slate-200 rounded-lg" {...props} /></div>,
-                  thead: ({node, ...props}) => <thead className="bg-slate-50" {...props} />,
-                  th: ({node, ...props}) => <th className="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider" {...props} />,
-                  td: ({node, ...props}) => <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 border-t border-slate-100" {...props} />,
-                }}
-              >
-                {selectedPost.content}
-              </Markdown>
-              {/* ----------------------------------------------- */}
-
-            </div>
-            
-            <div className="mt-16 pt-10 border-t border-slate-200 text-center">
-               <h3 className="text-2xl font-bold mb-6">¿Quieres aplicar esto en tu Fintech?</h3>
-               <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">{t.nav.cta} <ArrowRight className="w-5 h-5"/></a>
-            </div>
-         </article>
-      </div>
-    );
-  }
-
-  // MAIN VIEW
-  return (
-    <HelmetProvider>
       <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white overflow-x-hidden">
         <Helmet>
           <title>Growth4U | Growth Marketing Fintech B2B & B2C</title>
@@ -759,6 +746,13 @@ export default function App() {
           </div>
         </section>
       </div>
+    );
+  };
+
+  // MAIN RETURN (WRAPPING EVERYTHING IN PROVIDER)
+  return (
+    <HelmetProvider>
+      {renderContent()}
     </HelmetProvider>
   );
 }
