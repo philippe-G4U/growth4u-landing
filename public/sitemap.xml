@@ -2,28 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://growth4u.io/</loc>
-    <lastmod>2025-12-16</lastmod>
-    <changefreq>daily</changefreq>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
   <url>
-    <loc>https://growth4u.io/#problema</loc>
+    <loc>https://growth4u.io/?articulo=ha-muerto-el-seo-bienvenido-a-la-era-del-geo-generative-engine-optimization</loc>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://growth4u.io/#etapas</loc>
+    <loc>https://growth4u.io/?articulo=la-cronica-de-los-reinos-perdidos-excalibur-horus-y-el-fin-de-la-ceguera-estrategica</loc>
+    <lastmod>2025-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://growth4u.io/#casos</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://growth4u.io/#blog</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
   </url>
 </urlset>
