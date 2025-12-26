@@ -465,6 +465,10 @@ export default function App() {
         <Helmet>
           <title>Growth4U | Growth Marketing Fintech B2B & B2C</title>
           <meta name="description" content="Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza." />
+          
+          {/* ✅ AQUÍ ESTÁ EL CAMBIO IMPORTANTE PARA SOLUCIONAR EL ERROR DE GOOGLE */}
+          <link rel="canonical" href="https://growth4u.io/" />
+          
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
@@ -566,7 +570,7 @@ export default function App() {
               <div className="relative w-full overflow-hidden">
                   <div className="flex animate-scroll whitespace-nowrap gap-16 items-center">
                       {['bnext','bit2me','GoCardless','Lydia','Criptan','capitalontap','multimarkts','NEXTCHANCE', 'bnext','bit2me','GoCardless','Lydia'].map((logo, i) => (
-                         <span key={i} className="text-3xl font-bold font-sans text-slate-400 hover:text-[#6351d5] transition-colors cursor-default">{logo}</span>
+                          <span key={i} className="text-3xl font-bold font-sans text-slate-400 hover:text-[#6351d5] transition-colors cursor-default">{logo}</span>
                       ))}
                   </div>
               </div>
@@ -654,13 +658,13 @@ export default function App() {
 
                     {/* Guarantee Box */}
                     <div className="mt-auto bg-[#effcfd] rounded-2xl p-6 border border-[#0faec1]/10">
-                       <div className="flex items-center gap-2 mb-4">
-                          <Target className="w-4 h-4 text-[#0faec1]" />
-                          <span className="text-xs font-bold text-[#0faec1] uppercase tracking-wider">{stage.guaranteeTitle}</span>
-                       </div>
-                       <div className="space-y-1">
-                          {renderFormattedContent(stage.guarantees)}
-                       </div>
+                        <div className="flex items-center gap-2 mb-4">
+                           <Target className="w-4 h-4 text-[#0faec1]" />
+                           <span className="text-xs font-bold text-[#0faec1] uppercase tracking-wider">{stage.guaranteeTitle}</span>
+                        </div>
+                        <div className="space-y-1">
+                           {renderFormattedContent(stage.guarantees)}
+                        </div>
                     </div>
 
                   </div>
