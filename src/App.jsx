@@ -154,6 +154,11 @@ export default function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('admin') === 'true') setIsAdminMode(true);
+    
+    // Check for blog path on initial load
+    if (window.location.pathname === '/blog') {
+      setView('blog');
+    }
   }, []);
 
   useEffect(() => {
@@ -188,12 +193,15 @@ export default function App() {
         const params = new URLSearchParams(window.location.search);
         const urlSlug = params.get('articulo');
         
+        // Router Logic inside Snapshot to ensure posts are loaded
         if (urlSlug && loadedPosts.length > 0) {
            const foundPost = loadedPosts.find(p => createSlug(p.title) === urlSlug);
            if (foundPost) {
              setSelectedPost(foundPost);
              setView('post');
            }
+        } else if (window.location.pathname === '/blog') {
+            setView('blog');
         }
       }, (error) => {
         if(error.code !== 'permission-denied') console.log("Error al cargar posts:", error);
@@ -255,24 +263,50 @@ export default function App() {
     setNewPost({ title: '', category: 'Estrategia', excerpt: '', content: '', image: '', readTime: '5 min lectura' });
   };
 
+  // --- NAVIGATION HANDLERS ---
   const handleViewPost = (post) => {
     const slug = createSlug(post.title);
-    const newUrl = `${window.location.pathname}?articulo=${slug}`;
-    window.history.pushState({ path: newUrl }, '', newUrl);
+    const newUrl = `/blog?articulo=${slug}`; // Changed to keep it clean, or keep existing logic
+    const finalUrl = `${window.location.origin}${window.location.pathname === '/blog' ? '/blog' : ''}?articulo=${slug}`;
+    
+    // Standardizing URL for posts
+    window.history.pushState({ path: finalUrl }, '', `?articulo=${slug}`);
+    
     setSelectedPost(post);
     setView('post');
     window.scrollTo(0, 0);
   };
 
-  const handleClosePost = () => {
-    window.history.pushState({}, '', window.location.pathname);
+  const handleGoToBlogPage = () => {
+    window.history.pushState({}, '', '/blog');
+    setView('blog');
+    window.scrollTo(0, 0);
+    setIsMenuOpen(false);
+  };
+
+  const handleGoHome = () => {
+    window.history.pushState({}, '', '/');
     setView('home');
+    window.scrollTo(0, 0);
+    setIsMenuOpen(false);
+  };
+
+  const handleClosePost = () => {
+    // If we came from blog page, go back to blog, else home
+    const isBlogPath = window.location.pathname === '/blog';
+    if(isBlogPath) {
+        setView('blog');
+        window.history.pushState({}, '', '/blog');
+    } else {
+        setView('home');
+        window.history.pushState({}, '', '/');
+    }
   };
    
   const copyLinkToClipboard = () => {
       if (!selectedPost) return;
       const slug = createSlug(selectedPost.title);
-      const url = `${window.location.origin}${window.location.pathname}?articulo=${slug}`;
+      const url = `${window.location.origin}?articulo=${slug}`;
       try {
         const dummy = document.createElement("textarea");
         document.body.appendChild(dummy);
@@ -288,9 +322,12 @@ export default function App() {
   };
 
   const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
+  
+  // Logic to show only 6 posts on home, all on blog
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
+  const homePosts = displayPosts.slice(0, 6);
 
-  // --- RENDERIZADO DE VISTAS (FUNCIÓN HELPER PARA EVITAR EL ERROR DEL PROVIDER) ---
+  // --- RENDERIZADO DE VISTAS ---
   const renderContent = () => {
     if (view === 'admin') {
         return (
@@ -301,6 +338,7 @@ export default function App() {
                     <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
                     <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
                  </div>
+                 {/* Form content same as before */}
                  <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-200">
                    <strong>Guía de Formato (Markdown):</strong>
                    <ul className="list-disc ml-5 mt-2 space-y-1">
@@ -308,7 +346,6 @@ export default function App() {
                      <li><code>**Negrita**</code> para énfasis.</li>
                      <li><code>- Lista</code> para viñetas.</li>
                      <li><code>&gt; Cita</code> para blockquotes.</li>
-                     <li>Para tablas, usa formato Markdown estándar.</li>
                    </ul>
                  </div>
                  <form onSubmit={handleSavePost} className="space-y-6">
@@ -365,23 +402,11 @@ export default function App() {
           "description": selectedPost.excerpt,
           "image": selectedPost.image,
           "datePublished": selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toISOString() : new Date().toISOString(),
-          "dateModified": selectedPost.updatedAt ? new Date(selectedPost.updatedAt.seconds * 1000).toISOString() : new Date().toISOString(),
-          "author": {
-            "@type": "Person",
-            "name": "Equipo Growth4U",
-            "url": "https://www.linkedin.com/company/growth4u/"
-          },
+          "author": { "@type": "Person", "name": "Equipo Growth4U" },
           "publisher": {
             "@type": "Organization",
             "name": "Growth4U",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://i.imgur.com/imHxGWI.png"
-            }
-          },
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": `${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`
+            "logo": { "@type": "ImageObject", "url": "https://i.imgur.com/imHxGWI.png" }
           }
         };
 
@@ -390,11 +415,6 @@ export default function App() {
              <Helmet>
                 <title>{selectedPost.title} | Blog Growth4U</title>
                 <meta name="description" content={selectedPost.excerpt} />
-                <link rel="canonical" href={`${typeof window !== 'undefined' ? window.location.origin : ''}${typeof window !== 'undefined' ? window.location.pathname : ''}?articulo=${createSlug(selectedPost.title)}`} />
-                <meta property="og:title" content={selectedPost.title} />
-                <meta property="og:description" content={selectedPost.excerpt} />
-                <meta property="og:image" content={selectedPost.image} />
-                <meta property="og:type" content="article" />
                 <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
              </Helmet>
 
@@ -427,7 +447,6 @@ export default function App() {
                 <div className="prose prose-lg prose-slate mx-auto text-[#032149]">
                   <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">{selectedPost.excerpt}</p>
                   
-                  {/* --- RENDERIZADO SEMÁNTICO GEO (IA FRIENDLY) --- */}
                   <Markdown 
                     remarkPlugins={[remarkGfm]}
                     components={{
@@ -459,16 +478,90 @@ export default function App() {
         );
     }
 
+    // --- BLOG PAGE VIEW ---
+    if (view === 'blog') {
+      return (
+        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white">
+          <Helmet>
+            <title>Blog | Growth4U</title>
+            <meta name="description" content="Insights y estrategias de Growth para Fintechs B2B y B2C." />
+            <link rel="canonical" href="https://growth4u.io/blog" />
+          </Helmet>
+
+          {/* Nav Simplificado para Blog */}
+          <div className="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
+            <nav className="nav-island w-full max-w-6xl">
+              <div className="px-6 sm:px-8">
+                <div className="flex items-center justify-between h-16">
+                  <div className="flex items-center gap-0 cursor-pointer group flex-shrink-0" onClick={handleGoHome}>
+                    <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U Logo" className="h-5 md:h-6 w-auto object-contain transition-transform group-hover:scale-105" />
+                  </div>
+                  <div className="hidden md:flex items-center gap-6">
+                    <button onClick={handleGoHome} className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">Home</button>
+                    <span className="text-[#6351d5] px-2 py-2 rounded-md text-sm font-bold">Blog</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg">{t.nav.cta}</a>
+                  </div>
+                </div>
+              </div>
+            </nav>
+          </div>
+
+          <section className="pt-40 pb-20 px-4">
+             <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                   <span className="inline-block px-4 py-2 rounded-full bg-blue-50 text-[#6351d5] font-bold text-sm mb-4">INSIGHTS & ESTRATEGIA</span>
+                   <h1 className="text-4xl md:text-6xl font-extrabold text-[#032149] mb-6">Blog Growth4U</h1>
+                   <p className="text-xl text-slate-600 max-w-2xl mx-auto">Recursos estratégicos para escalar tu fintech sin depender de paid media.</p>
+                </div>
+
+                <div className="flex justify-end mb-8">
+                    <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {displayPosts.map((post, index) => (
+                      <div key={index} onClick={() => handleViewPost(post)} className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1">
+                          <div className="relative aspect-video bg-slate-100 overflow-hidden">
+                            <img src={post.image} alt={post.title} className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" />
+                            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">{post.category}</div>
+                          </div>
+                          <div className="p-6">
+                            <h3 className="text-xl font-bold mb-3 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">{post.title}</h3>
+                            <p className="text-slate-600 text-sm mb-4 line-clamp-3 leading-relaxed">{post.excerpt}</p>
+                            <div className="flex items-center justify-between text-sm text-slate-500 pt-4 border-t border-slate-50">
+                               <div className="flex items-center"><Clock className="w-4 h-4 mr-2" />{post.readTime}</div>
+                               <span className="text-[#6351d5] font-bold flex items-center gap-1 group-hover:gap-2 transition-all">Leer más <ArrowRight className="w-4 h-4"/></span>
+                            </div>
+                          </div>
+                      </div>
+                  ))}
+                </div>
+             </div>
+          </section>
+
+          <section id="contacto" className="bg-[#032149] py-20 text-white">
+            <div className="max-w-4xl mx-auto px-4 text-center">
+              <h2 className="text-3xl md:text-5xl font-bold mb-6">{t.footer.title}</h2>
+              <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
+                <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
+                <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
+              </div>
+              <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm"><p>{t.footer.rights}</p></div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
     // HOME VIEW (DEFAULT)
     return (
       <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white overflow-x-hidden">
         <Helmet>
           <title>Growth4U | Growth Marketing Fintech B2B & B2C</title>
           <meta name="description" content="Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza." />
-          
-          {/* ✅ AQUÍ ESTÁ EL CAMBIO IMPORTANTE PARA SOLUCIONAR EL ERROR DE GOOGLE */}
           <link rel="canonical" href="https://growth4u.io/" />
-          
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
@@ -513,7 +606,8 @@ export default function App() {
                     <a href="#etapas" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.methodology}</a>
                     <a href="#casos" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.cases}</a>
                     <a href="#team" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.team}</a>
-                    <a href="#blog" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.blog}</a>
+                    {/* Botón Blog modificado para ir a la página dedicada */}
+                    <button onClick={handleGoToBlogPage} className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.blog}</button>
                   </div>
                   <button onClick={toggleLang} className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full text-xs font-bold text-[#032149] transition-colors border border-slate-200">
                       <Globe className="w-3 h-3" /> {lang === 'es' ? 'EN' : 'ES'}
@@ -537,7 +631,7 @@ export default function App() {
                   <a href="#etapas" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.methodology}</a>
                   <a href="#casos" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.cases}</a>
                   <a href="#team" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.team}</a>
-                  <a href="#blog" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.blog}</a>
+                  <button onClick={handleGoToBlogPage} className="text-[#032149] hover:text-[#6351d5] block w-full text-left px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.blog}</button>
                   <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center whitespace-nowrap">{t.nav.cta}</a>
                 </div>
               </div>
@@ -713,15 +807,16 @@ export default function App() {
           </div>
         </section>
 
-        {/* Blog Section */}
-        <section id="blog" className="py-20 bg-white border-t border-slate-200">
+        {/* Blog Section (HOME PREVIEW - MAX 6) */}
+        <section id="blog-preview" className="py-20 bg-white border-t border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-end mb-12"><h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.blog.title}</h2>
-              <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
+              <div className="flex justify-between items-end mb-12">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">Últimos Insights</h2>
+                  <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {displayPosts.length > 0 ? (
-                      displayPosts.map((post, index) => (
+                  {homePosts.length > 0 ? (
+                      homePosts.map((post, index) => (
                           <div key={index} onClick={() => handleViewPost(post)} className="group cursor-pointer">
                               <div className="relative overflow-hidden rounded-xl mb-4 aspect-video bg-slate-100"><img src={post.image} alt={post.title} className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"/><div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">{post.category}</div></div>
                               <h3 className="text-xl font-bold mb-2 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">{post.title}</h3>
@@ -734,6 +829,13 @@ export default function App() {
                           <p>{t.blog.empty}</p>
                       </div>
                   )}
+              </div>
+              
+              {/* Button to go to dedicated Blog Page */}
+              <div className="mt-12 text-center">
+                  <button onClick={handleGoToBlogPage} className="inline-flex items-center justify-center gap-2 border-2 border-[#6351d5] text-[#6351d5] hover:bg-[#6351d5] hover:text-white font-bold py-3 px-8 rounded-full transition-all duration-300">
+                      {t.blog.cta} <ArrowRight className="w-5 h-5"/>
+                  </button>
               </div>
           </div>
         </section>
