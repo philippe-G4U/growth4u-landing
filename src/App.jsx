@@ -266,7 +266,6 @@ export default function App() {
   // --- NAVIGATION HANDLERS ---
   const handleViewPost = (post) => {
     const slug = createSlug(post.title);
-    const newUrl = `/blog?articulo=${slug}`; // Changed to keep it clean, or keep existing logic
     const finalUrl = `${window.location.origin}${window.location.pathname === '/blog' ? '/blog' : ''}?articulo=${slug}`;
     
     // Standardizing URL for posts
@@ -330,24 +329,61 @@ export default function App() {
   // --- RENDERIZADO DE VISTAS ---
   const renderContent = () => {
     if (view === 'admin') {
+        // --- FUNCIÓN GENERADORA DE SITEMAP (NUEVO) ---
+        const handleCopySitemap = () => {
+            const baseUrl = "https://growth4u.io";
+            const today = new Date().toISOString().split('T')[0];
+            
+            let xml = `<url>
+  <loc>${baseUrl}/</loc>
+  <lastmod>${today}</lastmod>
+  <priority>1.0</priority>
+</url>
+<url>
+  <loc>${baseUrl}/blog</loc>
+  <lastmod>${today}</lastmod>
+  <priority>0.8</priority>
+</url>
+
+`;
+            posts.forEach(post => {
+                const slug = createSlug(post.title);
+                const date = post.updatedAt 
+                    ? new Date(post.updatedAt.seconds * 1000).toISOString().split('T')[0] 
+                    : today;
+                
+                xml += `<url>
+  <loc>${baseUrl}/blog?articulo=${slug}</loc>
+  <lastmod>${date}</lastmod>
+  <priority>0.7</priority>
+</url>
+`;
+            });
+
+            navigator.clipboard.writeText(xml);
+            alert("¡Sitemap copiado! Ahora pégalo en tu archivo sitemap.xml");
+        };
+
         return (
           <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
             <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* COLUMNA IZQUIERDA: EDITOR */}
               <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit sticky top-8">
                  <div className="flex justify-between items-center mb-8">
                     <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
                     <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
                  </div>
-                 {/* Form content same as before */}
+                 
                  <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-200">
                    <strong>Guía de Formato (Markdown):</strong>
                    <ul className="list-disc ml-5 mt-2 space-y-1">
                      <li><code>## Título</code> para subtítulos.</li>
                      <li><code>**Negrita**</code> para énfasis.</li>
                      <li><code>- Lista</code> para viñetas.</li>
-                     <li><code>&gt; Cita</code> para blockquotes.</li>
                    </ul>
                  </div>
+
                  <form onSubmit={handleSavePost} className="space-y-6">
                     <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="Título del artículo" />
                     <div className="grid grid-cols-2 gap-4">
@@ -370,25 +406,46 @@ export default function App() {
                     </div>
                  </form>
               </div>
-              <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
-                <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos Publicados ({posts.length})</h2>
-                <div className="space-y-4">
-                  {posts.map(post => (
-                    <div key={post.id} className={`p-4 rounded-xl border flex gap-4 items-start transition-all ${editingPostId === post.id ? 'border-[#6351d5] bg-blue-50' : 'border-slate-100 hover:border-slate-300'}`}>
-                      <img src={post.image} alt="" className="w-16 h-16 rounded-lg object-cover bg-slate-200" />
-                      <div className="flex-1">
-                        <h4 className="font-bold text-sm text-[#032149] line-clamp-1">{post.title}</h4>
-                        <p className="text-xs text-slate-500 mt-1 line-clamp-2">{post.excerpt}</p>
-                        <div className="flex items-center gap-2 mt-3">
-                          <button onClick={() => handleEditClick(post)} className="text-xs flex items-center gap-1 font-bold text-[#6351d5] hover:underline"><Edit2 className="w-3 h-3"/> Editar</button>
-                          <button onClick={() => handleDeleteClick(post.id)} className="text-xs flex items-center gap-1 font-bold text-red-500 hover:underline"><Trash2 className="w-3 h-3"/> Borrar</button>
+
+              {/* COLUMNA DERECHA: LISTA Y HERRAMIENTAS SEO */}
+              <div className="space-y-8">
+                  {/* CAJA 1: SEO TOOLS (NUEVO) */}
+                  <div className="bg-[#effcfd] rounded-3xl shadow-sm border border-[#0faec1]/30 p-6">
+                      <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-[#0faec1]">
+                          <Globe className="w-5 h-5"/> Herramientas SEO
+                      </h2>
+                      <p className="text-sm text-slate-600 mb-4">
+                          Genera la lista de URLs de tus {posts.length} artículos para actualizar Google Search Console.
+                      </p>
+                      <button 
+                          onClick={handleCopySitemap}
+                          className="w-full py-3 bg-white border border-[#0faec1] text-[#0faec1] font-bold rounded-xl hover:bg-[#0faec1] hover:text-white transition-all flex items-center justify-center gap-2 shadow-sm"
+                      >
+                          <LinkIcon className="w-4 h-4"/> Copiar URLs para Sitemap XML
+                      </button>
+                  </div>
+
+                  {/* CAJA 2: LISTA DE ARTÍCULOS */}
+                  <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
+                    <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos ({posts.length})</h2>
+                    <div className="space-y-4">
+                      {posts.map(post => (
+                        <div key={post.id} className={`p-4 rounded-xl border flex gap-4 items-start transition-all ${editingPostId === post.id ? 'border-[#6351d5] bg-blue-50' : 'border-slate-100 hover:border-slate-300'}`}>
+                          <img src={post.image} alt="" className="w-16 h-16 rounded-lg object-cover bg-slate-200" />
+                          <div className="flex-1">
+                            <h4 className="font-bold text-sm text-[#032149] line-clamp-1">{post.title}</h4>
+                            <div className="flex items-center gap-2 mt-3">
+                              <button onClick={() => handleEditClick(post)} className="text-xs flex items-center gap-1 font-bold text-[#6351d5] hover:underline"><Edit2 className="w-3 h-3"/> Editar</button>
+                              <button onClick={() => handleDeleteClick(post.id)} className="text-xs flex items-center gap-1 font-bold text-red-500 hover:underline"><Trash2 className="w-3 h-3"/> Borrar</button>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      ))}
+                      {posts.length === 0 && <p className="text-center text-slate-400 py-10">No hay artículos aún.</p>}
                     </div>
-                  ))}
-                  {posts.length === 0 && <p className="text-center text-slate-400 py-10">No hay artículos aún.</p>}
-                </div>
+                  </div>
               </div>
+
             </div>
           </div>
         );
@@ -415,6 +472,8 @@ export default function App() {
              <Helmet>
                 <title>{selectedPost.title} | Blog Growth4U</title>
                 <meta name="description" content={selectedPost.excerpt} />
+                {/* CANONICAL DINÁMICA CORRECTA */}
+                <link rel="canonical" href={`https://growth4u.io/?articulo=${createSlug(selectedPost.title)}`} />
                 <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
              </Helmet>
 
@@ -485,6 +544,7 @@ export default function App() {
           <Helmet>
             <title>Blog | Growth4U</title>
             <meta name="description" content="Insights y estrategias de Growth para Fintechs B2B y B2C." />
+            {/* CANONICAL PARA BLOG */}
             <link rel="canonical" href="https://growth4u.io/blog" />
           </Helmet>
 
@@ -521,6 +581,7 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {/* MUESTRA TODOS LOS POSTS */}
                   {displayPosts.map((post, index) => (
                       <div key={index} onClick={() => handleViewPost(post)} className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1">
                           <div className="relative aspect-video bg-slate-100 overflow-hidden">
@@ -561,6 +622,7 @@ export default function App() {
         <Helmet>
           <title>Growth4U | Growth Marketing Fintech B2B & B2C</title>
           <meta name="description" content="Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza." />
+          {/* CANONICAL PARA HOME */}
           <link rel="canonical" href="https://growth4u.io/" />
           <script type="application/ld+json">
             {JSON.stringify({
@@ -622,6 +684,7 @@ export default function App() {
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-[#032149] hover:text-[#6351d5] focus:outline-none"><Menu className="h-6 w-6" /></button>
                 </div>
               </div>
+            </div>
             </div>
             {isMenuOpen && (
               <div className="absolute top-20 left-0 right-0 mx-4 bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden animate-in slide-in-from-top-2">
