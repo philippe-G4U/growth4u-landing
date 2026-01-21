@@ -127,10 +127,10 @@ export default function App() {
   const [view, setView] = useState('home');
   const [lang, setLang] = useState('es'); 
   const t = translations[lang]; 
-   
+    
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedCase, setExpandedCase] = useState(null);
-   
+    
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [user, setUser] = useState(null);
@@ -169,7 +169,7 @@ export default function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('admin') === 'true') setIsAdminMode(true);
-    
+     
     // Check for blog path on initial load
     if (window.location.pathname === '/blog') {
       setView('blog');
@@ -228,7 +228,7 @@ export default function App() {
   }, [user]);
 
   // --- FUNCIONES CRUD ---
-   
+    
   const handleSavePost = async (e) => {
     e.preventDefault();
     if (!db || !user) { alert("Error: Conexión no disponible"); return; }
@@ -282,10 +282,10 @@ export default function App() {
   const handleViewPost = (post) => {
     const slug = createSlug(post.title);
     const finalUrl = `${window.location.origin}${window.location.pathname === '/blog' ? '/blog' : ''}?articulo=${slug}`;
-    
+     
     // Standardizing URL for posts
     window.history.pushState({ path: finalUrl }, '', `?articulo=${slug}`);
-    
+     
     setSelectedPost(post);
     setView('post');
     window.scrollTo(0, 0);
@@ -316,7 +316,7 @@ export default function App() {
         window.history.pushState({}, '', '/');
     }
   };
-   
+    
   const copyLinkToClipboard = () => {
       if (!selectedPost) return;
       const slug = createSlug(selectedPost.title);
@@ -336,7 +336,7 @@ export default function App() {
   };
 
   const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
-  
+   
   // Logic to show only 6 posts on home, all on blog
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
   const homePosts = displayPosts.slice(0, 6);
@@ -489,6 +489,7 @@ export default function App() {
                 <meta name="description" content={selectedPost.excerpt} />
                 {/* CANONICAL DINÁMICA CORRECTA (AÑADIDO /blog) */}
                 <link rel="canonical" href={`https://growth4u.io/blog?articulo=${createSlug(selectedPost.title)}`} />
+                <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
                 <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
              </Helmet>
 
@@ -561,6 +562,7 @@ export default function App() {
             <meta name="description" content="Insights y estrategias de Growth para Fintechs B2B y B2C." />
             {/* CANONICAL PARA BLOG */}
             <link rel="canonical" href="https://growth4u.io/blog" />
+            <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
           </Helmet>
 
           {/* Nav Simplificado para Blog */}
@@ -639,6 +641,7 @@ export default function App() {
           <meta name="description" content="Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza." />
           {/* CANONICAL PARA HOME */}
           <link rel="canonical" href="https://growth4u.io/" />
+          <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
