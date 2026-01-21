@@ -8,7 +8,7 @@ import {
   ArrowUpRight, Clock, Target, Settings, BarChart3, Search, Zap, Layers, 
   Share2, MessageCircle, Gift, RefreshCw, Rocket, Briefcase, Smartphone, 
   Lock, LayoutDashboard, Users2, Plus, ArrowLeft, Save, Building2,
-  TrendingDown, Bot, Landmark, Globe, Trash2, Edit2, Link as LinkIcon, CheckCircle
+  TrendingDown, Bot, Landmark, Globe, Trash2, Edit2, Link as LinkIcon, CheckCircle, Cookie
 } from 'lucide-react';
 
 // --- FIREBASE IMPORTS ---
@@ -57,7 +57,6 @@ const createSlug = (text) => {
     .replace(/\-\-+/g, '-');
 };
 
-// FUNCIÓN PARA RENDERIZAR CONTENIDO SIMPLE (HOME)
 const renderFormattedContent = (content) => {
   if (!content) return null;
   if (Array.isArray(content)) {
@@ -108,7 +107,7 @@ const translations = {
     cases: { title: "Casos de Éxito", subtitle: "Resultados reales auditados.", list: [ { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." }, { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." } ], btnRead: "Leer caso completo", btnHide: "Ver menos", challengeLabel: "Reto", solutionLabel: "Solución" },
     team: { title: "Trust es lo importante, conócenos", bioAlfonso: "Especialista en growth con más de diez años lanzando y escalando productos en fintech.", bioMartin: "Especialista en growth técnico con más de diez años creando sistemas de automatización y datos que escalan operaciones." },
     blog: { title: "Blog & Insights", subtitle: "Strategic resources to scale your fintech.", cta: "Ver todos los artículos", readTime: "min lectura", admin: "Admin", empty: "Próximamente nuevos artículos...", defaults: [] },
-    footer: { title: "Escala tu Fintech hoy.", ctaEmail: "accounts@growth4u.io", ctaCall: "Agendar Llamada", rights: "© 2025 Growth4U. Todos los derechos reservados.", privacy: "Política de Privacidad", terms: "Términos de Servicio" }
+    footer: { title: "Escala tu Fintech hoy.", ctaEmail: "accounts@growth4u.io", ctaCall: "Agendar Llamada", rights: "© 2025 Growth4U. Todos los derechos reservados.", privacy: "Política de Privacidad", terms: "Política de Cookies" }
   },
   en: {
     nav: { problem: "Problem", results: "Results", methodology: "Services", cases: "Cases", team: "Team", blog: "Blog", cta: "Book a Call" },
@@ -119,7 +118,7 @@ const translations = {
     cases: { title: "Success Stories", subtitle: "Real audited results.", list: [ { company: "BNEXT", stat: "500K", label: "Active users", highlight: "achieved in 30 months", summary: "From 0 to 500,000 users in 30 months, without spending millions on advertising.", challenge: "Scaling the user base in a competitive market without relying exclusively on massive paid media.", solution: "We built a growth system based on trust and virality." }, { company: "BIT2ME", stat: "-70%", label: "CAC Reduction", highlight: "implementing Trust Engine", summary: "We reduced CAC by 70% implementing the Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "We optimized data, segmentation and activation to double the value of each client." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR reached", highlight: "in 6 months from launch", summary: "Launch from scratch in Spain and Portugal reaching 10k MRR quickly.", challenge: "Entry into new markets without previous brand presence.", solution: "Strategy focused on content, alliances and intelligent sales." } ], btnRead: "Read full case", btnHide: "Show less", challengeLabel: "Challenge", solutionLabel: "Solution" },
     team: { title: "Trust is what matters, get to know us", bioAlfonso: "Growth specialist with more than ten years launching and scaling fintech products.", bioMartin: "Technical growth specialist with more than ten years creating automation and data systems that scale operations." },
     blog: { title: "Blog & Insights", subtitle: "Strategic resources to scale your fintech.", cta: "View all articles", readTime: "min read", admin: "Admin", empty: "Coming soon...", defaults: [] },
-    footer: { title: "Scale your Fintech today.", ctaEmail: "accounts@growth4u.io", ctaCall: "Book a Call", rights: "© 2025 Growth4U. All rights reserved.", privacy: "Privacy Policy", terms: "Terms of Service" }
+    footer: { title: "Scale your Fintech today.", ctaEmail: "accounts@growth4u.io", ctaCall: "Book a Call", rights: "© 2025 Growth4U. All rights reserved.", privacy: "Privacy Policy", terms: "Cookie Policy" }
   }
 };
 
@@ -130,6 +129,9 @@ export default function App() {
     
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedCase, setExpandedCase] = useState(null);
+  
+  // Estado para el banner de cookies
+  const [cookieConsent, setCookieConsent] = useState('unknown'); // 'unknown', 'accepted', 'rejected'
     
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -150,19 +152,42 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const bookingLink = "https://now.growth4u.io/widget/bookings/growth4u_demo";
 
-  // --- HOOK: REDIRECCIÓN FORZADA (SEO FIX) ---
-  // Si alguien entra a growth4u.io/?articulo=... se redirige a /blog?articulo=...
+  // --- COOKIE LOGIC ---
   useEffect(() => {
+    const savedConsent = localStorage.getItem('growth4u_consent');
+    if (savedConsent) {
+        setCookieConsent(savedConsent);
+    }
+  }, []);
+
+  const handleAcceptCookies = () => {
+    localStorage.setItem('growth4u_consent', 'accepted');
+    setCookieConsent('accepted');
+  };
+
+  const handleRejectCookies = () => {
+    localStorage.setItem('growth4u_consent', 'rejected');
+    setCookieConsent('rejected');
+  };
+
+  // --- HOOK: REDIRECCIÓN FORZADA (SEO FIX) & ROUTING LEGAL ---
+  useEffect(() => {
+    // Check for blog post
     if (window.location.pathname === '/' && window.location.search.includes('articulo=')) {
       const params = new URLSearchParams(window.location.search);
       const slug = params.get('articulo');
       if (slug) {
-        // Redirección suave (sin recargar, pero cambia la URL)
         window.history.replaceState(null, '', `/blog?articulo=${slug}`);
-        // Forzamos la vista de blog/post para asegurarnos que la app responda
         setView('post');
       }
     }
+    
+    // Check for Legal Pages via URL query (e.g., ?page=privacidad)
+    const params = new URLSearchParams(window.location.search);
+    const pageParam = params.get('page');
+    if (pageParam === 'privacidad') setView('privacy');
+    if (pageParam === 'cookies') setView('cookies');
+
   }, []);
 
   // --- HOOKS EXISTENTES ---
@@ -208,7 +233,6 @@ export default function App() {
         const params = new URLSearchParams(window.location.search);
         const urlSlug = params.get('articulo');
         
-        // Router Logic inside Snapshot to ensure posts are loaded
         if (urlSlug && loadedPosts.length > 0) {
            const foundPost = loadedPosts.find(p => createSlug(p.title) === urlSlug);
            if (foundPost) {
@@ -282,10 +306,7 @@ export default function App() {
   const handleViewPost = (post) => {
     const slug = createSlug(post.title);
     const finalUrl = `${window.location.origin}${window.location.pathname === '/blog' ? '/blog' : ''}?articulo=${slug}`;
-     
-    // Standardizing URL for posts
     window.history.pushState({ path: finalUrl }, '', `?articulo=${slug}`);
-     
     setSelectedPost(post);
     setView('post');
     window.scrollTo(0, 0);
@@ -305,8 +326,19 @@ export default function App() {
     setIsMenuOpen(false);
   };
 
+  const handleGoPrivacy = () => {
+      window.history.pushState({}, '', '?page=privacidad');
+      setView('privacy');
+      window.scrollTo(0, 0);
+  };
+
+  const handleGoCookies = () => {
+      window.history.pushState({}, '', '?page=cookies');
+      setView('cookies');
+      window.scrollTo(0, 0);
+  };
+
   const handleClosePost = () => {
-    // If we came from blog page, go back to blog, else home
     const isBlogPath = window.location.pathname === '/blog';
     if(isBlogPath) {
         setView('blog');
@@ -337,68 +369,205 @@ export default function App() {
 
   const toggleLang = () => setLang(prev => prev === 'es' ? 'en' : 'es');
    
-  // Logic to show only 6 posts on home, all on blog
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
   const homePosts = displayPosts.slice(0, 6);
 
+  // --- COMPONENTE LEGAL VIEW (PARA PRIVACIDAD Y COOKIES) ---
+  const LegalView = ({ type }) => {
+      const isPrivacy = type === 'privacy';
+      const title = isPrivacy ? "Política de Privacidad" : "Política de Cookies";
+      
+      return (
+        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white">
+            <Helmet>
+                <title>{title} | Growth4U</title>
+                <meta name="description" content={`Consulta nuestra ${title} para conocer cómo gestionamos tus datos en Growth4U.`} />
+                <link rel="canonical" href={`https://growth4u.io/?page=${isPrivacy ? 'privacidad' : 'cookies'}`} />
+                <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
+            </Helmet>
+
+            <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
+                <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
+                   <div className="flex items-center gap-0 cursor-pointer" onClick={handleGoHome}>
+                      <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" className="h-6 w-auto" />
+                   </div>
+                   <button onClick={handleGoHome} className="text-sm font-bold text-[#6351d5] flex items-center gap-2 hover:underline">
+                       <ArrowLeft className="w-4 h-4" /> Volver a Home
+                   </button>
+                </div>
+            </nav>
+
+            <div className="pt-32 pb-20 max-w-3xl mx-auto px-6">
+                <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-100">
+                    <h1 className="text-3xl md:text-4xl font-extrabold mb-8 text-[#032149]">{title}</h1>
+                    <div className="prose prose-slate max-w-none text-slate-600 prose-headings:text-[#032149] prose-a:text-[#6351d5]">
+                        
+                        {isPrivacy ? (
+                            <>
+                                <p className="lead">Responsable: Growth Systems Now, S.L. ("Growth4U")</p>
+                                
+                                <h3>1. Finalidad</h3>
+                                <p>Gestión de consultas, prestación de servicios, comunicaciones comerciales B2B y análisis de mercado.</p>
+
+                                <h3>2. Legitimación</h3>
+                                <p>Ejecución de contrato, interés legítimo (marketing B2B) y consentimiento del interesado.</p>
+
+                                <h3>3. Destinatarios</h3>
+                                <p>Proveedores de servicios (encargados del tratamiento) y obligaciones legales. No se ceden datos a terceros para fines comerciales ajenos.</p>
+
+                                <h3>4. Derechos</h3>
+                                <p>Acceso, rectificación, supresión, oposición, portabilidad y limitación del tratamiento.</p>
+
+                                <hr className="my-8"/>
+
+                                <h3>1.1. Normativa aplicable</h3>
+                                <p>Esta política se adapta a las siguientes normas:</p>
+                                <ul>
+                                    <li>Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016 (RGPD).</li>
+                                    <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</li>
+                                    <li>Demás normativa española que resulte aplicable en materia de protección de datos.</li>
+                                </ul>
+
+                                <h3>1.2. Responsable del tratamiento</h3>
+                                <p>
+                                    <strong>Responsable:</strong> Growth Systems Now, S.L. ("Growth4U")<br/>
+                                    <strong>NIF/CIF:</strong> ESB22671879<br/>
+                                    <strong>Domicilio postal:</strong> Calle de Luchana, 28, 2º A, 28010, Madrid, España<br/>
+                                    <strong>Contacto privacidad:</strong> privacidad@growth4u.io
+                                </p>
+
+                                <h3>1.3. Datos que tratamos</h3>
+                                <p>Podemos tratar las siguientes categorías de datos personales:</p>
+                                <ul>
+                                    <li><strong>Datos identificativos:</strong> nombre, apellidos.</li>
+                                    <li><strong>Datos de contacto:</strong> correo electrónico, teléfono.</li>
+                                    <li><strong>Datos profesionales:</strong> empresa, cargo, sector.</li>
+                                    <li><strong>Datos de uso:</strong> interacción con emails, web, formularios y campañas.</li>
+                                </ul>
+                                <p>No tratamos categorías especiales de datos.</p>
+
+                                <h3>1.4. Origen de los datos</h3>
+                                <ul>
+                                    <li>Formularios de contacto o descarga de recursos en nuestra web.</li>
+                                    <li>Formularios de Meta (Lead Ads).</li>
+                                    <li>Comunicaciones directas (email, teléfono).</li>
+                                    <li>Plataformas profesionales (ej. LinkedIn).</li>
+                                    <li>Fuentes de acceso público.</li>
+                                </ul>
+
+                                <h3>1.5. Finalidades del tratamiento</h3>
+                                <ul>
+                                    <li>Gestión de consultas y reuniones.</li>
+                                    <li>Prestación de servicios y facturación.</li>
+                                    <li>Comunicaciones comerciales B2B.</li>
+                                    <li>Publicidad y Retargeting (Meta Pixel).</li>
+                                    <li>Mejora de servicios y analítica.</li>
+                                    <li>Cumplimiento de obligaciones legales.</li>
+                                </ul>
+
+                                <h3>1.6. Bases jurídicas</h3>
+                                <ul>
+                                    <li>Ejecución de contrato (art. 6.1.b RGPD).</li>
+                                    <li>Cumplimiento de obligaciones legales (art. 6.1.c RGPD).</li>
+                                    <li>Interés legítimo (art. 6.1.f RGPD) para marketing B2B.</li>
+                                    <li>Consentimiento (art. 6.1.a RGPD) para cookies y supuestos específicos.</li>
+                                </ul>
+
+                                <h3>1.7. Medidas de seguridad</h3>
+                                <p>Aplicamos cifrado, control de accesos, copias de seguridad y políticas de confidencialidad estrictas.</p>
+
+                                <h3>1.8. Destinatarios</h3>
+                                <p>Compartimos datos con proveedores (encargados del tratamiento) como:</p>
+                                <ul>
+                                    <li>GoHighLevel (CRM)</li>
+                                    <li>Instantly & MailScale (Email)</li>
+                                    <li>Ulinc (LinkedIn)</li>
+                                    <li>Meta Platforms, Inc. (Publicidad)</li>
+                                </ul>
+
+                                <h3>1.9. Transferencias internacionales</h3>
+                                <p>Cuando los proveedores están fuera del EEE, utilizamos Cláusulas Contractuales Tipo o mecanismos reconocidos por el RGPD.</p>
+
+                                <h3>1.10. Plazos de conservación</h3>
+                                <p>Conservamos los datos mientras exista relación comercial, sean necesarios para la finalidad o por obligaciones legales.</p>
+
+                                <h3>1.11. Derechos de los interesados</h3>
+                                <p>Puedes ejercer tus derechos de Acceso, Rectificación, Supresión, Oposición y otros escribiendo a <strong>privacidad@growth4u.io</strong>.</p>
+                            </>
+                        ) : (
+                            <>
+                                <h3>2.1. ¿Qué son las cookies?</h3>
+                                <p>Archivos de texto que se descargan en tu dispositivo para permitir que la web funcione, recordar preferencias y obtener estadísticas anónimas.</p>
+
+                                <h3>2.2. Tipos de cookies que utilizamos</h3>
+                                <ul>
+                                    <li><strong>Técnicas:</strong> Imprescindibles para el funcionamiento (sesión, seguridad). No requieren consentimiento.</li>
+                                    <li><strong>Preferencias:</strong> Idioma, configuración regional.</li>
+                                    <li><strong>Análisis:</strong> Medición de uso (anónimas cuando es posible).</li>
+                                    <li><strong>Marketing:</strong> Publicidad comportamental (solo con consentimiento).</li>
+                                </ul>
+
+                                <h4>Tabla de cookies</h4>
+                                <div className="overflow-x-auto my-4 border rounded-lg">
+                                    <table className="min-w-full text-sm">
+                                        <thead className="bg-slate-50">
+                                            <tr>
+                                                <th className="p-3 text-left">Nombre</th>
+                                                <th className="p-3 text-left">Proveedor</th>
+                                                <th className="p-3 text-left">Finalidad</th>
+                                                <th className="p-3 text-left">Duración</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y">
+                                            <tr><td>msgsndr_session</td><td>GoHighLevel</td><td>Técnica (Sesión)</td><td>Sesión</td></tr>
+                                            <tr><td>__cf_bm</td><td>Cloudflare</td><td>Seguridad (Anti-bot)</td><td>30 min</td></tr>
+                                            <tr><td>ghl_consent</td><td>GoHighLevel</td><td>Guarda consentimiento</td><td>1 año</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <h3>2.3. Gestión del consentimiento</h3>
+                                <p>Al entrar por primera vez, verás un banner para aceptar o rechazar cookies opcionales. No activamos cookies no esenciales sin tu acción.</p>
+
+                                <h3>2.4. Cambiar o retirar consentimiento</h3>
+                                <p>Puedes cambiar tu configuración limpiando las cookies de tu navegador.</p>
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+      );
+  };
+
   // --- RENDERIZADO DE VISTAS ---
   const renderContent = () => {
+    // VISTA ADMIN
     if (view === 'admin') {
-        // --- FUNCIÓN GENERADORA DE SITEMAP (NUEVO) ---
         const handleCopySitemap = () => {
             const baseUrl = "https://growth4u.io";
             const today = new Date().toISOString().split('T')[0];
-            
-            let xml = `<url>
-  <loc>${baseUrl}/</loc>
-  <lastmod>${today}</lastmod>
-  <priority>1.0</priority>
-</url>
-<url>
-  <loc>${baseUrl}/blog</loc>
-  <lastmod>${today}</lastmod>
-  <priority>0.8</priority>
-</url>
-
-`;
+            let xml = `<url><loc>${baseUrl}/</loc><lastmod>${today}</lastmod><priority>1.0</priority></url>
+<url><loc>${baseUrl}/blog</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>
+<url><loc>${baseUrl}/?page=privacidad</loc><lastmod>${today}</lastmod><priority>0.5</priority></url>
+<url><loc>${baseUrl}/?page=cookies</loc><lastmod>${today}</lastmod><priority>0.5</priority></url>\n`;
             posts.forEach(post => {
                 const slug = createSlug(post.title);
-                const date = post.updatedAt 
-                    ? new Date(post.updatedAt.seconds * 1000).toISOString().split('T')[0] 
-                    : today;
-                
-                xml += `<url>
-  <loc>${baseUrl}/blog?articulo=${slug}</loc>
-  <lastmod>${date}</lastmod>
-  <priority>0.7</priority>
-</url>
-`;
+                const date = post.updatedAt ? new Date(post.updatedAt.seconds * 1000).toISOString().split('T')[0] : today;
+                xml += `<url><loc>${baseUrl}/blog?articulo=${slug}</loc><lastmod>${date}</lastmod><priority>0.7</priority></url>\n`;
             });
-
             navigator.clipboard.writeText(xml);
-            alert("¡Sitemap copiado! Ahora pégalo en tu archivo sitemap.xml");
+            alert("¡Sitemap copiado!");
         };
 
         return (
           <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
             <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-              
-              {/* COLUMNA IZQUIERDA: EDITOR */}
               <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit sticky top-8">
                  <div className="flex justify-between items-center mb-8">
                     <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
                     <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
                  </div>
-                 
-                 <div className="bg-blue-50 p-4 rounded-xl mb-6 text-sm text-blue-800 border border-blue-200">
-                   <strong>Guía de Formato (Markdown):</strong>
-                   <ul className="list-disc ml-5 mt-2 space-y-1">
-                     <li><code>## Título</code> para subtítulos.</li>
-                     <li><code>**Negrita**</code> para énfasis.</li>
-                     <li><code>- Lista</code> para viñetas.</li>
-                   </ul>
-                 </div>
-
                  <form onSubmit={handleSavePost} className="space-y-6">
                     <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="Título del artículo" />
                     <div className="grid grid-cols-2 gap-4">
@@ -410,7 +579,6 @@ export default function App() {
                     <input required type="url" value={newPost.image} onChange={e => setNewPost({...newPost, image: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="URL de la imagen (debe terminar en .png o .jpg)" />
                     <textarea required value={newPost.excerpt} onChange={e => setNewPost({...newPost, excerpt: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-24 focus:ring-2 focus:ring-[#6351d5]" placeholder="Breve resumen (excerpt)..." />
                     <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-64 font-mono text-sm focus:ring-2 focus:ring-[#6351d5]" placeholder="Escribe aquí tu contenido usando Markdown..." />
-                    
                     <div className="flex gap-4">
                       <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#6351d5] text-white font-bold py-4 rounded-xl hover:bg-[#4b3db1] transition-colors shadow-lg">
                         {isSubmitting ? 'Guardando...' : (editingPostId ? 'Actualizar Artículo' : 'Publicar Ahora')}
@@ -421,26 +589,11 @@ export default function App() {
                     </div>
                  </form>
               </div>
-
-              {/* COLUMNA DERECHA: LISTA Y HERRAMIENTAS SEO */}
               <div className="space-y-8">
-                  {/* CAJA 1: SEO TOOLS (NUEVO) */}
                   <div className="bg-[#effcfd] rounded-3xl shadow-sm border border-[#0faec1]/30 p-6">
-                      <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-[#0faec1]">
-                          <Globe className="w-5 h-5"/> Herramientas SEO
-                      </h2>
-                      <p className="text-sm text-slate-600 mb-4">
-                          Genera la lista de URLs de tus {posts.length} artículos para actualizar Google Search Console.
-                      </p>
-                      <button 
-                          onClick={handleCopySitemap}
-                          className="w-full py-3 bg-white border border-[#0faec1] text-[#0faec1] font-bold rounded-xl hover:bg-[#0faec1] hover:text-white transition-all flex items-center justify-center gap-2 shadow-sm"
-                      >
-                          <LinkIcon className="w-4 h-4"/> Copiar URLs para Sitemap XML
-                      </button>
+                      <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-[#0faec1]"><Globe className="w-5 h-5"/> Herramientas SEO</h2>
+                      <button onClick={handleCopySitemap} className="w-full py-3 bg-white border border-[#0faec1] text-[#0faec1] font-bold rounded-xl hover:bg-[#0faec1] hover:text-white transition-all flex items-center justify-center gap-2 shadow-sm"><LinkIcon className="w-4 h-4"/> Copiar URLs para Sitemap XML</button>
                   </div>
-
-                  {/* CAJA 2: LISTA DE ARTÍCULOS */}
                   <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
                     <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos ({posts.length})</h2>
                     <div className="space-y-4">
@@ -456,16 +609,20 @@ export default function App() {
                           </div>
                         </div>
                       ))}
-                      {posts.length === 0 && <p className="text-center text-slate-400 py-10">No hay artículos aún.</p>}
                     </div>
                   </div>
               </div>
-
             </div>
           </div>
         );
     }
 
+    // VISTA LEGALES (PRIVACIDAD Y COOKIES)
+    if (view === 'privacy' || view === 'cookies') {
+        return <LegalView type={view} />;
+    }
+
+    // VISTA POST INDIVIDUAL
     if (view === 'post' && selectedPost) {
         const articleSchema = {
           "@context": "https://schema.org",
@@ -475,11 +632,7 @@ export default function App() {
           "image": selectedPost.image,
           "datePublished": selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toISOString() : new Date().toISOString(),
           "author": { "@type": "Person", "name": "Equipo Growth4U" },
-          "publisher": {
-            "@type": "Organization",
-            "name": "Growth4U",
-            "logo": { "@type": "ImageObject", "url": "https://i.imgur.com/imHxGWI.png" }
-          }
+          "publisher": { "@type": "Organization", "name": "Growth4U", "logo": { "@type": "ImageObject", "url": "https://i.imgur.com/imHxGWI.png" } }
         };
 
         return (
@@ -487,7 +640,6 @@ export default function App() {
              <Helmet>
                 <title>{selectedPost.title} | Blog Growth4U</title>
                 <meta name="description" content={selectedPost.excerpt} />
-                {/* CANONICAL DINÁMICA CORRECTA (AÑADIDO /blog) */}
                 <link rel="canonical" href={`https://growth4u.io/blog?articulo=${createSlug(selectedPost.title)}`} />
                 <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
                 <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
@@ -510,18 +662,14 @@ export default function App() {
              <article className="pt-32 pb-20 max-w-3xl mx-auto px-4">
                 <span className="inline-block px-3 py-1 bg-[#6351d5]/10 text-[#6351d5] rounded-full text-xs font-bold uppercase tracking-wider mb-6">{selectedPost.category}</span>
                 <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#032149] leading-tight">{selectedPost.title}</h1>
-                
                 <div className="flex items-center gap-4 text-slate-500 text-sm mb-8 border-b border-slate-100 pb-8">
                   <span className="flex items-center gap-1"><Clock className="w-4 h-4"/> {selectedPost.readTime}</span>
                   <span>•</span>
                   <span>{selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toLocaleDateString() : 'Fecha no disponible'}</span>
                 </div>
-
                 <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" />
-                
                 <div className="prose prose-lg prose-slate mx-auto text-[#032149]">
                   <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">{selectedPost.excerpt}</p>
-                  
                   <Markdown 
                     remarkPlugins={[remarkGfm]}
                     components={{
@@ -543,7 +691,6 @@ export default function App() {
                     {selectedPost.content}
                   </Markdown>
                 </div>
-                
                 <div className="mt-16 pt-10 border-t border-slate-200 text-center">
                    <h3 className="text-2xl font-bold mb-6">¿Quieres aplicar esto en tu Fintech?</h3>
                    <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">{t.nav.cta} <ArrowRight className="w-5 h-5"/></a>
@@ -560,12 +707,10 @@ export default function App() {
           <Helmet>
             <title>Blog | Growth4U</title>
             <meta name="description" content="Insights y estrategias de Growth para Fintechs B2B y B2C." />
-            {/* CANONICAL PARA BLOG */}
             <link rel="canonical" href="https://growth4u.io/blog" />
             <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
           </Helmet>
 
-          {/* Nav Simplificado para Blog */}
           <div className="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
             <nav className="nav-island w-full max-w-6xl">
               <div className="px-6 sm:px-8">
@@ -598,7 +743,6 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {/* MUESTRA TODOS LOS POSTS */}
                   {displayPosts.map((post, index) => (
                       <div key={index} onClick={() => handleViewPost(post)} className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1">
                           <div className="relative aspect-video bg-slate-100 overflow-hidden">
@@ -626,7 +770,13 @@ export default function App() {
                 <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
                 <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
               </div>
-              <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm"><p>{t.footer.rights}</p></div>
+              <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+                  <p>{t.footer.rights}</p>
+                  <div className="flex gap-4 mt-4 md:mt-0">
+                      <button onClick={handleGoPrivacy} className="hover:text-white transition-colors">{t.footer.privacy}</button>
+                      <button onClick={handleGoCookies} className="hover:text-white transition-colors">{t.footer.terms}</button>
+                  </div>
+              </div>
             </div>
           </section>
         </div>
@@ -639,7 +789,6 @@ export default function App() {
         <Helmet>
           <title>Growth4U | Growth Marketing Fintech B2B & B2C</title>
           <meta name="description" content="Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza." />
-          {/* CANONICAL PARA HOME */}
           <link rel="canonical" href="https://growth4u.io/" />
           <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
           <script type="application/ld+json">
@@ -671,6 +820,29 @@ export default function App() {
           .animation-delay-2000 { animation-delay: 2s; }
         `}</style>
 
+        {/* COOKIE BANNER */}
+        {cookieConsent === 'unknown' && (
+            <div className="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-200 shadow-[0_-5px_20px_rgba(0,0,0,0.1)] p-6 animate-in slide-in-from-bottom-5">
+                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-6 justify-between">
+                    <div className="flex items-start gap-4">
+                        <div className="bg-[#6351d5]/10 p-3 rounded-full hidden md:block">
+                            <Cookie className="w-6 h-6 text-[#6351d5]" />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-[#032149] mb-1">Valoramos tu privacidad</h4>
+                            <p className="text-sm text-slate-600 max-w-2xl">
+                                Utilizamos cookies propias y de terceros para analizar nuestros servicios y mostrarte publicidad relacionada con tus preferencias. Puedes aceptar todas las cookies o configurarlas. Más información en nuestra <button onClick={handleGoCookies} className="text-[#6351d5] underline font-bold">Política de Cookies</button>.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex gap-3 w-full md:w-auto">
+                         <button onClick={handleRejectCookies} className="flex-1 md:flex-none px-6 py-2.5 rounded-lg border border-slate-300 font-bold text-slate-600 hover:bg-slate-50 transition-colors text-sm">Rechazar</button>
+                         <button onClick={handleAcceptCookies} className="flex-1 md:flex-none px-6 py-2.5 rounded-lg bg-[#6351d5] text-white font-bold hover:bg-[#3f45fe] transition-colors text-sm">Aceptar todas</button>
+                    </div>
+                </div>
+            </div>
+        )}
+
         {/* Navigation */}
         <div className="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
           <nav className="nav-island w-full max-w-6xl">
@@ -686,7 +858,6 @@ export default function App() {
                     <a href="#etapas" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.methodology}</a>
                     <a href="#casos" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.cases}</a>
                     <a href="#team" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.team}</a>
-                    {/* Botón Blog modificado para ir a la página dedicada */}
                     <button onClick={handleGoToBlogPage} className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.blog}</button>
                   </div>
                   <button onClick={toggleLang} className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full text-xs font-bold text-[#032149] transition-colors border border-slate-200">
@@ -812,8 +983,6 @@ export default function App() {
               {t.methodology.stages.map((stage, i) => (
                 <div key={i} className="relative group hover:-translate-y-2 transition-all duration-300">
                   <div className="bg-white rounded-3xl p-8 h-full flex flex-col shadow-lg border border-slate-100 hover:shadow-2xl hover:border-[#45b6f7]/30 transition-all">
-                    
-                    {/* Header Card */}
                     <div className="mb-6">
                       <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">{stage.step}</div>
                       <div className="flex items-center gap-3 mb-4">
@@ -824,13 +993,9 @@ export default function App() {
                         {stage.tag}
                       </span>
                     </div>
-
-                    {/* Description */}
                     <div className="text-slate-600 text-sm leading-relaxed mb-8">
                       {renderFormattedContent(stage.desc)}
                     </div>
-
-                    {/* Guarantee Box */}
                     <div className="mt-auto bg-[#effcfd] rounded-2xl p-6 border border-[#0faec1]/10">
                         <div className="flex items-center gap-2 mb-4">
                            <Target className="w-4 h-4 text-[#0faec1]" />
@@ -840,7 +1005,6 @@ export default function App() {
                            {renderFormattedContent(stage.guarantees)}
                         </div>
                     </div>
-
                   </div>
                 </div>
               ))}
@@ -887,7 +1051,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Blog Section (HOME PREVIEW - MAX 6) */}
+        {/* Blog Section */}
         <section id="blog-preview" className="py-20 bg-white border-t border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-end mb-12">
@@ -895,7 +1059,6 @@ export default function App() {
                   <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {/* MUESTRA SOLO 6 POSTS */}
                   {homePosts.length > 0 ? (
                       homePosts.map((post, index) => (
                           <div key={index} onClick={() => handleViewPost(post)} className="group cursor-pointer">
@@ -911,8 +1074,6 @@ export default function App() {
                       </div>
                   )}
               </div>
-              
-              {/* Button to go to dedicated Blog Page */}
               <div className="mt-12 text-center">
                   <button onClick={handleGoToBlogPage} className="inline-flex items-center justify-center gap-2 border-2 border-[#6351d5] text-[#6351d5] hover:bg-[#6351d5] hover:text-white font-bold py-3 px-8 rounded-full transition-all duration-300">
                       {t.blog.cta} <ArrowRight className="w-5 h-5"/>
@@ -929,14 +1090,19 @@ export default function App() {
               <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
               <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
             </div>
-            <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm"><p>{t.footer.rights}</p></div>
+            <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+                <p>{t.footer.rights}</p>
+                <div className="flex gap-4 mt-4 md:mt-0">
+                    <button onClick={handleGoPrivacy} className="hover:text-white transition-colors">{t.footer.privacy}</button>
+                    <button onClick={handleGoCookies} className="hover:text-white transition-colors">{t.footer.terms}</button>
+                </div>
+            </div>
           </div>
         </section>
       </div>
     );
   };
 
-  // MAIN RETURN (WRAPPING EVERYTHING IN PROVIDER)
   return (
     <HelmetProvider>
       {renderContent()}
