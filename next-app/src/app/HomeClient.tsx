@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { translations } from '@/lib/translations';
-import type { BlogPost } from '@/lib/blog';
+import type { BlogPost } from '@/lib/firebase';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import ProblemSection from '@/components/ProblemSection';

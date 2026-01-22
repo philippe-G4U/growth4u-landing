@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Clock, ArrowRight } from 'lucide-react';
 import type { TranslationSet } from '@/lib/translations';
-import type { BlogPost } from '@/lib/blog';
+import type { BlogPost } from '@/lib/firebase';
 
 interface BlogPreviewSectionProps {
   t: TranslationSet;

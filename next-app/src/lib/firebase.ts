@@ -1,4 +1,21 @@
-import { adminDb } from './firebase-admin';
+import { initializeApp, getApps } from 'firebase/app';
+import { getFirestore, collection, getDocs, query, orderBy } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
+  authDomain: "landing-growth4u.firebaseapp.com",
+  projectId: "landing-growth4u",
+  storageBucket: "landing-growth4u.firebasestorage.app",
+  messagingSenderId: "562728954202",
+  appId: "1:562728954202:web:90cff4aa486f38b4b62b63",
+  measurementId: "G-4YBYPVQDT6"
+};
+
+// Initialize Firebase
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const db = getFirestore(app);
+
+const APP_ID = 'growth4u-public-app';
 
 export interface BlogPost {
   id: string;
@@ -14,8 +31,6 @@ export interface BlogPost {
   updatedAt: Date | null;
 }
 
-const APP_ID = 'growth4u-public-app';
-
 export function createSlug(text: string): string {
   return text
     .toString()
@@ -30,14 +45,9 @@ export function createSlug(text: string): string {
 
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {
-    const postsRef = adminDb
-      .collection('artifacts')
-      .doc(APP_ID)
-      .collection('public')
-      .doc('data')
-      .collection('blog_posts');
-
-    const snapshot = await postsRef.orderBy('createdAt', 'desc').get();
+    const postsRef = collection(db, 'artifacts', APP_ID, 'public', 'data', 'blog_posts');
+    const q = query(postsRef, orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
 
     return snapshot.docs.map((doc) => {
       const data = doc.data();
@@ -70,3 +80,5 @@ export async function getAllSlugs(): Promise<string[]> {
   const posts = await getAllPosts();
   return posts.map((post) => post.slug);
 }
+
+export { db };

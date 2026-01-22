@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Clock, ArrowRight, Globe } from 'lucide-react';
 import { translations, BOOKING_LINK } from '@/lib/translations';
-import type { BlogPost } from '@/lib/blog';
+import type { BlogPost } from '@/lib/firebase';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
 

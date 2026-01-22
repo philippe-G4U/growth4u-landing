@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Clock } from 'lucide-react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { getAllPosts, getPostBySlug, getAllSlugs } from '@/lib/blog';
+import { getAllPosts, getPostBySlug, getAllSlugs } from '@/lib/firebase';
 import { BOOKING_LINK } from '@/lib/translations';
 import CookieBanner from '@/components/CookieBanner';
 
@@ -59,6 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export const revalidate = 3600;
+export const dynamic = 'force-static';
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
