@@ -103,7 +103,7 @@ const translations = {
     hero: { tag: "Especialistas en Growth Fintech B2B & B2C", title: "Tu fintech puede crecer más rápido, ", titleHighlight: "sin invertir más en marketing.", subtitle: "Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.", ctaPrimary: "Empezar ahora", ctaSecondary: "Ver servicios", trust: "Empresas validadas por la confianza" },
     problem: { title: "El modelo tradicional está roto", subtitle: "En un mercado saturado, depender 100% de Paid Media es insostenible.", cards: [ { title: "Alquiler de Atención", desc: "Si cortas el presupuesto de anuncios, las ventas mueren instantáneamente." }, { title: "CAC Incontrolable", desc: "El coste por clic no para de subir. Sin activos propios, tu rentabilidad se erosiona." }, { title: "Fricción de Confianza", desc: "El usuario Fintech es escéptico. Atraes tráfico, pero no conviertes por falta de autoridad." }, { title: "Churn Silencioso", desc: "Captas registros, no clientes. El LTV nunca llega a cubrir el coste de adquisición." } ] },
     results: { title: "Resultados del Trust Engine", subtitle: "Crecimiento predecible y escalable.", cards: [ { title: "Reducción del 70% en CAC", desc: "Sustituimos el gasto publicitario inflado por sistemas de confianza orgánica y viralidad estructurada." }, { title: "Usuarios Activados", desc: "Dejamos atrás las vanity metrics. Atraemos clientes ideales (ICP) listos para usar y pagar." }, { title: "Máquina 24/7", desc: "Implementamos automatización e IA para que la captación funcione sin depender de trabajo manual." }, { title: "Activos que perduran", desc: "Construimos un motor de crecimiento que gana tracción con el tiempo, aumentando el LTV." } ] },
-    methodology: { title: "El motor de crecimiento adecuado.", subtitle: "Infraestructura escalable según la etapa de tu negocio.", stages: [ { step: "Etapa 1", title: "BUSCANDO PMF", tag: "0 → Tracción Real", desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.", icon: Search, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Validación de **Propuesta de Valor** y posicionamiento único.", "Generación de los primeros **usuarios que pagan**." ] }, { step: "Etapa 2", title: "ESCALANDO", tag: "10K → 500K Users", desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.", icon: TrendingUp, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción orgánica y reconocimiento de marca vía **Referral**.", "Conversión de **Clientes que pagan** y alto LTV." ] }, { step: "Stage 3", title: "EXPANSION", tag: "Nuevo Mercado / Producto", desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.", icon: Globe, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción inicial asegurada en **nichos de alta conversión**.", "Penetración rápida con **estrategia localizada**." ] } ] },
+    methodology: { title: "El motor de crecimiento adecuado.", subtitle: "Infraestructura escalable según la etapa de tu negocio.", stages: [ { step: "Etapa 1", title: "BUSCANDO PMF", tag: "0 → Tracción Real", desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.", icon: Search, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Validación de **Propuesta de Valor** y posicionamiento único.", "Generación de los primeros **usuarios que pagan**." ] }, { step: "Etapa 2", title: "ESCALANDO", tag: "10K → 500K Users", desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.", icon: TrendingUp, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción orgánica y reconocimiento de marca vía **Referral**.", "Conversión de **Clientes que pagan** y alto LTV." ] }, { step: "Etapa 3", title: "EXPANSIÓN", tag: "Nuevo Mercado / Producto", desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.", icon: Globe, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción inicial asegurada en **nichos de alta conversión**.", "Penetración rápida con **estrategia localizada**." ] } ] },
     cases: { title: "Casos de Éxito", subtitle: "Resultados reales auditados.", list: [ { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." }, { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." } ], btnRead: "Leer caso completo", btnHide: "Ver menos", challengeLabel: "Reto", solutionLabel: "Solución" },
     team: { title: "Trust es lo importante, conócenos", bioAlfonso: "Especialista en growth con más de diez años lanzando y escalando productos en fintech.", bioMartin: "Especialista en growth técnico con más de diez años creando sistemas de automatización y datos que escalan operaciones." },
     blog: { title: "Blog & Insights", subtitle: "Strategic resources to scale your fintech.", cta: "Ver todos los artículos", readTime: "min lectura", admin: "Admin", empty: "Próximamente nuevos artículos...", defaults: [] },
@@ -517,7 +517,7 @@ export default function App() {
                                                 <strong>En todo caso, podrás oponerte en cualquier momento a este tratamiento:</strong>
                                                 <ul className="list-disc pl-5 mt-1">
                                                     <li>Mediante el enlace de baja incluido en cada comunicación comercial por email.</li>
-                                                    <li>O enviando un email a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5]">privacidad@growth4u.io</a>, indicando que no deseas recibir más comunicaciones.</li>
+                                                    <li>O enviando un email a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5]">privacidad@growth4u.io</a> , indicando que no deseas recibir más comunicaciones.</li>
                                                 </ul>
                                             </div>
                                         </li>
@@ -525,7 +525,7 @@ export default function App() {
                                             <strong className="block text-[#6351d5] mb-2">Consentimiento (art. 6.1.a RGPD):</strong>
                                             <div className="text-sm">
                                                 Para el uso de ciertas cookies no técnicas y tecnologías similares, conforme se detalla en nuestra Política de Cookies.
-                                                En aquellos supuestos en los que te lo pidamos de forma expresa para finalidades concretas.<br/>
+                                                En aquellos supuestos en los que te lo pidamos de forma expresa para finalidades concretas.
                                                 Cuando la base jurídica sea el consentimiento, podrás retirarlo en cualquier momento sin que ello afecte a la licitud del tratamiento basado en el consentimiento previo.
                                             </div>
                                         </li>
@@ -627,125 +627,123 @@ export default function App() {
                             </>
                         ) : (
                             <>
-                                {/* --- CONTENIDO POLÍTICA DE COOKIES --- */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-0 mb-4">2.1. ¿Qué son las cookies?</h3>
-                                    <p className="mb-4">Las cookies son pequeños archivos de texto que se descargan en tu dispositivo (ordenador, tablet, smartphone, etc.) cuando visitas determinadas páginas web. Permiten, entre otras cosas:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>Que la web funcione correctamente.</li>
-                                        <li>Recordar tus preferencias de navegación.</li>
-                                        <li>Obtener información estadística anónima sobre el uso del sitio.</li>
-                                        <li>Mostrarte contenidos y anuncios más acordes con tus intereses.</li>
-                                    </ul>
+                                {/* --- POLÍTICA DE COOKIES --- */}
+                                <h3 className="text-2xl font-bold text-[#032149] mt-0 mb-4">2.1. ¿Qué son las cookies?</h3>
+                                <p className="mb-4">Las cookies son pequeños archivos de texto que se descargan en tu dispositivo (ordenador, tablet, smartphone, etc.) cuando visitas determinadas páginas web. Permiten, entre otras cosas:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>Que la web funcione correctamente.</li>
+                                    <li>Recordar tus preferencias de navegación.</li>
+                                    <li>Obtener información estadística anónima sobre el uso del sitio.</li>
+                                    <li>Mostrarte contenidos y anuncios más acordes con tus intereses.</li>
+                                </ul>
 
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.2. Tipos de cookies que utilizamos</h3>
-                                    <p className="mb-4">En la web de Growth4U podemos utilizar:</p>
-                                    <ul className="space-y-4 mb-6">
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Cookies técnicas o necesarias</strong>
-                                            <span className="text-sm">Imprescindibles para que la web funcione (gestión de sesiones, seguridad, carga de página, recordar el consentimiento de cookies, etc.). No requieren tu consentimiento.</span>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Cookies de preferencias o personalización</strong>
-                                            <span className="text-sm">Permiten recordar elecciones como el idioma, la región u otras configuraciones para mejorar tu experiencia. Algunas pueden requerir consentimiento según la configuración concreta.</span>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Cookies de análisis o medición</strong>
-                                            <span className="text-sm">
-                                                Nos ayudan a entender cómo se usa la web (páginas más visitadas, tiempo de permanencia, fuentes de tráfico, etc.) para mejorarla.<br/>
-                                                Siempre que sea posible, se configurarán con anonimización de IP u otras medidas de minimización.<br/>
-                                                Si no es posible evitar la identificación o el perfilado, se tratarán como cookies que requieren tu consentimiento previo.
-                                            </span>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Cookies de marketing o publicidad comportamental</strong>
-                                            <span className="text-sm">Permiten mostrarte anuncios en función de tus hábitos de navegación y crear perfiles comerciales. Solo se instalarán si prestas tu consentimiento expreso.</span>
-                                        </li>
-                                    </ul>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.2. Tipos de cookies que utilizamos</h3>
+                                <p className="mb-4">En la web de Growth4U podemos utilizar:</p>
+                                <ul className="space-y-4 mb-6">
+                                    <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <strong className="block text-[#6351d5] mb-2">Cookies técnicas o necesarias</strong>
+                                        <span className="text-sm">Imprescindibles para que la web funcione (gestión de sesiones, seguridad, carga de página, recordar el consentimiento de cookies, etc.). No requieren tu consentimiento.</span>
+                                    </li>
+                                    <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <strong className="block text-[#6351d5] mb-2">Cookies de preferencias o personalización</strong>
+                                        <span className="text-sm">Permiten recordar elecciones como el idioma, la región u otras configuraciones para mejorar tu experiencia. Algunas pueden requerir consentimiento según la configuración concreta.</span>
+                                    </li>
+                                    <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <strong className="block text-[#6351d5] mb-2">Cookies de análisis o medición</strong>
+                                        <span className="text-sm">
+                                            Nos ayudan a entender cómo se usa la web (páginas más visitadas, tiempo de permanencia, fuentes de tráfico, etc.) para mejorarla.<br/>
+                                            Siempre que sea posible, se configurarán con anonimización de IP u otras medidas de minimización.<br/>
+                                            Si no es posible evitar la identificación o el perfilado, se tratarán como cookies que requieren tu consentimiento previo.
+                                        </span>
+                                    </li>
+                                    <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <strong className="block text-[#6351d5] mb-2">Cookies de marketing o publicidad comportamental</strong>
+                                        <span className="text-sm">Permiten mostrarte anuncios en función de tus hábitos de navegación y crear perfiles comerciales. Solo se instalarán si prestas tu consentimiento expreso.</span>
+                                    </li>
+                                </ul>
 
-                                    <h4 className="text-xl font-bold text-[#032149] mt-10 mb-6">Tabla de cookies</h4>
-                                    <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
-                                        <table className="min-w-full text-sm text-left">
-                                            <thead className="bg-slate-100 text-[#032149]">
-                                                <tr>
-                                                    <th className="p-4 font-bold">Nombre</th>
-                                                    <th className="p-4 font-bold hidden sm:table-cell">Proveedor</th>
-                                                    <th className="p-4 font-bold">Finalidad</th>
-                                                    <th className="p-4 font-bold hidden sm:table-cell">Duración</th>
-                                                    <th className="p-4 font-bold">Tipo</th>
-                                                    <th className="p-4 font-bold">Categoría</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-slate-100 bg-white">
-                                                <tr>
-                                                    <td className="p-4 font-mono text-xs text-slate-500">msgsndr_session</td>
-                                                    <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
-                                                    <td className="p-4">Cookie técnica necesaria para gestionar la sesión del usuario en la web y formularios.</td>
-                                                    <td className="p-4 hidden sm:table-cell">Sesión</td>
-                                                    <td className="p-4">Propia</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Técnica (Necesaria)</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4 font-mono text-xs text-slate-500">__cf_bm</td>
-                                                    <td className="p-4 hidden sm:table-cell">Cloudflare</td>
-                                                    <td className="p-4">Filtra el tráfico para evitar ataques de bots y garantizar la seguridad del sitio.</td>
-                                                    <td className="p-4 hidden sm:table-cell">30 min</td>
-                                                    <td className="p-4">Tercero</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Seguridad (Necesaria)</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4 font-mono text-xs text-slate-500">ghl_consent</td>
-                                                    <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
-                                                    <td className="p-4">Almacena tu elección sobre el uso de cookies en este sitio.</td>
-                                                    <td className="p-4 hidden sm:table-cell">1 año</td>
-                                                    <td className="p-4">Propia</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Técnica (Necesaria)</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.3. Gestión del consentimiento de cookies</h3>
-                                    <p className="mb-4">Al acceder por primera vez a la web, se mostrará un banner de cookies que te permitirá:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>Aceptar todas las cookies opcionales.</li>
-                                        <li>Rechazar todas las cookies opcionales con una acción tan sencilla como aceptarlas.</li>
-                                        <li>Configurar tus preferencias por categoría (analítica, marketing, etc.).</li>
-                                    </ul>
-                                    <p className="mb-4">Hasta que no aceptes o configures las cookies opcionales:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>No se activarán las cookies que no sean técnicas o necesarias.</li>
-                                        <li>Solo se utilizarán las cookies imprescindibles para el funcionamiento básico del sitio.</li>
-                                    </ul>
-                                    <p className="mb-4">En línea con la Guía de Cookies de la AEPD, evitamos:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>El consentimiento forzado (no condicionamos el acceso a la web a aceptar cookies, salvo casos muy excepcionales debidamente justificados).</li>
-                                        <li>El uso de casillas pre‑marcadas o diseños que induzcan a aceptar sin una elección informada.</li>
-                                    </ul>
-
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.4. Cambiar o retirar el consentimiento</h3>
-                                    <p className="mb-4">Puedes modificar tu configuración de cookies o retirar tu consentimiento en cualquier momento mediante:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>El enlace “Configurar cookies” o similar disponible en el pie de página de la web.</li>
-                                        <li>La limpieza de cookies desde la configuración de tu navegador.</li>
-                                    </ul>
-                                    <p>Los cambios que realices se aplicarán de forma inmediata o en tu siguiente navegación por el sitio.</p>
-                                    
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.5. Cómo desactivar o eliminar cookies desde el navegador</h3>
-                                    <p className="mb-4">Además del panel de configuración de la web, puedes configurar tu navegador para:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>Bloquear o eliminar cookies ya instaladas.</li>
-                                        <li>Recibir avisos antes de que se almacenen nuevas cookies.</li>
-                                    </ul>
-                                    <p className="mb-4">Los pasos concretos dependen del navegador que utilices (Chrome, Firefox, Safari, Edge, etc.). Consulta la sección de ayuda de tu navegador para más detalles.</p>
-                                    <p className="mb-4">Ten en cuenta que, si bloqueas todas las cookies, es posible que algunas funciones o servicios del sitio web no se muestren o no funcionen correctamente.</p>
-                                    <p className="mt-8 bg-slate-50 p-4 border rounded-lg text-sm text-slate-500 italic">
-                                        Antes de publicar este texto en la web, revisa con tu asesor legal:<br/>
-                                        - Bases jurídicas concretas de las herramientas que usáis (CRM, analítica, email marketing, etc.).<br/>
-                                        - Diseño funcional del banner de cookies y del panel de configuración.<br/>
-                                        - Que la tabla de cookies se corresponda exactamente con la implementación técnica real.
-                                    </p>
+                                <h4 className="text-xl font-bold text-[#032149] mt-10 mb-6">Tabla de cookies</h4>
+                                <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+                                    <table className="min-w-full text-sm text-left">
+                                        <thead className="bg-slate-100 text-[#032149]">
+                                            <tr>
+                                                <th className="p-4 font-bold">Nombre</th>
+                                                <th className="p-4 font-bold hidden sm:table-cell">Proveedor</th>
+                                                <th className="p-4 font-bold">Finalidad</th>
+                                                <th className="p-4 font-bold hidden sm:table-cell">Duración</th>
+                                                <th className="p-4 font-bold">Tipo</th>
+                                                <th className="p-4 font-bold">Categoría</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100 bg-white">
+                                            <tr>
+                                                <td className="p-4 font-mono text-xs text-slate-500">msgsndr_session</td>
+                                                <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
+                                                <td className="p-4">Cookie técnica necesaria para gestionar la sesión del usuario en la web y formularios.</td>
+                                                <td className="p-4 hidden sm:table-cell">Sesión</td>
+                                                <td className="p-4">Propia</td>
+                                                <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Técnica (Necesaria)</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="p-4 font-mono text-xs text-slate-500">__cf_bm</td>
+                                                <td className="p-4 hidden sm:table-cell">Cloudflare</td>
+                                                <td className="p-4">Filtra el tráfico para evitar ataques de bots y garantizar la seguridad del sitio.</td>
+                                                <td className="p-4 hidden sm:table-cell">30 min</td>
+                                                <td className="p-4">Tercero</td>
+                                                <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Seguridad (Necesaria)</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="p-4 font-mono text-xs text-slate-500">ghl_consent</td>
+                                                <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
+                                                <td className="p-4">Almacena tu elección sobre el uso de cookies en este sitio.</td>
+                                                <td className="p-4 hidden sm:table-cell">1 año</td>
+                                                <td className="p-4">Propia</td>
+                                                <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Técnica (Necesaria)</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
+
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.3. Gestión del consentimiento de cookies</h3>
+                                <p className="mb-4">Al acceder por primera vez a la web, se mostrará un banner de cookies que te permitirá:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>Aceptar todas las cookies opcionales.</li>
+                                    <li>Rechazar todas las cookies opcionales con una acción tan sencilla como aceptarlas.</li>
+                                    <li>Configurar tus preferencias por categoría (analítica, marketing, etc.).</li>
+                                </ul>
+                                <p className="mb-4">Hasta que no aceptes o configures las cookies opcionales:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>No se activarán las cookies que no sean técnicas o necesarias.</li>
+                                    <li>Solo se utilizarán las cookies imprescindibles para el funcionamiento básico del sitio.</li>
+                                </ul>
+                                <p className="mb-4">En línea con la Guía de Cookies de la AEPD, evitamos:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>El consentimiento forzado (no condicionamos el acceso a la web a aceptar cookies, salvo casos muy excepcionales debidamente justificados).</li>
+                                    <li>El uso de casillas pre‑marcadas o diseños que induzcan a aceptar sin una elección informada.</li>
+                                </ul>
+
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.4. Cambiar o retirar el consentimiento</h3>
+                                <p className="mb-4">Puedes modificar tu configuración de cookies o retirar tu consentimiento en cualquier momento mediante:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>El enlace “Configurar cookies” o similar disponible en el pie de página de la web.</li>
+                                    <li>La limpieza de cookies desde la configuración de tu navegador.</li>
+                                </ul>
+                                <p>Los cambios que realices se aplicarán de forma inmediata o en tu siguiente navegación por el sitio.</p>
+                                
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.5. Cómo desactivar o eliminar cookies desde el navegador</h3>
+                                <p className="mb-4">Además del panel de configuración de la web, puedes configurar tu navegador para:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>Bloquear o eliminar cookies ya instaladas.</li>
+                                    <li>Recibir avisos antes de que se almacenen nuevas cookies.</li>
+                                </ul>
+                                <p className="mb-4">Los pasos concretos dependen del navegador que utilices (Chrome, Firefox, Safari, Edge, etc.). Consulta la sección de ayuda de tu navegador para más detalles.</p>
+                                <p className="mb-4">Ten en cuenta que, si bloqueas todas las cookies, es posible que algunas funciones o servicios del sitio web no se muestren o no funcionen correctamente.</p>
+                                <p className="mt-8 bg-slate-50 p-4 border rounded-lg text-sm text-slate-500 italic">
+                                    Antes de publicar este texto en la web, revisa con tu asesor legal:<br/>
+                                    - Bases jurídicas concretas de las herramientas que usáis (CRM, analítica, email marketing, etc.).<br/>
+                                    - Diseño funcional del banner de cookies y del panel de configuración.<br/>
+                                    - Que la tabla de cookies se corresponda exactamente con la implementación técnica real.
+                                </p>
                             </>
                         )}
                     </div>
