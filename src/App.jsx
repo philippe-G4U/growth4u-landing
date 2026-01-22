@@ -372,7 +372,7 @@ export default function App() {
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
   const homePosts = displayPosts.slice(0, 6);
 
-  // --- COMPONENTE LEGAL VIEW (PARA PRIVACIDAD Y COOKIES) ---
+  // --- COMPONENTE LEGAL VIEW (MEJORADO) ---
   const LegalView = ({ type }) => {
       const isPrivacy = type === 'privacy';
       const title = isPrivacy ? "Política de Privacidad" : "Política de Cookies";
@@ -398,174 +398,233 @@ export default function App() {
             </nav>
 
             <div className="pt-32 pb-20 max-w-4xl mx-auto px-6">
-                <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-100">
-                    <h1 className="text-3xl md:text-4xl font-extrabold mb-8 text-[#032149] border-b pb-4">{title}</h1>
-                    <div className="prose prose-slate max-w-none text-slate-600 prose-headings:text-[#032149] prose-a:text-[#6351d5] prose-strong:text-[#032149]">
+                <div className="bg-white p-8 md:p-16 rounded-3xl shadow-xl border border-slate-100">
+                    <h1 className="text-3xl md:text-5xl font-extrabold mb-10 text-[#032149] border-b pb-6">{title}</h1>
+                    
+                    {/* Contenedor de tipografía mejorado */}
+                    <div className="text-slate-600 leading-relaxed text-lg space-y-6">
                         
                         {isPrivacy ? (
                             <>
-                                {/* --- CONTENIDO POLÍTICA DE PRIVACIDAD --- */}
-                                <div className="bg-blue-50 p-6 rounded-xl mb-8 border border-blue-100">
-                                    <h3 className="mt-0">Resumen Ejecutivo</h3>
-                                    <ul className="my-0 space-y-2 text-sm">
-                                        <li><strong>Responsable:</strong> Growth Systems Now, S.L. ("Growth4U")</li>
-                                        <li><strong>Finalidad:</strong> Gestión de consultas, servicios, B2B marketing y análisis.</li>
-                                        <li><strong>Legitimación:</strong> Contrato, interés legítimo y consentimiento.</li>
-                                        <li><strong>Derechos:</strong> Acceso, rectificación, supresión, entre otros.</li>
+                                {/* --- RESUMEN EJECUTIVO --- */}
+                                <div className="bg-[#effcfd] p-8 rounded-2xl mb-10 border border-[#0faec1]/20 shadow-sm">
+                                    <h3 className="text-[#0faec1] font-bold text-lg mb-4 uppercase tracking-wide flex items-center gap-2">
+                                        <ShieldAlert className="w-5 h-5"/> Resumen Ejecutivo
+                                    </h3>
+                                    <ul className="space-y-3 text-sm md:text-base">
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Responsable:</span> <span>Growth Systems Now, S.L. ("Growth4U")</span></li>
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Finalidad:</span> <span>Gestión de consultas, servicios, B2B marketing y análisis.</span></li>
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Legitimación:</span> <span>Contrato, interés legítimo y consentimiento.</span></li>
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Derechos:</span> <span>Acceso, rectificación, supresión, entre otros.</span></li>
                                     </ul>
                                 </div>
 
-                                <h3>1.1. Normativa aplicable</h3>
-                                <p>Esta política se adapta a las siguientes normas:</p>
-                                <ul>
-                                    <li>Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016 (RGPD).</li>
-                                    <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</li>
-                                    <li>Demás normativa española aplicable en materia de protección de datos.</li>
-                                </ul>
+                                {/* 1.1 NORMATIVA */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.1. Normativa aplicable</h3>
+                                    <p className="mb-4">Esta política se adapta a las siguientes normas:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
+                                        <li>Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016 (RGPD).</li>
+                                        <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</li>
+                                        <li>Demás normativa española aplicable en materia de protección de datos.</li>
+                                    </ul>
+                                </div>
 
-                                <h3>1.2. Responsable del tratamiento</h3>
-                                <p>El responsable del tratamiento de los datos personales es:</p>
-                                <ul>
-                                    <li><strong>Responsable:</strong> Growth Systems Now, S.L. ("Growth4U")</li>
-                                    <li><strong>NIF/CIF:</strong> ESB22671879</li>
-                                    <li><strong>Domicilio postal:</strong> Calle de Luchana, 28, 2º A, 28010, Madrid, España</li>
-                                    <li><strong>Contacto privacidad:</strong> <a href="mailto:privacidad@growth4u.io">privacidad@growth4u.io</a></li>
-                                </ul>
-                                <p className="text-sm">Dada la naturaleza de nuestra actividad, Growth4U no está obligada al nombramiento de un Delegado de Protección de Datos. No obstante, para cualquier consulta puede dirigirse al correo indicado.</p>
+                                {/* 1.2 RESPONSABLE */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.2. Responsable del tratamiento</h3>
+                                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                                        <ul className="space-y-3">
+                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Responsable:</strong> <span>Growth Systems Now, S.L. ("Growth4U")</span></li>
+                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">NIF/CIF:</strong> <span>ESB22671879</span></li>
+                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Domicilio:</strong> <span>Calle de Luchana, 28, 2º A, 28010, Madrid</span></li>
+                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Email Privacidad:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold hover:underline">privacidad@growth4u.io</a></li>
+                                        </ul>
+                                    </div>
+                                    <p className="mt-4 text-sm text-slate-500 italic">Dada la naturaleza de nuestra actividad, Growth4U no está obligada al nombramiento de un Delegado de Protección de Datos. No obstante, para cualquier consulta puede dirigirse al correo indicado.</p>
+                                </div>
 
-                                <h3>1.3. Datos que tratamos</h3>
-                                <ul>
-                                    <li><strong>Datos identificativos:</strong> nombre, apellidos.</li>
-                                    <li><strong>Datos de contacto:</strong> correo electrónico, teléfono.</li>
-                                    <li><strong>Datos profesionales:</strong> empresa, cargo, sector.</li>
-                                    <li><strong>Datos de uso y navegación:</strong> interacción con emails, web, formularios, descargas y campañas.</li>
-                                </ul>
-                                <p>No solicitamos ni tratamos de forma intencionada categorías especiales de datos (salud, ideología, etc.).</p>
+                                {/* 1.3 DATOS QUE TRATAMOS */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.3. Datos que tratamos</h3>
+                                    <p className="mb-4">Podemos tratar las siguientes categorías de datos personales:</p>
+                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
+                                        <li><strong className="text-[#032149]">Datos identificativos:</strong> nombre, apellidos.</li>
+                                        <li><strong className="text-[#032149]">Datos de contacto:</strong> correo electrónico, teléfono.</li>
+                                        <li><strong className="text-[#032149]">Datos profesionales:</strong> empresa, cargo, sector.</li>
+                                        <li><strong className="text-[#032149]">Datos de uso y navegación:</strong> interacción con emails, web, formularios, descargas y campañas.</li>
+                                    </ul>
+                                    <p className="mt-4 bg-yellow-50 p-4 rounded-lg text-sm border-l-4 border-yellow-400">
+                                        <strong>Nota:</strong> No solicitamos ni tratamos de forma intencionada categorías especiales de datos (salud, ideología, etc.).
+                                    </p>
+                                </div>
 
-                                <h3>1.4. Origen de los datos</h3>
-                                <ul>
-                                    <li>Formularios de contacto o descarga de recursos en nuestra web.</li>
-                                    <li><strong>Formularios de Meta (Lead Ads):</strong> Datos facilitados voluntariamente en Facebook/Instagram integrados en nuestro CRM.</li>
-                                    <li>Comunicaciones directas (email, teléfono, reuniones).</li>
-                                    <li>Plataformas profesionales (ej. LinkedIn) respetando derechos y expectativas de privacidad B2B.</li>
-                                    <li>Bases B2B obtenidas lícitamente de terceros con cumplimiento RGPD.</li>
-                                    <li>Fuentes de acceso público (registros mercantiles, perfiles profesionales públicos) bajo interés legítimo B2B.</li>
-                                </ul>
+                                {/* 1.4 ORIGEN */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.4. Origen de los datos</h3>
+                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
+                                        <li>Formularios de contacto o descarga de recursos en nuestra web.</li>
+                                        <li><strong className="text-[#032149]">Formularios de Meta (Lead Ads):</strong> Datos facilitados voluntariamente en Facebook/Instagram integrados en nuestro CRM.</li>
+                                        <li>Comunicaciones directas (email, teléfono, reuniones).</li>
+                                        <li>Plataformas profesionales (ej. LinkedIn) respetando derechos y expectativas de privacidad B2B.</li>
+                                        <li>Fuentes de acceso público (registros mercantiles, perfiles profesionales públicos) bajo interés legítimo B2B.</li>
+                                    </ul>
+                                </div>
 
-                                <h3>1.5. Finalidades del tratamiento</h3>
-                                <ul>
-                                    <li>Gestión de consultas, demos y reuniones.</li>
-                                    <li>Prestación de servicios, facturación y soporte.</li>
-                                    <li><strong>Comunicaciones comerciales B2B:</strong> servicios de growth, estrategia GTM y contenidos formativos.</li>
-                                    <li><strong>Publicidad y Retargeting:</strong> Uso del Píxel de Meta para medir eficacia y mostrar anuncios relevantes.</li>
-                                    <li>Mejora de servicios y analítica interna.</li>
-                                    <li>Cumplimiento de obligaciones legales (fiscales, contables).</li>
-                                    <li><strong>Informes de mercado:</strong> Basados en datos agregados o fuentes públicas, nunca usando datos personales de clientes finales sin encargo específico.</li>
-                                </ul>
+                                {/* 1.5 FINALIDADES */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.5. Finalidades del tratamiento</h3>
+                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
+                                        <li>Gestión de consultas, demos y reuniones.</li>
+                                        <li>Prestación de servicios, facturación y soporte.</li>
+                                        <li><strong className="text-[#032149]">Comunicaciones comerciales B2B:</strong> servicios de growth, estrategia GTM y contenidos formativos.</li>
+                                        <li><strong className="text-[#032149]">Publicidad y Retargeting:</strong> Uso del Píxel de Meta para medir eficacia y mostrar anuncios relevantes.</li>
+                                        <li>Mejora de servicios y analítica interna.</li>
+                                        <li>Cumplimiento de obligaciones legales (fiscales, contables).</li>
+                                        <li><strong className="text-[#032149]">Informes de mercado:</strong> Basados en datos agregados o fuentes públicas, nunca usando datos personales de clientes finales sin encargo específico.</li>
+                                    </ul>
+                                </div>
 
-                                <h3>1.6. Bases jurídicas</h3>
-                                <ul>
-                                    <li><strong>Ejecución de contrato (art. 6.1.b RGPD):</strong> Gestión de clientes y propuestas.</li>
-                                    <li><strong>Cumplimiento legal (art. 6.1.c RGPD):</strong> Obligaciones fiscales y administrativas.</li>
-                                    <li><strong>Interés legítimo (art. 6.1.f RGPD):</strong> Marketing B2B, mejora de servicios y seguridad. (Opción de oposición disponible siempre).</li>
-                                    <li><strong>Consentimiento (art. 6.1.a RGPD):</strong> Cookies no técnicas y supuestos específicos solicitados expresamente.</li>
-                                </ul>
+                                {/* 1.6 BASES JURÍDICAS */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.6. Bases jurídicas</h3>
+                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <strong className="block text-[#6351d5] mb-2">Ejecución de contrato</strong>
+                                            <span className="text-sm">Gestión de clientes, propuestas y relación contractual. (Art. 6.1.b RGPD)</span>
+                                        </li>
+                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <strong className="block text-[#6351d5] mb-2">Cumplimiento legal</strong>
+                                            <span className="text-sm">Obligaciones fiscales, administrativas y contables. (Art. 6.1.c RGPD)</span>
+                                        </li>
+                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <strong className="block text-[#6351d5] mb-2">Interés legítimo</strong>
+                                            <span className="text-sm">Marketing B2B, seguridad y mejora de servicios. (Art. 6.1.f RGPD)</span>
+                                        </li>
+                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <strong className="block text-[#6351d5] mb-2">Consentimiento</strong>
+                                            <span className="text-sm">Cookies no técnicas y supuestos específicos. (Art. 6.1.a RGPD)</span>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                                <h3>1.7. Medidas de seguridad</h3>
-                                <p>Aplicamos medidas técnicas y organizativas (art. 32 RGPD) como control de accesos, cifrado, políticas de contraseñas, copias de seguridad y gestión de incidentes. Todo el personal está sujeto a confidencialidad.</p>
+                                {/* 1.7 SEGURIDAD */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.7. Medidas de seguridad</h3>
+                                    <p>Aplicamos medidas técnicas y organizativas (art. 32 RGPD) como control de accesos, cifrado, políticas de contraseñas, copias de seguridad y gestión de incidentes. Todo el personal está sujeto a confidencialidad.</p>
+                                </div>
 
-                                <h3>1.8. Destinatarios y encargados del tratamiento</h3>
-                                <p>Compartimos datos con proveedores necesarios (encargados del tratamiento) bajo contrato (art. 28 RGPD):</p>
-                                <ul>
-                                    <li><strong>GoHighLevel:</strong> CRM, funnels y base de datos.</li>
-                                    <li><strong>Instantly & MailScale:</strong> Automatización de email.</li>
-                                    <li><strong>Ulinc:</strong> Gestión de outreach en LinkedIn.</li>
-                                    <li><strong>Meta Platforms, Inc.:</strong> Publicidad y análisis.</li>
-                                    <li>Proveedores de hosting, contabilidad y jurídico.</li>
-                                </ul>
-                                <p>No cedemos datos a terceros para sus propios fines comerciales sin consentimiento.</p>
+                                {/* 1.8 DESTINATARIOS */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.8. Destinatarios y encargados</h3>
+                                    <p className="mb-4">Compartimos datos con proveedores necesarios (encargados del tratamiento) bajo estricto contrato:</p>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
+                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span className="font-bold text-[#032149]">GoHighLevel</span> (CRM)
+                                        </div>
+                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
+                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span className="font-bold text-[#032149]">Instantly & MailScale</span> (Email)
+                                        </div>
+                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
+                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span className="font-bold text-[#032149]">Meta Platforms</span> (Ads)
+                                        </div>
+                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
+                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span className="font-bold text-[#032149]">Ulinc</span> (LinkedIn)
+                                        </div>
+                                    </div>
+                                    <p className="text-sm">No cedemos datos a terceros para sus propios fines comerciales sin consentimiento.</p>
+                                </div>
 
-                                <h3>1.9. Transferencias internacionales</h3>
-                                <p>Para proveedores fuera del EEE, utilizamos Cláusulas Contractuales Tipo o mecanismos reconocidos por el RGPD para garantizar la seguridad de los datos.</p>
+                                {/* RESTO DE SECCIONES */}
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.9. Transferencias internacionales</h3>
+                                    <p>Para proveedores fuera del EEE, utilizamos Cláusulas Contractuales Tipo o mecanismos reconocidos por el RGPD para garantizar la seguridad de los datos.</p>
 
-                                <h3>1.10. Plazos de conservación</h3>
-                                <p>Conservamos los datos mientras exista relación comercial, sean necesarios para la finalidad o por obligaciones legales. Posteriormente se bloquearán o eliminarán de forma segura.</p>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.10. Plazos de conservación</h3>
+                                    <p>Conservamos los datos mientras exista relación comercial, sean necesarios para la finalidad o por obligaciones legales. Posteriormente se bloquearán o eliminarán de forma segura.</p>
 
-                                <h3>1.11. Derechos de los interesados</h3>
-                                <p>Puedes ejercer tus derechos de Acceso, Rectificación, Supresión, Limitación, Portabilidad y Oposición escribiendo a:</p>
-                                <blockquote className="not-italic border-l-4 border-[#6351d5] pl-4 bg-slate-50 p-4 rounded">
-                                    <strong>Email:</strong> <a href="mailto:privacidad@growth4u.io">privacidad@growth4u.io</a><br/>
-                                    <strong>Asunto:</strong> Ejercicio de derechos protección de datos
-                                </blockquote>
-                                <p>Responderemos en un plazo máximo de 1 mes. Tienes derecho a reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">AEPD</a>.</p>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.11. Derechos de los interesados</h3>
+                                    <p className="mb-4">Puedes ejercer tus derechos de Acceso, Rectificación, Supresión, Limitación, Portabilidad y Oposición escribiendo a:</p>
+                                    <blockquote className="not-italic border-l-4 border-[#6351d5] pl-6 py-4 bg-slate-50 rounded-r-xl">
+                                        <p className="mb-1"><strong className="text-[#032149]">Email:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] hover:underline">privacidad@growth4u.io</a></p>
+                                        <p><strong className="text-[#032149]">Asunto:</strong> Ejercicio de derechos protección de datos</p>
+                                    </blockquote>
+                                    <p className="mt-4 text-sm">Responderemos en un plazo máximo de 1 mes. Tienes derecho a reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" className="underline text-[#6351d5]">AEPD</a>.</p>
+                                </div>
                             </>
                         ) : (
                             <>
                                 {/* --- CONTENIDO POLÍTICA DE COOKIES --- */}
-                                <h3>2.1. ¿Qué son las cookies?</h3>
-                                <p>Archivos de texto que se descargan en tu dispositivo para permitir que la web funcione, recordar preferencias y obtener estadísticas anónimas o perfiles publicitarios.</p>
+                                <div>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-0 mb-4">2.1. ¿Qué son las cookies?</h3>
+                                    <p>Archivos de texto que se descargan en tu dispositivo para permitir que la web funcione, recordar preferencias y obtener estadísticas anónimas o perfiles publicitarios.</p>
 
-                                <h3>2.2. Tipos de cookies que utilizamos</h3>
-                                <ul>
-                                    <li><strong>Técnicas o necesarias:</strong> Imprescindibles para el funcionamiento (sesión, seguridad). No requieren consentimiento.</li>
-                                    <li><strong>Preferencias:</strong> Idioma y configuración regional.</li>
-                                    <li><strong>Análisis:</strong> Medición de uso (anónimas cuando es posible).</li>
-                                    <li><strong>Marketing:</strong> Publicidad comportamental y perfiles comerciales (Meta Pixel, etc.). Solo con consentimiento.</li>
-                                </ul>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.2. Tipos de cookies que utilizamos</h3>
+                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
+                                        <li><strong className="text-[#032149]">Técnicas o necesarias:</strong> Imprescindibles para el funcionamiento (sesión, seguridad). No requieren consentimiento.</li>
+                                        <li><strong className="text-[#032149]">Preferencias:</strong> Idioma y configuración regional.</li>
+                                        <li><strong className="text-[#032149]">Análisis:</strong> Medición de uso (anónimas cuando es posible).</li>
+                                        <li><strong className="text-[#032149]">Marketing:</strong> Publicidad comportamental y perfiles comerciales (Meta Pixel, etc.). Solo con consentimiento.</li>
+                                    </ul>
 
-                                <h4>Tabla de cookies vigentes</h4>
-                                <div className="overflow-x-auto my-6 border rounded-xl shadow-sm">
-                                    <table className="min-w-full text-sm">
-                                        <thead className="bg-slate-100 text-[#032149]">
-                                            <tr>
-                                                <th className="p-3 text-left font-bold">Nombre</th>
-                                                <th className="p-3 text-left font-bold">Proveedor</th>
-                                                <th className="p-3 text-left font-bold">Finalidad</th>
-                                                <th className="p-3 text-left font-bold">Duración</th>
-                                                <th className="p-3 text-left font-bold">Tipo</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-100">
-                                            <tr>
-                                                <td className="p-3 font-mono text-xs">msgsndr_session</td>
-                                                <td className="p-3">GoHighLevel</td>
-                                                <td className="p-3">Gestión de sesión</td>
-                                                <td className="p-3">Sesión</td>
-                                                <td className="p-3"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-mono text-xs">__cf_bm</td>
-                                                <td className="p-3">Cloudflare</td>
-                                                <td className="p-3">Seguridad (Anti-bot)</td>
-                                                <td className="p-3">30 min</td>
-                                                <td className="p-3"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-mono text-xs">ghl_consent</td>
-                                                <td className="p-3">GoHighLevel</td>
-                                                <td className="p-3">Guarda consentimiento</td>
-                                                <td className="p-3">1 año</td>
-                                                <td className="p-3"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td className="p-3 font-mono text-xs">_fbp</td>
-                                                <td className="p-3">Meta (Facebook)</td>
-                                                <td className="p-3">Publicidad y Retargeting</td>
-                                                <td className="p-3">3 meses</td>
-                                                <td className="p-3"><span className="bg-orange-100 text-orange-700 px-2 py-1 rounded-full text-xs font-bold">Marketing</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <h4 className="text-xl font-bold text-[#032149] mt-10 mb-6">Tabla de cookies vigentes</h4>
+                                    <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+                                        <table className="min-w-full text-sm text-left">
+                                            <thead className="bg-slate-100 text-[#032149]">
+                                                <tr>
+                                                    <th className="p-4 font-bold">Nombre</th>
+                                                    <th className="p-4 font-bold hidden sm:table-cell">Proveedor</th>
+                                                    <th className="p-4 font-bold">Finalidad</th>
+                                                    <th className="p-4 font-bold hidden sm:table-cell">Duración</th>
+                                                    <th className="p-4 font-bold">Tipo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-100 bg-white">
+                                                <tr>
+                                                    <td className="p-4 font-mono text-xs text-slate-500">msgsndr_session</td>
+                                                    <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
+                                                    <td className="p-4">Gestión de sesión</td>
+                                                    <td className="p-4 hidden sm:table-cell">Sesión</td>
+                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4 font-mono text-xs text-slate-500">__cf_bm</td>
+                                                    <td className="p-4 hidden sm:table-cell">Cloudflare</td>
+                                                    <td className="p-4">Seguridad (Anti-bot)</td>
+                                                    <td className="p-4 hidden sm:table-cell">30 min</td>
+                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4 font-mono text-xs text-slate-500">ghl_consent</td>
+                                                    <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
+                                                    <td className="p-4">Guarda consentimiento</td>
+                                                    <td className="p-4 hidden sm:table-cell">1 año</td>
+                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4 font-mono text-xs text-slate-500">_fbp</td>
+                                                    <td className="p-4 hidden sm:table-cell">Meta</td>
+                                                    <td className="p-4">Publicidad</td>
+                                                    <td className="p-4 hidden sm:table-cell">3 meses</td>
+                                                    <td className="p-4"><span className="bg-orange-100 text-orange-700 px-2 py-1 rounded-full text-xs font-bold">Marketing</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.3. Gestión del consentimiento</h3>
+                                    <p>Al entrar por primera vez, verás un banner para aceptar o rechazar cookies opcionales. No activamos cookies de marketing sin tu acción afirmativa (consentimiento).</p>
+
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.4. Cambiar o retirar consentimiento</h3>
+                                    <p>Puedes cambiar tu configuración limpiando las cookies de tu navegador o a través del enlace de configuración al pie de página (si está habilitado). Los cambios se aplicarán en tu siguiente navegación.</p>
+                                    
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.5. Cómo desactivar cookies</h3>
+                                    <p>Puedes configurar tu navegador (Chrome, Firefox, Safari, Edge) para bloquear o eliminar cookies. Consulta la sección de "Ayuda" de tu navegador para más detalles.</p>
                                 </div>
-
-                                <h3>2.3. Gestión del consentimiento</h3>
-                                <p>Al entrar por primera vez, verás un banner para aceptar o rechazar cookies opcionales. No activamos cookies de marketing sin tu acción afirmativa (consentimiento).</p>
-
-                                <h3>2.4. Cambiar o retirar consentimiento</h3>
-                                <p>Puedes cambiar tu configuración limpiando las cookies de tu navegador o a través del enlace de configuración al pie de página (si está habilitado). Los cambios se aplicarán en tu siguiente navegación.</p>
-                                
-                                <h3>2.5. Cómo desactivar cookies en el navegador</h3>
-                                <p>Puedes configurar tu navegador (Chrome, Firefox, Safari, Edge) para bloquear o eliminar cookies. Consulta la sección de "Ayuda" de tu navegador para más detalles.</p>
                             </>
                         )}
                     </div>
