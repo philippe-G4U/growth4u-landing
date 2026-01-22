@@ -8,7 +8,8 @@ import {
   ArrowUpRight, Clock, Target, Settings, BarChart3, Search, Zap, Layers, 
   Share2, MessageCircle, Gift, RefreshCw, Rocket, Briefcase, Smartphone, 
   Lock, LayoutDashboard, Users2, Plus, ArrowLeft, Save, Building2,
-  TrendingDown, Bot, Landmark, Globe, Trash2, Edit2, Link as LinkIcon, CheckCircle, Cookie
+  TrendingDown, Bot, Landmark, Globe, Trash2, Edit2, Link as LinkIcon, CheckCircle, Cookie,
+  FileText, Scale, Eye, UserCheck, Database, Server, Shield, ExternalLink
 } from 'lucide-react';
 
 // --- FIREBASE IMPORTS ---
@@ -152,22 +153,90 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const bookingLink = "https://now.growth4u.io/widget/bookings/growth4u_demo";
 
+  // --- META PIXEL EVENT TRACKING ---
+  const trackLead = (source) => {
+    if (cookieConsent === 'accepted' && window.fbq) {
+      window.fbq('track', 'Lead', { 
+        content_name: 'Demo Booking',
+        content_category: source 
+      });
+    }
+  };
+
+  const trackViewContent = (contentName, contentType) => {
+    if (cookieConsent === 'accepted' && window.fbq) {
+      window.fbq('track', 'ViewContent', { 
+        content_name: contentName,
+        content_type: contentType 
+      });
+    }
+  };
+
+  const trackContact = () => {
+    if (cookieConsent === 'accepted' && window.fbq) {
+      window.fbq('track', 'Contact');
+    }
+  };
+
+  // --- META PIXEL INITIALIZATION (GDPR COMPLIANT) ---
+  const initMetaPixel = () => {
+    if (typeof window === 'undefined') return;
+    if (window.fbq) return; // Already initialized
+    
+    // Meta Pixel base code
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    // Initialize with Growth4U Pixel ID
+    window.fbq('init', '1330785362070217');
+    window.fbq('track', 'PageView');
+    
+    console.log('[Growth4U] Meta Pixel initialized with user consent');
+  };
+
+  // Helper to track custom events (only if consent given)
+  const trackEvent = (eventName, params = {}) => {
+    if (cookieConsent === 'accepted' && window.fbq) {
+      window.fbq('track', eventName, params);
+    }
+  };
+
   // --- COOKIE LOGIC ---
   useEffect(() => {
     const savedConsent = localStorage.getItem('growth4u_consent');
     if (savedConsent) {
         setCookieConsent(savedConsent);
+        // If user already accepted in previous session, initialize pixel
+        if (savedConsent === 'accepted') {
+            initMetaPixel();
+        }
     }
   }, []);
+
+  // Track page views when view changes (SPA navigation)
+  useEffect(() => {
+    if (cookieConsent === 'accepted' && window.fbq) {
+      window.fbq('track', 'PageView');
+    }
+  }, [view]);
 
   const handleAcceptCookies = () => {
     localStorage.setItem('growth4u_consent', 'accepted');
     setCookieConsent('accepted');
+    // Initialize Meta Pixel immediately on acceptance
+    initMetaPixel();
   };
 
   const handleRejectCookies = () => {
     localStorage.setItem('growth4u_consent', 'rejected');
     setCookieConsent('rejected');
+    console.log('[Growth4U] Marketing cookies rejected - no tracking');
   };
 
   // --- HOOK: REDIRECCIÓN FORZADA (SEO FIX) & ROUTING LEGAL ---
@@ -310,6 +379,8 @@ export default function App() {
     setSelectedPost(post);
     setView('post');
     window.scrollTo(0, 0);
+    // Track blog post view
+    trackViewContent(post.title, 'blog_post');
   };
 
   const handleGoToBlogPage = () => {
@@ -372,10 +443,55 @@ export default function App() {
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
   const homePosts = displayPosts.slice(0, 6);
 
-  // --- COMPONENTE LEGAL VIEW (MEJORADO) ---
+  // --- COMPONENTE LEGAL VIEW (COMPLETO) ---
   const LegalView = ({ type }) => {
       const isPrivacy = type === 'privacy';
       const title = isPrivacy ? "Política de Privacidad" : "Política de Cookies";
+      
+      // Componente de sección reutilizable
+      const Section = ({ number, title, children, icon: Icon }) => (
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            {Icon && (
+              <div className="bg-[#6351d5]/10 p-2.5 rounded-xl">
+                <Icon className="w-5 h-5 text-[#6351d5]" />
+              </div>
+            )}
+            <h3 className="text-xl md:text-2xl font-bold text-[#032149]">
+              {number}. {title}
+            </h3>
+          </div>
+          <div className="pl-0 md:pl-12">
+            {children}
+          </div>
+        </div>
+      );
+
+      // Componente de lista con bullets personalizados
+      const BulletList = ({ items, className = "" }) => (
+        <ul className={`space-y-3 ${className}`}>
+          {items.map((item, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#6351d5] mt-2.5 flex-shrink-0" />
+              <span className="text-slate-600 leading-relaxed">{item}</span>
+            </li>
+          ))}
+        </ul>
+      );
+
+      // Componente de info box
+      const InfoBox = ({ children, variant = "info" }) => {
+        const styles = {
+          info: "bg-blue-50 border-blue-200 text-blue-800",
+          warning: "bg-amber-50 border-amber-200 text-amber-800",
+          success: "bg-emerald-50 border-emerald-200 text-emerald-800"
+        };
+        return (
+          <div className={`p-4 rounded-xl border ${styles[variant]} text-sm leading-relaxed`}>
+            {children}
+          </div>
+        );
+      };
       
       return (
         <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white">
@@ -386,6 +502,7 @@ export default function App() {
                 <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
             </Helmet>
 
+            {/* Navigation */}
             <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
                 <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                    <div className="flex items-center gap-0 cursor-pointer" onClick={handleGoHome}>
@@ -398,235 +515,540 @@ export default function App() {
             </nav>
 
             <div className="pt-32 pb-20 max-w-4xl mx-auto px-6">
-                <div className="bg-white p-8 md:p-16 rounded-3xl shadow-xl border border-slate-100">
-                    <h1 className="text-3xl md:text-5xl font-extrabold mb-10 text-[#032149] border-b pb-6">{title}</h1>
+                <div className="bg-white p-8 md:p-12 lg:p-16 rounded-3xl shadow-xl border border-slate-100">
                     
-                    {/* Contenedor de tipografía mejorado */}
-                    <div className="text-slate-600 leading-relaxed text-lg space-y-6">
+                    {/* Header */}
+                    <div className="text-center mb-12 pb-8 border-b border-slate-100">
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-[#6351d5]/10 rounded-2xl mb-6">
+                            {isPrivacy ? <Shield className="w-8 h-8 text-[#6351d5]" /> : <Cookie className="w-8 h-8 text-[#6351d5]" />}
+                        </div>
+                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#032149] mb-4">{title}</h1>
+                        <p className="text-slate-500 text-sm">Última actualización: Enero 2025</p>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="text-slate-600 leading-relaxed">
                         
                         {isPrivacy ? (
                             <>
                                 {/* --- RESUMEN EJECUTIVO --- */}
-                                <div className="bg-[#effcfd] p-8 rounded-2xl mb-10 border border-[#0faec1]/20 shadow-sm">
-                                    <h3 className="text-[#0faec1] font-bold text-lg mb-4 uppercase tracking-wide flex items-center gap-2">
-                                        <ShieldAlert className="w-5 h-5"/> Resumen Ejecutivo
+                                <div className="bg-gradient-to-br from-[#effcfd] to-[#f0f4ff] p-8 rounded-2xl mb-12 border border-[#0faec1]/20">
+                                    <h3 className="text-[#032149] font-bold text-lg mb-6 flex items-center gap-3">
+                                        <FileText className="w-5 h-5 text-[#0faec1]"/> 
+                                        Resumen Ejecutivo
                                     </h3>
-                                    <ul className="space-y-3 text-sm md:text-base">
-                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Responsable:</span> <span>Growth Systems Now, S.L. ("Growth4U")</span></li>
-                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Finalidad:</span> <span>Gestión de consultas, servicios, B2B marketing y análisis.</span></li>
-                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Legitimación:</span> <span>Contrato, interés legítimo y consentimiento.</span></li>
-                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Derechos:</span> <span>Acceso, rectificación, supresión, entre otros.</span></li>
-                                    </ul>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="bg-white/80 p-4 rounded-xl">
+                                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Responsable</span>
+                                            <p className="text-[#032149] font-semibold mt-1">Growth Systems Now, S.L. ("Growth4U")</p>
+                                        </div>
+                                        <div className="bg-white/80 p-4 rounded-xl">
+                                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Finalidad</span>
+                                            <p className="text-[#032149] font-semibold mt-1">Gestión de consultas, servicios, marketing B2B y análisis</p>
+                                        </div>
+                                        <div className="bg-white/80 p-4 rounded-xl">
+                                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Legitimación</span>
+                                            <p className="text-[#032149] font-semibold mt-1">Contrato, interés legítimo y consentimiento</p>
+                                        </div>
+                                        <div className="bg-white/80 p-4 rounded-xl">
+                                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Derechos</span>
+                                            <p className="text-[#032149] font-semibold mt-1">Acceso, rectificación, supresión, entre otros</p>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* 1.1 NORMATIVA */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.1. Normativa aplicable</h3>
+                                <Section number="1.1" title="Normativa aplicable" icon={Scale}>
                                     <p className="mb-4">Esta política se adapta a las siguientes normas:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
-                                        <li>Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016 (RGPD).</li>
-                                        <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</li>
-                                        <li>Demás normativa española aplicable en materia de protección de datos.</li>
-                                    </ul>
-                                </div>
+                                    <BulletList items={[
+                                        <><strong className="text-[#032149]">Reglamento (UE) 2016/679</strong> del Parlamento Europeo y del Consejo, de 27 de abril de 2016 (RGPD).</>,
+                                        <><strong className="text-[#032149]">Ley Orgánica 3/2018</strong>, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</>,
+                                        <>Demás normativa española que resulte aplicable en materia de protección de datos y servicios de la sociedad de la información.</>
+                                    ]} />
+                                </Section>
 
                                 {/* 1.2 RESPONSABLE */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.2. Responsable del tratamiento</h3>
-                                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                        <ul className="space-y-3">
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Responsable:</strong> <span>Growth Systems Now, S.L. ("Growth4U")</span></li>
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">NIF/CIF:</strong> <span>ESB22671879</span></li>
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Domicilio:</strong> <span>Calle de Luchana, 28, 2º A, 28010, Madrid</span></li>
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Email Privacidad:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold hover:underline">privacidad@growth4u.io</a></li>
-                                        </ul>
+                                <Section number="1.2" title="Responsable del tratamiento" icon={Building2}>
+                                    <p className="mb-4">El responsable del tratamiento de los datos personales es:</p>
+                                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Responsable</span>
+                                                <p className="text-[#032149] font-semibold mt-1">Growth Systems Now, S.L. ("Growth4U")</p>
+                                            </div>
+                                            <div>
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">NIF/CIF</span>
+                                                <p className="text-[#032149] font-semibold mt-1">ESB22671879</p>
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Domicilio postal</span>
+                                                <p className="text-[#032149] font-semibold mt-1">Calle de Luchana, 28, 2º A, 28010, Madrid, España</p>
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Contacto privacidad</span>
+                                                <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold hover:underline block mt-1">privacidad@growth4u.io</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p className="mt-4 text-sm text-slate-500 italic">Dada la naturaleza de nuestra actividad, Growth4U no está obligada al nombramiento de un Delegado de Protección de Datos. No obstante, para cualquier consulta puede dirigirse al correo indicado.</p>
-                                </div>
+                                    <InfoBox variant="info">
+                                        Dada la naturaleza de nuestra actividad, Growth4U no está obligada al nombramiento de un Delegado de Protección de Datos. No obstante, para cualquier consulta puede dirigirse al correo electrónico indicado.
+                                    </InfoBox>
+                                </Section>
 
                                 {/* 1.3 DATOS QUE TRATAMOS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.3. Datos que tratamos</h3>
-                                    <p className="mb-4">Podemos tratar las siguientes categorías de datos personales:</p>
-                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li><strong className="text-[#032149]">Datos identificativos:</strong> nombre, apellidos.</li>
-                                        <li><strong className="text-[#032149]">Datos de contacto:</strong> correo electrónico, teléfono.</li>
-                                        <li><strong className="text-[#032149]">Datos profesionales:</strong> empresa, cargo, sector.</li>
-                                        <li><strong className="text-[#032149]">Datos de uso y navegación:</strong> interacción con emails, web, formularios, descargas y campañas.</li>
-                                    </ul>
-                                    <p className="mt-4 bg-yellow-50 p-4 rounded-lg text-sm border-l-4 border-yellow-400">
-                                        <strong>Nota:</strong> No solicitamos ni tratamos de forma intencionada categorías especiales de datos (salud, ideología, etc.).
-                                    </p>
-                                </div>
-
-                                {/* 1.4 ORIGEN */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.4. Origen de los datos</h3>
-                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li>Formularios de contacto o descarga de recursos en nuestra web.</li>
-                                        <li><strong className="text-[#032149]">Formularios de Meta (Lead Ads):</strong> Datos facilitados voluntariamente en Facebook/Instagram integrados en nuestro CRM.</li>
-                                        <li>Comunicaciones directas (email, teléfono, reuniones).</li>
-                                        <li>Plataformas profesionales (ej. LinkedIn) respetando derechos y expectativas de privacidad B2B.</li>
-                                        <li>Fuentes de acceso público (registros mercantiles, perfiles profesionales públicos) bajo interés legítimo B2B.</li>
-                                    </ul>
-                                </div>
-
-                                {/* 1.5 FINALIDADES */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.5. Finalidades del tratamiento</h3>
-                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li>Gestión de consultas, demos y reuniones.</li>
-                                        <li>Prestación de servicios, facturación y soporte.</li>
-                                        <li><strong className="text-[#032149]">Comunicaciones comerciales B2B:</strong> servicios de growth, estrategia GTM y contenidos formativos.</li>
-                                        <li><strong className="text-[#032149]">Publicidad y Retargeting:</strong> Uso del Píxel de Meta para medir eficacia y mostrar anuncios relevantes.</li>
-                                        <li>Mejora de servicios y analítica interna.</li>
-                                        <li>Cumplimiento de obligaciones legales (fiscales, contables).</li>
-                                        <li><strong className="text-[#032149]">Informes de mercado:</strong> Basados en datos agregados o fuentes públicas, nunca usando datos personales de clientes finales sin encargo específico.</li>
-                                    </ul>
-                                </div>
-
-                                {/* 1.6 BASES JURÍDICAS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.6. Bases jurídicas</h3>
-                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Ejecución de contrato</strong>
-                                            <span className="text-sm">Gestión de clientes, propuestas y relación contractual. (Art. 6.1.b RGPD)</span>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Cumplimiento legal</strong>
-                                            <span className="text-sm">Obligaciones fiscales, administrativas y contables. (Art. 6.1.c RGPD)</span>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Interés legítimo</strong>
-                                            <span className="text-sm">Marketing B2B, seguridad y mejora de servicios. (Art. 6.1.f RGPD)</span>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Consentimiento</strong>
-                                            <span className="text-sm">Cookies no técnicas y supuestos específicos. (Art. 6.1.a RGPD)</span>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                {/* 1.7 SEGURIDAD */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.7. Medidas de seguridad</h3>
-                                    <p>Aplicamos medidas técnicas y organizativas (art. 32 RGPD) como control de accesos, cifrado, políticas de contraseñas, copias de seguridad y gestión de incidentes. Todo el personal está sujeto a confidencialidad.</p>
-                                </div>
-
-                                {/* 1.8 DESTINATARIOS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.8. Destinatarios y encargados</h3>
-                                    <p className="mb-4">Compartimos datos con proveedores necesarios (encargados del tratamiento) bajo estricto contrato:</p>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            <span className="font-bold text-[#032149]">GoHighLevel</span> (CRM)
+                                <Section number="1.3" title="Datos que tratamos" icon={Database}>
+                                    <p className="mb-4">Podemos tratar las siguientes categorías de datos personales, según el formulario o canal que utilices:</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <UserCheck className="w-4 h-4 text-[#6351d5]" />
+                                                <span className="font-bold text-[#032149]">Datos identificativos</span>
+                                            </div>
+                                            <p className="text-sm text-slate-600">Nombre, apellidos</p>
                                         </div>
-                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            <span className="font-bold text-[#032149]">Instantly & MailScale</span> (Email)
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Mail className="w-4 h-4 text-[#6351d5]" />
+                                                <span className="font-bold text-[#032149]">Datos de contacto</span>
+                                            </div>
+                                            <p className="text-sm text-slate-600">Correo electrónico, teléfono</p>
                                         </div>
-                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            <span className="font-bold text-[#032149]">Meta Platforms</span> (Ads)
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Briefcase className="w-4 h-4 text-[#6351d5]" />
+                                                <span className="font-bold text-[#032149]">Datos profesionales</span>
+                                            </div>
+                                            <p className="text-sm text-slate-600">Empresa, cargo, sector</p>
                                         </div>
-                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            <span className="font-bold text-[#032149]">Ulinc</span> (LinkedIn)
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <BarChart3 className="w-4 h-4 text-[#6351d5]" />
+                                                <span className="font-bold text-[#032149]">Datos de uso</span>
+                                            </div>
+                                            <p className="text-sm text-slate-600">Interacción con emails, web, formularios, campañas</p>
                                         </div>
                                     </div>
-                                    <p className="text-sm">No cedemos datos a terceros para sus propios fines comerciales sin consentimiento.</p>
-                                </div>
+                                    <InfoBox variant="warning">
+                                        <strong>Nota:</strong> No solicitamos ni tratamos de forma intencionada <strong>categorías especiales de datos</strong> (salud, ideología, religión, etc.). Si excepcionalmente fuera necesario, se te informaría de forma específica y se recabaría el consentimiento expreso correspondiente.
+                                    </InfoBox>
+                                </Section>
 
-                                {/* RESTO DE SECCIONES */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.9. Transferencias internacionales</h3>
-                                    <p>Para proveedores fuera del EEE, utilizamos Cláusulas Contractuales Tipo o mecanismos reconocidos por el RGPD para garantizar la seguridad de los datos.</p>
+                                {/* 1.4 ORIGEN DE LOS DATOS */}
+                                <Section number="1.4" title="Origen de los datos" icon={Globe}>
+                                    <p className="mb-4">Los datos personales que tratamos pueden proceder de:</p>
+                                    <BulletList items={[
+                                        <>Formularios de contacto, descarga de recursos o solicitud de reunión en nuestros propios sitios web.</>,
+                                        <><strong className="text-[#032149]">Formularios de Meta (Lead Ads):</strong> Recibimos datos personales (nombre, correo, etc.) que nos facilitas voluntariamente a través de formularios en Facebook o Instagram. Estos datos se integran en nuestro CRM para su gestión comercial.</>,
+                                        <>Comunicaciones directas que mantienes con nosotros (email, teléfono, reuniones).</>,
+                                        <>Plataformas y redes profesionales (por ejemplo, <strong className="text-[#032149]">LinkedIn</strong>) cuando te has puesto en contacto con nosotros, has mostrado interés en nuestros contenidos, o cuando tu perfil es público y se considera razonable para fines de marketing B2B, siempre respetando tus derechos y expectativas de privacidad.</>,
+                                        <>Bases o listados B2B obtenidos de forma lícita a través de terceros que garantizan el cumplimiento del RGPD, respecto de los cuales te informaremos en la primera comunicación que te hagamos llegar.</>,
+                                        <><strong className="text-[#032149]">Fuentes de acceso público:</strong> Recabamos información profesional de fuentes abiertas como registros mercantiles, perfiles públicos de redes sociales profesionales (LinkedIn) y sitios web corporativos, siempre bajo el amparo del interés legítimo B2B y para fines estrictamente profesionales.</>
+                                    ]} />
+                                    <p className="mt-4 text-sm italic text-slate-500">En cualquiera de los casos, te informaremos de esta política y de tus derechos en el primer momento razonable.</p>
+                                </Section>
 
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.10. Plazos de conservación</h3>
-                                    <p>Conservamos los datos mientras exista relación comercial, sean necesarios para la finalidad o por obligaciones legales. Posteriormente se bloquearán o eliminarán de forma segura.</p>
+                                {/* 1.5 FINALIDADES DEL TRATAMIENTO */}
+                                <Section number="1.5" title="Finalidades del tratamiento" icon={Target}>
+                                    <p className="mb-4">Usamos tus datos para:</p>
+                                    <BulletList items={[
+                                        <><strong className="text-[#032149]">Gestión de consultas y reuniones:</strong> atender solicitudes de información, demos o reuniones que nos plantees.</>,
+                                        <><strong className="text-[#032149]">Prestación de servicios:</strong> gestionar la relación contractual, la facturación y el soporte cuando seas cliente.</>,
+                                        <><strong className="text-[#032149]">Comunicaciones comerciales B2B:</strong> enviarte comunicaciones relacionadas con nuestros servicios de growth, estrategia GTM, contenidos formativos y recursos que puedan ser de tu interés profesional.</>,
+                                        <><strong className="text-[#032149]">Publicidad y Retargeting:</strong> Utilizamos el Píxel de Meta para medir la eficacia de nuestras campañas publicitarias y mostrar anuncios relevantes a personas que han interactuado con nuestros formularios o página web.</>,
+                                        <><strong className="text-[#032149]">Mejora de servicios y analítica interna:</strong> realizar análisis agregados y estadísticos sobre el uso de nuestra web, materiales descargados y campañas, con el fin de mejorar nuestros contenidos y propuestas de valor.</>,
+                                        <><strong className="text-[#032149]">Cumplimiento de obligaciones legales:</strong> atender obligaciones contables, fiscales y de prevención de blanqueo de capitales u otras que correspondan.</>,
+                                        <><strong className="text-[#032149]">Elaboración de informes de mercado:</strong> Los análisis de mercado que realizamos para nuestros servicios se basan en datos agregados o de fuentes públicas profesionales. En ningún caso utilizamos datos personales de los clientes de nuestros clientes para estos fines, salvo que exista un encargo específico y un contrato de tratamiento de datos previo.</>
+                                    ]} />
+                                </Section>
 
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.11. Derechos de los interesados</h3>
-                                    <p className="mb-4">Puedes ejercer tus derechos de Acceso, Rectificación, Supresión, Limitación, Portabilidad y Oposición escribiendo a:</p>
-                                    <blockquote className="not-italic border-l-4 border-[#6351d5] pl-6 py-4 bg-slate-50 rounded-r-xl">
-                                        <p className="mb-1"><strong className="text-[#032149]">Email:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] hover:underline">privacidad@growth4u.io</a></p>
-                                        <p><strong className="text-[#032149]">Asunto:</strong> Ejercicio de derechos protección de datos</p>
-                                    </blockquote>
-                                    <p className="mt-4 text-sm">Responderemos en un plazo máximo de 1 mes. Tienes derecho a reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" className="underline text-[#6351d5]">AEPD</a>.</p>
-                                </div>
+                                {/* 1.6 BASES JURÍDICAS */}
+                                <Section number="1.6" title="Bases jurídicas del tratamiento" icon={Scale}>
+                                    <p className="mb-6">Tratamos tus datos sobre las siguientes bases jurídicas:</p>
+                                    
+                                    <div className="space-y-4">
+                                        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                                            <div className="flex items-start gap-3">
+                                                <div className="bg-[#6351d5] text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">1</div>
+                                                <div>
+                                                    <h4 className="font-bold text-[#032149] mb-2">Ejecución de un contrato o aplicación de medidas precontractuales <span className="text-slate-400 font-normal text-sm">(art. 6.1.b RGPD)</span></h4>
+                                                    <p className="text-slate-600 text-sm">Cuando tramitamos tu solicitud de información, preparamos una propuesta o gestionamos la relación como cliente.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                                            <div className="flex items-start gap-3">
+                                                <div className="bg-[#6351d5] text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">2</div>
+                                                <div>
+                                                    <h4 className="font-bold text-[#032149] mb-2">Cumplimiento de obligaciones legales <span className="text-slate-400 font-normal text-sm">(art. 6.1.c RGPD)</span></h4>
+                                                    <p className="text-slate-600 text-sm">Cuando tratamos datos para cumplir obligaciones contables, fiscales u otras impuestas por la normativa aplicable.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                                            <div className="flex items-start gap-3">
+                                                <div className="bg-[#6351d5] text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">3</div>
+                                                <div>
+                                                    <h4 className="font-bold text-[#032149] mb-2">Interés legítimo <span className="text-slate-400 font-normal text-sm">(art. 6.1.f RGPD)</span></h4>
+                                                    <BulletList className="mt-3 text-sm" items={[
+                                                        <>Para realizar acciones de <strong className="text-[#032149]">marketing B2B razonables</strong> dirigidas a contactos profesionales de empresas que puedan estar interesadas en nuestros servicios.</>,
+                                                        <>Para mejorar nuestros servicios, procesos internos y seguridad de la información.</>
+                                                    ]} />
+                                                    <div className="mt-4 bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                                        <p className="text-sm text-blue-800">
+                                                            <strong>Podrás oponerte en cualquier momento:</strong> mediante el enlace de baja incluido en cada comunicación comercial por email, o enviando un email a <a href="mailto:privacidad@growth4u.io" className="underline">privacidad@growth4u.io</a>.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                                            <div className="flex items-start gap-3">
+                                                <div className="bg-[#6351d5] text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">4</div>
+                                                <div>
+                                                    <h4 className="font-bold text-[#032149] mb-2">Consentimiento <span className="text-slate-400 font-normal text-sm">(art. 6.1.a RGPD)</span></h4>
+                                                    <BulletList className="mt-3 text-sm" items={[
+                                                        <>Para el uso de <strong className="text-[#032149]">ciertas cookies no técnicas</strong> y tecnologías similares, conforme se detalla en nuestra Política de Cookies.</>,
+                                                        <>En aquellos supuestos en los que te lo pidamos de forma expresa para finalidades concretas.</>
+                                                    ]} />
+                                                    <p className="mt-4 text-sm text-slate-500 italic">Cuando la base jurídica sea el consentimiento, podrás retirarlo en cualquier momento sin que ello afecte a la licitud del tratamiento basado en el consentimiento previo.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Section>
+
+                                {/* 1.7 SEGURIDAD */}
+                                <Section number="1.7" title="Medidas de seguridad y confidencialidad" icon={Lock}>
+                                    <p className="mb-4">Growth4U aplica medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, de acuerdo con el art. 32 RGPD, incluyendo, entre otras:</p>
+                                    <BulletList items={[
+                                        <>Control de accesos y gestión de permisos según rol.</>,
+                                        <>Uso de proveedores con cifrado en tránsito y, cuando es posible, en reposo.</>,
+                                        <>Políticas internas de contraseña y autenticación reforzada.</>,
+                                        <>Copias de seguridad periódicas y procedimientos de restauración.</>,
+                                        <>Procedimientos para la gestión de incidentes de seguridad y brechas de datos.</>
+                                    ]} />
+                                    <p className="mt-4">Todo el personal de Growth4U y los terceros que prestan servicios con acceso a datos personales están sujetos a <strong className="text-[#032149]">obligaciones de confidencialidad</strong> (contractuales y/o legales).</p>
+                                </Section>
+
+                                {/* 1.8 DESTINATARIOS */}
+                                <Section number="1.8" title="Destinatarios y encargados del tratamiento" icon={Users}>
+                                    <p className="mb-4">Podemos compartir tus datos con terceros únicamente cuando sea necesario para la correcta prestación de nuestros servicios o por obligación legal.</p>
+                                    <p className="mb-4">En particular, podemos contar con proveedores que actúan como <strong className="text-[#032149]">encargados del tratamiento</strong>, tales como:</p>
+                                    <BulletList className="mb-6" items={[
+                                        <>Servicios de <strong className="text-[#032149]">envío de email</strong> y automatización de marketing.</>,
+                                        <>Herramientas de <strong className="text-[#032149]">CRM</strong> y gestión de la relación con clientes.</>,
+                                        <>Plataformas de <strong className="text-[#032149]">analítica web</strong> y medición de rendimiento.</>,
+                                        <>Proveedores de <strong className="text-[#032149]">alojamiento, cloud y mantenimiento IT</strong>.</>,
+                                        <>Otros proveedores de soporte administrativo, contable o jurídico.</>
+                                    ]} />
+
+                                    <h4 className="font-bold text-[#032149] mb-4">Plataformas principales:</h4>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                                        {[
+                                            { name: "GoHighLevel", desc: "CRM, funnels y base de datos" },
+                                            { name: "Instantly & MailScale", desc: "Automatización y envío de emails" },
+                                            { name: "Ulinc", desc: "Gestión de outreach en LinkedIn" },
+                                            { name: "Meta Platforms, Inc.", desc: "Publicidad y análisis" }
+                                        ].map((platform, i) => (
+                                            <div key={i} className="flex items-center gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+                                                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0"></div>
+                                                <div>
+                                                    <span className="font-bold text-[#032149] text-sm">{platform.name}</span>
+                                                    <p className="text-xs text-slate-500">{platform.desc}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <InfoBox variant="info">
+                                        Con todos ellos se han firmado contratos de encargo de tratamiento conforme al <strong>art. 28 RGPD</strong>, que les obligan a tratar los datos únicamente siguiendo nuestras instrucciones, aplicar medidas de seguridad adecuadas y no utilizarlos para fines propios.
+                                    </InfoBox>
+
+                                    <p className="mt-4 text-sm">No cedemos tus datos a terceros para sus propias finalidades comerciales, salvo que contemos con tu consentimiento expreso o exista otra base jurídica válida.</p>
+                                </Section>
+
+                                {/* 1.9 TRANSFERENCIAS INTERNACIONALES */}
+                                <Section number="1.9" title="Transferencias internacionales" icon={Globe}>
+                                    <p className="mb-4">Algunos de nuestros proveedores pueden estar ubicados fuera del Espacio Económico Europeo (EEE) o prestar sus servicios desde países que no ofrecen un nivel de protección de datos equivalente al europeo.</p>
+                                    <p className="mb-4">En esos casos:</p>
+                                    <BulletList items={[
+                                        <>Utilizaremos <strong className="text-[#032149]">Cláusulas Contractuales Tipo</strong> aprobadas por la Comisión Europea u otros mecanismos reconocidos por el RGPD.</>,
+                                        <>Evaluaremos, cuando proceda, el nivel de protección del país de destino y, en su caso, aplicaremos <strong className="text-[#032149]">medidas adicionales</strong> para salvaguardar la confidencialidad y la seguridad de tus datos.</>
+                                    ]} />
+                                    <p className="mt-4 text-sm text-slate-500">Puedes solicitar información adicional sobre las transferencias internacionales y las garantías aplicadas escribiendo a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] underline">privacidad@growth4u.io</a></p>
+                                </Section>
+
+                                {/* 1.10 PLAZOS DE CONSERVACIÓN */}
+                                <Section number="1.10" title="Plazos de conservación" icon={Clock}>
+                                    <p className="mb-4">Conservaremos tus datos:</p>
+                                    <BulletList items={[
+                                        <>Mientras exista una relación comercial o contractual activa contigo o con tu empresa.</>,
+                                        <>Mientras sean necesarios para la finalidad para la que fueron recogidos.</>,
+                                        <>Posteriormente, durante los plazos necesarios para cumplir obligaciones legales o para la <strong className="text-[#032149]">prescripción de responsabilidades</strong> (por ejemplo, en materia civil, fiscal o mercantil).</>
+                                    ]} />
+                                    <p className="mt-4">Una vez transcurridos dichos plazos, los datos se bloquearán o eliminarán de forma segura.</p>
+                                </Section>
+
+                                {/* 1.11 DERECHOS */}
+                                <Section number="1.11" title="Derechos de los interesados" icon={UserCheck}>
+                                    <p className="mb-6">Puedes ejercer en cualquier momento los siguientes derechos:</p>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+                                        {[
+                                            { name: "Acceso", desc: "Saber qué datos tuyos tratamos" },
+                                            { name: "Rectificación", desc: "Solicitar la corrección de datos inexactos" },
+                                            { name: "Supresión", desc: "Pedir la eliminación de tus datos" },
+                                            { name: "Limitación", desc: "Limitar el tratamiento en ciertas circunstancias" },
+                                            { name: "Portabilidad", desc: "Recibir tus datos en formato estructurado" },
+                                            { name: "Oposición", desc: "Oponerte al tratamiento basado en interés legítimo" }
+                                        ].map((right, i) => (
+                                            <div key={i} className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                                <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                                <div>
+                                                    <span className="font-bold text-[#032149]">{right.name}</span>
+                                                    <p className="text-sm text-slate-600">{right.desc}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="bg-[#6351d5]/5 p-6 rounded-2xl border border-[#6351d5]/20 mb-6">
+                                        <h4 className="font-bold text-[#032149] mb-4">Para ejercer tus derechos:</h4>
+                                        <div className="space-y-3">
+                                            <div className="flex items-center gap-3">
+                                                <Mail className="w-5 h-5 text-[#6351d5]" />
+                                                <div>
+                                                    <span className="text-sm text-slate-500">Email:</span>
+                                                    <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold ml-2 hover:underline">privacidad@growth4u.io</a>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <FileText className="w-5 h-5 text-[#6351d5]" />
+                                                <div>
+                                                    <span className="text-sm text-slate-500">Asunto:</span>
+                                                    <span className="text-[#032149] font-semibold ml-2">"Ejercicio de derechos protección de datos"</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p className="mb-4">La solicitud deberá incluir:</p>
+                                    <BulletList className="mb-6" items={[
+                                        <>Tu nombre y apellidos.</>,
+                                        <>Indicación clara del derecho que deseas ejercer.</>,
+                                        <>Una copia de tu documento identificativo (DNI/NIE/pasaporte) o medio equivalente que permita acreditar tu identidad, en caso de duda razonable sobre la misma.</>
+                                    ]} />
+
+                                    <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
+                                        <h5 className="font-bold text-[#032149] mb-2 flex items-center gap-2">
+                                            <Clock className="w-4 h-4" /> Plazo de respuesta
+                                        </h5>
+                                        <p className="text-sm text-slate-600">Responderemos a tu solicitud en el plazo máximo de <strong>1 mes</strong>, prorrogable otros <strong>2 meses</strong> en caso de solicitudes especialmente complejas; en tal caso, te informaremos de la prórroga dentro del primer mes.</p>
+                                    </div>
+
+                                    <InfoBox variant="info">
+                                        Si consideras que no hemos tratado tus datos de forma adecuada, puedes presentar una reclamación ante la autoridad de control competente: <strong>Agencia Española de Protección de Datos (AEPD)</strong> — <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" className="underline">www.aepd.es</a>
+                                    </InfoBox>
+                                </Section>
+
                             </>
                         ) : (
                             <>
-                                {/* --- CONTENIDO POLÍTICA DE COOKIES --- */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-0 mb-4">2.1. ¿Qué son las cookies?</h3>
-                                    <p>Archivos de texto que se descargan en tu dispositivo para permitir que la web funcione, recordar preferencias y obtener estadísticas anónimas o perfiles publicitarios.</p>
+                                {/* --- POLÍTICA DE COOKIES --- */}
+                                
+                                {/* 2.1 QUÉ SON LAS COOKIES */}
+                                <Section number="2.1" title="¿Qué son las cookies?" icon={Cookie}>
+                                    <p className="mb-4">Las cookies son pequeños archivos de texto que se descargan en tu dispositivo (ordenador, tablet, smartphone, etc.) cuando visitas determinadas páginas web. Permiten, entre otras cosas:</p>
+                                    <BulletList items={[
+                                        <>Que la web funcione correctamente.</>,
+                                        <>Recordar tus preferencias de navegación.</>,
+                                        <>Obtener información estadística anónima sobre el uso del sitio.</>,
+                                        <>Mostrarte contenidos y anuncios más acordes con tus intereses.</>
+                                    ]} />
+                                </Section>
 
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.2. Tipos de cookies que utilizamos</h3>
-                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li><strong className="text-[#032149]">Técnicas o necesarias:</strong> Imprescindibles para el funcionamiento (sesión, seguridad). No requieren consentimiento.</li>
-                                        <li><strong className="text-[#032149]">Preferencias:</strong> Idioma y configuración regional.</li>
-                                        <li><strong className="text-[#032149]">Análisis:</strong> Medición de uso (anónimas cuando es posible).</li>
-                                        <li><strong className="text-[#032149]">Marketing:</strong> Publicidad comportamental y perfiles comerciales (Meta Pixel, etc.). Solo con consentimiento.</li>
-                                    </ul>
+                                {/* 2.2 TIPOS DE COOKIES */}
+                                <Section number="2.2" title="Tipos de cookies que utilizamos" icon={Layers}>
+                                    <p className="mb-6">En la web de Growth4U podemos utilizar:</p>
+                                    
+                                    <div className="space-y-4 mb-8">
+                                        <div className="bg-emerald-50 p-5 rounded-xl border border-emerald-200">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                                <h4 className="font-bold text-emerald-800">Cookies técnicas o necesarias</h4>
+                                            </div>
+                                            <p className="text-sm text-emerald-700">Imprescindibles para que la web funcione (gestión de sesiones, seguridad, carga de página, recordar el consentimiento de cookies, etc.). <strong>No requieren tu consentimiento.</strong></p>
+                                        </div>
 
-                                    <h4 className="text-xl font-bold text-[#032149] mt-10 mb-6">Tabla de cookies vigentes</h4>
-                                    <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
-                                        <table className="min-w-full text-sm text-left">
-                                            <thead className="bg-slate-100 text-[#032149]">
-                                                <tr>
-                                                    <th className="p-4 font-bold">Nombre</th>
-                                                    <th className="p-4 font-bold hidden sm:table-cell">Proveedor</th>
-                                                    <th className="p-4 font-bold">Finalidad</th>
-                                                    <th className="p-4 font-bold hidden sm:table-cell">Duración</th>
-                                                    <th className="p-4 font-bold">Tipo</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-slate-100 bg-white">
-                                                <tr>
-                                                    <td className="p-4 font-mono text-xs text-slate-500">msgsndr_session</td>
-                                                    <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
-                                                    <td className="p-4">Gestión de sesión</td>
-                                                    <td className="p-4 hidden sm:table-cell">Sesión</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4 font-mono text-xs text-slate-500">__cf_bm</td>
-                                                    <td className="p-4 hidden sm:table-cell">Cloudflare</td>
-                                                    <td className="p-4">Seguridad (Anti-bot)</td>
-                                                    <td className="p-4 hidden sm:table-cell">30 min</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4 font-mono text-xs text-slate-500">ghl_consent</td>
-                                                    <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
-                                                    <td className="p-4">Guarda consentimiento</td>
-                                                    <td className="p-4 hidden sm:table-cell">1 año</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4 font-mono text-xs text-slate-500">_fbp</td>
-                                                    <td className="p-4 hidden sm:table-cell">Meta</td>
-                                                    <td className="p-4">Publicidad</td>
-                                                    <td className="p-4 hidden sm:table-cell">3 meses</td>
-                                                    <td className="p-4"><span className="bg-orange-100 text-orange-700 px-2 py-1 rounded-full text-xs font-bold">Marketing</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <div className="bg-blue-50 p-5 rounded-xl border border-blue-200">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                                                <h4 className="font-bold text-blue-800">Cookies de preferencias o personalización</h4>
+                                            </div>
+                                            <p className="text-sm text-blue-700">Permiten recordar elecciones como el idioma, la región u otras configuraciones para mejorar tu experiencia. Algunas pueden requerir consentimiento según la configuración concreta.</p>
+                                        </div>
+
+                                        <div className="bg-purple-50 p-5 rounded-xl border border-purple-200">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                                                <h4 className="font-bold text-purple-800">Cookies de análisis o medición</h4>
+                                            </div>
+                                            <p className="text-sm text-purple-700 mb-2">Nos ayudan a entender cómo se usa la web (páginas más visitadas, tiempo de permanencia, fuentes de tráfico, etc.) para mejorarla.</p>
+                                            <BulletList className="text-purple-700" items={[
+                                                <>Siempre que sea posible, se configurarán con <strong>anonimización de IP</strong> u otras medidas de minimización.</>,
+                                                <>Si no es posible evitar la identificación o el perfilado, se tratarán como cookies que <strong>requieren tu consentimiento previo</strong>.</>
+                                            ]} />
+                                        </div>
+
+                                        <div className="bg-orange-50 p-5 rounded-xl border border-orange-200">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                                                <h4 className="font-bold text-orange-800">Cookies de marketing o publicidad comportamental</h4>
+                                            </div>
+                                            <p className="text-sm text-orange-700">Permiten mostrarte anuncios en función de tus hábitos de navegación y crear perfiles comerciales. <strong>Solo se instalarán si prestas tu consentimiento expreso.</strong></p>
+                                        </div>
                                     </div>
 
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.3. Gestión del consentimiento</h3>
-                                    <p>Al entrar por primera vez, verás un banner para aceptar o rechazar cookies opcionales. No activamos cookies de marketing sin tu acción afirmativa (consentimiento).</p>
+                                    {/* Tabla de cookies */}
+                                    <h4 className="font-bold text-[#032149] mb-4 flex items-center gap-2">
+                                        <BarChart3 className="w-5 h-5" /> Tabla de cookies vigentes
+                                    </h4>
+                                    <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm mb-4">
+                                        <div className="overflow-x-auto">
+                                            <table className="min-w-full text-sm text-left">
+                                                <thead className="bg-slate-100 text-[#032149]">
+                                                    <tr>
+                                                        <th className="p-4 font-bold">Nombre</th>
+                                                        <th className="p-4 font-bold">Proveedor</th>
+                                                        <th className="p-4 font-bold">Finalidad</th>
+                                                        <th className="p-4 font-bold">Duración</th>
+                                                        <th className="p-4 font-bold">Categoría</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-slate-100 bg-white">
+                                                    <tr>
+                                                        <td className="p-4 font-mono text-xs text-slate-600">msgsndr_session</td>
+                                                        <td className="p-4 text-slate-600">GoHighLevel</td>
+                                                        <td className="p-4 text-slate-600">Gestión de sesión del usuario en la web y formularios</td>
+                                                        <td className="p-4 text-slate-600">Sesión</td>
+                                                        <td className="p-4"><span className="bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold">Técnica</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="p-4 font-mono text-xs text-slate-600">__cf_bm</td>
+                                                        <td className="p-4 text-slate-600">Cloudflare</td>
+                                                        <td className="p-4 text-slate-600">Filtra tráfico para evitar ataques de bots (seguridad)</td>
+                                                        <td className="p-4 text-slate-600">30 min</td>
+                                                        <td className="p-4"><span className="bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold">Seguridad</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="p-4 font-mono text-xs text-slate-600">ghl_consent</td>
+                                                        <td className="p-4 text-slate-600">GoHighLevel</td>
+                                                        <td className="p-4 text-slate-600">Almacena tu elección sobre el uso de cookies</td>
+                                                        <td className="p-4 text-slate-600">1 año</td>
+                                                        <td className="p-4"><span className="bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold">Técnica</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="p-4 font-mono text-xs text-slate-600">_fbp</td>
+                                                        <td className="p-4 text-slate-600">Meta</td>
+                                                        <td className="p-4 text-slate-600">Publicidad y retargeting</td>
+                                                        <td className="p-4 text-slate-600">3 meses</td>
+                                                        <td className="p-4"><span className="bg-orange-100 text-orange-700 px-3 py-1.5 rounded-full text-xs font-bold">Marketing</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </Section>
 
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.4. Cambiar o retirar consentimiento</h3>
-                                    <p>Puedes cambiar tu configuración limpiando las cookies de tu navegador o a través del enlace de configuración al pie de página (si está habilitado). Los cambios se aplicarán en tu siguiente navegación.</p>
+                                {/* 2.3 GESTIÓN DEL CONSENTIMIENTO */}
+                                <Section number="2.3" title="Gestión del consentimiento de cookies" icon={Settings}>
+                                    <p className="mb-4">Al acceder por primera vez a la web, se mostrará un <strong className="text-[#032149]">banner de cookies</strong> que te permitirá:</p>
+                                    <BulletList className="mb-6" items={[
+                                        <>Aceptar todas las cookies opcionales.</>,
+                                        <>Rechazar todas las cookies opcionales con una acción tan sencilla como aceptarlas.</>,
+                                        <>Configurar tus preferencias por categoría (analítica, marketing, etc.).</>
+                                    ]} />
+
+                                    <InfoBox variant="success">
+                                        <strong>Hasta que no aceptes o configures las cookies opcionales:</strong>
+                                        <ul className="mt-2 space-y-1">
+                                            <li>• No se activarán las cookies que no sean técnicas o necesarias.</li>
+                                            <li>• Solo se utilizarán las cookies imprescindibles para el funcionamiento básico del sitio.</li>
+                                        </ul>
+                                    </InfoBox>
+
+                                    <p className="mt-6 mb-4">En línea con la <strong className="text-[#032149]">Guía de Cookies de la AEPD</strong>, evitamos:</p>
+                                    <BulletList items={[
+                                        <>El <strong className="text-[#032149]">consentimiento forzado</strong> (no condicionamos el acceso a la web a aceptar cookies, salvo casos muy excepcionales debidamente justificados).</>,
+                                        <>El uso de <strong className="text-[#032149]">casillas pre-marcadas</strong> o diseños que induzcan a aceptar sin una elección informada.</>
+                                    ]} />
+                                </Section>
+
+                                {/* 2.4 CAMBIAR O RETIRAR CONSENTIMIENTO */}
+                                <Section number="2.4" title="Cambiar o retirar el consentimiento" icon={RefreshCw}>
+                                    <p className="mb-4">Puedes modificar tu configuración de cookies o retirar tu consentimiento en cualquier momento mediante:</p>
+                                    <BulletList items={[
+                                        <>El enlace "<strong className="text-[#032149]">Configurar cookies</strong>" o similar disponible en el pie de página de la web.</>,
+                                        <>La limpieza de cookies desde la configuración de tu navegador.</>
+                                    ]} />
+                                    <p className="mt-4">Los cambios que realices se aplicarán de forma inmediata o en tu siguiente navegación por el sitio.</p>
+                                </Section>
+
+                                {/* 2.5 CÓMO DESACTIVAR COOKIES */}
+                                <Section number="2.5" title="Cómo desactivar o eliminar cookies desde el navegador" icon={Smartphone}>
+                                    <p className="mb-4">Además del panel de configuración de la web, puedes configurar tu navegador para:</p>
+                                    <BulletList className="mb-6" items={[
+                                        <>Bloquear o eliminar cookies ya instaladas.</>,
+                                        <>Recibir avisos antes de que se almacenen nuevas cookies.</>
+                                    ]} />
                                     
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.5. Cómo desactivar cookies</h3>
-                                    <p>Puedes configurar tu navegador (Chrome, Firefox, Safari, Edge) para bloquear o eliminar cookies. Consulta la sección de "Ayuda" de tu navegador para más detalles.</p>
-                                </div>
+                                    <p className="mb-4">Los pasos concretos dependen del navegador que utilices. Aquí tienes enlaces a la ayuda de los navegadores más comunes:</p>
+                                    
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                                        {[
+                                            { name: "Chrome", url: "https://support.google.com/chrome/answer/95647" },
+                                            { name: "Firefox", url: "https://support.mozilla.org/es/kb/cookies-informacion-que-los-sitios-web-guardan-en-" },
+                                            { name: "Safari", url: "https://support.apple.com/es-es/guide/safari/sfri11471/mac" },
+                                            { name: "Edge", url: "https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" }
+                                        ].map((browser, i) => (
+                                            <a 
+                                                key={i}
+                                                href={browser.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center justify-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-xl hover:border-[#6351d5] hover:bg-[#6351d5]/5 transition-all group"
+                                            >
+                                                <span className="font-semibold text-[#032149] group-hover:text-[#6351d5]">{browser.name}</span>
+                                                <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-[#6351d5]" />
+                                            </a>
+                                        ))}
+                                    </div>
+
+                                    <InfoBox variant="warning">
+                                        <strong>Ten en cuenta:</strong> Si bloqueas todas las cookies, es posible que algunas funciones o servicios del sitio web no se muestren o no funcionen correctamente.
+                                    </InfoBox>
+                                </Section>
+
                             </>
                         )}
+                    </div>
+
+                    {/* Footer del documento legal */}
+                    <div className="mt-16 pt-8 border-t border-slate-200">
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <p className="text-sm text-slate-500">
+                                ¿Tienes dudas? Contacta con nosotros en <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold hover:underline">privacidad@growth4u.io</a>
+                            </p>
+                            <button 
+                                onClick={handleGoHome}
+                                className="inline-flex items-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-3 px-6 rounded-full transition-all shadow-lg"
+                            >
+                                <ArrowLeft className="w-4 h-4" /> Volver a Home
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -787,7 +1209,7 @@ export default function App() {
                 </div>
                 <div className="mt-16 pt-10 border-t border-slate-200 text-center">
                    <h3 className="text-2xl font-bold mb-6">¿Quieres aplicar esto en tu Fintech?</h3>
-                   <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">{t.nav.cta} <ArrowRight className="w-5 h-5"/></a>
+                   <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => trackLead('blog_post_cta')} className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">{t.nav.cta} <ArrowRight className="w-5 h-5"/></a>
                 </div>
              </article>
           </div>
@@ -817,7 +1239,7 @@ export default function App() {
                     <span className="text-[#6351d5] px-2 py-2 rounded-md text-sm font-bold">Blog</span>
                   </div>
                   <div className="flex items-center gap-4">
-                    <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg">{t.nav.cta}</a>
+                    <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => trackLead('blog_nav')} className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg">{t.nav.cta}</a>
                   </div>
                 </div>
               </div>
@@ -861,8 +1283,8 @@ export default function App() {
             <div className="max-w-4xl mx-auto px-4 text-center">
               <h2 className="text-3xl md:text-5xl font-bold mb-6">{t.footer.title}</h2>
               <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
-                <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
-                <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
+                <a href={`mailto:${t.footer.ctaEmail}`} onClick={() => trackContact()} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
+                <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => trackLead('footer')} className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
               </div>
               <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
                   <p>{t.footer.rights}</p>
@@ -960,7 +1382,7 @@ export default function App() {
                 </div>
                 
                 <div className="hidden md:flex items-center gap-4">
-                  <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5 whitespace-nowrap">{t.nav.cta}</a>
+                  <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => trackLead('home_nav')} className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5 whitespace-nowrap">{t.nav.cta}</a>
                 </div>
                 <div className="md:hidden flex items-center gap-4">
                     <button onClick={toggleLang} className="text-[#032149] font-bold text-sm">{lang === 'es' ? 'EN' : 'ES'}</button>
@@ -977,7 +1399,7 @@ export default function App() {
                   <a href="#casos" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.cases}</a>
                   <a href="#team" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.team}</a>
                   <button onClick={handleGoToBlogPage} className="text-[#032149] hover:text-[#6351d5] block w-full text-left px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.blog}</button>
-                  <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center whitespace-nowrap">{t.nav.cta}</a>
+                  <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => { setIsMenuOpen(false); trackLead('mobile_menu'); }} className="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center whitespace-nowrap">{t.nav.cta}</a>
                 </div>
               </div>
             )}
@@ -1001,7 +1423,7 @@ export default function App() {
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-600 mb-10 leading-relaxed">{t.hero.subtitle}</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#6351d5] text-white hover:bg-[#3f45fe] font-bold py-4 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-xl shadow-[#6351d5]/20">{t.hero.ctaPrimary} <ArrowRight className="w-5 h-5" /></a>
+              <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => trackLead('hero_primary')} className="flex items-center justify-center gap-2 bg-[#6351d5] text-white hover:bg-[#3f45fe] font-bold py-4 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-xl shadow-[#6351d5]/20">{t.hero.ctaPrimary} <ArrowRight className="w-5 h-5" /></a>
               <a href="#etapas" className="flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 font-semibold py-4 px-8 rounded-full text-lg transition-all hover:shadow-md">{t.hero.ctaSecondary}</a>
             </div>
             <div className="mt-24 border-t border-slate-200 pt-10 overflow-hidden relative w-full max-w-6xl mx-auto">
@@ -1181,8 +1603,8 @@ export default function App() {
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-6">{t.footer.title}</h2>
             <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
-              <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
-              <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
+              <a href={`mailto:${t.footer.ctaEmail}`} onClick={() => trackContact()} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
+              <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => trackLead('home_footer')} className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
             </div>
             <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
                 <p>{t.footer.rights}</p>
