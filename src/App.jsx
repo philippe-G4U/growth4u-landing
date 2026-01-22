@@ -103,7 +103,7 @@ const translations = {
     hero: { tag: "Especialistas en Growth Fintech B2B & B2C", title: "Tu fintech puede crecer más rápido, ", titleHighlight: "sin invertir más en marketing.", subtitle: "Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.", ctaPrimary: "Empezar ahora", ctaSecondary: "Ver servicios", trust: "Empresas validadas por la confianza" },
     problem: { title: "El modelo tradicional está roto", subtitle: "En un mercado saturado, depender 100% de Paid Media es insostenible.", cards: [ { title: "Alquiler de Atención", desc: "Si cortas el presupuesto de anuncios, las ventas mueren instantáneamente." }, { title: "CAC Incontrolable", desc: "El coste por clic no para de subir. Sin activos propios, tu rentabilidad se erosiona." }, { title: "Fricción de Confianza", desc: "El usuario Fintech es escéptico. Atraes tráfico, pero no conviertes por falta de autoridad." }, { title: "Churn Silencioso", desc: "Captas registros, no clientes. El LTV nunca llega a cubrir el coste de adquisición." } ] },
     results: { title: "Resultados del Trust Engine", subtitle: "Crecimiento predecible y escalable.", cards: [ { title: "Reducción del 70% en CAC", desc: "Sustituimos el gasto publicitario inflado por sistemas de confianza orgánica y viralidad estructurada." }, { title: "Usuarios Activados", desc: "Dejamos atrás las vanity metrics. Atraemos clientes ideales (ICP) listos para usar y pagar." }, { title: "Máquina 24/7", desc: "Implementamos automatización e IA para que la captación funcione sin depender de trabajo manual." }, { title: "Activos que perduran", desc: "Construimos un motor de crecimiento que gana tracción con el tiempo, aumentando el LTV." } ] },
-    methodology: { title: "El motor de crecimiento adecuado.", subtitle: "Infraestructura escalable según la etapa de tu negocio.", stages: [ { step: "Etapa 1", title: "BUSCANDO PMF", tag: "0 → Tracción Real", desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.", icon: Search, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Validación de **Propuesta de Valor** y posicionamiento único.", "Generación de los primeros **usuarios que pagan**." ] }, { step: "Etapa 2", title: "ESCALANDO", tag: "10K → 500K Users", desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.", icon: TrendingUp, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción orgánica y reconocimiento de marca vía **Referral**.", "Conversión de **Clientes que pagan** y alto LTV." ] }, { step: "Etapa 3", title: "EXPANSIÓN", tag: "Nuevo Mercado / Producto", desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.", icon: Globe, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción inicial asegurada en **nichos de alta conversión**.", "Penetración rápida con **estrategia localizada**." ] } ] },
+    methodology: { title: "El motor de crecimiento adecuado.", subtitle: "Infraestructura escalable según la etapa de tu negocio.", stages: [ { step: "Etapa 1", title: "BUSCANDO PMF", tag: "0 → Tracción Real", desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.", icon: Search, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Validación de **Propuesta de Valor** y posicionamiento único.", "Generación de los primeros **usuarios que pagan**." ] }, { step: "Etapa 2", title: "ESCALANDO", tag: "10K → 500K Users", desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.", icon: TrendingUp, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción orgánica y reconocimiento de marca vía **Referral**.", "Conversión de **Clientes que pagan** y alto LTV." ] }, { step: "Etapa 3", title: "EXPANSION", tag: "Nuevo Mercado / Producto", desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.", icon: Globe, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción inicial asegurada en **nichos de alta conversión**.", "Penetración rápida con **estrategia localizada**." ] } ] },
     cases: { title: "Casos de Éxito", subtitle: "Resultados reales auditados.", list: [ { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." }, { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." } ], btnRead: "Leer caso completo", btnHide: "Ver menos", challengeLabel: "Reto", solutionLabel: "Solución" },
     team: { title: "Trust es lo importante, conócenos", bioAlfonso: "Especialista en growth con más de diez años lanzando y escalando productos en fintech.", bioMartin: "Especialista en growth técnico con más de diez años creando sistemas de automatización y datos que escalan operaciones." },
     blog: { title: "Blog & Insights", subtitle: "Strategic resources to scale your fintech.", cta: "Ver todos los artículos", readTime: "min lectura", admin: "Admin", empty: "Próximamente nuevos artículos...", defaults: [] },
@@ -372,7 +372,7 @@ export default function App() {
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
   const homePosts = displayPosts.slice(0, 6);
 
-  // --- COMPONENTE LEGAL VIEW (LITERAL Y COMPLETO) ---
+  // --- COMPONENTE LEGAL VIEW (COMPLETO Y DETALLADO) ---
   const LegalView = ({ type }) => {
       const isPrivacy = type === 'privacy';
       const title = isPrivacy ? "Política de Privacidad" : "Política de Cookies";
@@ -401,7 +401,6 @@ export default function App() {
                 <div className="bg-white p-8 md:p-16 rounded-3xl shadow-xl border border-slate-100">
                     <h1 className="text-3xl md:text-5xl font-extrabold mb-10 text-[#032149] border-b pb-6">{title}</h1>
                     
-                    {/* Contenedor de tipografía mejorado */}
                     <div className="text-slate-600 leading-relaxed text-lg space-y-6">
                         
                         {isPrivacy ? (
@@ -421,209 +420,176 @@ export default function App() {
                                     </ul>
                                 </div>
 
-                                {/* 1.1 NORMATIVA */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.1. Normativa aplicable</h3>
-                                    <p className="mb-4">Esta política se adapta a las siguientes normas:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
-                                        <li>Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016 (RGPD).</li>
-                                        <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</li>
-                                        <li>Demás normativa española que resulte aplicable en materia de protección de datos y servicios de la sociedad de la información.</li>
-                                    </ul>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.1. Normativa aplicable</h3>
+                                <p className="mb-4">Esta política se adapta a las siguientes normas:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
+                                    <li>Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016 (RGPD).</li>
+                                    <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</li>
+                                    <li>Demás normativa española que resulte aplicable en materia de protección de datos y servicios de la sociedad de la información.</li>
+                                </ul>
 
-                                {/* 1.2 RESPONSABLE */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.2. Responsable del tratamiento</h3>
-                                    <p className="mb-4">El responsable del tratamiento de los datos personales es:</p>
-                                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                        <ul className="space-y-3">
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Responsable:</strong> <span>Growth Systems Now, S.L. ("Growth4U")</span></li>
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">NIF/CIF:</strong> <span>ESB22671879</span></li>
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Domicilio postal:</strong> <span>Calle de Luchana, 28, 2º A, 28010, Madrid, España</span></li>
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Contacto privacidad:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold hover:underline">privacidad@growth4u.io</a></li>
-                                        </ul>
-                                    </div>
-                                    <p className="mt-4 text-sm text-slate-500 italic">Dada la naturaleza de nuestra actividad, Growth4U no está obligada al nombramiento de un Delegado de Protección de Datos. No obstante, para cualquier consulta puede dirigirse al correo electrónico indicado arriba.</p>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.2. Responsable del tratamiento</h3>
+                                <p className="mb-4">El responsable del tratamiento de los datos personales es:</p>
+                                <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                                    <ul className="space-y-3">
+                                        <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Responsable:</strong> <span>Growth Systems Now, S.L. ("Growth4U")</span></li>
+                                        <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">NIF/CIF:</strong> <span>ESB22671879</span></li>
+                                        <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Domicilio postal:</strong> <span>Calle de Luchana, 28, 2º A, 28010, Madrid, España</span></li>
+                                        <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Contacto privacidad:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold hover:underline">privacidad@growth4u.io</a></li>
+                                    </ul>
                                 </div>
+                                <p className="mt-4 text-sm text-slate-500 italic">Dada la naturaleza de nuestra actividad, Growth4U no está obligada al nombramiento de un Delegado de Protección de Datos. No obstante, para cualquier consulta puede dirigirse al correo electrónico indicado arriba.</p>
 
-                                {/* 1.3 DATOS QUE TRATAMOS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.3. Datos que tratamos</h3>
-                                    <p className="mb-4">Podemos tratar las siguientes categorías de datos personales, según el formulario o canal que utilices:</p>
-                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li><strong className="text-[#032149]">Datos identificativos:</strong> nombre, apellidos.</li>
-                                        <li><strong className="text-[#032149]">Datos de contacto:</strong> correo electrónico, teléfono.</li>
-                                        <li><strong className="text-[#032149]">Datos profesionales:</strong> empresa, cargo, sector.</li>
-                                        <li><strong className="text-[#032149]">Datos de uso y navegación:</strong> interacción con nuestros emails, página web o materiales descargados, respuestas a formularios, apertura y clics en newsletters o campañas.</li>
-                                    </ul>
-                                    <p className="mt-4 bg-yellow-50 p-4 rounded-lg text-sm border-l-4 border-yellow-400">
-                                        No solicitamos ni tratamos de forma intencionada categorías especiales de datos (salud, ideología, religión, etc.). Si excepcionalmente fuera necesario, se te informaría de forma específica y se recabaría el consentimiento expreso correspondiente.
-                                    </p>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.3. Datos que tratamos</h3>
+                                <p className="mb-4">Podemos tratar las siguientes categorías de datos personales, según el formulario o canal que utilices:</p>
+                                <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
+                                    <li><strong className="text-[#032149]">Datos identificativos:</strong> nombre, apellidos.</li>
+                                    <li><strong className="text-[#032149]">Datos de contacto:</strong> correo electrónico, teléfono.</li>
+                                    <li><strong className="text-[#032149]">Datos profesionales:</strong> empresa, cargo, sector.</li>
+                                    <li><strong className="text-[#032149]">Datos de uso y navegación:</strong> interacción con nuestros emails, página web o materiales descargados, respuestas a formularios, apertura y clics en newsletters o campañas.</li>
+                                </ul>
+                                <p className="mt-4 bg-yellow-50 p-4 rounded-lg text-sm border-l-4 border-yellow-400">
+                                    No solicitamos ni tratamos de forma intencionada categorías especiales de datos (salud, ideología, religión, etc.). Si excepcionalmente fuera necesario, se te informaría de forma específica y se recabaría el consentimiento expreso correspondiente.
+                                </p>
 
-                                {/* 1.4 ORIGEN */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.4. Origen de los datos</h3>
-                                    <p className="mb-4">Los datos personales que tratamos pueden proceder de:</p>
-                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li>Formularios de contacto, descarga de recursos o solicitud de reunión en nuestros propios sitios web.</li>
-                                        <li><strong className="text-[#032149]">Formularios de Meta (Lead Ads):</strong> Recibimos datos personales (nombre, correo, etc.) que nos facilitas voluntariamente a través de formularios en Facebook o Instagram. Estos datos se integran en nuestro CRM para su gestión comercial.</li>
-                                        <li>Comunicaciones directas que mantienes con nosotros (email, teléfono, reuniones).</li>
-                                        <li>Plataformas y redes profesionales (por ejemplo, LinkedIn) cuando te has puesto en contacto con nosotros, has mostrado interés en nuestros contenidos, o cuando tu perfil es público y se considera razonable para fines de marketing B2B, siempre respetando tus derechos y expectativas de privacidad.</li>
-                                        <li>Bases o listados B2B obtenidos de forma lícita a través de terceros que garantizan el cumplimiento del RGPD, respecto de los cuales te informaremos en la primera comunicación que te hagamos llegar.</li>
-                                        <li>Fuentes de acceso público: Recabamos información profesional de fuentes abiertas como registros mercantiles, perfiles públicos de redes sociales profesionales (LinkedIn) y sitios web corporativos, siempre bajo el amparo del interés legítimo B2B y para fines estrictamente profesionales</li>
-                                    </ul>
-                                    <p className="mt-4">En cualquiera de los casos, te informaremos de esta política y de tus derechos en el primer momento razonable.</p>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.4. Origen de los datos</h3>
+                                <p className="mb-4">Los datos personales que tratamos pueden proceder de:</p>
+                                <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
+                                    <li>Formularios de contacto, descarga de recursos o solicitud de reunión en nuestros propios sitios web.</li>
+                                    <li><strong className="text-[#032149]">Formularios de Meta (Lead Ads):</strong> Recibimos datos personales (nombre, correo, etc.) que nos facilitas voluntariamente a través de formularios en Facebook o Instagram. Estos datos se integran en nuestro CRM para su gestión comercial.</li>
+                                    <li>Comunicaciones directas que mantienes con nosotros (email, teléfono, reuniones).</li>
+                                    <li>Plataformas y redes profesionales (por ejemplo, LinkedIn) cuando te has puesto en contacto con nosotros, has mostrado interés en nuestros contenidos, o cuando tu perfil es público y se considera razonable para fines de marketing B2B, siempre respetando tus derechos y expectativas de privacidad.</li>
+                                    <li>Bases o listados B2B obtenidos de forma lícita a través de terceros que garantizan el cumplimiento del RGPD, respecto de los cuales te informaremos en la primera comunicación que te hagamos llegar.</li>
+                                    <li>Fuentes de acceso público: Recabamos información profesional de fuentes abiertas como registros mercantiles, perfiles públicos de redes sociales profesionales (LinkedIn) y sitios web corporativos, siempre bajo el amparo del interés legítimo B2B y para fines estrictamente profesionales</li>
+                                </ul>
+                                <p className="mt-4">En cualquiera de los casos, te informaremos de esta política y de tus derechos en el primer momento razonable.</p>
 
-                                {/* 1.5 FINALIDADES */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.5. Finalidades del tratamiento</h3>
-                                    <p className="mb-4">Usamos tus datos para:</p>
-                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li><strong className="text-[#032149]">Gestión de consultas y reuniones:</strong> atender solicitudes de información, demos o reuniones que nos plantees.</li>
-                                        <li><strong className="text-[#032149]">Prestación de servicios:</strong> gestionar la relación contractual, la facturación y el soporte cuando seas cliente.</li>
-                                        <li><strong className="text-[#032149]">Comunicaciones comerciales B2B:</strong> enviarte comunicaciones relacionadas con nuestros servicios de growth, estrategia GTM, contenidos formativos y recursos que puedan ser de tu interés profesional.</li>
-                                        <li><strong className="text-[#032149]">Publicidad y Retargeting:</strong> Utilizamos el Píxel de Meta para medir la eficacia de nuestras campañas publicitarias y mostrar anuncios relevantes a personas que han interactuado con nuestros formularios o página web</li>
-                                        <li><strong className="text-[#032149]">Mejora de servicios y analítica interna:</strong> realizar análisis agregados y estadísticos sobre el uso de nuestra web, materiales descargados y campañas, con el fin de mejorar nuestros contenidos y propuestas de valor.</li>
-                                        <li><strong className="text-[#032149]">Cumplimiento de obligaciones legales:</strong> atender obligaciones contables, fiscales y de prevención de blanqueo de capitales u otras que correspondan.</li>
-                                        <li><strong className="text-[#032149]">Elaboración de informes de mercado:</strong> Los análisis de mercado que realizamos para nuestros servicios se basan en datos agregados o de fuentes públicas profesionales. En ningún caso utilizamos datos personales de los clientes de nuestros clientes para estos fines, salvo que exista un encargo específico y un contrato de tratamiento de datos previo</li>
-                                    </ul>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.5. Finalidades del tratamiento</h3>
+                                <p className="mb-4">Usamos tus datos para:</p>
+                                <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
+                                    <li><strong className="text-[#032149]">Gestión de consultas y reuniones:</strong> atender solicitudes de información, demos o reuniones que nos plantees.</li>
+                                    <li><strong className="text-[#032149]">Prestación de servicios:</strong> gestionar la relación contractual, la facturación y el soporte cuando seas cliente.</li>
+                                    <li><strong className="text-[#032149]">Comunicaciones comerciales B2B:</strong> enviarte comunicaciones relacionadas con nuestros servicios de growth, estrategia GTM, contenidos formativos y recursos que puedan ser de tu interés profesional.</li>
+                                    <li><strong className="text-[#032149]">Publicidad y Retargeting:</strong> Utilizamos el Píxel de Meta para medir la eficacia de nuestras campañas publicitarias y mostrar anuncios relevantes a personas que han interactuado con nuestros formularios o página web</li>
+                                    <li><strong className="text-[#032149]">Mejora de servicios y analítica interna:</strong> realizar análisis agregados y estadísticos sobre el uso de nuestra web, materiales descargados y campañas, con el fin de mejorar nuestros contenidos y propuestas de valor.</li>
+                                    <li><strong className="text-[#032149]">Cumplimiento de obligaciones legales:</strong> atender obligaciones contables, fiscales y de prevención de blanqueo de capitales u otras que correspondan.</li>
+                                    <li><strong className="text-[#032149]">Elaboración de informes de mercado:</strong> Los análisis de mercado que realizamos para nuestros servicios se basan en datos agregados o de fuentes públicas profesionales. En ningún caso utilizamos datos personales de los clientes de nuestros clientes para estos fines, salvo que exista un encargo específico y un contrato de tratamiento de datos previo</li>
+                                </ul>
 
-                                {/* 1.6 BASES JURÍDICAS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.6. Bases jurídicas del tratamiento</h3>
-                                    <p className="mb-4">Tratamos tus datos sobre las siguientes bases jurídicas:</p>
-                                    <ul className="space-y-4">
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Ejecución de un contrato o aplicación de medidas precontractuales (art. 6.1.b RGPD):</strong>
-                                            <span className="text-sm">Cuando tramitamos tu solicitud de información, preparamos una propuesta o gestionamos la relación como cliente.</span>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Cumplimiento de obligaciones legales (art. 6.1.c RGPD):</strong>
-                                            <span className="text-sm">Cuando tratamos datos para cumplir obligaciones contables, fiscales u otras impuestas por la normativa aplicable.</span>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Interés legítimo (art. 6.1.f RGPD):</strong>
-                                            <div className="text-sm mt-2">
-                                                Para realizar acciones de marketing B2B razonables dirigidas a contactos profesionales de empresas que puedan estar interesadas en nuestros servicios, siempre que:
-                                                <ul className="list-disc pl-5 mt-1 mb-2">
-                                                    <li>Se haya valorado el equilibrio entre nuestro interés y tus derechos y libertades.</li>
-                                                    <li>Se trate de comunicaciones relacionadas con tu rol profesional.</li>
-                                                </ul>
-                                                Para mejorar nuestros servicios, procesos internos y seguridad de la información.<br/><br/>
-                                                <strong>En todo caso, podrás oponerte en cualquier momento a este tratamiento:</strong>
-                                                <ul className="list-disc pl-5 mt-1">
-                                                    <li>Mediante el enlace de baja incluido en cada comunicación comercial por email.</li>
-                                                    <li>O enviando un email a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5]">privacidad@growth4u.io</a> , indicando que no deseas recibir más comunicaciones.</li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Consentimiento (art. 6.1.a RGPD):</strong>
-                                            <div className="text-sm">
-                                                Para el uso de ciertas cookies no técnicas y tecnologías similares, conforme se detalla en nuestra Política de Cookies.
-                                                En aquellos supuestos en los que te lo pidamos de forma expresa para finalidades concretas.
-                                                Cuando la base jurídica sea el consentimiento, podrás retirarlo en cualquier momento sin que ello afecte a la licitud del tratamiento basado en el consentimiento previo.
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.6. Bases jurídicas del tratamiento</h3>
+                                <p className="mb-4">Tratamos tus datos sobre las siguientes bases jurídicas:</p>
+                                <ul className="space-y-4">
+                                    <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <strong className="block text-[#6351d5] mb-2">Ejecución de un contrato o aplicación de medidas precontractuales (art. 6.1.b RGPD):</strong>
+                                        <span className="text-sm">Cuando tramitamos tu solicitud de información, preparamos una propuesta o gestionamos la relación como cliente.</span>
+                                    </li>
+                                    <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <strong className="block text-[#6351d5] mb-2">Cumplimiento de obligaciones legales (art. 6.1.c RGPD):</strong>
+                                        <span className="text-sm">Cuando tratamos datos para cumplir obligaciones contables, fiscales u otras impuestas por la normativa aplicable.</span>
+                                    </li>
+                                    <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <strong className="block text-[#6351d5] mb-2">Interés legítimo (art. 6.1.f RGPD):</strong>
+                                        <div className="text-sm mt-2">
+                                            Para realizar acciones de marketing B2B razonables dirigidas a contactos profesionales de empresas que puedan estar interesadas en nuestros servicios, siempre que:
+                                            <ul className="list-disc pl-5 mt-1 mb-2">
+                                                <li>Se haya valorado el equilibrio entre nuestro interés y tus derechos y libertades.</li>
+                                                <li>Se trate de comunicaciones relacionadas con tu rol profesional.</li>
+                                            </ul>
+                                            Para mejorar nuestros servicios, procesos internos y seguridad de la información.<br/><br/>
+                                            <strong>En todo caso, podrás oponerte en cualquier momento a este tratamiento:</strong>
+                                            <ul className="list-disc pl-5 mt-1">
+                                                <li>Mediante el enlace de baja incluido en cada comunicación comercial por email.</li>
+                                                <li>O enviando un email a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5]">privacidad@growth4u.io</a> , indicando que no deseas recibir más comunicaciones.</li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <strong className="block text-[#6351d5] mb-2">Consentimiento (art. 6.1.a RGPD):</strong>
+                                        <div className="text-sm">
+                                            Para el uso de ciertas cookies no técnicas y tecnologías similares, conforme se detalla en nuestra Política de Cookies.
+                                            En aquellos supuestos en los que te lo pidamos de forma expresa para finalidades concretas.
+                                            Cuando la base jurídica sea el consentimiento, podrás retirarlo en cualquier momento sin que ello afecte a la licitud del tratamiento basado en el consentimiento previo.
+                                        </div>
+                                    </li>
+                                </ul>
 
-                                {/* 1.7 SEGURIDAD */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.7. Medidas de seguridad y confidencialidad</h3>
-                                    <p className="mb-4">Growth4U aplica medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, de acuerdo con el art. 32 RGPD, incluyendo, entre otras:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
-                                        <li>Control de accesos y gestión de permisos según rol.</li>
-                                        <li>Uso de proveedores con cifrado en tránsito y, cuando es posible, en reposo.</li>
-                                        <li>Políticas internas de contraseña y autenticación reforzada.</li>
-                                        <li>Copias de seguridad periódicas y procedimientos de restauración.</li>
-                                        <li>Procedimientos para la gestión de incidentes de seguridad y brechas de datos.</li>
-                                    </ul>
-                                    <p className="mt-4">Todo el personal de Growth4U y los terceros que prestan servicios con acceso a datos personales están sujetos a obligaciones de confidencialidad (contractuales y/o legales).</p>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.7. Medidas de seguridad y confidencialidad</h3>
+                                <p className="mb-4">Growth4U aplica medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, de acuerdo con el art. 32 RGPD, incluyendo, entre otras:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
+                                    <li>Control de accesos y gestión de permisos según rol.</li>
+                                    <li>Uso de proveedores con cifrado en tránsito y, cuando es posible, en reposo.</li>
+                                    <li>Políticas internas de contraseña y autenticación reforzada.</li>
+                                    <li>Copias de seguridad periódicas y procedimientos de restauración.</li>
+                                    <li>Procedimientos para la gestión de incidentes de seguridad y brechas de datos.</li>
+                                </ul>
+                                <p className="mt-4">Todo el personal de Growth4U y los terceros que prestan servicios con acceso a datos personales están sujetos a obligaciones de confidencialidad (contractuales y/o legales).</p>
 
-                                {/* 1.8 DESTINATARIOS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.8. Destinatarios y encargados del tratamiento</h3>
-                                    <p className="mb-4">Podemos compartir tus datos con terceros únicamente cuando sea necesario para la correcta prestación de nuestros servicios o por obligación legal.</p>
-                                    <p className="mb-4">En particular, podemos contar con proveedores que actúan como encargados del tratamiento, tales como:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
-                                        <li>Servicios de envío de email y automatización de marketing.</li>
-                                        <li>Herramientas de CRM y gestión de la relación con clientes.</li>
-                                        <li>Plataformas de analítica web y medición de rendimiento.</li>
-                                        <li>Proveedores de alojamiento, cloud y mantenimiento IT.</li>
-                                        <li>Otros proveedores de soporte administrativo, contable o jurídico.</li>
-                                    </ul>
-                                    <p className="mb-4 font-bold">Plataformas:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
-                                        <li><strong>GoHighLevel:</strong> Gestión de CRM, funnels y base de datos.</li>
-                                        <li><strong>Instantly & MailScale:</strong> Automatización y envío de correos electrónicos.</li>
-                                        <li><strong>Ulinc:</strong> Gestión de outreach en LinkedIn.</li>
-                                        <li><strong>Meta Platforms, Inc.:</strong> Proveedor de servicios de publicidad y análisis.</li>
-                                    </ul>
-                                    <p>Con todos ellos se han firmado contratos de encargo de tratamiento conforme al art. 28 RGPD, que les obligan a tratar los datos únicamente siguiendo nuestras instrucciones, aplicar medidas de seguridad adecuadas y no utilizarlos para fines propios.</p>
-                                    <p className="mt-2">No cedemos tus datos a terceros para sus propias finalidades comerciales, salvo que contemos con tu consentimiento expreso o exista otra base jurídica válida.</p>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.8. Destinatarios y encargados del tratamiento</h3>
+                                <p className="mb-4">Podemos compartir tus datos con terceros únicamente cuando sea necesario para la correcta prestación de nuestros servicios o por obligación legal.</p>
+                                <p className="mb-4">En particular, podemos contar con proveedores que actúan como encargados del tratamiento, tales como:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
+                                    <li>Servicios de envío de email y automatización de marketing.</li>
+                                    <li>Herramientas de CRM y gestión de la relación con clientes.</li>
+                                    <li>Plataformas de analítica web y medición de rendimiento.</li>
+                                    <li>Proveedores de alojamiento, cloud y mantenimiento IT.</li>
+                                    <li>Otros proveedores de soporte administrativo, contable o jurídico.</li>
+                                </ul>
+                                <p className="mb-4 font-bold">Plataformas:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
+                                    <li><strong>GoHighLevel:</strong> Gestión de CRM, funnels y base de datos.</li>
+                                    <li><strong>Instantly & MailScale:</strong> Automatización y envío de correos electrónicos.</li>
+                                    <li><strong>Ulinc:</strong> Gestión de outreach en LinkedIn.</li>
+                                    <li><strong>Meta Platforms, Inc.:</strong> Proveedor de servicios de publicidad y análisis.</li>
+                                </ul>
+                                <p>Con todos ellos se han firmado contratos de encargo de tratamiento conforme al art. 28 RGPD, que les obligan a tratar los datos únicamente siguiendo nuestras instrucciones, aplicar medidas de seguridad adecuadas y no utilizarlos para fines propios.</p>
+                                <p className="mt-2">No cedemos tus datos a terceros para sus propias finalidades comerciales, salvo que contemos con tu consentimiento expreso o exista otra base jurídica válida.</p>
 
-                                {/* 1.9 TRANSFERENCIAS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.9. Transferencias internacionales</h3>
-                                    <p className="mb-4">Algunos de nuestros proveedores pueden estar ubicados fuera del Espacio Económico Europeo (EEE) o prestar sus servicios desde países que no ofrecen un nivel de protección de datos equivalente al europeo.</p>
-                                    <p className="mb-4">En esos casos:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>Utilizaremos Cláusulas Contractuales Tipo aprobadas por la Comisión Europea u otros mecanismos reconocidos por el RGPD.</li>
-                                        <li>Evaluaremos, cuando proceda, el nivel de protección del país de destino y, en su caso, aplicaremos medidas adicionales para salvaguardar la confidencialidad y la seguridad de tus datos.</li>
-                                    </ul>
-                                    <p>Puedes solicitar información adicional sobre las transferencias internacionales y las garantías aplicadas escribiendo a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5]">privacidad@growth4u.io</a></p>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.9. Transferencias internacionales</h3>
+                                <p className="mb-4">Algunos de nuestros proveedores pueden estar ubicados fuera del Espacio Económico Europeo (EEE) o prestar sus servicios desde países que no ofrecen un nivel de protección de datos equivalente al europeo.</p>
+                                <p className="mb-4">En esos casos:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>Utilizaremos Cláusulas Contractuales Tipo aprobadas por la Comisión Europea u otros mecanismos reconocidos por el RGPD.</li>
+                                    <li>Evaluaremos, cuando proceda, el nivel de protección del país de destino y, en su caso, aplicaremos medidas adicionales para salvaguardar la confidencialidad y la seguridad de tus datos.</li>
+                                </ul>
+                                <p>Puedes solicitar información adicional sobre las transferencias internacionales y las garantías aplicadas escribiendo a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5]">privacidad@growth4u.io</a></p>
 
-                                {/* 1.10 PLAZOS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.10. Plazos de conservación</h3>
-                                    <p className="mb-4">Conservaremos tus datos:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>Mientras exista una relación comercial o contractual activa contigo o con tu empresa.</li>
-                                        <li>Mientras sean necesarios para la finalidad para la que fueron recogidos.</li>
-                                        <li>Posteriormente, durante los plazos necesarios para cumplir obligaciones legales o para la prescripción de responsabilidades (por ejemplo, en materia civil, fiscal o mercantil).</li>
-                                    </ul>
-                                    <p>Una vez transcurridos dichos plazos, los datos se bloquearán o eliminarán de forma segura.</p>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.10. Plazos de conservación</h3>
+                                <p className="mb-4">Conservaremos tus datos:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>Mientras exista una relación comercial o contractual activa contigo o con tu empresa.</li>
+                                    <li>Mientras sean necesarios para la finalidad para la que fueron recogidos.</li>
+                                    <li>Posteriormente, durante los plazos necesarios para cumplir obligaciones legales o para la prescripción de responsabilidades (por ejemplo, en materia civil, fiscal o mercantil).</li>
+                                </ul>
+                                <p>Una vez transcurridos dichos plazos, los datos se bloquearán o eliminarán de forma segura.</p>
 
-                                {/* 1.11 DERECHOS */}
-                                <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.11. Derechos de los interesados</h3>
-                                    <p className="mb-4">Puedes ejercer en cualquier momento los siguientes derechos:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
-                                        <li><strong>Acceso:</strong> saber qué datos tuyos tratamos.</li>
-                                        <li><strong>Rectificación:</strong> solicitar la corrección de datos inexactos o incompletos.</li>
-                                        <li><strong>Supresión:</strong> pedir la eliminación de tus datos cuando, entre otros motivos, ya no sean necesarios para los fines para los que fueron recogidos.</li>
-                                        <li><strong>Limitación del tratamiento:</strong> solicitar que limitemos el tratamiento de tus datos en determinadas circunstancias.</li>
-                                        <li><strong>Portabilidad:</strong> recibir tus datos en un formato estructurado, de uso común y lectura mecánica, y transmitirlos a otro responsable cuando el tratamiento se base en el consentimiento o en un contrato y se efectúe por medios automatizados.</li>
-                                        <li><strong>Oposición:</strong> oponerte al tratamiento de tus datos basado en el interés legítimo, incluida la oposición a recibir comunicaciones comerciales.</li>
-                                        <li>No ser objeto de decisiones individuales automatizadas, incluida la elaboración de perfiles, cuando proceda.</li>
-                                    </ul>
-                                    <p className="mb-4">Para ejercer tus derechos, puedes enviar una solicitud a:</p>
-                                    <blockquote className="not-italic border-l-4 border-[#6351d5] pl-6 py-4 bg-slate-50 rounded-r-xl mb-6">
-                                        <p className="mb-1"><strong className="text-[#032149]">Email:</strong> <a href="mailto:privacy@growth4u.com" className="text-[#6351d5] hover:underline">privacy@growth4u.com</a></p>
-                                        <p><strong className="text-[#032149]">Asunto:</strong> “Ejercicio de derechos protección de datos”</p>
-                                    </blockquote>
-                                    <p className="mb-2">La solicitud deberá incluir:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
-                                        <li>Tu nombre y apellidos.</li>
-                                        <li>Indicación clara del derecho que deseas ejercer.</li>
-                                        <li>Una copia de tu documento identificativo (DNI/NIE/pasaporte) o medio equivalente que permita acreditar tu identidad, en caso de duda razonable sobre la misma.</li>
-                                    </ul>
-                                    <p className="mb-2 font-bold">Plazo de respuesta:</p>
-                                    <p className="mb-4">Responderemos a tu solicitud en el plazo máximo de 1 mes, prorrogable otros 2 meses en caso de solicitudes especialmente complejas; en tal caso, te informaremos de la prórroga dentro del primer mes.</p>
-                                    <p className="mb-2">Si consideras que no hemos tratado tus datos de forma adecuada, puedes presentar una reclamación ante la autoridad de control competente:</p>
-                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
-                                        <li><strong>Agencia Española de Protección de Datos (AEPD)</strong> <br/> Web: <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" className="text-[#6351d5]">https://www.aepd.es</a></li>
-                                    </ul>
-                                </div>
+                                <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.11. Derechos de los interesados</h3>
+                                <p className="mb-4">Puedes ejercer en cualquier momento los siguientes derechos:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
+                                    <li><strong>Acceso:</strong> saber qué datos tuyos tratamos.</li>
+                                    <li><strong>Rectificación:</strong> solicitar la corrección de datos inexactos o incompletos.</li>
+                                    <li><strong>Supresión:</strong> pedir la eliminación de tus datos cuando, entre otros motivos, ya no sean necesarios para los fines para los que fueron recogidos.</li>
+                                    <li><strong>Limitación del tratamiento:</strong> solicitar que limitemos el tratamiento de tus datos en determinadas circunstancias.</li>
+                                    <li><strong>Portabilidad:</strong> recibir tus datos en un formato estructurado, de uso común y lectura mecánica, y transmitirlos a otro responsable cuando el tratamiento se base en el consentimiento o en un contrato y se efectúe por medios automatizados.</li>
+                                    <li><strong>Oposición:</strong> oponerte al tratamiento de tus datos basado en el interés legítimo, incluida la oposición a recibir comunicaciones comerciales.</li>
+                                    <li>No ser objeto de decisiones individuales automatizadas, incluida la elaboración de perfiles, cuando proceda.</li>
+                                </ul>
+                                <p className="mb-4">Para ejercer tus derechos, puedes enviar una solicitud a:</p>
+                                <blockquote className="not-italic border-l-4 border-[#6351d5] pl-6 py-4 bg-slate-50 rounded-r-xl mb-6">
+                                    <p className="mb-1"><strong className="text-[#032149]">Email:</strong> <a href="mailto:privacy@growth4u.com" className="text-[#6351d5] hover:underline">privacy@growth4u.com</a></p>
+                                    <p><strong className="text-[#032149]">Asunto:</strong> “Ejercicio de derechos protección de datos”</p>
+                                </blockquote>
+                                <p className="mb-2">La solicitud deberá incluir:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                    <li>Tu nombre y apellidos.</li>
+                                    <li>Indicación clara del derecho que deseas ejercer.</li>
+                                    <li>Una copia de tu documento identificativo (DNI/NIE/pasaporte) o medio equivalente que permita acreditar tu identidad, en caso de duda razonable sobre la misma.</li>
+                                </ul>
+                                <p className="mb-2 font-bold">Plazo de respuesta:</p>
+                                <p className="mb-4">Responderemos a tu solicitud en el plazo máximo de 1 mes, prorrogable otros 2 meses en caso de solicitudes especialmente complejas; en tal caso, te informaremos de la prórroga dentro del primer mes.</p>
+                                <p className="mb-2">Si consideras que no hemos tratado tus datos de forma adecuada, puedes presentar una reclamación ante la autoridad de control competente:</p>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
+                                    <li><strong>Agencia Española de Protección de Datos (AEPD)</strong> <br/> Web: <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" className="text-[#6351d5]">https://www.aepd.es</a></li>
+                                </ul>
                             </>
                         ) : (
                             <>
