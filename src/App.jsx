@@ -103,7 +103,7 @@ const translations = {
     hero: { tag: "Especialistas en Growth Fintech B2B & B2C", title: "Tu fintech puede crecer más rápido, ", titleHighlight: "sin invertir más en marketing.", subtitle: "Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.", ctaPrimary: "Empezar ahora", ctaSecondary: "Ver servicios", trust: "Empresas validadas por la confianza" },
     problem: { title: "El modelo tradicional está roto", subtitle: "En un mercado saturado, depender 100% de Paid Media es insostenible.", cards: [ { title: "Alquiler de Atención", desc: "Si cortas el presupuesto de anuncios, las ventas mueren instantáneamente." }, { title: "CAC Incontrolable", desc: "El coste por clic no para de subir. Sin activos propios, tu rentabilidad se erosiona." }, { title: "Fricción de Confianza", desc: "El usuario Fintech es escéptico. Atraes tráfico, pero no conviertes por falta de autoridad." }, { title: "Churn Silencioso", desc: "Captas registros, no clientes. El LTV nunca llega a cubrir el coste de adquisición." } ] },
     results: { title: "Resultados del Trust Engine", subtitle: "Crecimiento predecible y escalable.", cards: [ { title: "Reducción del 70% en CAC", desc: "Sustituimos el gasto publicitario inflado por sistemas de confianza orgánica y viralidad estructurada." }, { title: "Usuarios Activados", desc: "Dejamos atrás las vanity metrics. Atraemos clientes ideales (ICP) listos para usar y pagar." }, { title: "Máquina 24/7", desc: "Implementamos automatización e IA para que la captación funcione sin depender de trabajo manual." }, { title: "Activos que perduran", desc: "Construimos un motor de crecimiento que gana tracción con el tiempo, aumentando el LTV." } ] },
-    methodology: { title: "El motor de crecimiento adecuado.", subtitle: "Infraestructura escalable según la etapa de tu negocio.", stages: [ { step: "Etapa 1", title: "BUSCANDO PMF", tag: "0 → Tracción Real", desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.", icon: Search, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Validación de **Propuesta de Valor** y posicionamiento único.", "Generación de los primeros **usuarios que pagan**." ] }, { step: "Etapa 2", title: "ESCALANDO", tag: "10K → 500K Users", desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.", icon: TrendingUp, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción orgánica y reconocimiento de marca vía **Referral**.", "Conversión de **Clientes que pagan** y alto LTV." ] }, { step: "Etapa 3", title: "EXPANSIÓN", tag: "Nuevo Mercado / Producto", desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.", icon: Globe, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción inicial asegurada en **nichos de alta conversión**.", "Penetración rápida con **estrategia localizada**." ] } ] },
+    methodology: { title: "El motor de crecimiento adecuado.", subtitle: "Infraestructura escalable según la etapa de tu negocio.", stages: [ { step: "Etapa 1", title: "BUSCANDO PMF", tag: "0 → Tracción Real", desc: "Realizamos **iteración rápida**: testeo de canales, mensajes y análisis de competidores para encontrar tu posicionamiento. Una propuesta de valor que guía el desarrollo del producto.", icon: Search, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Validación de **Propuesta de Valor** y posicionamiento único.", "Generación de los primeros **usuarios que pagan**." ] }, { step: "Etapa 2", title: "ESCALANDO", tag: "10K → 500K Users", desc: "Implementamos el **Trust Engine**: generamos confianza posicionando la marca en **medios de autoridad e influencers**. Un motor de crecimiento que prioriza clientes reales.", icon: TrendingUp, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción orgánica y reconocimiento de marca vía **Referral**.", "Conversión de **Clientes que pagan** y alto LTV." ] }, { step: "Stage 3", title: "EXPANSION", tag: "Nuevo Mercado / Producto", desc: "Plan de **Go-to-Market** para lanzar nuevos productos o iniciar operaciones en **España**. Identificamos nichos competitivos para asegurar tracción estratégica.", icon: Globe, guaranteeTitle: "OBJETIVO & GARANTÍA", guarantees: [ "Tracción inicial asegurada en **nichos de alta conversión**.", "Penetración rápida con **estrategia localizada**." ] } ] },
     cases: { title: "Casos de Éxito", subtitle: "Resultados reales auditados.", list: [ { company: "BNEXT", stat: "500K", label: "Usuarios activos", highlight: "conseguidos en 30 meses", summary: "De 0 a 500.000 usuarios en 30 meses, sin gastar millones en publicidad.", challenge: "Escalar la base de usuarios en un mercado competitivo sin depender exclusivamente de paid media masivo.", solution: "Construimos un sistema de crecimiento basado en confianza y viralidad." }, { company: "BIT2ME", stat: "-70%", label: "Reducción de CAC", highlight: "implementando Trust Engine", summary: "Redujimos el CAC un 70% implementando el Trust Engine.", challenge: "Acquisition cost skyrocketed due to ad saturation and mistrust in the crypto sector.", solution: "Optimizamos datos, segmentación y activación para duplicar el valor de cada cliente." }, { company: "GOCARDLESS", stat: "10K €", label: "MRR alcanzado", highlight: "en 6 meses desde lanzamiento", summary: "Lanzamiento desde cero en España y Portugal alcanzando 10k MRR rápidamente.", challenge: "Entrada en nuevos mercados sin presencia de marca previa.", solution: "Estrategia enfocada en contenido, alianzas y ventas inteligentes." } ], btnRead: "Leer caso completo", btnHide: "Ver menos", challengeLabel: "Reto", solutionLabel: "Solución" },
     team: { title: "Trust es lo importante, conócenos", bioAlfonso: "Especialista en growth con más de diez años lanzando y escalando productos en fintech.", bioMartin: "Especialista en growth técnico con más de diez años creando sistemas de automatización y datos que escalan operaciones." },
     blog: { title: "Blog & Insights", subtitle: "Strategic resources to scale your fintech.", cta: "Ver todos los artículos", readTime: "min lectura", admin: "Admin", empty: "Próximamente nuevos artículos...", defaults: [] },
@@ -372,7 +372,7 @@ export default function App() {
   const displayPosts = posts.length > 0 ? posts : t.blog.defaults;
   const homePosts = displayPosts.slice(0, 6);
 
-  // --- COMPONENTE LEGAL VIEW (MEJORADO) ---
+  // --- COMPONENTE LEGAL VIEW (LITERAL Y COMPLETO) ---
   const LegalView = ({ type }) => {
       const isPrivacy = type === 'privacy';
       const title = isPrivacy ? "Política de Privacidad" : "Política de Cookies";
@@ -413,9 +413,11 @@ export default function App() {
                                     </h3>
                                     <ul className="space-y-3 text-sm md:text-base">
                                         <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Responsable:</span> <span>Growth Systems Now, S.L. ("Growth4U")</span></li>
-                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Finalidad:</span> <span>Gestión de consultas, servicios, B2B marketing y análisis.</span></li>
-                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Legitimación:</span> <span>Contrato, interés legítimo y consentimiento.</span></li>
-                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Derechos:</span> <span>Acceso, rectificación, supresión, entre otros.</span></li>
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Finalidad:</span> <span>Gestión de consultas, prestación de servicios, comunicaciones comerciales B2B y análisis de mercado.</span></li>
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Legitimación:</span> <span>Ejecución de contrato, interés legítimo (marketing B2B) y consentimiento del interesado.</span></li>
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Destinatarios:</span> <span>Proveedores de servicios (encargados del tratamiento) y obligaciones legales. No se ceden datos a terceros para fines comerciales ajenos.</span></li>
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Derechos:</span> <span>Acceso, rectificación, supresión, oposición, portabilidad y limitación del tratamiento.</span></li>
+                                        <li className="flex gap-2"><span className="font-bold text-[#032149] min-w-[100px]">Info. Adicional:</span> <span>Puedes consultar la información detallada en los apartados siguientes.</span></li>
                                     </ul>
                                 </div>
 
@@ -426,134 +428,201 @@ export default function App() {
                                     <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
                                         <li>Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016 (RGPD).</li>
                                         <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</li>
-                                        <li>Demás normativa española aplicable en materia de protección de datos.</li>
+                                        <li>Demás normativa española que resulte aplicable en materia de protección de datos y servicios de la sociedad de la información.</li>
                                     </ul>
                                 </div>
 
                                 {/* 1.2 RESPONSABLE */}
                                 <div>
                                     <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.2. Responsable del tratamiento</h3>
+                                    <p className="mb-4">El responsable del tratamiento de los datos personales es:</p>
                                     <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
                                         <ul className="space-y-3">
                                             <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Responsable:</strong> <span>Growth Systems Now, S.L. ("Growth4U")</span></li>
                                             <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">NIF/CIF:</strong> <span>ESB22671879</span></li>
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Domicilio:</strong> <span>Calle de Luchana, 28, 2º A, 28010, Madrid</span></li>
-                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Email Privacidad:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold hover:underline">privacidad@growth4u.io</a></li>
+                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Domicilio postal:</strong> <span>Calle de Luchana, 28, 2º A, 28010, Madrid, España</span></li>
+                                            <li className="flex flex-col md:flex-row md:gap-2"><strong className="text-[#032149] w-40">Contacto privacidad:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] font-bold hover:underline">privacidad@growth4u.io</a></li>
                                         </ul>
                                     </div>
-                                    <p className="mt-4 text-sm text-slate-500 italic">Dada la naturaleza de nuestra actividad, Growth4U no está obligada al nombramiento de un Delegado de Protección de Datos. No obstante, para cualquier consulta puede dirigirse al correo indicado.</p>
+                                    <p className="mt-4 text-sm text-slate-500 italic">Dada la naturaleza de nuestra actividad, Growth4U no está obligada al nombramiento de un Delegado de Protección de Datos. No obstante, para cualquier consulta puede dirigirse al correo electrónico indicado arriba.</p>
                                 </div>
 
                                 {/* 1.3 DATOS QUE TRATAMOS */}
                                 <div>
                                     <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.3. Datos que tratamos</h3>
-                                    <p className="mb-4">Podemos tratar las siguientes categorías de datos personales:</p>
+                                    <p className="mb-4">Podemos tratar las siguientes categorías de datos personales, según el formulario o canal que utilices:</p>
                                     <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
                                         <li><strong className="text-[#032149]">Datos identificativos:</strong> nombre, apellidos.</li>
                                         <li><strong className="text-[#032149]">Datos de contacto:</strong> correo electrónico, teléfono.</li>
                                         <li><strong className="text-[#032149]">Datos profesionales:</strong> empresa, cargo, sector.</li>
-                                        <li><strong className="text-[#032149]">Datos de uso y navegación:</strong> interacción con emails, web, formularios, descargas y campañas.</li>
+                                        <li><strong className="text-[#032149]">Datos de uso y navegación:</strong> interacción con nuestros emails, página web o materiales descargados, respuestas a formularios, apertura y clics en newsletters o campañas.</li>
                                     </ul>
                                     <p className="mt-4 bg-yellow-50 p-4 rounded-lg text-sm border-l-4 border-yellow-400">
-                                        <strong>Nota:</strong> No solicitamos ni tratamos de forma intencionada categorías especiales de datos (salud, ideología, etc.).
+                                        No solicitamos ni tratamos de forma intencionada categorías especiales de datos (salud, ideología, religión, etc.). Si excepcionalmente fuera necesario, se te informaría de forma específica y se recabaría el consentimiento expreso correspondiente.
                                     </p>
                                 </div>
 
                                 {/* 1.4 ORIGEN */}
                                 <div>
                                     <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.4. Origen de los datos</h3>
+                                    <p className="mb-4">Los datos personales que tratamos pueden proceder de:</p>
                                     <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li>Formularios de contacto o descarga de recursos en nuestra web.</li>
-                                        <li><strong className="text-[#032149]">Formularios de Meta (Lead Ads):</strong> Datos facilitados voluntariamente en Facebook/Instagram integrados en nuestro CRM.</li>
-                                        <li>Comunicaciones directas (email, teléfono, reuniones).</li>
-                                        <li>Plataformas profesionales (ej. LinkedIn) respetando derechos y expectativas de privacidad B2B.</li>
-                                        <li>Fuentes de acceso público (registros mercantiles, perfiles profesionales públicos) bajo interés legítimo B2B.</li>
+                                        <li>Formularios de contacto, descarga de recursos o solicitud de reunión en nuestros propios sitios web.</li>
+                                        <li><strong className="text-[#032149]">Formularios de Meta (Lead Ads):</strong> Recibimos datos personales (nombre, correo, etc.) que nos facilitas voluntariamente a través de formularios en Facebook o Instagram. Estos datos se integran en nuestro CRM para su gestión comercial.</li>
+                                        <li>Comunicaciones directas que mantienes con nosotros (email, teléfono, reuniones).</li>
+                                        <li>Plataformas y redes profesionales (por ejemplo, LinkedIn) cuando te has puesto en contacto con nosotros, has mostrado interés en nuestros contenidos, o cuando tu perfil es público y se considera razonable para fines de marketing B2B, siempre respetando tus derechos y expectativas de privacidad.</li>
+                                        <li>Bases o listados B2B obtenidos de forma lícita a través de terceros que garantizan el cumplimiento del RGPD, respecto de los cuales te informaremos en la primera comunicación que te hagamos llegar.</li>
+                                        <li>Fuentes de acceso público: Recabamos información profesional de fuentes abiertas como registros mercantiles, perfiles públicos de redes sociales profesionales (LinkedIn) y sitios web corporativos, siempre bajo el amparo del interés legítimo B2B y para fines estrictamente profesionales</li>
                                     </ul>
+                                    <p className="mt-4">En cualquiera de los casos, te informaremos de esta política y de tus derechos en el primer momento razonable.</p>
                                 </div>
 
                                 {/* 1.5 FINALIDADES */}
                                 <div>
                                     <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.5. Finalidades del tratamiento</h3>
+                                    <p className="mb-4">Usamos tus datos para:</p>
                                     <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li>Gestión de consultas, demos y reuniones.</li>
-                                        <li>Prestación de servicios, facturación y soporte.</li>
-                                        <li><strong className="text-[#032149]">Comunicaciones comerciales B2B:</strong> servicios de growth, estrategia GTM y contenidos formativos.</li>
-                                        <li><strong className="text-[#032149]">Publicidad y Retargeting:</strong> Uso del Píxel de Meta para medir eficacia y mostrar anuncios relevantes.</li>
-                                        <li>Mejora de servicios y analítica interna.</li>
-                                        <li>Cumplimiento de obligaciones legales (fiscales, contables).</li>
-                                        <li><strong className="text-[#032149]">Informes de mercado:</strong> Basados en datos agregados o fuentes públicas, nunca usando datos personales de clientes finales sin encargo específico.</li>
+                                        <li><strong className="text-[#032149]">Gestión de consultas y reuniones:</strong> atender solicitudes de información, demos o reuniones que nos plantees.</li>
+                                        <li><strong className="text-[#032149]">Prestación de servicios:</strong> gestionar la relación contractual, la facturación y el soporte cuando seas cliente.</li>
+                                        <li><strong className="text-[#032149]">Comunicaciones comerciales B2B:</strong> enviarte comunicaciones relacionadas con nuestros servicios de growth, estrategia GTM, contenidos formativos y recursos que puedan ser de tu interés profesional.</li>
+                                        <li><strong className="text-[#032149]">Publicidad y Retargeting:</strong> Utilizamos el Píxel de Meta para medir la eficacia de nuestras campañas publicitarias y mostrar anuncios relevantes a personas que han interactuado con nuestros formularios o página web</li>
+                                        <li><strong className="text-[#032149]">Mejora de servicios y analítica interna:</strong> realizar análisis agregados y estadísticos sobre el uso de nuestra web, materiales descargados y campañas, con el fin de mejorar nuestros contenidos y propuestas de valor.</li>
+                                        <li><strong className="text-[#032149]">Cumplimiento de obligaciones legales:</strong> atender obligaciones contables, fiscales y de prevención de blanqueo de capitales u otras que correspondan.</li>
+                                        <li><strong className="text-[#032149]">Elaboración de informes de mercado:</strong> Los análisis de mercado que realizamos para nuestros servicios se basan en datos agregados o de fuentes públicas profesionales. En ningún caso utilizamos datos personales de los clientes de nuestros clientes para estos fines, salvo que exista un encargo específico y un contrato de tratamiento de datos previo</li>
                                     </ul>
                                 </div>
 
                                 {/* 1.6 BASES JURÍDICAS */}
                                 <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.6. Bases jurídicas</h3>
-                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.6. Bases jurídicas del tratamiento</h3>
+                                    <p className="mb-4">Tratamos tus datos sobre las siguientes bases jurídicas:</p>
+                                    <ul className="space-y-4">
                                         <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Ejecución de contrato</strong>
-                                            <span className="text-sm">Gestión de clientes, propuestas y relación contractual. (Art. 6.1.b RGPD)</span>
+                                            <strong className="block text-[#6351d5] mb-2">Ejecución de un contrato o aplicación de medidas precontractuales (art. 6.1.b RGPD):</strong>
+                                            <span className="text-sm">Cuando tramitamos tu solicitud de información, preparamos una propuesta o gestionamos la relación como cliente.</span>
                                         </li>
                                         <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Cumplimiento legal</strong>
-                                            <span className="text-sm">Obligaciones fiscales, administrativas y contables. (Art. 6.1.c RGPD)</span>
+                                            <strong className="block text-[#6351d5] mb-2">Cumplimiento de obligaciones legales (art. 6.1.c RGPD):</strong>
+                                            <span className="text-sm">Cuando tratamos datos para cumplir obligaciones contables, fiscales u otras impuestas por la normativa aplicable.</span>
                                         </li>
                                         <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Interés legítimo</strong>
-                                            <span className="text-sm">Marketing B2B, seguridad y mejora de servicios. (Art. 6.1.f RGPD)</span>
+                                            <strong className="block text-[#6351d5] mb-2">Interés legítimo (art. 6.1.f RGPD):</strong>
+                                            <div className="text-sm mt-2">
+                                                Para realizar acciones de marketing B2B razonables dirigidas a contactos profesionales de empresas que puedan estar interesadas en nuestros servicios, siempre que:
+                                                <ul className="list-disc pl-5 mt-1 mb-2">
+                                                    <li>Se haya valorado el equilibrio entre nuestro interés y tus derechos y libertades.</li>
+                                                    <li>Se trate de comunicaciones relacionadas con tu rol profesional.</li>
+                                                </ul>
+                                                Para mejorar nuestros servicios, procesos internos y seguridad de la información.<br/><br/>
+                                                <strong>En todo caso, podrás oponerte en cualquier momento a este tratamiento:</strong>
+                                                <ul className="list-disc pl-5 mt-1">
+                                                    <li>Mediante el enlace de baja incluido en cada comunicación comercial por email.</li>
+                                                    <li>O enviando un email a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5]">privacidad@growth4u.io</a>, indicando que no deseas recibir más comunicaciones.</li>
+                                                </ul>
+                                            </div>
                                         </li>
                                         <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                            <strong className="block text-[#6351d5] mb-2">Consentimiento</strong>
-                                            <span className="text-sm">Cookies no técnicas y supuestos específicos. (Art. 6.1.a RGPD)</span>
+                                            <strong className="block text-[#6351d5] mb-2">Consentimiento (art. 6.1.a RGPD):</strong>
+                                            <div className="text-sm">
+                                                Para el uso de ciertas cookies no técnicas y tecnologías similares, conforme se detalla en nuestra Política de Cookies.
+                                                En aquellos supuestos en los que te lo pidamos de forma expresa para finalidades concretas.<br/>
+                                                Cuando la base jurídica sea el consentimiento, podrás retirarlo en cualquier momento sin que ello afecte a la licitud del tratamiento basado en el consentimiento previo.
+                                            </div>
                                         </li>
                                     </ul>
                                 </div>
 
                                 {/* 1.7 SEGURIDAD */}
                                 <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.7. Medidas de seguridad</h3>
-                                    <p>Aplicamos medidas técnicas y organizativas (art. 32 RGPD) como control de accesos, cifrado, políticas de contraseñas, copias de seguridad y gestión de incidentes. Todo el personal está sujeto a confidencialidad.</p>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.7. Medidas de seguridad y confidencialidad</h3>
+                                    <p className="mb-4">Growth4U aplica medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, de acuerdo con el art. 32 RGPD, incluyendo, entre otras:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
+                                        <li>Control de accesos y gestión de permisos según rol.</li>
+                                        <li>Uso de proveedores con cifrado en tránsito y, cuando es posible, en reposo.</li>
+                                        <li>Políticas internas de contraseña y autenticación reforzada.</li>
+                                        <li>Copias de seguridad periódicas y procedimientos de restauración.</li>
+                                        <li>Procedimientos para la gestión de incidentes de seguridad y brechas de datos.</li>
+                                    </ul>
+                                    <p className="mt-4">Todo el personal de Growth4U y los terceros que prestan servicios con acceso a datos personales están sujetos a obligaciones de confidencialidad (contractuales y/o legales).</p>
                                 </div>
 
                                 {/* 1.8 DESTINATARIOS */}
                                 <div>
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.8. Destinatarios y encargados</h3>
-                                    <p className="mb-4">Compartimos datos con proveedores necesarios (encargados del tratamiento) bajo estricto contrato:</p>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            <span className="font-bold text-[#032149]">GoHighLevel</span> (CRM)
-                                        </div>
-                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            <span className="font-bold text-[#032149]">Instantly & MailScale</span> (Email)
-                                        </div>
-                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            <span className="font-bold text-[#032149]">Meta Platforms</span> (Ads)
-                                        </div>
-                                        <div className="flex items-center gap-3 p-3 bg-white border rounded-lg shadow-sm">
-                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                            <span className="font-bold text-[#032149]">Ulinc</span> (LinkedIn)
-                                        </div>
-                                    </div>
-                                    <p className="text-sm">No cedemos datos a terceros para sus propios fines comerciales sin consentimiento.</p>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.8. Destinatarios y encargados del tratamiento</h3>
+                                    <p className="mb-4">Podemos compartir tus datos con terceros únicamente cuando sea necesario para la correcta prestación de nuestros servicios o por obligación legal.</p>
+                                    <p className="mb-4">En particular, podemos contar con proveedores que actúan como encargados del tratamiento, tales como:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
+                                        <li>Servicios de envío de email y automatización de marketing.</li>
+                                        <li>Herramientas de CRM y gestión de la relación con clientes.</li>
+                                        <li>Plataformas de analítica web y medición de rendimiento.</li>
+                                        <li>Proveedores de alojamiento, cloud y mantenimiento IT.</li>
+                                        <li>Otros proveedores de soporte administrativo, contable o jurídico.</li>
+                                    </ul>
+                                    <p className="mb-4 font-bold">Plataformas:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
+                                        <li><strong>GoHighLevel:</strong> Gestión de CRM, funnels y base de datos.</li>
+                                        <li><strong>Instantly & MailScale:</strong> Automatización y envío de correos electrónicos.</li>
+                                        <li><strong>Ulinc:</strong> Gestión de outreach en LinkedIn.</li>
+                                        <li><strong>Meta Platforms, Inc.:</strong> Proveedor de servicios de publicidad y análisis.</li>
+                                    </ul>
+                                    <p>Con todos ellos se han firmado contratos de encargo de tratamiento conforme al art. 28 RGPD, que les obligan a tratar los datos únicamente siguiendo nuestras instrucciones, aplicar medidas de seguridad adecuadas y no utilizarlos para fines propios.</p>
+                                    <p className="mt-2">No cedemos tus datos a terceros para sus propias finalidades comerciales, salvo que contemos con tu consentimiento expreso o exista otra base jurídica válida.</p>
                                 </div>
 
-                                {/* RESTO DE SECCIONES */}
+                                {/* 1.9 TRANSFERENCIAS */}
                                 <div>
                                     <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.9. Transferencias internacionales</h3>
-                                    <p>Para proveedores fuera del EEE, utilizamos Cláusulas Contractuales Tipo o mecanismos reconocidos por el RGPD para garantizar la seguridad de los datos.</p>
+                                    <p className="mb-4">Algunos de nuestros proveedores pueden estar ubicados fuera del Espacio Económico Europeo (EEE) o prestar sus servicios desde países que no ofrecen un nivel de protección de datos equivalente al europeo.</p>
+                                    <p className="mb-4">En esos casos:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>Utilizaremos Cláusulas Contractuales Tipo aprobadas por la Comisión Europea u otros mecanismos reconocidos por el RGPD.</li>
+                                        <li>Evaluaremos, cuando proceda, el nivel de protección del país de destino y, en su caso, aplicaremos medidas adicionales para salvaguardar la confidencialidad y la seguridad de tus datos.</li>
+                                    </ul>
+                                    <p>Puedes solicitar información adicional sobre las transferencias internacionales y las garantías aplicadas escribiendo a <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5]">privacidad@growth4u.io</a></p>
+                                </div>
 
+                                {/* 1.10 PLAZOS */}
+                                <div>
                                     <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.10. Plazos de conservación</h3>
-                                    <p>Conservamos los datos mientras exista relación comercial, sean necesarios para la finalidad o por obligaciones legales. Posteriormente se bloquearán o eliminarán de forma segura.</p>
+                                    <p className="mb-4">Conservaremos tus datos:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>Mientras exista una relación comercial o contractual activa contigo o con tu empresa.</li>
+                                        <li>Mientras sean necesarios para la finalidad para la que fueron recogidos.</li>
+                                        <li>Posteriormente, durante los plazos necesarios para cumplir obligaciones legales o para la prescripción de responsabilidades (por ejemplo, en materia civil, fiscal o mercantil).</li>
+                                    </ul>
+                                    <p>Una vez transcurridos dichos plazos, los datos se bloquearán o eliminarán de forma segura.</p>
+                                </div>
 
+                                {/* 1.11 DERECHOS */}
+                                <div>
                                     <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">1.11. Derechos de los interesados</h3>
-                                    <p className="mb-4">Puedes ejercer tus derechos de Acceso, Rectificación, Supresión, Limitación, Portabilidad y Oposición escribiendo a:</p>
-                                    <blockquote className="not-italic border-l-4 border-[#6351d5] pl-6 py-4 bg-slate-50 rounded-r-xl">
-                                        <p className="mb-1"><strong className="text-[#032149]">Email:</strong> <a href="mailto:privacidad@growth4u.io" className="text-[#6351d5] hover:underline">privacidad@growth4u.io</a></p>
-                                        <p><strong className="text-[#032149]">Asunto:</strong> Ejercicio de derechos protección de datos</p>
+                                    <p className="mb-4">Puedes ejercer en cualquier momento los siguientes derechos:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-6">
+                                        <li><strong>Acceso:</strong> saber qué datos tuyos tratamos.</li>
+                                        <li><strong>Rectificación:</strong> solicitar la corrección de datos inexactos o incompletos.</li>
+                                        <li><strong>Supresión:</strong> pedir la eliminación de tus datos cuando, entre otros motivos, ya no sean necesarios para los fines para los que fueron recogidos.</li>
+                                        <li><strong>Limitación del tratamiento:</strong> solicitar que limitemos el tratamiento de tus datos en determinadas circunstancias.</li>
+                                        <li><strong>Portabilidad:</strong> recibir tus datos en un formato estructurado, de uso común y lectura mecánica, y transmitirlos a otro responsable cuando el tratamiento se base en el consentimiento o en un contrato y se efectúe por medios automatizados.</li>
+                                        <li><strong>Oposición:</strong> oponerte al tratamiento de tus datos basado en el interés legítimo, incluida la oposición a recibir comunicaciones comerciales.</li>
+                                        <li>No ser objeto de decisiones individuales automatizadas, incluida la elaboración de perfiles, cuando proceda.</li>
+                                    </ul>
+                                    <p className="mb-4">Para ejercer tus derechos, puedes enviar una solicitud a:</p>
+                                    <blockquote className="not-italic border-l-4 border-[#6351d5] pl-6 py-4 bg-slate-50 rounded-r-xl mb-6">
+                                        <p className="mb-1"><strong className="text-[#032149]">Email:</strong> <a href="mailto:privacy@growth4u.com" className="text-[#6351d5] hover:underline">privacy@growth4u.com</a></p>
+                                        <p><strong className="text-[#032149]">Asunto:</strong> “Ejercicio de derechos protección de datos”</p>
                                     </blockquote>
-                                    <p className="mt-4 text-sm">Responderemos en un plazo máximo de 1 mes. Tienes derecho a reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" className="underline text-[#6351d5]">AEPD</a>.</p>
+                                    <p className="mb-2">La solicitud deberá incluir:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>Tu nombre y apellidos.</li>
+                                        <li>Indicación clara del derecho que deseas ejercer.</li>
+                                        <li>Una copia de tu documento identificativo (DNI/NIE/pasaporte) o medio equivalente que permita acreditar tu identidad, en caso de duda razonable sobre la misma.</li>
+                                    </ul>
+                                    <p className="mb-2 font-bold">Plazo de respuesta:</p>
+                                    <p className="mb-4">Responderemos a tu solicitud en el plazo máximo de 1 mes, prorrogable otros 2 meses en caso de solicitudes especialmente complejas; en tal caso, te informaremos de la prórroga dentro del primer mes.</p>
+                                    <p className="mb-2">Si consideras que no hemos tratado tus datos de forma adecuada, puedes presentar una reclamación ante la autoridad de control competente:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5]">
+                                        <li><strong>Agencia Española de Protección de Datos (AEPD)</strong> <br/> Web: <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" className="text-[#6351d5]">https://www.aepd.es</a></li>
+                                    </ul>
                                 </div>
                             </>
                         ) : (
@@ -561,17 +630,40 @@ export default function App() {
                                 {/* --- CONTENIDO POLÍTICA DE COOKIES --- */}
                                 <div>
                                     <h3 className="text-2xl font-bold text-[#032149] mt-0 mb-4">2.1. ¿Qué son las cookies?</h3>
-                                    <p>Archivos de texto que se descargan en tu dispositivo para permitir que la web funcione, recordar preferencias y obtener estadísticas anónimas o perfiles publicitarios.</p>
-
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.2. Tipos de cookies que utilizamos</h3>
-                                    <ul className="list-disc pl-6 space-y-3 marker:text-[#6351d5]">
-                                        <li><strong className="text-[#032149]">Técnicas o necesarias:</strong> Imprescindibles para el funcionamiento (sesión, seguridad). No requieren consentimiento.</li>
-                                        <li><strong className="text-[#032149]">Preferencias:</strong> Idioma y configuración regional.</li>
-                                        <li><strong className="text-[#032149]">Análisis:</strong> Medición de uso (anónimas cuando es posible).</li>
-                                        <li><strong className="text-[#032149]">Marketing:</strong> Publicidad comportamental y perfiles comerciales (Meta Pixel, etc.). Solo con consentimiento.</li>
+                                    <p className="mb-4">Las cookies son pequeños archivos de texto que se descargan en tu dispositivo (ordenador, tablet, smartphone, etc.) cuando visitas determinadas páginas web. Permiten, entre otras cosas:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>Que la web funcione correctamente.</li>
+                                        <li>Recordar tus preferencias de navegación.</li>
+                                        <li>Obtener información estadística anónima sobre el uso del sitio.</li>
+                                        <li>Mostrarte contenidos y anuncios más acordes con tus intereses.</li>
                                     </ul>
 
-                                    <h4 className="text-xl font-bold text-[#032149] mt-10 mb-6">Tabla de cookies vigentes</h4>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.2. Tipos de cookies que utilizamos</h3>
+                                    <p className="mb-4">En la web de Growth4U podemos utilizar:</p>
+                                    <ul className="space-y-4 mb-6">
+                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <strong className="block text-[#6351d5] mb-2">Cookies técnicas o necesarias</strong>
+                                            <span className="text-sm">Imprescindibles para que la web funcione (gestión de sesiones, seguridad, carga de página, recordar el consentimiento de cookies, etc.). No requieren tu consentimiento.</span>
+                                        </li>
+                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <strong className="block text-[#6351d5] mb-2">Cookies de preferencias o personalización</strong>
+                                            <span className="text-sm">Permiten recordar elecciones como el idioma, la región u otras configuraciones para mejorar tu experiencia. Algunas pueden requerir consentimiento según la configuración concreta.</span>
+                                        </li>
+                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <strong className="block text-[#6351d5] mb-2">Cookies de análisis o medición</strong>
+                                            <span className="text-sm">
+                                                Nos ayudan a entender cómo se usa la web (páginas más visitadas, tiempo de permanencia, fuentes de tráfico, etc.) para mejorarla.<br/>
+                                                Siempre que sea posible, se configurarán con anonimización de IP u otras medidas de minimización.<br/>
+                                                Si no es posible evitar la identificación o el perfilado, se tratarán como cookies que requieren tu consentimiento previo.
+                                            </span>
+                                        </li>
+                                        <li className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <strong className="block text-[#6351d5] mb-2">Cookies de marketing o publicidad comportamental</strong>
+                                            <span className="text-sm">Permiten mostrarte anuncios en función de tus hábitos de navegación y crear perfiles comerciales. Solo se instalarán si prestas tu consentimiento expreso.</span>
+                                        </li>
+                                    </ul>
+
+                                    <h4 className="text-xl font-bold text-[#032149] mt-10 mb-6">Tabla de cookies</h4>
                                     <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
                                         <table className="min-w-full text-sm text-left">
                                             <thead className="bg-slate-100 text-[#032149]">
@@ -581,49 +673,78 @@ export default function App() {
                                                     <th className="p-4 font-bold">Finalidad</th>
                                                     <th className="p-4 font-bold hidden sm:table-cell">Duración</th>
                                                     <th className="p-4 font-bold">Tipo</th>
+                                                    <th className="p-4 font-bold">Categoría</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100 bg-white">
                                                 <tr>
                                                     <td className="p-4 font-mono text-xs text-slate-500">msgsndr_session</td>
                                                     <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
-                                                    <td className="p-4">Gestión de sesión</td>
+                                                    <td className="p-4">Cookie técnica necesaria para gestionar la sesión del usuario en la web y formularios.</td>
                                                     <td className="p-4 hidden sm:table-cell">Sesión</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
+                                                    <td className="p-4">Propia</td>
+                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Técnica (Necesaria)</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td className="p-4 font-mono text-xs text-slate-500">__cf_bm</td>
                                                     <td className="p-4 hidden sm:table-cell">Cloudflare</td>
-                                                    <td className="p-4">Seguridad (Anti-bot)</td>
+                                                    <td className="p-4">Filtra el tráfico para evitar ataques de bots y garantizar la seguridad del sitio.</td>
                                                     <td className="p-4 hidden sm:table-cell">30 min</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
+                                                    <td className="p-4">Tercero</td>
+                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Seguridad (Necesaria)</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td className="p-4 font-mono text-xs text-slate-500">ghl_consent</td>
                                                     <td className="p-4 hidden sm:table-cell">GoHighLevel</td>
-                                                    <td className="p-4">Guarda consentimiento</td>
+                                                    <td className="p-4">Almacena tu elección sobre el uso de cookies en este sitio.</td>
                                                     <td className="p-4 hidden sm:table-cell">1 año</td>
-                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Necesaria</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4 font-mono text-xs text-slate-500">_fbp</td>
-                                                    <td className="p-4 hidden sm:table-cell">Meta</td>
-                                                    <td className="p-4">Publicidad</td>
-                                                    <td className="p-4 hidden sm:table-cell">3 meses</td>
-                                                    <td className="p-4"><span className="bg-orange-100 text-orange-700 px-2 py-1 rounded-full text-xs font-bold">Marketing</span></td>
+                                                    <td className="p-4">Propia</td>
+                                                    <td className="p-4"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">Técnica (Necesaria)</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
 
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.3. Gestión del consentimiento</h3>
-                                    <p>Al entrar por primera vez, verás un banner para aceptar o rechazar cookies opcionales. No activamos cookies de marketing sin tu acción afirmativa (consentimiento).</p>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.3. Gestión del consentimiento de cookies</h3>
+                                    <p className="mb-4">Al acceder por primera vez a la web, se mostrará un banner de cookies que te permitirá:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>Aceptar todas las cookies opcionales.</li>
+                                        <li>Rechazar todas las cookies opcionales con una acción tan sencilla como aceptarlas.</li>
+                                        <li>Configurar tus preferencias por categoría (analítica, marketing, etc.).</li>
+                                    </ul>
+                                    <p className="mb-4">Hasta que no aceptes o configures las cookies opcionales:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>No se activarán las cookies que no sean técnicas o necesarias.</li>
+                                        <li>Solo se utilizarán las cookies imprescindibles para el funcionamiento básico del sitio.</li>
+                                    </ul>
+                                    <p className="mb-4">En línea con la Guía de Cookies de la AEPD, evitamos:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>El consentimiento forzado (no condicionamos el acceso a la web a aceptar cookies, salvo casos muy excepcionales debidamente justificados).</li>
+                                        <li>El uso de casillas pre‑marcadas o diseños que induzcan a aceptar sin una elección informada.</li>
+                                    </ul>
 
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.4. Cambiar o retirar consentimiento</h3>
-                                    <p>Puedes cambiar tu configuración limpiando las cookies de tu navegador o a través del enlace de configuración al pie de página (si está habilitado). Los cambios se aplicarán en tu siguiente navegación.</p>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.4. Cambiar o retirar el consentimiento</h3>
+                                    <p className="mb-4">Puedes modificar tu configuración de cookies o retirar tu consentimiento en cualquier momento mediante:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>El enlace “Configurar cookies” o similar disponible en el pie de página de la web.</li>
+                                        <li>La limpieza de cookies desde la configuración de tu navegador.</li>
+                                    </ul>
+                                    <p>Los cambios que realices se aplicarán de forma inmediata o en tu siguiente navegación por el sitio.</p>
                                     
-                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.5. Cómo desactivar cookies</h3>
-                                    <p>Puedes configurar tu navegador (Chrome, Firefox, Safari, Edge) para bloquear o eliminar cookies. Consulta la sección de "Ayuda" de tu navegador para más detalles.</p>
+                                    <h3 className="text-2xl font-bold text-[#032149] mt-10 mb-4">2.5. Cómo desactivar o eliminar cookies desde el navegador</h3>
+                                    <p className="mb-4">Además del panel de configuración de la web, puedes configurar tu navegador para:</p>
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#6351d5] mb-4">
+                                        <li>Bloquear o eliminar cookies ya instaladas.</li>
+                                        <li>Recibir avisos antes de que se almacenen nuevas cookies.</li>
+                                    </ul>
+                                    <p className="mb-4">Los pasos concretos dependen del navegador que utilices (Chrome, Firefox, Safari, Edge, etc.). Consulta la sección de ayuda de tu navegador para más detalles.</p>
+                                    <p className="mb-4">Ten en cuenta que, si bloqueas todas las cookies, es posible que algunas funciones o servicios del sitio web no se muestren o no funcionen correctamente.</p>
+                                    <p className="mt-8 bg-slate-50 p-4 border rounded-lg text-sm text-slate-500 italic">
+                                        Antes de publicar este texto en la web, revisa con tu asesor legal:<br/>
+                                        - Bases jurídicas concretas de las herramientas que usáis (CRM, analítica, email marketing, etc.).<br/>
+                                        - Diseño funcional del banner de cookies y del panel de configuración.<br/>
+                                        - Que la tabla de cookies se corresponda exactamente con la implementación técnica real.
+                                    </p>
                                 </div>
                             </>
                         )}
@@ -632,569 +753,6 @@ export default function App() {
             </div>
         </div>
       );
-  };
-
-  // --- RENDERIZADO DE VISTAS ---
-  const renderContent = () => {
-    // VISTA ADMIN
-    if (view === 'admin') {
-        const handleCopySitemap = () => {
-            const baseUrl = "https://growth4u.io";
-            const today = new Date().toISOString().split('T')[0];
-            let xml = `<url><loc>${baseUrl}/</loc><lastmod>${today}</lastmod><priority>1.0</priority></url>
-<url><loc>${baseUrl}/blog</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>
-<url><loc>${baseUrl}/?page=privacidad</loc><lastmod>${today}</lastmod><priority>0.5</priority></url>
-<url><loc>${baseUrl}/?page=cookies</loc><lastmod>${today}</lastmod><priority>0.5</priority></url>\n`;
-            posts.forEach(post => {
-                const slug = createSlug(post.title);
-                const date = post.updatedAt ? new Date(post.updatedAt.seconds * 1000).toISOString().split('T')[0] : today;
-                xml += `<url><loc>${baseUrl}/blog?articulo=${slug}</loc><lastmod>${date}</lastmod><priority>0.7</priority></url>\n`;
-            });
-            navigator.clipboard.writeText(xml);
-            alert("¡Sitemap copiado!");
-        };
-
-        return (
-          <div className="min-h-screen bg-slate-50 text-[#032149] font-sans p-4 md:p-8">
-            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit sticky top-8">
-                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-bold">{editingPostId ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
-                    <button onClick={() => setView('home')}><X className="w-6 h-6 hover:text-red-500" /></button>
-                 </div>
-                 <form onSubmit={handleSavePost} className="space-y-6">
-                    <input required type="text" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="Título del artículo" />
-                    <div className="grid grid-cols-2 gap-4">
-                      <select value={newPost.category} onChange={e => setNewPost({...newPost, category: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none">
-                        <option>Estrategia</option><option>Data & Analytics</option><option>Trust Engine</option>
-                      </select>
-                      <input type="text" value={newPost.readTime} onChange={e => setNewPost({...newPost, readTime: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="Ej: 5 min" />
-                    </div>
-                    <input required type="url" value={newPost.image} onChange={e => setNewPost({...newPost, image: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" placeholder="URL de la imagen (debe terminar en .png o .jpg)" />
-                    <textarea required value={newPost.excerpt} onChange={e => setNewPost({...newPost, excerpt: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-24 focus:ring-2 focus:ring-[#6351d5]" placeholder="Breve resumen (excerpt)..." />
-                    <textarea required value={newPost.content} onChange={e => setNewPost({...newPost, content: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none h-64 font-mono text-sm focus:ring-2 focus:ring-[#6351d5]" placeholder="Escribe aquí tu contenido usando Markdown..." />
-                    <div className="flex gap-4">
-                      <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#6351d5] text-white font-bold py-4 rounded-xl hover:bg-[#4b3db1] transition-colors shadow-lg">
-                        {isSubmitting ? 'Guardando...' : (editingPostId ? 'Actualizar Artículo' : 'Publicar Ahora')}
-                      </button>
-                      {editingPostId && (
-                        <button type="button" onClick={cancelEdit} className="px-6 py-4 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300">Cancelar</button>
-                      )}
-                    </div>
-                 </form>
-              </div>
-              <div className="space-y-8">
-                  <div className="bg-[#effcfd] rounded-3xl shadow-sm border border-[#0faec1]/30 p-6">
-                      <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-[#0faec1]"><Globe className="w-5 h-5"/> Herramientas SEO</h2>
-                      <button onClick={handleCopySitemap} className="w-full py-3 bg-white border border-[#0faec1] text-[#0faec1] font-bold rounded-xl hover:bg-[#0faec1] hover:text-white transition-all flex items-center justify-center gap-2 shadow-sm"><LinkIcon className="w-4 h-4"/> Copiar URLs para Sitemap XML</button>
-                  </div>
-                  <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 h-fit">
-                    <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><LayoutDashboard className="w-5 h-5"/> Artículos ({posts.length})</h2>
-                    <div className="space-y-4">
-                      {posts.map(post => (
-                        <div key={post.id} className={`p-4 rounded-xl border flex gap-4 items-start transition-all ${editingPostId === post.id ? 'border-[#6351d5] bg-blue-50' : 'border-slate-100 hover:border-slate-300'}`}>
-                          <img src={post.image} alt="" className="w-16 h-16 rounded-lg object-cover bg-slate-200" />
-                          <div className="flex-1">
-                            <h4 className="font-bold text-sm text-[#032149] line-clamp-1">{post.title}</h4>
-                            <div className="flex items-center gap-2 mt-3">
-                              <button onClick={() => handleEditClick(post)} className="text-xs flex items-center gap-1 font-bold text-[#6351d5] hover:underline"><Edit2 className="w-3 h-3"/> Editar</button>
-                              <button onClick={() => handleDeleteClick(post.id)} className="text-xs flex items-center gap-1 font-bold text-red-500 hover:underline"><Trash2 className="w-3 h-3"/> Borrar</button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-        );
-    }
-
-    // VISTA LEGALES (PRIVACIDAD Y COOKIES)
-    if (view === 'privacy' || view === 'cookies') {
-        return <LegalView type={view} />;
-    }
-
-    // VISTA POST INDIVIDUAL
-    if (view === 'post' && selectedPost) {
-        const articleSchema = {
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": selectedPost.title,
-          "description": selectedPost.excerpt,
-          "image": selectedPost.image,
-          "datePublished": selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toISOString() : new Date().toISOString(),
-          "author": { "@type": "Person", "name": "Equipo Growth4U" },
-          "publisher": { "@type": "Organization", "name": "Growth4U", "logo": { "@type": "ImageObject", "url": "https://i.imgur.com/imHxGWI.png" } }
-        };
-
-        return (
-          <div className="min-h-screen bg-white text-[#032149] font-sans selection:bg-[#45b6f7] selection:text-white">
-             <Helmet>
-                <title>{selectedPost.title} | Blog Growth4U</title>
-                <meta name="description" content={selectedPost.excerpt} />
-                <link rel="canonical" href={`https://growth4u.io/blog?articulo=${createSlug(selectedPost.title)}`} />
-                <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
-                <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-             </Helmet>
-
-             <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
-                <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
-                   <div className="flex items-center gap-0 cursor-pointer" onClick={handleClosePost}>
-                      <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" className="h-6 w-auto" />
-                   </div>
-                   <div className="flex items-center gap-4">
-                     <button onClick={copyLinkToClipboard} className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${copiedLink ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
-                        {copiedLink ? <CheckCircle className="w-4 h-4" /> : <LinkIcon className="w-4 h-4" />}
-                        {copiedLink ? 'Enlace copiado' : 'Copiar enlace'}
-                     </button>
-                     <button onClick={handleClosePost} className="text-sm font-bold text-[#6351d5] flex items-center gap-2 hover:underline"><ArrowLeft className="w-4 h-4" /> Volver</button>
-                   </div>
-                </div>
-             </nav>
-             <article className="pt-32 pb-20 max-w-3xl mx-auto px-4">
-                <span className="inline-block px-3 py-1 bg-[#6351d5]/10 text-[#6351d5] rounded-full text-xs font-bold uppercase tracking-wider mb-6">{selectedPost.category}</span>
-                <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#032149] leading-tight">{selectedPost.title}</h1>
-                <div className="flex items-center gap-4 text-slate-500 text-sm mb-8 border-b border-slate-100 pb-8">
-                  <span className="flex items-center gap-1"><Clock className="w-4 h-4"/> {selectedPost.readTime}</span>
-                  <span>•</span>
-                  <span>{selectedPost.createdAt ? new Date(selectedPost.createdAt.seconds * 1000).toLocaleDateString() : 'Fecha no disponible'}</span>
-                </div>
-                <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" />
-                <div className="prose prose-lg prose-slate mx-auto text-[#032149]">
-                  <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">{selectedPost.excerpt}</p>
-                  <Markdown 
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      h2: ({node, ...props}) => <h2 className="text-2xl font-bold mt-8 mb-4 text-[#032149]" {...props} />,
-                      h3: ({node, ...props}) => <h3 className="text-xl font-bold mt-6 mb-3 text-[#032149]" {...props} />,
-                      p: ({node, ...props}) => <p className="mb-4 leading-relaxed text-slate-700" {...props} />,
-                      ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-6 space-y-2 text-slate-700" {...props} />,
-                      ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-6 space-y-2 text-slate-700" {...props} />,
-                      li: ({node, ...props}) => <li className="pl-1" {...props} />,
-                      strong: ({node, ...props}) => <strong className="text-[#032149] font-bold" {...props} />,
-                      a: ({node, ...props}) => <a className="text-[#6351d5] underline hover:text-[#3f45fe] font-bold" {...props} />,
-                      blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-[#6351d5] pl-4 italic my-4 text-slate-600 bg-slate-50 py-2 pr-2 rounded-r" {...props} />,
-                      table: ({node, ...props}) => <div className="overflow-x-auto my-6"><table className="min-w-full divide-y divide-slate-200 border border-slate-200 rounded-lg" {...props} /></div>,
-                      thead: ({node, ...props}) => <thead className="bg-slate-50" {...props} />,
-                      th: ({node, ...props}) => <th className="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider" {...props} />,
-                      td: ({node, ...props}) => <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 border-t border-slate-100" {...props} />,
-                    }}
-                  >
-                    {selectedPost.content}
-                  </Markdown>
-                </div>
-                <div className="mt-16 pt-10 border-t border-slate-200 text-center">
-                   <h3 className="text-2xl font-bold mb-6">¿Quieres aplicar esto en tu Fintech?</h3>
-                   <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">{t.nav.cta} <ArrowRight className="w-5 h-5"/></a>
-                </div>
-             </article>
-          </div>
-        );
-    }
-
-    // --- BLOG PAGE VIEW ---
-    if (view === 'blog') {
-      return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white">
-          <Helmet>
-            <title>Blog | Growth4U</title>
-            <meta name="description" content="Insights y estrategias de Growth para Fintechs B2B y B2C." />
-            <link rel="canonical" href="https://growth4u.io/blog" />
-            <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
-          </Helmet>
-
-          <div className="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
-            <nav className="nav-island w-full max-w-6xl">
-              <div className="px-6 sm:px-8">
-                <div className="flex items-center justify-between h-16">
-                  <div className="flex items-center gap-0 cursor-pointer group flex-shrink-0" onClick={handleGoHome}>
-                    <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U Logo" className="h-5 md:h-6 w-auto object-contain transition-transform group-hover:scale-105" />
-                  </div>
-                  <div className="hidden md:flex items-center gap-6">
-                    <button onClick={handleGoHome} className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">Home</button>
-                    <span className="text-[#6351d5] px-2 py-2 rounded-md text-sm font-bold">Blog</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg">{t.nav.cta}</a>
-                  </div>
-                </div>
-              </div>
-            </nav>
-          </div>
-
-          <section className="pt-40 pb-20 px-4">
-             <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16">
-                   <span className="inline-block px-4 py-2 rounded-full bg-blue-50 text-[#6351d5] font-bold text-sm mb-4">INSIGHTS & ESTRATEGIA</span>
-                   <h1 className="text-4xl md:text-6xl font-extrabold text-[#032149] mb-6">Blog Growth4U</h1>
-                   <p className="text-xl text-slate-600 max-w-2xl mx-auto">Recursos estratégicos para escalar tu fintech sin depender de paid media.</p>
-                </div>
-
-                <div className="flex justify-end mb-8">
-                    <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {displayPosts.map((post, index) => (
-                      <div key={index} onClick={() => handleViewPost(post)} className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1">
-                          <div className="relative aspect-video bg-slate-100 overflow-hidden">
-                            <img src={post.image} alt={post.title} className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" />
-                            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">{post.category}</div>
-                          </div>
-                          <div className="p-6">
-                            <h3 className="text-xl font-bold mb-3 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">{post.title}</h3>
-                            <p className="text-slate-600 text-sm mb-4 line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                            <div className="flex items-center justify-between text-sm text-slate-500 pt-4 border-t border-slate-50">
-                               <div className="flex items-center"><Clock className="w-4 h-4 mr-2" />{post.readTime}</div>
-                               <span className="text-[#6351d5] font-bold flex items-center gap-1 group-hover:gap-2 transition-all">Leer más <ArrowRight className="w-4 h-4"/></span>
-                            </div>
-                          </div>
-                      </div>
-                  ))}
-                </div>
-             </div>
-          </section>
-
-          <section id="contacto" className="bg-[#032149] py-20 text-white">
-            <div className="max-w-4xl mx-auto px-4 text-center">
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">{t.footer.title}</h2>
-              <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
-                <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
-                <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
-              </div>
-              <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
-                  <p>{t.footer.rights}</p>
-                  <div className="flex gap-4 mt-4 md:mt-0">
-                      <button onClick={handleGoPrivacy} className="hover:text-white transition-colors">{t.footer.privacy}</button>
-                      <button onClick={handleGoCookies} className="hover:text-white transition-colors">{t.footer.terms}</button>
-                  </div>
-              </div>
-            </div>
-          </section>
-        </div>
-      );
-    }
-
-    // HOME VIEW (DEFAULT)
-    return (
-      <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white overflow-x-hidden">
-        <Helmet>
-          <title>Growth4U | Growth Marketing Fintech B2B & B2C</title>
-          <meta name="description" content="Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza." />
-          <link rel="canonical" href="https://growth4u.io/" />
-          <link rel="icon" type="image/png" href="https://i.imgur.com/h5sWS3W.png?v=2" />
-          <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Growth4U",
-              "url": "https://growth4u.io",
-              "logo": "https://i.imgur.com/imHxGWI.png",
-              "sameAs": [
-                "https://www.linkedin.com/company/growth4u/"
-              ]
-            })}
-          </script>
-        </Helmet>
-        
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-          :root { scroll-behavior: smooth; }
-          body { font-family: 'Inter', sans-serif; }
-          .gradient-text { background: linear-gradient(to right, #0284c7, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-          .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -10px rgba(99, 81, 213, 0.15); }
-          .nav-island { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border-radius: 9999px; transition: all 0.3s ease; }
-          @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-          .animate-scroll { animation: scroll 40s linear infinite; }
-          .animate-scroll:hover { animation-play-state: paused; }
-          @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
-          .animate-blob { animation: blob 7s infinite; }
-          .animation-delay-2000 { animation-delay: 2s; }
-        `}</style>
-
-        {/* COOKIE BANNER */}
-        {cookieConsent === 'unknown' && (
-            <div className="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-200 shadow-[0_-5px_20px_rgba(0,0,0,0.1)] p-6 animate-in slide-in-from-bottom-5">
-                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-6 justify-between">
-                    <div className="flex items-start gap-4">
-                        <div className="bg-[#6351d5]/10 p-3 rounded-full hidden md:block">
-                            <Cookie className="w-6 h-6 text-[#6351d5]" />
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-[#032149] mb-1">Valoramos tu privacidad</h4>
-                            <p className="text-sm text-slate-600 max-w-2xl">
-                                Utilizamos cookies propias y de terceros para analizar nuestros servicios y mostrarte publicidad relacionada con tus preferencias. Puedes aceptar todas las cookies o configurarlas. Más información en nuestra <button onClick={handleGoCookies} className="text-[#6351d5] underline font-bold">Política de Cookies</button>.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex gap-3 w-full md:w-auto">
-                         <button onClick={handleRejectCookies} className="flex-1 md:flex-none px-6 py-2.5 rounded-lg border border-slate-300 font-bold text-slate-600 hover:bg-slate-50 transition-colors text-sm">Rechazar</button>
-                         <button onClick={handleAcceptCookies} className="flex-1 md:flex-none px-6 py-2.5 rounded-lg bg-[#6351d5] text-white font-bold hover:bg-[#3f45fe] transition-colors text-sm">Aceptar todas</button>
-                    </div>
-                </div>
-            </div>
-        )}
-
-        {/* Navigation */}
-        <div className="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
-          <nav className="nav-island w-full max-w-6xl">
-            <div className="px-6 sm:px-8">
-              <div className="flex items-center justify-between h-16">
-                <div className="flex items-center gap-0 cursor-pointer group flex-shrink-0" onClick={() => window.scrollTo(0,0)}>
-                  <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U Logo" className="h-5 md:h-6 w-auto object-contain transition-transform group-hover:scale-105" />
-                </div>
-                <div className="hidden md:flex items-center gap-6">
-                  <div className="flex items-baseline space-x-6">
-                    <a href="#problema" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.problem}</a>
-                    <a href="#resultados" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.results}</a>
-                    <a href="#etapas" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.methodology}</a>
-                    <a href="#casos" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.cases}</a>
-                    <a href="#team" className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.team}</a>
-                    <button onClick={handleGoToBlogPage} className="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">{t.nav.blog}</button>
-                  </div>
-                  <button onClick={toggleLang} className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full text-xs font-bold text-[#032149] transition-colors border border-slate-200">
-                      <Globe className="w-3 h-3" /> {lang === 'es' ? 'EN' : 'ES'}
-                  </button>
-                </div>
-                
-                <div className="hidden md:flex items-center gap-4">
-                  <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5 whitespace-nowrap">{t.nav.cta}</a>
-                </div>
-                <div className="md:hidden flex items-center gap-4">
-                    <button onClick={toggleLang} className="text-[#032149] font-bold text-sm">{lang === 'es' ? 'EN' : 'ES'}</button>
-                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-[#032149] hover:text-[#6351d5] focus:outline-none"><Menu className="h-6 w-6" /></button>
-                </div>
-              </div>
-            </div>
-            {isMenuOpen && (
-              <div className="absolute top-20 left-0 right-0 mx-4 bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden animate-in slide-in-from-top-2">
-                <div className="px-4 pt-4 pb-6 space-y-2">
-                  <a href="#problema" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.problem}</a>
-                  <a href="#resultados" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.results}</a>
-                  <a href="#etapas" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.methodology}</a>
-                  <a href="#casos" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.cases}</a>
-                  <a href="#team" onClick={() => setIsMenuOpen(false)} className="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.team}</a>
-                  <button onClick={handleGoToBlogPage} className="text-[#032149] hover:text-[#6351d5] block w-full text-left px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50">{t.nav.blog}</button>
-                  <a href={bookingLink} target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center whitespace-nowrap">{t.nav.cta}</a>
-                </div>
-              </div>
-            )}
-          </nav>
-        </div>
-
-        {/* Hero Section */}
-        <section className="relative pt-44 pb-20 lg:pt-60 lg:pb-32 overflow-hidden bg-white">
-          <div className="absolute top-0 left-1/2 w-full -translate-x-1/2 h-full z-0 pointer-events-none">
-            <div className="absolute top-20 left-10 w-96 h-96 bg-[#45b6f7]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-            <div className="absolute top-20 right-10 w-96 h-96 bg-[#6351d5]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
-          </div>
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 mb-8">
-              <span className="flex h-2 w-2 rounded-full bg-[#0faec1] animate-pulse"></span>
-              <span className="text-sm text-[#1a3690] font-bold tracking-wide">{t.hero.tag}</span>
-            </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight text-[#032149]">
-              {t.hero.title} <br className="hidden md:block" />
-              <span className="gradient-text">{t.hero.titleHighlight}</span>
-            </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-600 mb-10 leading-relaxed">{t.hero.subtitle}</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#6351d5] text-white hover:bg-[#3f45fe] font-bold py-4 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-xl shadow-[#6351d5]/20">{t.hero.ctaPrimary} <ArrowRight className="w-5 h-5" /></a>
-              <a href="#etapas" className="flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 font-semibold py-4 px-8 rounded-full text-lg transition-all hover:shadow-md">{t.hero.ctaSecondary}</a>
-            </div>
-            <div className="mt-24 border-t border-slate-200 pt-10 overflow-hidden relative w-full max-w-6xl mx-auto">
-              <p className="text-[#1a3690] text-sm font-bold uppercase tracking-wider mb-8">{t.hero.trust}</p>
-              <div className="relative w-full overflow-hidden">
-                  <div className="flex animate-scroll whitespace-nowrap gap-16 items-center">
-                      {['bnext','bit2me','GoCardless','Lydia','Criptan','capitalontap','multimarkts','NEXTCHANCE', 'bnext','bit2me','GoCardless','Lydia'].map((logo, i) => (
-                          <span key={i} className="text-3xl font-bold font-sans text-slate-400 hover:text-[#6351d5] transition-colors cursor-default">{logo}</span>
-                      ))}
-                  </div>
-              </div>
-              <div className="absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-              <div className="absolute top-0 right-0 h-full w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-            </div>
-          </div>
-        </section>
-
-        {/* Problem Section */}
-        <section id="problema" className="py-20 bg-slate-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.problem.title}</h2>
-              <p className="text-slate-600 max-w-2xl mx-auto text-lg">{t.problem.subtitle}</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {t.problem.cards.map((item, i) => {
-                 const Icon = [Megaphone, TrendingUp, ShieldAlert, Users][i];
-                 return (
-                  <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 card-hover transition-all group shadow-sm hover:shadow-lg">
-                      <div className="bg-[#3f45fe]/10 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#3f45fe]/20 transition-colors"><Icon className="text-[#3f45fe] w-7 h-7" /></div>
-                      <h3 className="text-xl font-bold mb-3 text-[#032149]">{item.title}</h3>
-                      <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
-                  </div>
-              )})}
-            </div>
-          </div>
-        </section>
-
-        {/* Results Section */}
-        <section id="resultados" className="py-24 bg-white relative border-t border-slate-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.results.title}</h2>
-              <p className="text-slate-600 text-lg">{t.results.subtitle}</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               {t.results.cards.map((card, i) => {
-                   const Icons = [TrendingDown, Users2, Bot, Landmark];
-                   const Icon = Icons[i];
-                   const color = i % 3 === 0 ? '#6351d5' : '#3f45fe'; // Alternate colors
-                   return (
-                      <div key={i} className="bg-slate-50 p-8 rounded-3xl border-l-4 flex items-start gap-6 hover:shadow-lg transition-shadow" style={{borderColor: color}}>
-                          <div className="bg-white p-3 rounded-xl shadow-sm"><Icon className="w-8 h-8" style={{color: color}}/></div>
-                          <div>
-                              <h3 className="text-xl font-bold text-[#032149] mb-2">{card.title}</h3>
-                              <p className="text-slate-600 text-sm leading-relaxed">{card.desc}</p>
-                          </div>
-                      </div>
-                   )
-               })}
-            </div>
-          </div>
-        </section>
-
-        {/* METHODOLOGY & STAGES */}
-        <section id="etapas" className="py-24 relative bg-slate-50 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center mb-20">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.methodology.title}</h2>
-              <p className="text-slate-600 text-lg">{t.methodology.subtitle}</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {t.methodology.stages.map((stage, i) => (
-                <div key={i} className="relative group hover:-translate-y-2 transition-all duration-300">
-                  <div className="bg-white rounded-3xl p-8 h-full flex flex-col shadow-lg border border-slate-100 hover:shadow-2xl hover:border-[#45b6f7]/30 transition-all">
-                    <div className="mb-6">
-                      <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">{stage.step}</div>
-                      <div className="flex items-center gap-3 mb-4">
-                           <h3 className="text-2xl font-extrabold text-[#032149] uppercase">{stage.title}</h3>
-                           {stage.icon && <stage.icon className="w-6 h-6 text-[#45b6f7]" />}
-                      </div>
-                      <span className="inline-block px-3 py-1 bg-[#0faec1]/10 text-[#0faec1] text-xs font-bold rounded-full border border-[#0faec1]/20">
-                        {stage.tag}
-                      </span>
-                    </div>
-                    <div className="text-slate-600 text-sm leading-relaxed mb-8">
-                      {renderFormattedContent(stage.desc)}
-                    </div>
-                    <div className="mt-auto bg-[#effcfd] rounded-2xl p-6 border border-[#0faec1]/10">
-                        <div className="flex items-center gap-2 mb-4">
-                           <Target className="w-4 h-4 text-[#0faec1]" />
-                           <span className="text-xs font-bold text-[#0faec1] uppercase tracking-wider">{stage.guaranteeTitle}</span>
-                        </div>
-                        <div className="space-y-1">
-                           {renderFormattedContent(stage.guarantees)}
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Case Studies */}
-        <section id="casos" className="py-24 bg-white relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16"><h2 className="text-4xl md:text-5xl font-bold mb-4 text-[#032149]">{t.cases.title}</h2><p className="text-slate-600">{t.cases.subtitle}</p></div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {t.cases.list.map((item, i) => (
-                <div key={i} className="bg-white rounded-2xl p-8 relative group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border border-slate-100" onClick={() => setExpandedCase(expandedCase === i ? null : i)}>
-                  <div className="absolute -top-6 right-8 w-14 h-14 bg-white rounded-full flex items-center justify-center border-4 border-slate-100 group-hover:border-[#6351d5] transition-colors shadow-lg"><Users className="w-6 h-6 text-[#6351d5]"/></div>
-                  <div className="inline-block px-4 py-1.5 bg-slate-100 text-slate-700 text-sm font-bold rounded-full mb-6 uppercase tracking-wider">{item.company}</div>
-                  <div className="mb-6"><div className="text-5xl font-extrabold text-[#6351d5] mb-2">{item.stat}</div><div className="text-slate-700 font-bold text-lg leading-tight">{item.label}</div></div>
-                  <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedCase === i ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}><div className="bg-slate-50 p-4 rounded-xl mb-4"><p className="text-xs font-bold text-slate-400 uppercase mb-1">{t.cases.challengeLabel}</p><p className="text-slate-700 text-sm mb-3">{item.challenge}</p><p className="text-xs font-bold text-[#6351d5] uppercase mb-1">{t.cases.solutionLabel}</p><p className="text-slate-700 text-sm">{item.solution}</p></div></div>
-                  <button className="flex items-center text-[#032149] font-bold text-sm group-hover:text-[#6351d5] transition-colors mt-auto">{expandedCase === i ? t.cases.btnHide : t.cases.btnRead} <ChevronUp className="w-4 h-4 ml-1" /></button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Team Section */}
-        <section id="team" className="py-20 bg-slate-50 relative">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-16 text-[#032149]">{t.team.title}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-                  <div className="flex flex-col items-center relative">
-                      <div className="relative mb-6"><div className="absolute -top-3 -right-3 w-48 h-48 border-t-4 border-r-4 border-[#45b6f7] rounded-tr-3xl z-0"></div><div className="absolute -bottom-3 -left-3 w-48 h-48 border-b-4 border-l-4 border-[#1a3690] rounded-bl-3xl z-0"></div><img src="https://i.imgur.com/O3vyNQB.png" alt="Alfonso" className="w-48 h-48 object-cover rounded-xl shadow-2xl relative z-10 filter grayscale hover:grayscale-0 transition-all duration-500"/></div>
-                      <h3 className="text-2xl font-bold text-[#032149] mb-2">Alfonso Sainz de Baranda</h3>
-                      <div className="px-6 py-1.5 bg-[#45b6f7]/20 text-[#1a3690] rounded-full font-bold text-sm mb-4">Founder & CEO</div>
-                      <p className="text-slate-600 leading-relaxed text-sm max-w-xs mx-auto">{t.team.bioAlfonso}</p>
-                  </div>
-                  <div className="flex flex-col items-center relative">
-                      <div className="relative mb-6"><div className="absolute -top-3 -right-3 w-48 h-48 border-t-4 border-r-4 border-[#45b6f7] rounded-tr-3xl z-0"></div><div className="absolute -bottom-3 -left-3 w-48 h-48 border-b-4 border-l-4 border-[#1a3690] rounded-bl-3xl z-0"></div><img src="https://i.imgur.com/CvKj1sd.png" alt="Martin" className="w-48 h-48 object-cover rounded-xl shadow-2xl relative z-10 filter grayscale hover:grayscale-0 transition-all duration-500"/></div>
-                      <h3 className="text-2xl font-bold text-[#032149] mb-2">Martin Fila</h3>
-                      <div className="px-6 py-1.5 bg-[#45b6f7]/20 text-[#1a3690] rounded-full font-bold text-sm mb-4">Founder & COO</div>
-                      <p className="text-slate-600 leading-relaxed text-sm max-w-xs mx-auto">{t.team.bioMartin}</p>
-                  </div>
-              </div>
-          </div>
-        </section>
-
-        {/* Blog Section */}
-        <section id="blog-preview" className="py-20 bg-white border-t border-slate-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-end mb-12">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">Últimos Insights</h2>
-                  <button onClick={() => setView('admin')} className={`flex items-center gap-2 bg-slate-100 text-[#6351d5] px-4 py-2 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors ${isAdminMode ? 'block' : 'hidden'}`}><Plus className="w-4 h-4"/> {t.blog.admin}</button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {homePosts.length > 0 ? (
-                      homePosts.map((post, index) => (
-                          <div key={index} onClick={() => handleViewPost(post)} className="group cursor-pointer">
-                              <div className="relative overflow-hidden rounded-xl mb-4 aspect-video bg-slate-100"><img src={post.image} alt={post.title} className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"/><div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">{post.category}</div></div>
-                              <h3 className="text-xl font-bold mb-2 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">{post.title}</h3>
-                              <p className="text-slate-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
-                              <div className="flex items-center text-sm text-slate-500 font-medium"><Clock className="w-4 h-4 mr-2" />{post.readTime}</div>
-                          </div>
-                      ))
-                  ) : (
-                      <div className="col-span-3 text-center py-12 text-slate-500">
-                          <p>{t.blog.empty}</p>
-                      </div>
-                  )}
-              </div>
-              <div className="mt-12 text-center">
-                  <button onClick={handleGoToBlogPage} className="inline-flex items-center justify-center gap-2 border-2 border-[#6351d5] text-[#6351d5] hover:bg-[#6351d5] hover:text-white font-bold py-3 px-8 rounded-full transition-all duration-300">
-                      {t.blog.cta} <ArrowRight className="w-5 h-5"/>
-                  </button>
-              </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <section id="contacto" className="bg-[#032149] py-20 text-white">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">{t.footer.title}</h2>
-            <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
-              <a href={`mailto:${t.footer.ctaEmail}`} className="flex items-center justify-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg shadow-[#6351d5]/30 transition-all hover:scale-105"><Mail className="w-5 h-5" /> {t.footer.ctaEmail}</a>
-              <a href={bookingLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-bold py-4 px-8 rounded-lg text-lg transition-all hover:scale-105 whitespace-nowrap"><Calendar className="w-5 h-5" /> {t.footer.ctaCall}</a>
-            </div>
-            <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
-                <p>{t.footer.rights}</p>
-                <div className="flex gap-4 mt-4 md:mt-0">
-                    <button onClick={handleGoPrivacy} className="hover:text-white transition-colors">{t.footer.privacy}</button>
-                    <button onClick={handleGoCookies} className="hover:text-white transition-colors">{t.footer.terms}</button>
-                </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
   };
 
   return (
