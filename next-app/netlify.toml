@@ -2,41 +2,6 @@
   command = "npm run build"
   publish = "out"
 
-# Redirects for old URLs (since Next.js export doesn't support redirects)
-[[redirects]]
-  from = "/*"
-  to = "/blog/:splat"
-  query = {articulo = ":splat"}
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog"
-  to = "/blog/:splat"
-  query = {articulo = ":splat"}
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/"
-  to = "/privacidad"
-  query = {page = "privacidad"}
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/"
-  to = "/cookies"
-  query = {page = "cookies"}
-  status = 301
-  force = true
-
-# Handle 404 pages
-[[redirects]]
-  from = "/*"
-  to = "/404.html"
-  status = 404
-
 # Headers for caching
 [[headers]]
   for = "/_next/static/*"
