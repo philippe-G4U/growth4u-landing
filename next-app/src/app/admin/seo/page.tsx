@@ -66,15 +66,16 @@ interface WebVitals {
   ttfb: number;
 }
 
-interface AnalyticsData {
+interface AnalyticsMetric {
+  id: string;
+  date: string;
   sessions: number;
   users: number;
+  pageviews: number;
   bounceRate: number;
   avgSessionDuration: number;
-  organicTraffic: number;
-  directTraffic: number;
-  referralTraffic: number;
-  date: string;
+  organicPercent: number;
+  notes?: string;
 }
 
 // ============================================
@@ -141,15 +142,30 @@ const metricInfo = {
     why: 'Total de visitas a tu web. Una sesión puede incluir múltiples páginas vistas.',
     improve: 'Más contenido, mejor SEO, publicidad, redes sociales, email marketing.'
   },
+  users: {
+    name: 'Usuarios',
+    why: 'Visitantes únicos. Indica el tamaño real de tu audiencia.',
+    improve: 'SEO, contenido viral, redes sociales, colaboraciones, publicidad.'
+  },
+  pageviews: {
+    name: 'Páginas Vistas',
+    why: 'Total de páginas vistas. Más páginas por sesión = mejor engagement.',
+    improve: 'Enlaces internos, contenido relacionado, navegación clara, CTAs efectivos.'
+  },
   bounceRate: {
     name: 'Tasa de Rebote',
     why: 'Porcentaje de visitas de una sola página. Alto rebote puede indicar contenido no relevante.',
     improve: 'Mejora contenido, añade CTAs claros, enlaces internos, contenido relacionado.'
   },
-  organicTraffic: {
-    name: 'Tráfico Orgánico',
-    why: 'Visitas desde buscadores (gratis). Es el objetivo principal del SEO.',
-    improve: 'Todo lo anterior: más contenido, mejor DA, buenos títulos, velocidad.'
+  avgSessionDuration: {
+    name: 'Duración Media',
+    why: 'Tiempo promedio en tu web. Más tiempo = contenido más valioso.',
+    improve: 'Contenido más largo y detallado, vídeos, herramientas interactivas.'
+  },
+  organicPercent: {
+    name: '% Tráfico Orgánico',
+    why: 'Porcentaje de tráfico desde buscadores. Es tráfico "gratis" y de alta calidad.',
+    improve: 'Más contenido SEO, mejorar rankings, expandir a más keywords.'
   }
 };
 
@@ -439,12 +455,14 @@ export default function SEODashboardPage() {
   const [loading, setLoading] = useState(true);
   const [gscMetrics, setGscMetrics] = useState<SEOMetric[]>([]);
   const [domainMetrics, setDomainMetrics] = useState<DomainMetric[]>([]);
+  const [analyticsMetrics, setAnalyticsMetrics] = useState<AnalyticsMetric[]>([]);
   const [webVitals, setWebVitals] = useState<WebVitals | null>(null);
   const [loadingVitals, setLoadingVitals] = useState(false);
 
   // Modals
   const [showGscForm, setShowGscForm] = useState(false);
   const [showDomainForm, setShowDomainForm] = useState(false);
+  const [showAnalyticsForm, setShowAnalyticsForm] = useState(false);
 
   // Form states
   const [newGscMetric, setNewGscMetric] = useState({
@@ -464,6 +482,17 @@ export default function SEODashboardPage() {
     notes: ''
   });
 
+  const [newAnalyticsMetric, setNewAnalyticsMetric] = useState({
+    date: new Date().toISOString().split('T')[0],
+    sessions: '',
+    users: '',
+    pageviews: '',
+    bounceRate: '',
+    avgSessionDuration: '',
+    organicPercent: '',
+    notes: ''
+  });
+
   useEffect(() => {
     loadAllData();
   }, []);
@@ -473,6 +502,7 @@ export default function SEODashboardPage() {
     await Promise.all([
       loadGscMetrics(),
       loadDomainMetrics(),
+      loadAnalyticsMetrics(),
       loadCachedWebVitals()
     ]);
     setLoading(false);
@@ -497,6 +527,17 @@ export default function SEODashboardPage() {
       setDomainMetrics(data);
     } catch (error) {
       console.error('Error loading domain metrics:', error);
+    }
+  };
+
+  const loadAnalyticsMetrics = async () => {
+    try {
+      const q = query(collection(db, 'analytics_metrics'), orderBy('date', 'desc'));
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AnalyticsMetric[];
+      setAnalyticsMetrics(data);
+    } catch (error) {
+      console.error('Error loading analytics metrics:', error);
     }
   };
 
@@ -628,6 +669,49 @@ export default function SEODashboardPage() {
     }
   };
 
+  const handleAddAnalyticsMetric = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, 'analytics_metrics'), {
+        date: newAnalyticsMetric.date,
+        sessions: parseInt(newAnalyticsMetric.sessions),
+        users: parseInt(newAnalyticsMetric.users),
+        pageviews: parseInt(newAnalyticsMetric.pageviews),
+        bounceRate: parseFloat(newAnalyticsMetric.bounceRate),
+        avgSessionDuration: parseFloat(newAnalyticsMetric.avgSessionDuration),
+        organicPercent: parseFloat(newAnalyticsMetric.organicPercent),
+        notes: newAnalyticsMetric.notes,
+        createdAt: new Date().toISOString()
+      });
+
+      setNewAnalyticsMetric({
+        date: new Date().toISOString().split('T')[0],
+        sessions: '',
+        users: '',
+        pageviews: '',
+        bounceRate: '',
+        avgSessionDuration: '',
+        organicPercent: '',
+        notes: ''
+      });
+      setShowAnalyticsForm(false);
+      loadAnalyticsMetrics();
+    } catch (error) {
+      console.error('Error adding analytics metric:', error);
+      alert('Error al guardar la métrica');
+    }
+  };
+
+  const handleDeleteAnalyticsMetric = async (id: string) => {
+    if (!confirm('¿Eliminar esta métrica?')) return;
+    try {
+      await deleteDoc(doc(db, 'analytics_metrics', id));
+      loadAnalyticsMetrics();
+    } catch (error) {
+      console.error('Error deleting metric:', error);
+    }
+  };
+
   // Calculate changes
   const getChange = (current: number, previous: number) => {
     if (!previous) return null;
@@ -638,6 +722,8 @@ export default function SEODashboardPage() {
   const previousGsc = gscMetrics[1];
   const latestDomain = domainMetrics[0];
   const previousDomain = domainMetrics[1];
+  const latestAnalytics = analyticsMetrics[0];
+  const previousAnalytics = analyticsMetrics[1];
 
   const recommendations = generateRecommendations(gscMetrics, domainMetrics, webVitals);
 
@@ -867,14 +953,163 @@ export default function SEODashboardPage() {
       </section>
 
       {/* ============================================ */}
-      {/* PRIORITY 4: DOMAIN AUTHORITY & BACKLINKS */}
+      {/* PRIORITY 4: GOOGLE ANALYTICS */}
+      {/* ============================================ */}
+      <section>
+        <SectionHeader
+          icon={BarChart3}
+          title="Google Analytics"
+          subtitle="Tráfico y comportamiento de usuarios en tu web"
+          priority={4}
+        />
+
+        {latestAnalytics ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <MetricCard
+              icon={Users}
+              label="Sesiones"
+              value={latestAnalytics.sessions.toLocaleString()}
+              change={previousAnalytics ? `${getChange(latestAnalytics.sessions, previousAnalytics.sessions)}%` : undefined}
+              changePositive={previousAnalytics ? latestAnalytics.sessions >= previousAnalytics.sessions : undefined}
+              color="text-blue-400"
+              metricKey="sessions"
+              expandedMetric={expandedMetric}
+              setExpandedMetric={setExpandedMetric}
+            />
+            <MetricCard
+              icon={Users}
+              label="Usuarios"
+              value={latestAnalytics.users.toLocaleString()}
+              change={previousAnalytics ? `${getChange(latestAnalytics.users, previousAnalytics.users)}%` : undefined}
+              changePositive={previousAnalytics ? latestAnalytics.users >= previousAnalytics.users : undefined}
+              color="text-green-400"
+              metricKey="users"
+              expandedMetric={expandedMetric}
+              setExpandedMetric={setExpandedMetric}
+            />
+            <MetricCard
+              icon={Eye}
+              label="Páginas Vistas"
+              value={latestAnalytics.pageviews.toLocaleString()}
+              change={previousAnalytics ? `${getChange(latestAnalytics.pageviews, previousAnalytics.pageviews)}%` : undefined}
+              changePositive={previousAnalytics ? latestAnalytics.pageviews >= previousAnalytics.pageviews : undefined}
+              color="text-purple-400"
+              metricKey="pageviews"
+              expandedMetric={expandedMetric}
+              setExpandedMetric={setExpandedMetric}
+            />
+            <MetricCard
+              icon={Target}
+              label="Tasa de Rebote"
+              value={`${latestAnalytics.bounceRate.toFixed(1)}%`}
+              change={previousAnalytics ? `${(latestAnalytics.bounceRate - previousAnalytics.bounceRate).toFixed(1)}%` : undefined}
+              changePositive={previousAnalytics ? latestAnalytics.bounceRate <= previousAnalytics.bounceRate : undefined}
+              color="text-orange-400"
+              metricKey="bounceRate"
+              expandedMetric={expandedMetric}
+              setExpandedMetric={setExpandedMetric}
+            />
+            <MetricCard
+              icon={Clock}
+              label="Duración Media"
+              value={`${Math.floor(latestAnalytics.avgSessionDuration / 60)}:${String(Math.floor(latestAnalytics.avgSessionDuration % 60)).padStart(2, '0')}`}
+              change={previousAnalytics ? `${getChange(latestAnalytics.avgSessionDuration, previousAnalytics.avgSessionDuration)}%` : undefined}
+              changePositive={previousAnalytics ? latestAnalytics.avgSessionDuration >= previousAnalytics.avgSessionDuration : undefined}
+              color="text-cyan-400"
+              metricKey="avgSessionDuration"
+              expandedMetric={expandedMetric}
+              setExpandedMetric={setExpandedMetric}
+            />
+            <MetricCard
+              icon={TrendingUp}
+              label="% Tráfico Orgánico"
+              value={`${latestAnalytics.organicPercent.toFixed(1)}%`}
+              change={previousAnalytics ? `${(latestAnalytics.organicPercent - previousAnalytics.organicPercent).toFixed(1)}%` : undefined}
+              changePositive={previousAnalytics ? latestAnalytics.organicPercent >= previousAnalytics.organicPercent : undefined}
+              color="text-emerald-400"
+              metricKey="organicPercent"
+              expandedMetric={expandedMetric}
+              setExpandedMetric={setExpandedMetric}
+            />
+          </div>
+        ) : (
+          <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
+            <BarChart3 className="w-12 h-12 mx-auto mb-3 text-slate-600" />
+            <p className="text-slate-400">No hay datos de Analytics</p>
+            <p className="text-slate-500 text-sm">Añade datos de Google Analytics para ver métricas de tráfico</p>
+          </div>
+        )}
+
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => setShowAnalyticsForm(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Añadir datos GA
+          </button>
+          <a
+            href="https://analytics.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+          >
+            <ExternalLink className="w-4 h-4" />
+            Abrir Google Analytics
+          </a>
+        </div>
+
+        {/* Analytics History */}
+        {analyticsMetrics.length > 0 && (
+          <details className="mt-6">
+            <summary className="cursor-pointer text-slate-400 hover:text-white transition-colors">
+              Ver historial ({analyticsMetrics.length} registros)
+            </summary>
+            <div className="mt-4 bg-slate-800 rounded-xl overflow-hidden overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-700/50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-slate-400">Fecha</th>
+                    <th className="px-4 py-3 text-left text-slate-400">Sesiones</th>
+                    <th className="px-4 py-3 text-left text-slate-400">Usuarios</th>
+                    <th className="px-4 py-3 text-left text-slate-400">Pageviews</th>
+                    <th className="px-4 py-3 text-left text-slate-400">Rebote</th>
+                    <th className="px-4 py-3 text-left text-slate-400">% Orgánico</th>
+                    <th className="px-4 py-3 text-right text-slate-400"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700">
+                  {analyticsMetrics.map(m => (
+                    <tr key={m.id} className="hover:bg-slate-700/30">
+                      <td className="px-4 py-3 text-white">{new Date(m.date).toLocaleDateString('es-ES')}</td>
+                      <td className="px-4 py-3 text-slate-300">{m.sessions.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-slate-300">{m.users.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-slate-300">{m.pageviews.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-slate-300">{m.bounceRate.toFixed(1)}%</td>
+                      <td className="px-4 py-3 text-slate-300">{m.organicPercent.toFixed(1)}%</td>
+                      <td className="px-4 py-3 text-right">
+                        <button onClick={() => handleDeleteAnalyticsMetric(m.id)} className="text-slate-400 hover:text-red-400">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        )}
+      </section>
+
+      {/* ============================================ */}
+      {/* PRIORITY 5: DOMAIN AUTHORITY & BACKLINKS */}
       {/* ============================================ */}
       <section>
         <SectionHeader
           icon={Globe}
           title="Autoridad de Dominio"
           subtitle="Backlinks y DA - la 'reputación' de tu web"
-          priority={4}
+          priority={5}
         />
 
         {latestDomain ? (
@@ -1185,6 +1420,128 @@ export default function SEODashboardPage() {
                 <button
                   type="button"
                   onClick={() => setShowDomainForm(false)}
+                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg"
+                >
+                  <Save className="w-4 h-4" />
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Analytics Form Modal */}
+      {showAnalyticsForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl font-bold text-white mb-4">Añadir datos de Google Analytics</h2>
+            <form onSubmit={handleAddAnalyticsMetric} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Período (fecha final)</label>
+                <input
+                  type="date"
+                  value={newAnalyticsMetric.date}
+                  onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, date: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Sesiones</label>
+                  <input
+                    type="number"
+                    value={newAnalyticsMetric.sessions}
+                    onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, sessions: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Usuarios</label>
+                  <input
+                    type="number"
+                    value={newAnalyticsMetric.users}
+                    onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, users: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Páginas vistas</label>
+                <input
+                  type="number"
+                  value={newAnalyticsMetric.pageviews}
+                  onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, pageviews: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Tasa de rebote (%)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                    value={newAnalyticsMetric.bounceRate}
+                    onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, bounceRate: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    placeholder="ej: 45.2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Duración media (seg)</label>
+                  <input
+                    type="number"
+                    step="1"
+                    value={newAnalyticsMetric.avgSessionDuration}
+                    onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, avgSessionDuration: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    placeholder="ej: 120"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">% Tráfico orgánico</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  value={newAnalyticsMetric.organicPercent}
+                  onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, organicPercent: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  placeholder="ej: 35.5"
+                  required
+                />
+                <p className="text-xs text-slate-500 mt-1">En GA4: Informes → Adquisición → Visión general</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Notas (opcional)</label>
+                <input
+                  type="text"
+                  value={newAnalyticsMetric.notes}
+                  onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, notes: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  placeholder="Ej: Campaña de email"
+                />
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowAnalyticsForm(false)}
                   className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg"
                 >
                   Cancelar
