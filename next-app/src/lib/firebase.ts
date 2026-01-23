@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -80,6 +80,40 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 export async function getAllSlugs(): Promise<string[]> {
   const posts = await getAllPosts();
   return posts.map((post) => post.slug);
+}
+
+// Blog CRUD Operations
+export interface BlogPostInput {
+  title: string;
+  category: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  readTime: string;
+  author: string;
+}
+
+export async function createPost(post: BlogPostInput): Promise<string> {
+  const postsRef = collection(db, 'artifacts', APP_ID, 'public', 'data', 'blog_posts');
+  const docRef = await addDoc(postsRef, {
+    ...post,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
+  return docRef.id;
+}
+
+export async function updatePost(postId: string, post: Partial<BlogPostInput>): Promise<void> {
+  const postRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'blog_posts', postId);
+  await updateDoc(postRef, {
+    ...post,
+    updatedAt: serverTimestamp()
+  });
+}
+
+export async function deletePost(postId: string): Promise<void> {
+  const postRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'blog_posts', postId);
+  await deleteDoc(postRef);
 }
 
 // Auth

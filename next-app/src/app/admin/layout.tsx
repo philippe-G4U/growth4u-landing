@@ -12,7 +12,8 @@ import {
   LogOut,
   Menu,
   X,
-  Loader2
+  Loader2,
+  FileText
 } from 'lucide-react';
 import { User } from 'firebase/auth';
 import { signInWithGoogle, signOutUser, onAuthChange } from '@/lib/firebase';
@@ -57,6 +58,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+    { name: 'Blog', href: '/admin/blog', icon: FileText },
     { name: 'Validación Técnica', href: '/admin/validation', icon: CheckCircle },
     { name: 'Métricas SEO', href: '/admin/seo', icon: Search },
     { name: 'Tracker GEO', href: '/admin/geo', icon: Bot },
