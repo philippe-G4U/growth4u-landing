@@ -17,7 +17,6 @@ import {
   Smartphone,
   Monitor,
   AlertTriangle,
-  CheckCircle,
   Info,
   ChevronDown,
   ChevronUp,
@@ -458,9 +457,6 @@ export default function SEODashboardPage() {
   const [analyticsMetrics, setAnalyticsMetrics] = useState<AnalyticsMetric[]>([]);
   const [webVitals, setWebVitals] = useState<WebVitals | null>(null);
   const [loadingVitals, setLoadingVitals] = useState(false);
-  const [syncingGA, setSyncingGA] = useState(false);
-  const [syncError, setSyncError] = useState<string | null>(null);
-  const [syncSuccess, setSyncSuccess] = useState(false);
 
   // Modals
   const [showGscForm, setShowGscForm] = useState(false);
@@ -613,30 +609,6 @@ export default function SEODashboardPage() {
       setVitalsError(errorMessage);
     } finally {
       setLoadingVitals(false);
-    }
-  };
-
-  const syncGoogleAnalytics = async () => {
-    setSyncingGA(true);
-    setSyncError(null);
-    setSyncSuccess(false);
-    try {
-      const response = await fetch('/.netlify/functions/sync-ga4');
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || 'Error al sincronizar');
-      }
-
-      setSyncSuccess(true);
-      await loadAnalyticsMetrics();
-      setTimeout(() => setSyncSuccess(false), 5000);
-    } catch (error) {
-      console.error('Error syncing GA4:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-      setSyncError(errorMessage);
-    } finally {
-      setSyncingGA(false);
     }
   };
 
@@ -876,7 +848,8 @@ export default function SEODashboardPage() {
         ) : (
           <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
             <Eye className="w-12 h-12 mx-auto mb-3 text-slate-600" />
-            <p className="text-slate-400">No hay datos de Search Console</p>
+            <p className="text-slate-400 mb-2">No hay datos de Search Console</p>
+            <p className="text-slate-500 text-sm">Haz clic en "Añadir datos GSC" para registrar tus primeras métricas</p>
           </div>
         )}
 
@@ -1114,19 +1087,27 @@ export default function SEODashboardPage() {
         ) : (
           <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
             <BarChart3 className="w-12 h-12 mx-auto mb-3 text-slate-600" />
-            <p className="text-slate-400">No hay datos de Analytics</p>
-            <p className="text-slate-500 text-sm">Añade datos de Google Analytics para ver métricas de tráfico</p>
+            <p className="text-slate-400 mb-2">No hay datos de Analytics</p>
+            <p className="text-slate-500 text-sm mb-4">
+              Abre Google Analytics, ve a Informes → Vista general, y copia los datos aquí
+            </p>
+            <button
+              onClick={() => setShowAnalyticsForm(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg transition-colors text-sm"
+            >
+              <Plus className="w-4 h-4" />
+              Añadir datos ahora
+            </button>
           </div>
         )}
 
         <div className="flex items-center gap-3 flex-wrap">
           <button
-            onClick={syncGoogleAnalytics}
-            disabled={syncingGA}
-            className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] disabled:bg-slate-600 text-white rounded-lg transition-colors"
+            onClick={() => setShowAnalyticsForm(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg transition-colors"
           >
-            <RefreshCw className={`w-4 h-4 ${syncingGA ? 'animate-spin' : ''}`} />
-            {syncingGA ? 'Sincronizando...' : 'Sincronizar GA4'}
+            <Plus className="w-4 h-4" />
+            Añadir datos de GA
           </button>
           <a
             href="https://analytics.google.com"
@@ -1137,38 +1118,7 @@ export default function SEODashboardPage() {
             <ExternalLink className="w-4 h-4" />
             Abrir Google Analytics
           </a>
-          <button
-            onClick={() => setShowAnalyticsForm(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors text-sm"
-          >
-            <Plus className="w-4 h-4" />
-            Añadir manual
-          </button>
         </div>
-
-        {syncSuccess && (
-          <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-              <p className="text-green-400">Datos de GA4 sincronizados correctamente</p>
-            </div>
-          </div>
-        )}
-
-        {syncError && (
-          <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
-              <div>
-                <p className="text-red-400 font-medium">Error al sincronizar</p>
-                <p className="text-slate-400 text-sm mt-1">{syncError}</p>
-                <p className="text-slate-500 text-xs mt-2">
-                  Verifica que las variables de entorno estén configuradas en Netlify.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Analytics History */}
         {analyticsMetrics.length > 0 && (
@@ -1262,7 +1212,28 @@ export default function SEODashboardPage() {
         ) : (
           <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
             <Globe className="w-12 h-12 mx-auto mb-3 text-slate-600" />
-            <p className="text-slate-400">No hay datos de autoridad</p>
+            <p className="text-slate-400 mb-2">No hay datos de autoridad</p>
+            <p className="text-slate-500 text-sm mb-4">
+              Usa Moz Link Explorer (gratis) para ver tu Domain Authority y backlinks
+            </p>
+            <div className="flex justify-center gap-3">
+              <a
+                href="https://moz.com/link-explorer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors text-sm"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Abrir Moz
+              </a>
+              <button
+                onClick={() => setShowDomainForm(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg transition-colors text-sm"
+              >
+                <Plus className="w-4 h-4" />
+                Añadir datos
+              </button>
+            </div>
           </div>
         )}
 
