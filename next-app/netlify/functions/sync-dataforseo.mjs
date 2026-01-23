@@ -1,28 +1,24 @@
 // DataForSEO sync function
 // Fetches domain metrics, backlinks, and ranking data
-// Runs automatically every day at 6:00 AM UTC
 
-// Netlify scheduled function config - runs daily at 6 AM UTC
-export const config = {
-  schedule: "0 6 * * *"  // Every day at 6:00 AM UTC
-};
-
-// Main handler for both scheduled and manual triggers
-export default async (req) => {
+export default async (req, context) => {
   try {
     // Get credentials from environment
     const login = process.env.DATAFORSEO_LOGIN;
     const password = process.env.DATAFORSEO_PASSWORD;
     const domain = 'growth4u.io';
 
+    console.log('Starting DataForSEO sync...');
+    console.log('Login configured:', !!login);
+    console.log('Password configured:', !!password);
+
     if (!login || !password) {
-      console.error('Missing credentials');
       return new Response(JSON.stringify({
         success: false,
         error: 'Configura DATAFORSEO_LOGIN y DATAFORSEO_PASSWORD en las variables de entorno de Netlify.',
       }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
       });
     }
 
@@ -44,12 +40,19 @@ export default async (req) => {
       }]),
     });
 
+    const responseText = await backlinksResponse.text();
+    console.log('DataForSEO response status:', backlinksResponse.status);
+
     if (!backlinksResponse.ok) {
-      const errorText = await backlinksResponse.text();
-      throw new Error(`DataForSEO API error: ${backlinksResponse.status} - ${errorText}`);
+      throw new Error(`DataForSEO API error: ${backlinksResponse.status} - ${responseText}`);
     }
 
-    const backlinksData = await backlinksResponse.json();
+    let backlinksData;
+    try {
+      backlinksData = JSON.parse(responseText);
+    } catch (e) {
+      throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`);
+    }
 
     // Check for API errors
     if (backlinksData.status_code !== 20000) {
@@ -63,30 +66,23 @@ export default async (req) => {
       throw new Error('No se obtuvieron datos de backlinks');
     }
 
-    console.log('DataForSEO data received:', JSON.stringify(result, null, 2));
+    console.log('DataForSEO data received successfully');
 
     // Prepare data for Firebase
     const today = new Date().toISOString().split('T')[0];
     const metricsData = {
-      // Domain metrics
       domainRank: result.rank || 0,
       backlinks: result.backlinks || 0,
       referringDomains: result.referring_domains || 0,
       referringIps: result.referring_ips || 0,
       referringSubnets: result.referring_subnets || 0,
-
-      // Link types
       dofollowBacklinks: result.backlinks_nofollow !== undefined
         ? (result.backlinks - result.backlinks_nofollow)
         : 0,
       nofollowBacklinks: result.backlinks_nofollow || 0,
-
-      // Additional metrics
       brokenBacklinks: result.broken_backlinks || 0,
       brokenPages: result.broken_pages || 0,
       referringPages: result.referring_pages || 0,
-
-      // Meta
       date: today,
       source: 'DataForSEO',
       createdAt: new Date().toISOString(),
@@ -98,9 +94,7 @@ export default async (req) => {
 
     const firestoreResponse = await fetch(firestoreUrl, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         fields: {
           domainRank: { integerValue: metricsData.domainRank.toString() },
@@ -127,14 +121,11 @@ export default async (req) => {
       success: true,
       message: firestoreSaved
         ? 'Datos de DataForSEO sincronizados correctamente'
-        : 'Datos obtenidos (no guardados en Firebase - verifica permisos)',
+        : 'Datos obtenidos (no guardados en Firebase)',
       data: metricsData,
     }), {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     });
 
   } catch (error) {
@@ -144,10 +135,12 @@ export default async (req) => {
       error: error.message,
     }), {
       status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     });
   }
+};
+
+// Schedule: runs daily at 6 AM UTC
+export const config = {
+  schedule: "@daily"
 };
