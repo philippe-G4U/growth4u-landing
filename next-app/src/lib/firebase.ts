@@ -1,5 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
@@ -81,4 +82,46 @@ export async function getAllSlugs(): Promise<string[]> {
   return posts.map((post) => post.slug);
 }
 
-export { db };
+// Auth
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
+// Restrict to specific domain
+const ALLOWED_DOMAIN = 'growth4u.io';
+
+export async function signInWithGoogle(): Promise<{ user: User | null; error: string | null }> {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const email = result.user.email || '';
+
+    // Check if email domain is allowed
+    if (!email.endsWith('@' + ALLOWED_DOMAIN)) {
+      await signOut(auth);
+      return { user: null, error: `Solo se permiten correos de @${ALLOWED_DOMAIN}` };
+    }
+
+    return { user: result.user, error: null };
+  } catch (error: any) {
+    return { user: null, error: error.message };
+  }
+}
+
+export async function signOutUser(): Promise<void> {
+  await signOut(auth);
+}
+
+export function onAuthChange(callback: (user: User | null) => void): () => void {
+  return onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const email = user.email || '';
+      if (!email.endsWith('@' + ALLOWED_DOMAIN)) {
+        signOut(auth);
+        callback(null);
+        return;
+      }
+    }
+    callback(user);
+  });
+}
+
+export { db, auth };
