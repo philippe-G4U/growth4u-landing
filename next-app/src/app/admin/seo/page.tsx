@@ -77,6 +77,21 @@ interface AnalyticsMetric {
   notes?: string;
 }
 
+interface DataForSEOMetrics {
+  domainRank: number;
+  backlinks: number;
+  referringDomains: number;
+  referringIps: number;
+  referringSubnets: number;
+  dofollowBacklinks: number;
+  nofollowBacklinks: number;
+  brokenBacklinks: number;
+  brokenPages: number;
+  referringPages: number;
+  date: string;
+  source: string;
+}
+
 // ============================================
 // METRIC EXPLANATIONS
 // ============================================
@@ -458,6 +473,11 @@ export default function SEODashboardPage() {
   const [webVitals, setWebVitals] = useState<WebVitals | null>(null);
   const [loadingVitals, setLoadingVitals] = useState(false);
 
+  // DataForSEO
+  const [dataForSEO, setDataForSEO] = useState<DataForSEOMetrics | null>(null);
+  const [syncingDataForSEO, setSyncingDataForSEO] = useState(false);
+  const [dataForSEOError, setDataForSEOError] = useState<string | null>(null);
+
   // Modals
   const [showGscForm, setShowGscForm] = useState(false);
   const [showDomainForm, setShowDomainForm] = useState(false);
@@ -502,7 +522,8 @@ export default function SEODashboardPage() {
       loadGscMetrics(),
       loadDomainMetrics(),
       loadAnalyticsMetrics(),
-      loadCachedWebVitals()
+      loadCachedWebVitals(),
+      loadCachedDataForSEO()
     ]);
     setLoading(false);
   };
@@ -549,6 +570,39 @@ export default function SEODashboardPage() {
       }
     } catch (error) {
       console.error('Error loading web vitals:', error);
+    }
+  };
+
+  const loadCachedDataForSEO = async () => {
+    try {
+      const docRef = doc(db, 'dataforseo_metrics', 'latest');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setDataForSEO(docSnap.data() as DataForSEOMetrics);
+      }
+    } catch (error) {
+      console.error('Error loading DataForSEO metrics:', error);
+    }
+  };
+
+  const syncDataForSEO = async () => {
+    setSyncingDataForSEO(true);
+    setDataForSEOError(null);
+    try {
+      const response = await fetch('/.netlify/functions/sync-dataforseo');
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Error al sincronizar con DataForSEO');
+      }
+
+      setDataForSEO(data.data);
+    } catch (error) {
+      console.error('Error syncing DataForSEO:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      setDataForSEOError(errorMessage);
+    } finally {
+      setSyncingDataForSEO(false);
     }
   };
 
@@ -1163,107 +1217,121 @@ export default function SEODashboardPage() {
       </section>
 
       {/* ============================================ */}
-      {/* PRIORITY 5: DOMAIN AUTHORITY & BACKLINKS */}
+      {/* PRIORITY 5: BACKLINKS (DataForSEO) */}
       {/* ============================================ */}
       <section>
         <SectionHeader
-          icon={Globe}
-          title="Autoridad de Dominio"
-          subtitle="Backlinks y DA - la 'reputación' de tu web"
+          icon={Link2}
+          title="Backlinks y Autoridad"
+          subtitle="Datos automáticos de DataForSEO - la 'reputación' de tu web"
           priority={5}
         />
 
-        {latestDomain ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <MetricCard
-              icon={Globe}
-              label="Domain Authority"
-              value={latestDomain.domainAuthority.toString()}
-              change={previousDomain ? `${latestDomain.domainAuthority - previousDomain.domainAuthority > 0 ? '+' : ''}${latestDomain.domainAuthority - previousDomain.domainAuthority}` : undefined}
-              changePositive={previousDomain ? latestDomain.domainAuthority >= previousDomain.domainAuthority : undefined}
-              color="text-purple-400"
-              metricKey="domainAuthority"
-              expandedMetric={expandedMetric}
-              setExpandedMetric={setExpandedMetric}
-            />
-            <MetricCard
-              icon={Link2}
-              label="Backlinks"
-              value={latestDomain.backlinks.toLocaleString()}
-              change={previousDomain ? `${getChange(latestDomain.backlinks, previousDomain.backlinks)}%` : undefined}
-              changePositive={previousDomain ? latestDomain.backlinks >= previousDomain.backlinks : undefined}
-              color="text-blue-400"
-              metricKey="backlinks"
-              expandedMetric={expandedMetric}
-              setExpandedMetric={setExpandedMetric}
-            />
-            <MetricCard
-              icon={Users}
-              label="Dominios de Referencia"
-              value={latestDomain.referringDomains.toLocaleString()}
-              change={previousDomain ? `${getChange(latestDomain.referringDomains, previousDomain.referringDomains)}%` : undefined}
-              changePositive={previousDomain ? latestDomain.referringDomains >= previousDomain.referringDomains : undefined}
-              color="text-green-400"
-              metricKey="referringDomains"
-              expandedMetric={expandedMetric}
-              setExpandedMetric={setExpandedMetric}
-            />
+        {dataForSEO ? (
+          <div className="space-y-4 mb-6">
+            {/* Main metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="bg-slate-800 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-slate-400 text-sm">Domain Rank</span>
+                  <Globe className="w-5 h-5 text-purple-400" />
+                </div>
+                <span className="text-2xl font-bold text-white">{dataForSEO.domainRank}</span>
+                <p className="text-xs text-slate-500 mt-1">Similar a DA (0-1000)</p>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-slate-400 text-sm">Backlinks Totales</span>
+                  <Link2 className="w-5 h-5 text-blue-400" />
+                </div>
+                <span className="text-2xl font-bold text-white">{dataForSEO.backlinks.toLocaleString()}</span>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-slate-400 text-sm">Dominios de Ref.</span>
+                  <Users className="w-5 h-5 text-green-400" />
+                </div>
+                <span className="text-2xl font-bold text-white">{dataForSEO.referringDomains.toLocaleString()}</span>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-slate-400 text-sm">IPs de Referencia</span>
+                  <Globe className="w-5 h-5 text-cyan-400" />
+                </div>
+                <span className="text-2xl font-bold text-white">{dataForSEO.referringIps.toLocaleString()}</span>
+              </div>
+            </div>
+
+            {/* Secondary metrics */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-slate-800/50 rounded-xl p-4">
+                <span className="text-slate-400 text-xs block mb-1">DoFollow</span>
+                <span className="text-lg font-semibold text-green-400">{dataForSEO.dofollowBacklinks.toLocaleString()}</span>
+              </div>
+              <div className="bg-slate-800/50 rounded-xl p-4">
+                <span className="text-slate-400 text-xs block mb-1">NoFollow</span>
+                <span className="text-lg font-semibold text-yellow-400">{dataForSEO.nofollowBacklinks.toLocaleString()}</span>
+              </div>
+              <div className="bg-slate-800/50 rounded-xl p-4">
+                <span className="text-slate-400 text-xs block mb-1">Páginas con Enlaces</span>
+                <span className="text-lg font-semibold text-blue-400">{dataForSEO.referringPages.toLocaleString()}</span>
+              </div>
+              <div className="bg-slate-800/50 rounded-xl p-4">
+                <span className="text-slate-400 text-xs block mb-1">Enlaces Rotos</span>
+                <span className={`text-lg font-semibold ${dataForSEO.brokenBacklinks > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                  {dataForSEO.brokenBacklinks.toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500">
+              Última actualización: {new Date(dataForSEO.date).toLocaleDateString('es-ES')} | Fuente: {dataForSEO.source}
+            </p>
           </div>
         ) : (
           <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
-            <Globe className="w-12 h-12 mx-auto mb-3 text-slate-600" />
-            <p className="text-slate-400 mb-2">No hay datos de autoridad</p>
+            <Link2 className="w-12 h-12 mx-auto mb-3 text-slate-600" />
+            <p className="text-slate-400 mb-2">No hay datos de backlinks</p>
             <p className="text-slate-500 text-sm mb-4">
-              Usa Moz Link Explorer (gratis) para ver tu Domain Authority y backlinks
+              Haz clic en "Sincronizar DataForSEO" para obtener datos automáticamente
             </p>
-            <div className="flex justify-center gap-3">
-              <a
-                href="https://moz.com/link-explorer"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors text-sm"
-              >
-                <ExternalLink className="w-4 h-4" />
-                Abrir Moz
-              </a>
-              <button
-                onClick={() => setShowDomainForm(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg transition-colors text-sm"
-              >
-                <Plus className="w-4 h-4" />
-                Añadir datos
-              </button>
-            </div>
           </div>
         )}
 
         <div className="flex items-center gap-3 flex-wrap">
           <button
-            onClick={() => setShowDomainForm(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg transition-colors"
+            onClick={syncDataForSEO}
+            disabled={syncingDataForSEO}
+            className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] disabled:bg-slate-600 text-white rounded-lg transition-colors"
           >
-            <Plus className="w-4 h-4" />
-            Añadir datos
+            <RefreshCw className={`w-4 h-4 ${syncingDataForSEO ? 'animate-spin' : ''}`} />
+            {syncingDataForSEO ? 'Sincronizando...' : 'Sincronizar DataForSEO'}
           </button>
           <a
-            href="https://moz.com/link-explorer"
+            href="https://app.dataforseo.com"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
-            Moz Link Explorer
-          </a>
-          <a
-            href="https://ahrefs.com/backlink-checker"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-          >
-            <ExternalLink className="w-4 h-4" />
-            Ahrefs Free
+            Panel DataForSEO
           </a>
         </div>
+
+        {dataForSEOError && (
+          <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
+              <div>
+                <p className="text-red-400 font-medium">Error al sincronizar</p>
+                <p className="text-slate-400 text-sm mt-1">{dataForSEOError}</p>
+                <p className="text-slate-500 text-xs mt-2">
+                  Verifica que DATAFORSEO_LOGIN y DATAFORSEO_PASSWORD estén configurados en Netlify.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Domain History */}
         {domainMetrics.length > 0 && (
@@ -1321,12 +1389,12 @@ export default function SEODashboardPage() {
             </ol>
           </div>
           <div>
-            <h4 className="font-medium text-white mb-2">Domain Authority</h4>
+            <h4 className="font-medium text-white mb-2">Backlinks (DataForSEO)</h4>
             <ol className="text-slate-400 space-y-1">
-              <li>1. Ve a Moz Link Explorer</li>
-              <li>2. Busca growth4u.io</li>
-              <li>3. Copia DA, backlinks y dominios</li>
-              <li>4. Registra mensualmente</li>
+              <li>1. Configura credenciales en Netlify</li>
+              <li>2. DATAFORSEO_LOGIN = tu email</li>
+              <li>3. DATAFORSEO_PASSWORD = tu API key</li>
+              <li>4. Haz clic en "Sincronizar"</li>
             </ol>
           </div>
           <div>
