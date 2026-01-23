@@ -1,17 +1,14 @@
 // DataForSEO sync function
 // Fetches domain metrics, backlinks, and ranking data
+// Runs automatically every day at 6:00 AM UTC
 
-exports.handler = async (event) => {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Content-Type': 'application/json',
-  };
+// Netlify scheduled function config - runs daily at 6 AM UTC
+export const config = {
+  schedule: "0 6 * * *"  // Every day at 6:00 AM UTC
+};
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
-  }
-
+// Main handler for both scheduled and manual triggers
+export default async (req) => {
   try {
     // Get credentials from environment
     const login = process.env.DATAFORSEO_LOGIN;
@@ -19,18 +16,20 @@ exports.handler = async (event) => {
     const domain = 'growth4u.io';
 
     if (!login || !password) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          success: false,
-          error: 'Configura DATAFORSEO_LOGIN y DATAFORSEO_PASSWORD en las variables de entorno de Netlify.',
-        }),
-      };
+      console.error('Missing credentials');
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Configura DATAFORSEO_LOGIN y DATAFORSEO_PASSWORD en las variables de entorno de Netlify.',
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     // Basic auth header
     const authHeader = 'Basic ' + Buffer.from(`${login}:${password}`).toString('base64');
+
+    console.log('Fetching backlinks data from DataForSEO...');
 
     // Fetch backlinks summary
     const backlinksResponse = await fetch('https://api.dataforseo.com/v3/backlinks/summary/live', {
@@ -64,6 +63,8 @@ exports.handler = async (event) => {
       throw new Error('No se obtuvieron datos de backlinks');
     }
 
+    console.log('DataForSEO data received:', JSON.stringify(result, null, 2));
+
     // Prepare data for Firebase
     const today = new Date().toISOString().split('T')[0];
     const metricsData = {
@@ -95,8 +96,6 @@ exports.handler = async (event) => {
     const firebaseProjectId = 'landing-growth4u';
     const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents/dataforseo_metrics/latest`;
 
-    // We'll save without auth for now and rely on Firestore rules
-    // In production, you'd want to add Firebase auth here
     const firestoreResponse = await fetch(firestoreUrl, {
       method: 'PATCH',
       headers: {
@@ -121,30 +120,34 @@ exports.handler = async (event) => {
       }),
     });
 
-    // Even if Firestore save fails, return the data so the UI can display it
     const firestoreSaved = firestoreResponse.ok;
+    console.log('Firebase save result:', firestoreSaved);
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        success: true,
-        message: firestoreSaved
-          ? 'Datos de DataForSEO sincronizados correctamente'
-          : 'Datos obtenidos (no guardados en Firebase - verifica permisos)',
-        data: metricsData,
-        raw: result, // Include raw data for debugging
-      }),
-    };
+    return new Response(JSON.stringify({
+      success: true,
+      message: firestoreSaved
+        ? 'Datos de DataForSEO sincronizados correctamente'
+        : 'Datos obtenidos (no guardados en Firebase - verifica permisos)',
+      data: metricsData,
+    }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+
   } catch (error) {
     console.error('Error syncing DataForSEO:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({
-        success: false,
-        error: error.message,
-      }),
-    };
+    return new Response(JSON.stringify({
+      success: false,
+      error: error.message,
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
   }
 };
