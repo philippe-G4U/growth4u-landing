@@ -553,23 +553,48 @@ export default function SEODashboardPage() {
     }
   };
 
+  const [vitalsError, setVitalsError] = useState<string | null>(null);
+
   const fetchWebVitals = async () => {
     setLoadingVitals(true);
+    setVitalsError(null);
     try {
-      const url = encodeURIComponent('https://growth4u.io');
-      const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&strategy=mobile&category=performance`;
+      const targetUrl = 'https://growth4u.io';
+      const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=mobile&category=performance`;
 
       const response = await fetch(apiUrl);
       const data = await response.json();
 
+      // Check for API errors
+      if (data.error) {
+        throw new Error(data.error.message || 'Error de la API de PageSpeed');
+      }
+
+      // Check if lighthouseResult exists
+      if (!data.lighthouseResult) {
+        throw new Error('No se pudo analizar la página. Verifica que growth4u.io esté accesible.');
+      }
+
       const lighthouse = data.lighthouseResult;
+
+      // Check if performance category exists
+      if (!lighthouse.categories?.performance?.score) {
+        throw new Error('No se pudieron obtener las métricas de rendimiento.');
+      }
+
       const vitals: WebVitals = {
         performance: Math.round(lighthouse.categories.performance.score * 100),
-        lcp: lighthouse.audits['largest-contentful-paint'].numericValue / 1000,
+        lcp: lighthouse.audits['largest-contentful-paint']?.numericValue
+          ? lighthouse.audits['largest-contentful-paint'].numericValue / 1000
+          : 0,
         fid: lighthouse.audits['max-potential-fid']?.numericValue || 0,
-        cls: lighthouse.audits['cumulative-layout-shift'].numericValue,
-        fcp: lighthouse.audits['first-contentful-paint'].numericValue / 1000,
-        ttfb: lighthouse.audits['server-response-time'].numericValue / 1000
+        cls: lighthouse.audits['cumulative-layout-shift']?.numericValue || 0,
+        fcp: lighthouse.audits['first-contentful-paint']?.numericValue
+          ? lighthouse.audits['first-contentful-paint'].numericValue / 1000
+          : 0,
+        ttfb: lighthouse.audits['server-response-time']?.numericValue
+          ? lighthouse.audits['server-response-time'].numericValue / 1000
+          : 0
       };
 
       // Save to Firebase
@@ -581,7 +606,8 @@ export default function SEODashboardPage() {
       setWebVitals(vitals);
     } catch (error) {
       console.error('Error fetching web vitals:', error);
-      alert('Error al obtener Web Vitals. Intenta de nuevo.');
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      setVitalsError(errorMessage);
     } finally {
       setLoadingVitals(false);
     }
@@ -942,14 +968,40 @@ export default function SEODashboardPage() {
           </div>
         )}
 
-        <button
-          onClick={fetchWebVitals}
-          disabled={loadingVitals}
-          className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] disabled:bg-slate-600 text-white rounded-lg transition-colors"
-        >
-          <RefreshCw className={`w-4 h-4 ${loadingVitals ? 'animate-spin' : ''}`} />
-          {loadingVitals ? 'Analizando...' : 'Analizar Web Vitals'}
-        </button>
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={fetchWebVitals}
+            disabled={loadingVitals}
+            className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] disabled:bg-slate-600 text-white rounded-lg transition-colors"
+          >
+            <RefreshCw className={`w-4 h-4 ${loadingVitals ? 'animate-spin' : ''}`} />
+            {loadingVitals ? 'Analizando (30-60s)...' : 'Analizar Web Vitals'}
+          </button>
+          <a
+            href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fgrowth4u.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+          >
+            <ExternalLink className="w-4 h-4" />
+            PageSpeed Insights
+          </a>
+        </div>
+
+        {vitalsError && (
+          <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
+              <div>
+                <p className="text-red-400 font-medium">Error al analizar</p>
+                <p className="text-slate-400 text-sm mt-1">{vitalsError}</p>
+                <p className="text-slate-500 text-xs mt-2">
+                  Prueba de nuevo en unos segundos o usa el enlace a PageSpeed Insights directamente.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ============================================ */}
