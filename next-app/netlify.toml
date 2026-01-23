@@ -2,6 +2,28 @@
   command = "npm run build"
   publish = "out"
 
+# Redirects from old query parameter URLs to new clean URLs
+[[redirects]]
+  from = "/blog"
+  query = {articulo = ":slug"}
+  to = "/blog/:slug/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/"
+  query = {articulo = ":slug"}
+  to = "/blog/:slug/"
+  status = 301
+  force = true
+
+# Redirect /home to /
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+  force = true
+
 # Headers for caching
 [[headers]]
   for = "/_next/static/*"
