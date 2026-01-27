@@ -1,4 +1,4 @@
 [build]
   base = "next-app"
   command = "npm run build"
-  publish = "next-app/out"
+  publish = "out"
