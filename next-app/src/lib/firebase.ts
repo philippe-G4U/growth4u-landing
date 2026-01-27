@@ -1,5 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, orderBy, addDoc, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
@@ -81,6 +82,40 @@ export async function getAllSlugs(): Promise<string[]> {
   return posts.map((post) => post.slug);
 }
 
+// Blog CRUD Operations
+export interface BlogPostInput {
+  title: string;
+  category: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  readTime: string;
+  author: string;
+}
+
+export async function createPost(post: BlogPostInput): Promise<string> {
+  const postsRef = collection(db, 'artifacts', APP_ID, 'public', 'data', 'blog_posts');
+  const docRef = await addDoc(postsRef, {
+    ...post,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
+  return docRef.id;
+}
+
+export async function updatePost(postId: string, post: Partial<BlogPostInput>): Promise<void> {
+  const postRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'blog_posts', postId);
+  await updateDoc(postRef, {
+    ...post,
+    updatedAt: serverTimestamp()
+  });
+}
+
+export async function deletePost(postId: string): Promise<void> {
+  const postRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'blog_posts', postId);
+  await deleteDoc(postRef);
+}
+
 // Feedback functions
 export interface FeedbackData {
   companyName: string;
@@ -155,4 +190,46 @@ export async function getAllFeedback(): Promise<FeedbackResponse[]> {
   }
 }
 
-export { db };
+// Auth
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
+// Restrict to specific domain
+const ALLOWED_DOMAIN = 'growth4u.io';
+
+export async function signInWithGoogle(): Promise<{ user: User | null; error: string | null }> {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const email = result.user.email || '';
+
+    // Check if email domain is allowed
+    if (!email.endsWith('@' + ALLOWED_DOMAIN)) {
+      await signOut(auth);
+      return { user: null, error: `Solo se permiten correos de @${ALLOWED_DOMAIN}` };
+    }
+
+    return { user: result.user, error: null };
+  } catch (error: any) {
+    return { user: null, error: error.message };
+  }
+}
+
+export async function signOutUser(): Promise<void> {
+  await signOut(auth);
+}
+
+export function onAuthChange(callback: (user: User | null) => void): () => void {
+  return onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const email = user.email || '';
+      if (!email.endsWith('@' + ALLOWED_DOMAIN)) {
+        signOut(auth);
+        callback(null);
+        return;
+      }
+    }
+    callback(user);
+  });
+}
+
+export { db, auth, doc, getDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy };
