@@ -17,6 +17,7 @@ import {
   Loader2,
   ExternalLink,
 } from 'lucide-react';
+import { saveFeedback } from '@/lib/firebase';
 
 interface FormData {
   // Sobre el reto inicial
@@ -63,8 +64,6 @@ const initialFormData: FormData = {
   contactEmail: '',
 };
 
-// URL del webhook - Configura aquí tu webhook de Make/Zapier para Notion
-const WEBHOOK_URL = process.env.NEXT_PUBLIC_FEEDBACK_WEBHOOK_URL || '';
 
 // Trustpilot Business Unit ID
 const TRUSTPILOT_BUSINESS_UNIT_ID = 'txZ8DOmwsM3AEPQc';
@@ -159,25 +158,8 @@ export default function FeedbackPage() {
     setError(null);
 
     try {
-      if (WEBHOOK_URL) {
-        const response = await fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            ...formData,
-            submittedAt: new Date().toISOString(),
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Error al enviar el formulario');
-        }
-      } else {
-        // Si no hay webhook configurado, solo logueamos
-        console.log('Feedback submitted:', formData);
-      }
+      // Guardar en Firebase
+      await saveFeedback(formData);
 
       // Enviar invitación de Trustpilot
       if (window.tp && formData.contactEmail) {

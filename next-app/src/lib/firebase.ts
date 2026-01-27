@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, orderBy, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
@@ -79,6 +79,40 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 export async function getAllSlugs(): Promise<string[]> {
   const posts = await getAllPosts();
   return posts.map((post) => post.slug);
+}
+
+// Feedback functions
+export interface FeedbackData {
+  companyName: string;
+  contactName: string;
+  contactEmail: string;
+  mainChallenge: string;
+  howIdentifiedProblem: string;
+  teamIntegration: string;
+  proposedSolutions: string;
+  technicalExecution: string;
+  quizFlowHighlights: string;
+  iterativeApproach: string;
+  conversionComparison: string;
+  autonomousImprovement: string;
+  scalingConfidence: string;
+  wouldRecommend: string;
+  standoutAspects: string;
+  additionalComments: string;
+}
+
+export async function saveFeedback(data: FeedbackData): Promise<string> {
+  try {
+    const feedbackRef = collection(db, 'artifacts', APP_ID, 'public', 'data', 'feedback');
+    const docRef = await addDoc(feedbackRef, {
+      ...data,
+      createdAt: serverTimestamp(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error('Error saving feedback:', error);
+    throw error;
+  }
 }
 
 export { db };
