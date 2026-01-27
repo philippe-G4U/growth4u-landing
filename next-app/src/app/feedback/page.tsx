@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Script from 'next/script';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -65,7 +66,15 @@ const initialFormData: FormData = {
 // URL del webhook - Configura aquí tu webhook de Make/Zapier para Notion
 const WEBHOOK_URL = process.env.NEXT_PUBLIC_FEEDBACK_WEBHOOK_URL || '';
 
-const TRUSTPILOT_URL = 'https://www.trustpilot.com/evaluate/growth4u.io';
+// Trustpilot Business Unit ID
+const TRUSTPILOT_BUSINESS_UNIT_ID = 'txZ8DOmwsM3AEPQc';
+
+// Declaración de tipo para Trustpilot
+declare global {
+  interface Window {
+    tp?: (action: string, data?: unknown) => void;
+  }
+}
 
 function SectionHeader({ icon: Icon, title, subtitle }: { icon: React.ComponentType<{ className?: string }>; title: string; subtitle?: string }) {
   return (
@@ -170,6 +179,16 @@ export default function FeedbackPage() {
         console.log('Feedback submitted:', formData);
       }
 
+      // Enviar invitación de Trustpilot
+      if (window.tp && formData.contactEmail) {
+        window.tp('createInvitation', {
+          recipientEmail: formData.contactEmail,
+          recipientName: formData.contactName,
+          referenceId: `feedback-${Date.now()}`,
+          source: 'InvitationScript',
+        });
+      }
+
       setIsSubmitted(true);
     } catch (err) {
       setError('Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
@@ -182,6 +201,18 @@ export default function FeedbackPage() {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white">
+        <Script
+          id="trustpilot-sdk"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,r,n){w.TrustpilotObject=n;w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};
+              a=d.createElement(s);a.async=1;a.src=r;a.type='text/java'+s;f=d.getElementsByTagName(s)[0];
+              f.parentNode.insertBefore(a,f)})(window,document,'script', 'https://invitejs.trustpilot.com/tp.min.js', 'tp');
+              tp('register', '${TRUSTPILOT_BUSINESS_UNIT_ID}');
+            `,
+          }}
+        />
         <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
           <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-0 cursor-pointer">
@@ -221,7 +252,7 @@ export default function FeedbackPage() {
                 Tu reseña ayuda a otras empresas a conocer nuestro trabajo y a nosotros a seguir creciendo.
               </p>
               <a
-                href={TRUSTPILOT_URL}
+                href="https://www.trustpilot.com/evaluate/growth4u.io"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-[#00b67a] hover:bg-[#009567] text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg"
@@ -246,6 +277,18 @@ export default function FeedbackPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-[#45b6f7] selection:text-white">
+      <Script
+        id="trustpilot-sdk"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(w,d,s,r,n){w.TrustpilotObject=n;w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};
+            a=d.createElement(s);a.async=1;a.src=r;a.type='text/java'+s;f=d.getElementsByTagName(s)[0];
+            f.parentNode.insertBefore(a,f)})(window,document,'script', 'https://invitejs.trustpilot.com/tp.min.js', 'tp');
+            tp('register', '${TRUSTPILOT_BUSINESS_UNIT_ID}');
+          `,
+        }}
+      />
       <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-0 cursor-pointer">
