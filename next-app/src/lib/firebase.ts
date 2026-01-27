@@ -115,4 +115,44 @@ export async function saveFeedback(data: FeedbackData): Promise<string> {
   }
 }
 
+export interface FeedbackResponse extends FeedbackData {
+  id: string;
+  createdAt: Date | null;
+}
+
+export async function getAllFeedback(): Promise<FeedbackResponse[]> {
+  try {
+    const feedbackRef = collection(db, 'artifacts', APP_ID, 'public', 'data', 'feedback');
+    const q = query(feedbackRef, orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        companyName: data.companyName || '',
+        contactName: data.contactName || '',
+        contactEmail: data.contactEmail || '',
+        mainChallenge: data.mainChallenge || '',
+        howIdentifiedProblem: data.howIdentifiedProblem || '',
+        teamIntegration: data.teamIntegration || '',
+        proposedSolutions: data.proposedSolutions || '',
+        technicalExecution: data.technicalExecution || '',
+        quizFlowHighlights: data.quizFlowHighlights || '',
+        iterativeApproach: data.iterativeApproach || '',
+        conversionComparison: data.conversionComparison || '',
+        autonomousImprovement: data.autonomousImprovement || '',
+        scalingConfidence: data.scalingConfidence || '',
+        wouldRecommend: data.wouldRecommend || '',
+        standoutAspects: data.standoutAspects || '',
+        additionalComments: data.additionalComments || '',
+        createdAt: data.createdAt?.toDate() || null,
+      };
+    });
+  } catch (error) {
+    console.error('Error fetching feedback:', error);
+    return [];
+  }
+}
+
 export { db };
