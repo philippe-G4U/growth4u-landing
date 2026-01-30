@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, CheckCircle, Quote } from 'lucide-react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { getCaseStudyBySlug, getAllCaseStudySlugs } from '@/lib/firebase';
+import { getCaseStudyBySlug, getAllCaseStudySlugs, createSlug } from '@/lib/firebase';
+import { translations } from '@/lib/translations';
 import { BOOKING_LINK } from '@/lib/translations';
 import CookieBanner from '@/components/CookieBanner';
 
@@ -13,9 +14,23 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = await getAllCaseStudySlugs();
-  return slugs.map((slug) => ({ slug }));
+  // Generate params from static translations (always available)
+  const staticSlugs = translations.es.cases.list.map((item) => createSlug(item.company));
+
+  // Try to get dynamic case studies from Firebase
+  let dynamicSlugs: string[] = [];
+  try {
+    dynamicSlugs = await getAllCaseStudySlugs();
+  } catch (error) {
+    console.error('Error fetching case studies from Firebase:', error);
+  }
+
+  // Combine static and dynamic slugs, removing duplicates
+  const allSlugs = [...new Set([...staticSlugs, ...dynamicSlugs])];
+  return allSlugs.map((slug) => ({ slug }));
 }
+
+export const dynamicParams = false;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
