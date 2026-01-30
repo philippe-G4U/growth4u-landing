@@ -19,6 +19,14 @@ export interface CaseStudy {
   summary: string;
   challenge: string;
   solution: string;
+  image?: string;
+  videoUrl?: string;
+  results?: string[];
+  content?: string;
+  testimonial?: string;
+  testimonialAuthor?: string;
+  testimonialRole?: string;
+  mediaUrl?: string;
 }
 
 export interface TranslationSet {

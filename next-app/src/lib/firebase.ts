@@ -2,6 +2,7 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import { translations, CaseStudy as StaticCaseStudy } from './translations';
+import { caseStudiesData, StaticCaseStudyData } from './caseStudiesData';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
@@ -250,7 +251,9 @@ export interface CaseStudy {
   testimonialAuthor: string;
   testimonialRole: string;
   image: string;
+  videoUrl: string;
   content: string;
+  mediaUrl: string;
   createdAt: Date | null;
   updatedAt: Date | null;
 }
@@ -269,7 +272,9 @@ export interface CaseStudyInput {
   testimonialAuthor: string;
   testimonialRole: string;
   image: string;
+  videoUrl: string;
   content: string;
+  mediaUrl: string;
 }
 
 export async function getAllCaseStudies(): Promise<CaseStudy[]> {
@@ -296,7 +301,9 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
         testimonialAuthor: data.testimonialAuthor || '',
         testimonialRole: data.testimonialRole || '',
         image: data.image || '',
+        videoUrl: data.videoUrl || '',
         content: data.content || '',
+        mediaUrl: data.mediaUrl || '',
         createdAt: data.createdAt?.toDate() || null,
         updatedAt: data.updatedAt?.toDate() || null,
       };
@@ -307,26 +314,30 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
   }
 }
 
-// Convert static case study from translations to CaseStudy format
-function staticToFullCaseStudy(staticCase: StaticCaseStudy): CaseStudy {
-  const slug = createSlug(staticCase.company);
+// Convert static case study from caseStudiesData to CaseStudy format
+function staticToFullCaseStudy(slug: string): CaseStudy | null {
+  const data = caseStudiesData[slug];
+  if (!data) return null;
+
   return {
     id: `static-${slug}`,
     slug,
-    company: staticCase.company,
+    company: data.company,
     logo: '',
-    stat: staticCase.stat,
-    statLabel: staticCase.label,
-    highlight: staticCase.highlight,
-    summary: staticCase.summary,
-    challenge: staticCase.challenge,
-    solution: staticCase.solution,
-    results: [],
-    testimonial: '',
-    testimonialAuthor: '',
-    testimonialRole: '',
-    image: '',
-    content: '',
+    stat: data.stat,
+    statLabel: data.label,
+    highlight: data.highlight,
+    summary: data.summary,
+    challenge: data.challenge,
+    solution: data.solution,
+    results: data.results || [],
+    testimonial: data.testimonial || '',
+    testimonialAuthor: data.testimonialAuthor || '',
+    testimonialRole: data.testimonialRole || '',
+    image: data.image || '',
+    videoUrl: data.videoUrl || '',
+    content: data.content || '',
+    mediaUrl: data.mediaUrl || '',
     createdAt: null,
     updatedAt: null,
   };
@@ -340,12 +351,10 @@ export async function getCaseStudyBySlug(slug: string): Promise<CaseStudy | null
     return firebaseCase;
   }
 
-  // If not found, try static translations
-  const staticCase = translations.es.cases.list.find(
-    (c) => createSlug(c.company) === slug
-  );
-  if (staticCase) {
-    return staticToFullCaseStudy(staticCase);
+  // If not found, try static case studies data (full content)
+  const staticCaseStudy = staticToFullCaseStudy(slug);
+  if (staticCaseStudy) {
+    return staticCaseStudy;
   }
 
   return null;

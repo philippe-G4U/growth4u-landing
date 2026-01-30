@@ -14,7 +14,9 @@ import {
   Loader2,
   CheckCircle,
   Upload,
-  Link
+  Link,
+  Video,
+  FileImage
 } from 'lucide-react';
 import { getAllCaseStudies, createCaseStudy, updateCaseStudy, deleteCaseStudy, CaseStudy, CaseStudyInput, createSlug } from '@/lib/firebase';
 
@@ -48,7 +50,9 @@ export default function CaseStudiesManagementPage() {
     testimonialAuthor: '',
     testimonialRole: '',
     image: '',
-    content: ''
+    videoUrl: '',
+    content: '',
+    mediaUrl: ''
   });
 
   const [newResult, setNewResult] = useState('');
@@ -80,7 +84,9 @@ export default function CaseStudiesManagementPage() {
       testimonialAuthor: '',
       testimonialRole: '',
       image: '',
-      content: ''
+      videoUrl: '',
+      content: '',
+      mediaUrl: ''
     });
     setShowEditor(true);
   };
@@ -101,7 +107,9 @@ export default function CaseStudiesManagementPage() {
       testimonialAuthor: caseStudy.testimonialAuthor,
       testimonialRole: caseStudy.testimonialRole,
       image: caseStudy.image,
-      content: caseStudy.content
+      videoUrl: caseStudy.videoUrl || '',
+      content: caseStudy.content,
+      mediaUrl: caseStudy.mediaUrl || ''
     });
     setShowEditor(true);
   };
@@ -599,6 +607,65 @@ export default function CaseStudiesManagementPage() {
                       </>
                     )}
                   </div>
+                )}
+              </div>
+
+              {/* Video URL */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <Video className="w-4 h-4 inline mr-2" />
+                  URL del Video (YouTube, Vimeo, etc.)
+                </label>
+                <input
+                  type="url"
+                  value={formData.videoUrl}
+                  onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                  placeholder="https://www.youtube.com/watch?v=... o https://vimeo.com/..."
+                />
+                <p className="text-slate-500 text-xs mt-1">
+                  Soporta YouTube y otros servicios de video. Se mostrará como embed en la página.
+                </p>
+                {formData.videoUrl && (
+                  <div className="mt-3 bg-slate-900 rounded-lg p-3">
+                    <p className="text-slate-400 text-xs mb-2">Vista previa:</p>
+                    <div className="relative w-full pt-[56.25%] rounded overflow-hidden">
+                      <iframe
+                        src={formData.videoUrl.includes('youtube.com/watch')
+                          ? formData.videoUrl.replace('watch?v=', 'embed/')
+                          : formData.videoUrl.includes('youtu.be/')
+                            ? formData.videoUrl.replace('youtu.be/', 'youtube.com/embed/')
+                            : formData.videoUrl
+                        }
+                        className="absolute inset-0 w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title="Video preview"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Media URL (additional image/graphic) */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <FileImage className="w-4 h-4 inline mr-2" />
+                  URL de Media adicional (gráfico, infografía)
+                </label>
+                <input
+                  type="url"
+                  value={formData.mediaUrl}
+                  onChange={(e) => setFormData({ ...formData, mediaUrl: e.target.value })}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                  placeholder="https://..."
+                />
+                {formData.mediaUrl && (
+                  <img
+                    src={formData.mediaUrl}
+                    alt="Media preview"
+                    className="mt-3 max-h-40 rounded-lg border border-slate-600"
+                  />
                 )}
               </div>
 
