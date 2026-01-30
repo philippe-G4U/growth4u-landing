@@ -4,11 +4,13 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   outDir: './out',
+  exclude: ['/admin', '/admin/*', '/feedback', '/feedback/*'],
   robotsTxtOptions: {
     policies: [
       {
         userAgent: '*',
         allow: '/',
+        disallow: ['/admin', '/feedback'],
       },
     ],
   },
