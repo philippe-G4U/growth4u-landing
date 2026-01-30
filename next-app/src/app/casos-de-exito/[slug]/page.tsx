@@ -124,6 +124,26 @@ export default async function CaseStudyPage({ params }: PageProps) {
           <img src={caseStudy.image} alt={caseStudy.company} className="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" />
         )}
 
+        {/* Video embed */}
+        {caseStudy.videoUrl && (
+          <div className="mb-12">
+            <div className="relative w-full pt-[56.25%] rounded-2xl overflow-hidden shadow-xl">
+              <iframe
+                src={caseStudy.videoUrl.includes('youtube.com/watch')
+                  ? caseStudy.videoUrl.replace('watch?v=', 'embed/')
+                  : caseStudy.videoUrl.includes('youtu.be/')
+                    ? caseStudy.videoUrl.replace('youtu.be/', 'youtube.com/embed/')
+                    : caseStudy.videoUrl
+                }
+                className="absolute inset-0 w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={`Video: ${caseStudy.company}`}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Challenge & Solution */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <div className="bg-slate-50 rounded-2xl p-8">
