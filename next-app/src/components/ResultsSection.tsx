@@ -11,27 +11,27 @@ export default function ResultsSection({ t }: ResultsSectionProps) {
   const Icons = [TrendingDown, Users2, Bot, Landmark];
 
   return (
-    <section id="resultados" className="py-24 bg-white relative border-t border-slate-200">
+    <section id="resultados" className="py-24 bg-white relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.results.title}</h2>
-          <p className="text-slate-600 text-lg">{t.results.subtitle}</p>
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#032149] tracking-tight">{t.results.title}</h2>
+          <p className="text-slate-600 text-lg leading-relaxed">{t.results.subtitle}</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {t.results.cards.map((card, i) => {
             const Icon = Icons[i];
-            const color = i % 3 === 0 ? '#6351d5' : '#3f45fe';
+            const color = i % 2 === 0 ? '#6351d5' : '#3f45fe';
             return (
               <div
                 key={i}
-                className="bg-slate-50 p-8 rounded-3xl border-l-4 flex items-start gap-6 hover:shadow-lg transition-shadow"
-                style={{ borderColor: color }}
+                className="bg-gradient-to-br from-white to-slate-50/50 p-6 rounded-2xl border-t-4 flex items-start gap-5 hover:shadow-md transition-all duration-300 ease-out border border-slate-100 hover:border-slate-200/60"
+                style={{ borderTopColor: color }}
               >
-                <div className="bg-white p-3 rounded-xl shadow-sm">
-                  <Icon className="w-8 h-8" style={{ color: color }} />
+                <div className="bg-white p-2.5 rounded-xl shadow-sm border border-slate-100">
+                  <Icon className="w-7 h-7" style={{ color: color }} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[#032149] mb-2">{card.title}</h3>
+                  <h3 className="text-lg font-semibold text-[#032149] mb-1.5">{card.title}</h3>
                   <p className="text-slate-600 text-sm leading-relaxed">{card.desc}</p>
                 </div>
               </div>
