@@ -13,7 +13,9 @@ import {
   Menu,
   X,
   Loader2,
-  FileText
+  FileText,
+  MessageSquare,
+  Trophy
 } from 'lucide-react';
 import { User } from 'firebase/auth';
 import { signInWithGoogle, signOutUser, onAuthChange } from '@/lib/firebase';
@@ -59,10 +61,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Blog', href: '/admin/blog', icon: FileText },
+    { name: 'Casos de Éxito', href: '/admin/casos-de-exito', icon: Trophy },
     { name: 'Validación Técnica', href: '/admin/validation', icon: CheckCircle },
     { name: 'Métricas SEO', href: '/admin/seo', icon: Search },
     { name: 'Tracker GEO', href: '/admin/geo', icon: Bot },
     { name: 'Checklists', href: '/admin/checklist', icon: ClipboardList },
+    { name: 'Feedback', href: '/admin/feedback', icon: MessageSquare },
   ];
 
   if (loading) {

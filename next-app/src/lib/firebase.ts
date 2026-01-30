@@ -1,6 +1,8 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { translations, CaseStudy as StaticCaseStudy } from './translations';
+import { caseStudiesData, StaticCaseStudyData } from './caseStudiesData';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
@@ -230,6 +232,160 @@ export function onAuthChange(callback: (user: User | null) => void): () => void 
     }
     callback(user);
   });
+}
+
+// Case Studies
+export interface CaseStudy {
+  id: string;
+  slug: string;
+  company: string;
+  logo: string;
+  stat: string;
+  statLabel: string;
+  highlight: string;
+  summary: string;
+  challenge: string;
+  solution: string;
+  results: string[];
+  testimonial: string;
+  testimonialAuthor: string;
+  testimonialRole: string;
+  image: string;
+  videoUrl: string;
+  content: string;
+  mediaUrl: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+}
+
+export interface CaseStudyInput {
+  company: string;
+  logo: string;
+  stat: string;
+  statLabel: string;
+  highlight: string;
+  summary: string;
+  challenge: string;
+  solution: string;
+  results: string[];
+  testimonial: string;
+  testimonialAuthor: string;
+  testimonialRole: string;
+  image: string;
+  videoUrl: string;
+  content: string;
+  mediaUrl: string;
+}
+
+export async function getAllCaseStudies(): Promise<CaseStudy[]> {
+  try {
+    const casesRef = collection(db, 'artifacts', APP_ID, 'public', 'data', 'case_studies');
+    const q = query(casesRef, orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        slug: createSlug(data.company || ''),
+        company: data.company || '',
+        logo: data.logo || '',
+        stat: data.stat || '',
+        statLabel: data.statLabel || '',
+        highlight: data.highlight || '',
+        summary: data.summary || '',
+        challenge: data.challenge || '',
+        solution: data.solution || '',
+        results: data.results || [],
+        testimonial: data.testimonial || '',
+        testimonialAuthor: data.testimonialAuthor || '',
+        testimonialRole: data.testimonialRole || '',
+        image: data.image || '',
+        videoUrl: data.videoUrl || '',
+        content: data.content || '',
+        mediaUrl: data.mediaUrl || '',
+        createdAt: data.createdAt?.toDate() || null,
+        updatedAt: data.updatedAt?.toDate() || null,
+      };
+    });
+  } catch (error) {
+    console.error('Error fetching case studies:', error);
+    return [];
+  }
+}
+
+// Convert static case study from caseStudiesData to CaseStudy format
+function staticToFullCaseStudy(slug: string): CaseStudy | null {
+  const data = caseStudiesData[slug];
+  if (!data) return null;
+
+  return {
+    id: `static-${slug}`,
+    slug,
+    company: data.company,
+    logo: '',
+    stat: data.stat,
+    statLabel: data.label,
+    highlight: data.highlight,
+    summary: data.summary,
+    challenge: data.challenge,
+    solution: data.solution,
+    results: data.results || [],
+    testimonial: data.testimonial || '',
+    testimonialAuthor: data.testimonialAuthor || '',
+    testimonialRole: data.testimonialRole || '',
+    image: data.image || '',
+    videoUrl: data.videoUrl || '',
+    content: data.content || '',
+    mediaUrl: data.mediaUrl || '',
+    createdAt: null,
+    updatedAt: null,
+  };
+}
+
+export async function getCaseStudyBySlug(slug: string): Promise<CaseStudy | null> {
+  // First try to find in Firebase
+  const cases = await getAllCaseStudies();
+  const firebaseCase = cases.find((c) => c.slug === slug);
+  if (firebaseCase) {
+    return firebaseCase;
+  }
+
+  // If not found, try static case studies data (full content)
+  const staticCaseStudy = staticToFullCaseStudy(slug);
+  if (staticCaseStudy) {
+    return staticCaseStudy;
+  }
+
+  return null;
+}
+
+export async function getAllCaseStudySlugs(): Promise<string[]> {
+  const cases = await getAllCaseStudies();
+  return cases.map((c) => c.slug);
+}
+
+export async function createCaseStudy(caseStudy: CaseStudyInput): Promise<string> {
+  const casesRef = collection(db, 'artifacts', APP_ID, 'public', 'data', 'case_studies');
+  const docRef = await addDoc(casesRef, {
+    ...caseStudy,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
+  return docRef.id;
+}
+
+export async function updateCaseStudy(caseId: string, caseStudy: Partial<CaseStudyInput>): Promise<void> {
+  const caseRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'case_studies', caseId);
+  await updateDoc(caseRef, {
+    ...caseStudy,
+    updatedAt: serverTimestamp()
+  });
+}
+
+export async function deleteCaseStudy(caseId: string): Promise<void> {
+  const caseRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'case_studies', caseId);
+  await deleteDoc(caseRef);
 }
 
 export { db, auth, doc, getDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy };
