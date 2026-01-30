@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { getAllCaseStudies, createSlug, CaseStudy } from '@/lib/firebase';
-import { caseStudiesData } from '@/lib/caseStudiesData';
+import { getAllCaseStudies } from '@/lib/firebase';
 import CasosPageClient from './CasosPageClient';
 
 export const metadata: Metadata = {
@@ -20,40 +19,6 @@ export const revalidate = 3600;
 export const dynamic = 'force-static';
 
 export default async function CasosDeExitoPage() {
-  // Get cases from Firebase
-  const firebaseCases = await getAllCaseStudies();
-
-  // Get slugs of Firebase cases to avoid duplicates
-  const firebaseSlugs = new Set(firebaseCases.map(c => c.slug));
-
-  // Convert static cases to CaseStudy format (only those not in Firebase)
-  const staticCases: CaseStudy[] = Object.entries(caseStudiesData)
-    .filter(([slug]) => !firebaseSlugs.has(slug))
-    .map(([slug, data]) => ({
-      id: `static-${slug}`,
-      slug,
-      company: data.company,
-      logo: '',
-      stat: data.stat,
-      statLabel: data.label,
-      highlight: data.highlight,
-      summary: data.summary,
-      challenge: data.challenge,
-      solution: data.solution,
-      results: data.results || [],
-      testimonial: data.testimonial || '',
-      testimonialAuthor: data.testimonialAuthor || '',
-      testimonialRole: data.testimonialRole || '',
-      image: data.image || '',
-      videoUrl: data.videoUrl || '',
-      content: data.content || '',
-      mediaUrl: data.mediaUrl || '',
-      createdAt: null,
-      updatedAt: null,
-    }));
-
-  // Combine Firebase and static cases
-  const allCases = [...firebaseCases, ...staticCases];
-
-  return <CasosPageClient caseStudies={allCases} />;
+  const caseStudies = await getAllCaseStudies();
+  return <CasosPageClient caseStudies={caseStudies} />;
 }

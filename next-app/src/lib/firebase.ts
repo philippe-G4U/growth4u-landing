@@ -1,8 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
-import { translations, CaseStudy as StaticCaseStudy } from './translations';
-import { caseStudiesData, StaticCaseStudyData } from './caseStudiesData';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
@@ -314,50 +312,9 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
   }
 }
 
-// Convert static case study from caseStudiesData to CaseStudy format
-function staticToFullCaseStudy(slug: string): CaseStudy | null {
-  const data = caseStudiesData[slug];
-  if (!data) return null;
-
-  return {
-    id: `static-${slug}`,
-    slug,
-    company: data.company,
-    logo: '',
-    stat: data.stat,
-    statLabel: data.label,
-    highlight: data.highlight,
-    summary: data.summary,
-    challenge: data.challenge,
-    solution: data.solution,
-    results: data.results || [],
-    testimonial: data.testimonial || '',
-    testimonialAuthor: data.testimonialAuthor || '',
-    testimonialRole: data.testimonialRole || '',
-    image: data.image || '',
-    videoUrl: data.videoUrl || '',
-    content: data.content || '',
-    mediaUrl: data.mediaUrl || '',
-    createdAt: null,
-    updatedAt: null,
-  };
-}
-
 export async function getCaseStudyBySlug(slug: string): Promise<CaseStudy | null> {
-  // First try to find in Firebase
   const cases = await getAllCaseStudies();
-  const firebaseCase = cases.find((c) => c.slug === slug);
-  if (firebaseCase) {
-    return firebaseCase;
-  }
-
-  // If not found, try static case studies data (full content)
-  const staticCaseStudy = staticToFullCaseStudy(slug);
-  if (staticCaseStudy) {
-    return staticCaseStudy;
-  }
-
-  return null;
+  return cases.find((c) => c.slug === slug) || null;
 }
 
 export async function getAllCaseStudySlugs(): Promise<string[]> {
