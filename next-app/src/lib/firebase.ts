@@ -1,6 +1,7 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, orderBy, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { translations, CaseStudy as StaticCaseStudy } from './translations';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBGtatMbThV_pupfPk6ytO5omidlJrQLcw",
@@ -306,9 +307,48 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
   }
 }
 
+// Convert static case study from translations to CaseStudy format
+function staticToFullCaseStudy(staticCase: StaticCaseStudy): CaseStudy {
+  const slug = createSlug(staticCase.company);
+  return {
+    id: `static-${slug}`,
+    slug,
+    company: staticCase.company,
+    logo: '',
+    stat: staticCase.stat,
+    statLabel: staticCase.label,
+    highlight: staticCase.highlight,
+    summary: staticCase.summary,
+    challenge: staticCase.challenge,
+    solution: staticCase.solution,
+    results: [],
+    testimonial: '',
+    testimonialAuthor: '',
+    testimonialRole: '',
+    image: '',
+    content: '',
+    createdAt: null,
+    updatedAt: null,
+  };
+}
+
 export async function getCaseStudyBySlug(slug: string): Promise<CaseStudy | null> {
+  // First try to find in Firebase
   const cases = await getAllCaseStudies();
-  return cases.find((c) => c.slug === slug) || null;
+  const firebaseCase = cases.find((c) => c.slug === slug);
+  if (firebaseCase) {
+    return firebaseCase;
+  }
+
+  // If not found, try static translations
+  const staticCase = translations.es.cases.list.find(
+    (c) => createSlug(c.company) === slug
+  );
+  if (staticCase) {
+    return staticToFullCaseStudy(staticCase);
+  }
+
+  return null;
 }
 
 export async function getAllCaseStudySlugs(): Promise<string[]> {
