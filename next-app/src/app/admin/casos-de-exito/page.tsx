@@ -16,11 +16,9 @@ import {
   Upload,
   Link,
   Video,
-  FileImage,
-  Download
+  FileImage
 } from 'lucide-react';
 import { getAllCaseStudies, createCaseStudy, updateCaseStudy, deleteCaseStudy, CaseStudy, CaseStudyInput, createSlug } from '@/lib/firebase';
-import { caseStudiesData } from '@/lib/caseStudiesData';
 
 const NETLIFY_BUILD_HOOK = 'https://api.netlify.com/build_hooks/69738cc3fc679a8f858929cd';
 const CLOUDINARY_CLOUD_NAME = 'dsc0jsbkz';
@@ -37,7 +35,6 @@ export default function CaseStudiesManagementPage() {
   const [publishAfterSave, setPublishAfterSave] = useState(true);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
-  const [importing, setImporting] = useState(false);
 
   const [formData, setFormData] = useState<CaseStudyInput>({
     company: '',
@@ -233,58 +230,6 @@ export default function CaseStudiesManagementPage() {
 
   const previewSlug = createSlug(formData.company);
 
-  // Import static case studies to Firebase
-  const importStaticCases = async () => {
-    if (!confirm('¿Importar los 3 casos de éxito predefinidos (BNEXT, BIT2ME, GOCARDLESS) a Firebase? Los casos existentes con el mismo nombre serán omitidos.')) return;
-
-    setImporting(true);
-    try {
-      const existingSlugs = new Set(caseStudies.map(c => c.slug));
-      let imported = 0;
-
-      for (const [slug, data] of Object.entries(caseStudiesData)) {
-        if (existingSlugs.has(slug)) {
-          console.log(`Skipping ${data.company} - already exists`);
-          continue;
-        }
-
-        const caseInput: CaseStudyInput = {
-          company: data.company,
-          logo: '',
-          stat: data.stat,
-          statLabel: data.label,
-          highlight: data.highlight,
-          summary: data.summary,
-          challenge: data.challenge,
-          solution: data.solution,
-          results: data.results || [],
-          testimonial: data.testimonial || '',
-          testimonialAuthor: data.testimonialAuthor || '',
-          testimonialRole: data.testimonialRole || '',
-          image: data.image || '',
-          videoUrl: data.videoUrl || '',
-          content: data.content || '',
-          mediaUrl: data.mediaUrl || ''
-        };
-
-        await createCaseStudy(caseInput);
-        imported++;
-      }
-
-      loadCaseStudies();
-      alert(`Se importaron ${imported} casos de éxito a Firebase.`);
-
-      if (publishAfterSave && imported > 0) {
-        triggerDeploy();
-      }
-    } catch (error) {
-      console.error('Error importing case studies:', error);
-      alert('Error al importar los casos de éxito');
-    } finally {
-      setImporting(false);
-    }
-  };
-
   return (
     <div className="space-y-8">
       {/* Deploy Status */}
@@ -313,15 +258,6 @@ export default function CaseStudiesManagementPage() {
           <p className="text-slate-400 mt-2">Gestiona los casos de éxito de tus clientes</p>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={importStaticCases}
-            disabled={importing}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white rounded-lg transition-colors"
-            title="Importar casos predefinidos (BNEXT, BIT2ME, GOCARDLESS)"
-          >
-            {importing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
-            Importar
-          </button>
           <button
             onClick={triggerDeploy}
             disabled={deploying}
