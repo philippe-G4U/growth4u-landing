@@ -1,0 +1,45 @@
+---
+interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+
+const icons = [
+  // TrendingDown
+  `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`,
+  // Users2
+  `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><path d="M22 19a6 6 0 0 0-6-6 4 4 0 1 0 0-8"/></svg>`,
+  // Bot
+  `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>`,
+  // Landmark
+  `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>`,
+];
+
+const colors = ['#6351d5', '#3f45fe', '#6351d5', '#3f45fe'];
+---
+
+<section id="resultados" class="py-24 bg-white relative border-t border-slate-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#032149] tracking-tight">{t.results.title}</h2>
+      <p class="text-slate-600 text-lg leading-relaxed">{t.results.subtitle}</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {t.results.cards.map((card: any, i: number) => (
+        <div
+          class="bg-gradient-to-br from-white to-slate-50/50 p-6 rounded-2xl border-t-4 flex items-start gap-5 hover:shadow-md transition-all duration-300 ease-out border border-slate-100 hover:border-slate-200/60"
+          style={`border-top-color: ${colors[i]};`}
+        >
+          <div class="bg-white p-2.5 rounded-xl shadow-sm border border-slate-100">
+            <span class="w-7 h-7 flex items-center justify-center" style={`color: ${colors[i]};`} set:html={icons[i]} />
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-[#032149] mb-1.5">{card.title}</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">{card.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

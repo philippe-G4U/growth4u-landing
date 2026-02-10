@@ -1,0 +1,35 @@
+---
+import '../../styles/global.css';
+import AdminApp from '../../react/admin/AdminApp';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return [
+    { params: { path: undefined } },
+    { params: { path: 'blog' } },
+    { params: { path: 'casos-de-exito' } },
+    { params: { path: 'feedback' } },
+    { params: { path: 'seo' } },
+    { params: { path: 'geo' } },
+    { params: { path: 'validation' } },
+    { params: { path: 'checklist' } },
+  ];
+}
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin | Growth4U</title>
+    <link rel="icon" href="https://i.imgur.com/h5sWS3W.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+  <body class="font-sans">
+    <AdminApp client:only="react" />
+  </body>
+</html>

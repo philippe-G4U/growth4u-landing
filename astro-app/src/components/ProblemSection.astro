@@ -1,0 +1,38 @@
+---
+interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+
+const icons = [
+  // Megaphone
+  `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>`,
+  // TrendingUp
+  `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+  // ShieldAlert
+  `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>`,
+  // Users
+  `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+];
+---
+
+<section id="problema" class="py-24 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#032149] tracking-tight">{t.problem.title}</h2>
+      <p class="text-slate-600 max-w-2xl mx-auto text-lg leading-relaxed">{t.problem.subtitle}</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      {t.problem.cards.map((item: any, i: number) => (
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 ease-out group shadow-sm hover:shadow-md hover:border-slate-300/60 hover:-translate-y-1">
+          <div class="bg-[#3f45fe]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-[#3f45fe]/15 transition-colors duration-300 border border-[#3f45fe]/5">
+            <span class="text-[#3f45fe] w-6 h-6 flex items-center justify-center" set:html={icons[i]} />
+          </div>
+          <h3 class="text-lg font-bold mb-2.5 text-[#032149]">{item.title}</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

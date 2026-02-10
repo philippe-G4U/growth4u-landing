@@ -1,0 +1,148 @@
+---
+interface Props {
+  t: {
+    nav: {
+      problem: string;
+      results: string;
+      methodology: string;
+      cases: string;
+      team: string;
+      blog: string;
+      cta: string;
+    };
+  };
+  lang: 'es' | 'en';
+  bookingLink: string;
+}
+
+const { t, lang, bookingLink } = Astro.props;
+
+const langToggleHref = lang === 'es' ? '/en/' : '/';
+const langToggleLabel = lang === 'es' ? 'EN' : 'ES';
+const blogHref = lang === 'es' ? '/blog/' : '/en/blog/';
+
+const navLinks = [
+  { href: '#problema', label: t.nav.problem },
+  { href: '#resultados', label: t.nav.results },
+  { href: '#etapas', label: t.nav.methodology },
+  { href: '#casos', label: t.nav.cases },
+  { href: '#team', label: t.nav.team },
+];
+---
+
+<div class="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
+  <nav class="nav-island w-full max-w-6xl">
+    <div class="px-6 sm:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href={lang === 'es' ? '/' : '/en/'} class="flex items-center gap-0 cursor-pointer group flex-shrink-0">
+          <img
+            src="https://i.imgur.com/imHxGWI.png"
+            alt="Growth4U Logo"
+            class="h-5 md:h-6 w-auto object-contain transition-transform group-hover:scale-105"
+          />
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center gap-6">
+          <div class="flex items-baseline space-x-6">
+            {navLinks.map((link) => (
+              <a
+                href={link.href}
+                class="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]"
+              >
+                {link.label}
+              </a>
+            ))}
+            <a
+              href={blogHref}
+              class="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]"
+            >
+              {t.nav.blog}
+            </a>
+          </div>
+
+          <!-- Language Toggle -->
+          <a
+            href={langToggleHref}
+            class="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full text-xs font-bold text-[#032149] transition-colors border border-slate-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            {langToggleLabel}
+          </a>
+        </div>
+
+        <!-- Desktop CTA -->
+        <div class="hidden md:flex items-center gap-4">
+          <a
+            href={bookingLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transform hover:-translate-y-0.5 whitespace-nowrap"
+          >
+            {t.nav.cta}
+          </a>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div class="md:hidden flex items-center gap-4">
+          <a href={langToggleHref} class="text-[#032149] font-bold text-sm">
+            {langToggleLabel}
+          </a>
+          <button
+            id="mobile-menu-btn"
+            class="text-[#032149] hover:text-[#6351d5] focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div
+      id="mobile-menu"
+      class="hidden absolute top-20 left-0 right-0 mx-4 bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden"
+    >
+      <div class="px-4 pt-4 pb-6 space-y-2">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50"
+          >
+            {link.label}
+          </a>
+        ))}
+        <a
+          href={blogHref}
+          class="text-[#032149] hover:text-[#6351d5] block px-3 py-3 rounded-xl text-base font-medium hover:bg-slate-50"
+        >
+          {t.nav.blog}
+        </a>
+        <a
+          href={bookingLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-white bg-[#6351d5] font-bold block px-3 py-3 rounded-xl text-base mt-4 text-center whitespace-nowrap"
+        >
+          {t.nav.cta}
+        </a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<script>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+  // Close menu when clicking a link
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+    });
+  });
+</script>

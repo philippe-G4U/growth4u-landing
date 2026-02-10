@@ -1,0 +1,87 @@
+---
+interface Stage {
+  step: string;
+  title: string;
+  tag: string;
+  desc: string;
+  icon: string;
+  guaranteeTitle: string;
+  guarantees: string[];
+}
+
+interface Props {
+  t: {
+    methodology: {
+      title: string;
+      subtitle: string;
+      stages: Stage[];
+    };
+  };
+}
+
+const { t } = Astro.props;
+
+function renderBold(text: string): string {
+  return text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[#032149] font-bold">$1</strong>');
+}
+
+function getIconSvg(icon: string): string {
+  switch (icon) {
+    case 'search':
+      return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#45b6f7]"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>';
+    case 'trending-up':
+      return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#45b6f7]"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>';
+    case 'globe':
+      return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#45b6f7]"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
+    default:
+      return '';
+  }
+}
+---
+
+<section id="etapas" class="py-24 relative bg-slate-50 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-20">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#032149]">{t.methodology.title}</h2>
+      <p class="text-slate-600 text-lg">{t.methodology.subtitle}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {t.methodology.stages.map((stage) => (
+        <div class="relative group hover:-translate-y-2 transition-all duration-300">
+          <div class="bg-white rounded-3xl p-8 h-full flex flex-col shadow-lg border border-slate-100 hover:shadow-2xl hover:border-[#45b6f7]/30 transition-all">
+            <div class="mb-6">
+              <div class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">{stage.step}</div>
+              <div class="flex items-center gap-3 mb-4">
+                <h3 class="text-2xl font-extrabold text-[#032149] uppercase">{stage.title}</h3>
+                <Fragment set:html={getIconSvg(stage.icon)} />
+              </div>
+              <span class="inline-block px-3 py-1 bg-[#0faec1]/10 text-[#0faec1] text-xs font-bold rounded-full border border-[#0faec1]/20">
+                {stage.tag}
+              </span>
+            </div>
+
+            <div class="text-slate-600 text-sm leading-relaxed mb-8">
+              <span set:html={renderBold(stage.desc)} />
+            </div>
+
+            <div class="mt-auto bg-[#effcfd] rounded-2xl p-6 border border-[#0faec1]/10">
+              <div class="flex items-center gap-2 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#0faec1]"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                <span class="text-xs font-bold text-[#0faec1] uppercase tracking-wider">{stage.guaranteeTitle}</span>
+              </div>
+              <div class="space-y-1">
+                {stage.guarantees.map((guarantee) => (
+                  <div class="flex items-start gap-2 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#0faec1] mt-0.5 flex-shrink-0"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <p class="text-sm text-slate-700" set:html={renderBold(guarantee)} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium typography utilities */
+.tracking-tight-custom {
+  letter-spacing: -0.025em;
+}
+
+.heading-display {
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* Improved button transitions */
+.btn-primary {
+  @apply bg-[#6351d5] hover:bg-[#5242b8] text-white font-bold rounded-full transition-all duration-300 shadow-lg shadow-[#6351d5]/15 hover:shadow-xl hover:shadow-[#6351d5]/20;
+}
+
+.btn-secondary {
+  @apply bg-white hover:bg-slate-50 text-[#032149] font-bold rounded-full border border-slate-200 transition-all duration-300 hover:border-slate-300 hover:shadow-md;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #0284c7, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px -10px rgba(99, 81, 213, 0.12),
+    0 10px 20px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Subtle card style */
+.card-subtle {
+  @apply bg-white rounded-2xl border border-slate-200/60 shadow-sm;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-subtle:hover {
+  @apply border-slate-300/60 shadow-md;
+  transform: translateY(-2px);
+}
+
+/* Icon container style */
+.icon-container {
+  @apply flex items-center justify-center rounded-2xl transition-all duration-300;
+}
+
+/* Focus ring improvements */
+:focus-visible {
+  @apply outline-none ring-2 ring-[#6351d5]/50 ring-offset-2;
+}
+
+.nav-island {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.03),
+    0 10px 25px -5px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-island:hover {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 12px 30px -5px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Prose styles for blog content */
+.prose {
+  max-width: 65ch;
+}
+
+.prose h2 {
+  @apply text-2xl font-bold mt-8 mb-4 text-[#032149];
+}
+
+.prose h3 {
+  @apply text-xl font-bold mt-6 mb-3 text-[#032149];
+}
+
+.prose p {
+  @apply mb-4 leading-relaxed text-slate-700;
+}
+
+.prose ul {
+  @apply list-disc pl-5 mb-6 space-y-2 text-slate-700;
+}
+
+.prose ol {
+  @apply list-decimal pl-5 mb-6 space-y-2 text-slate-700;
+}
+
+.prose li {
+  @apply pl-1;
+}
+
+.prose strong {
+  @apply text-[#032149] font-bold;
+}
+
+.prose a {
+  @apply text-[#6351d5] underline hover:text-[#3f45fe] font-bold;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-[#6351d5] pl-4 italic my-4 text-slate-600 bg-slate-50 py-2 pr-2 rounded-r;
+}
+
+.prose table {
+  @apply min-w-full divide-y divide-slate-200 border border-slate-200 rounded-lg;
+}
+
+.prose thead {
+  @apply bg-slate-50;
+}
+
+.prose th {
+  @apply px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider;
+}
+
+.prose td {
+  @apply px-6 py-4 whitespace-nowrap text-sm text-slate-600 border-t border-slate-100;
+}
+
+/* Selection colors */
+::selection {
+  background-color: #45b6f7;
+  color: white;
+}

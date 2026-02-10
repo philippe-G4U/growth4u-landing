@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FeedbackForm from '../../react/FeedbackForm';
+---
+
+<BaseLayout
+  title="Feedback | Growth4U"
+  description="Comparte tu experiencia trabajando con Growth4U."
+  noindex={true}
+>
+  <FeedbackForm client:only="react" />
+</BaseLayout>

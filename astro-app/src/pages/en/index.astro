@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import ProblemSection from '../../components/ProblemSection.astro';
+import ResultsSection from '../../components/ResultsSection.astro';
+import MethodologySection from '../../components/MethodologySection.astro';
+import CaseStudies from '../../components/CaseStudies.astro';
+import TeamSection from '../../components/TeamSection.astro';
+import BlogPreviewSection from '../../components/BlogPreviewSection.astro';
+import Footer from '../../components/Footer.astro';
+import CookieBanner from '../../react/CookieBanner';
+import { getTranslations } from '../../i18n/utils';
+import { getAllPosts } from '../../lib/firebase-fetch';
+import { BOOKING_LINK, SITE_URL } from '../../lib/constants';
+
+const t = getTranslations('en');
+
+let posts: Awaited<ReturnType<typeof getAllPosts>> = [];
+try {
+  posts = await getAllPosts();
+} catch (e) {
+  console.warn('Could not fetch blog posts at build time:', e);
+}
+
+const professionalServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Growth4U',
+  description: 'Specialists in Growth Marketing for B2B and B2C Fintech. We create trust-based growth engines that reduce CAC and increase LTV.',
+  url: `${SITE_URL}/en/`,
+  areaServed: [
+    { '@type': 'Country', name: 'Spain' },
+    { '@type': 'Country', name: 'Portugal' },
+  ],
+  serviceType: ['Growth Marketing', 'Growth Hacking', 'Customer Acquisition', 'Trust Engine'],
+  knowsAbout: ['Fintech', 'B2B SaaS', 'B2C Finance', 'Neobanking', 'Crypto', 'Payments'],
+};
+---
+
+<BaseLayout
+  title="Growth4U | Fintech Growth Marketing B2B & B2C"
+  description="Specialists in Fintech Growth. We help you create a growth engine that lasts over time and reduces your CAC by leveraging the value of trust."
+  locale="en"
+  jsonLd={[professionalServiceSchema]}
+>
+  <Navbar t={t} lang="en" bookingLink={BOOKING_LINK} />
+  <HeroSection t={t} bookingLink={BOOKING_LINK} />
+  <ProblemSection t={t} />
+  <ResultsSection t={t} />
+  <MethodologySection t={t} />
+  <CaseStudies t={t} cases={t.cases.list} />
+  <TeamSection t={t} />
+  <BlogPreviewSection t={t} posts={posts} />
+  <Footer t={t} bookingLink={BOOKING_LINK} />
+  <CookieBanner client:visible />
+</BaseLayout>
