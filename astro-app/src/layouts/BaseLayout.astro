@@ -45,6 +45,15 @@ const organizationSchema = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <!-- Preconnect for faster external resource loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://i.imgur.com" />
+
+    <!-- Google Fonts - non-render-blocking -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" /></noscript>
+
     <!-- Title & Description -->
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -85,7 +94,18 @@ const organizationSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Google Analytics 4 -->
+    <!-- Organization Schema (always present) -->
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+    <!-- Additional JSON-LD schemas (per-page) -->
+    {jsonLd.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </head>
+  <body class="antialiased">
+    <slot />
+
+    <!-- Google Analytics 4 (deferred to after content) -->
     <script is:inline src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`} async></script>
     <script is:inline define:vars={{ GA4_ID }}>
       window.dataLayer = window.dataLayer || [];
@@ -94,23 +114,12 @@ const organizationSchema = {
       gtag('config', GA4_ID);
     </script>
 
-    <!-- Organization Schema (always present) -->
-    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
-
-    <!-- Additional JSON-LD schemas (per-page) -->
-    {jsonLd.map((schema) => (
-      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-    ))}
-
-    <!-- Trustpilot Invitation SDK -->
+    <!-- Trustpilot Invitation SDK (deferred to after content) -->
     <script is:inline define:vars={{ TRUSTPILOT_BU_ID }}>
       (function(w,d,s,r,n){w.TrustpilotObject=n;w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};
       a=d.createElement(s);a.async=1;a.src=r;a.type='text/java'+s;f=d.getElementsByTagName(s)[0];
       f.parentNode.insertBefore(a,f)})(window,document,'script','https://invitejs.trustpilot.com/tp.min.js','tp');
       tp('register', TRUSTPILOT_BU_ID);
     </script>
-  </head>
-  <body class="antialiased">
-    <slot />
   </body>
 </html>
