@@ -194,3 +194,105 @@ export async function getAllCaseStudySlugs(): Promise<string[]> {
   const cases = await getAllCaseStudies();
   return cases.map((c) => c.slug);
 }
+
+// Articles (gated content)
+export interface Article {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  excerpt: string;
+  image: string;
+  readTime: string;
+  author: string;
+  published: boolean;
+  createdAt: string | null;
+}
+
+export async function getAllArticles(): Promise<Article[]> {
+  try {
+    const url = `${FIRESTORE_BASE}/${COLLECTION_BASE}/articles`;
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    const data = await response.json();
+    const documents = data.documents || [];
+    return documents
+      .map((doc: any) => {
+        const d = parseDocument(doc);
+        return {
+          id: d._id,
+          title: d.title || '',
+          slug: createSlug(d.title || ''),
+          category: d.category || 'Estrategia',
+          excerpt: d.excerpt || '',
+          image: d.image || '',
+          readTime: d.readTime || '5 min lectura',
+          author: d.author || 'Equipo Growth4U',
+          published: d.published !== false,
+          createdAt: d.createdAt || null,
+        };
+      })
+      .filter((a: Article) => a.published);
+  } catch (error) {
+    console.error('Error fetching articles:', error);
+    return [];
+  }
+}
+
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
+  const articles = await getAllArticles();
+  return articles.find((a) => a.slug === slug) || null;
+}
+
+export async function getAllArticleSlugs(): Promise<string[]> {
+  const articles = await getAllArticles();
+  return articles.map((a) => a.slug);
+}
+
+// Lead Magnets
+export interface LeadMagnet {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  image: string;
+  contentUrl: string;
+  published: boolean;
+}
+
+export async function getAllLeadMagnets(): Promise<LeadMagnet[]> {
+  try {
+    const url = `${FIRESTORE_BASE}/${COLLECTION_BASE}/lead_magnets`;
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    const data = await response.json();
+    const documents = data.documents || [];
+    return documents
+      .map((doc: any) => {
+        const d = parseDocument(doc);
+        return {
+          id: d._id,
+          title: d.title || '',
+          slug: d.slug || createSlug(d.title || ''),
+          description: d.description || '',
+          image: d.image || '',
+          contentUrl: d.contentUrl || '',
+          published: d.published !== false,
+        };
+      })
+      .filter((m: LeadMagnet) => m.published);
+  } catch (error) {
+    console.error('Error fetching lead magnets:', error);
+    return [];
+  }
+}
+
+export async function getLeadMagnetBySlug(slug: string): Promise<LeadMagnet | null> {
+  const magnets = await getAllLeadMagnets();
+  return magnets.find((m) => m.slug === slug) || null;
+}
+
+export async function getAllLeadMagnetSlugs(): Promise<string[]> {
+  const magnets = await getAllLeadMagnets();
+  return magnets.map((m) => m.slug);
+}

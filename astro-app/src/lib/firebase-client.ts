@@ -255,4 +255,149 @@ export function onAuthChange(callback: (user: User | null) => void): () => void 
   });
 }
 
+// Articles
+export interface ArticleInput {
+  title: string;
+  category: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  readTime: string;
+  author: string;
+  published: boolean;
+}
+
+export interface ArticleLead {
+  nombre: string;
+  email: string;
+  tag: string;
+  articleSlug: string;
+  articleTitle: string;
+}
+
+// Lead Magnets
+export interface LeadMagnetInput {
+  title: string;
+  slug: string;
+  description: string;
+  image: string;
+  contentUrl: string;
+  published: boolean;
+}
+
+export interface LeadMagnetLead {
+  nombre: string;
+  email: string;
+  tag: string;
+  magnetSlug: string;
+  magnetTitle: string;
+}
+
+// Articles CRUD
+export async function getAllArticles() {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'articles');
+  const q = query(ref, orderBy('createdAt', 'desc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => {
+    const data = d.data();
+    return {
+      id: d.id,
+      title: data.title || '',
+      slug: (data.title || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-'),
+      category: data.category || 'Estrategia',
+      excerpt: data.excerpt || '',
+      content: data.content || '',
+      image: data.image || '',
+      readTime: data.readTime || '5 min lectura',
+      author: data.author || 'Equipo Growth4U',
+      published: data.published !== false,
+      createdAt: data.createdAt?.toDate() || null,
+    };
+  });
+}
+
+export async function createArticle(article: ArticleInput): Promise<string> {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'articles');
+  const docRef = await addDoc(ref, { ...article, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+  return docRef.id;
+}
+
+export async function updateArticle(id: string, article: Partial<ArticleInput>): Promise<void> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'articles', id);
+  await updateDoc(ref, { ...article, updatedAt: serverTimestamp() });
+}
+
+export async function deleteArticle(id: string): Promise<void> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'articles', id);
+  await deleteDoc(ref);
+}
+
+export async function saveArticleLead(data: ArticleLead): Promise<void> {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'article_leads');
+  await addDoc(ref, { ...data, createdAt: serverTimestamp() });
+}
+
+export async function getArticleById(id: string): Promise<{ content: string } | null> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'articles', id);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return null;
+  return { content: snap.data().content || '' };
+}
+
+export async function getAllArticleLeads() {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'article_leads');
+  const q = query(ref, orderBy('createdAt', 'desc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() as any }));
+}
+
+// Lead Magnets CRUD
+export async function getAllLeadMagnets() {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnets');
+  const q = query(ref, orderBy('createdAt', 'desc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => {
+    const data = d.data();
+    const slugVal = data.slug || (data.title || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-');
+    return {
+      id: d.id,
+      title: data.title || '',
+      slug: slugVal,
+      description: data.description || '',
+      image: data.image || '',
+      contentUrl: data.contentUrl || '',
+      published: data.published !== false,
+      createdAt: data.createdAt?.toDate() || null,
+    };
+  });
+}
+
+export async function createLeadMagnet(magnet: LeadMagnetInput): Promise<string> {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnets');
+  const docRef = await addDoc(ref, { ...magnet, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+  return docRef.id;
+}
+
+export async function updateLeadMagnet(id: string, magnet: Partial<LeadMagnetInput>): Promise<void> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnets', id);
+  await updateDoc(ref, { ...magnet, updatedAt: serverTimestamp() });
+}
+
+export async function deleteLeadMagnet(id: string): Promise<void> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnets', id);
+  await deleteDoc(ref);
+}
+
+export async function saveLeadMagnetLead(data: LeadMagnetLead): Promise<void> {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnet_leads');
+  await addDoc(ref, { ...data, createdAt: serverTimestamp() });
+}
+
+export async function getAllLeadMagnetLeads() {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnet_leads');
+  const q = query(ref, orderBy('createdAt', 'desc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() as any }));
+}
+
 export { db, auth, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy, limit, where, serverTimestamp };

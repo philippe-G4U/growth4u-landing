@@ -1,0 +1,348 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import CookieBanner from '../../../react/CookieBanner';
+import { getTranslations } from '../../../i18n/utils';
+import { BOOKING_LINK, SITE_URL } from '../../../lib/constants';
+
+const t = getTranslations('es');
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'GEO para Fintechs - Generative Engine Optimization',
+  description: 'Servicio de optimización para motores generativos (ChatGPT, Perplexity, Gemini) especializado en fintechs. Posicionamos tu fintech en las respuestas de IA en el mercado español.',
+  provider: {
+    '@type': 'ProfessionalService',
+    name: 'Growth4U',
+    url: SITE_URL,
+  },
+  areaServed: [
+    { '@type': 'Country', name: 'Spain' },
+    { '@type': 'Country', name: 'Portugal' },
+  ],
+  serviceType: 'Generative Engine Optimization',
+  audience: { '@type': 'Audience', audienceType: 'Fintech B2B y B2C' },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${SITE_URL}/servicios/` },
+    { '@type': 'ListItem', position: 3, name: 'GEO para Fintechs', item: `${SITE_URL}/servicios/geo-para-fintechs/` },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Qué es GEO (Generative Engine Optimization)?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'GEO es la disciplina de optimizar la presencia de una marca en motores de respuesta generativos como ChatGPT, Perplexity, Google AI Overviews y Gemini. A diferencia del SEO tradicional que posiciona en listas de resultados, GEO se centra en que la IA cite y recomiende tu marca directamente en sus respuestas.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Por qué las fintechs en España necesitan GEO?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Cada vez más usuarios españoles consultan IA para recomendaciones financieras. Si tu fintech no aparece cuando alguien pregunta "mejor app de pagos en España" o "neobancos recomendados", pierdes tráfico cualificado que va directamente a competidores optimizados para IA.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cuánto tarda en verse resultados con GEO?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Los primeros resultados en GEO se ven entre 4-8 semanas, ya que los modelos de IA actualizan sus fuentes con mayor frecuencia que el índice tradicional de Google. El posicionamiento pleno suele consolidarse en 3-6 meses.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿GEO sustituye al SEO tradicional?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. GEO complementa al SEO. El SEO sigue siendo importante para Google Search. GEO añade optimización específica para ChatGPT, Perplexity, Google AI Overviews y otros motores generativos que captan cada vez más tráfico de búsqueda.',
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="GEO para Fintechs: Generative Engine Optimization en España | Growth4U"
+  description="Posiciona tu fintech en las respuestas de ChatGPT, Perplexity y Gemini. Servicio GEO especializado en fintechs para el mercado español. Primera agencia GEO fintech en España."
+  jsonLd={[serviceSchema, breadcrumbSchema, faqSchema]}
+>
+  <Navbar t={t} lang="es" bookingLink={BOOKING_LINK} />
+  <CookieBanner client:idle />
+
+  <!-- Hero -->
+  <section class="pt-44 pb-20 bg-white relative overflow-hidden">
+    <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
+      <span class="inline-block px-4 py-2 rounded-full bg-[#6351d5]/10 text-[#6351d5] font-bold text-sm mb-6">
+        GENERATIVE ENGINE OPTIMIZATION
+      </span>
+      <h1 class="text-4xl md:text-6xl font-extrabold text-[#032149] mb-6">
+        GEO para Fintechs: <span class="bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent">aparece en las respuestas de la IA</span>
+      </h1>
+      <p class="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+        Cuando un usuario pregunta a ChatGPT "mejor neobanco en España", ¿aparece tu fintech? Si no, estás perdiendo los clientes más cualificados del mercado.
+      </p>
+      <div class="mt-10">
+        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transition-all transform hover:-translate-y-0.5">
+          Consulta GEO Gratis
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qué es GEO -->
+  <section class="py-20 bg-slate-50 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">¿Qué es Generative Engine Optimization (GEO)?</h2>
+      <div class="prose prose-lg prose-slate max-w-none">
+        <p class="text-lg text-slate-600 leading-relaxed">
+          <strong>GEO (Generative Engine Optimization)</strong> es la disciplina que optimiza la presencia digital de una marca para que los motores de IA generativa la citen, recomienden y posicionen en sus respuestas.
+        </p>
+        <p class="text-lg text-slate-600 leading-relaxed">
+          Mientras el SEO tradicional busca posicionar en una lista de 10 resultados azules, <strong>GEO busca ser LA respuesta</strong>. Cuando un usuario pregunta a ChatGPT, Perplexity, Gemini o Google AI Overviews "¿cuál es la mejor fintech para pagos B2B en España?", el motor generativo sintetiza información de múltiples fuentes y produce una recomendación directa. Si tu marca no está optimizada para este proceso, simplemente no existes en el canal de adquisición de mayor crecimiento.
+        </p>
+        <p class="text-lg text-slate-600 leading-relaxed">
+          Según estudios recientes, <strong>el 83% de usuarios prefieren buscar en IA</strong> antes que en Google tradicional, y en el sector financiero español esta tendencia se acelera: los usuarios buscan confianza y recomendaciones claras, exactamente lo que los motores generativos ofrecen.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO vs GEO -->
+  <section class="py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">SEO tradicional vs. GEO: ¿en qué se diferencian?</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b-2 border-[#6351d5]">
+              <th class="py-4 pr-6 text-[#032149] font-extrabold">Aspecto</th>
+              <th class="py-4 pr-6 text-slate-500 font-bold">SEO Tradicional</th>
+              <th class="py-4 text-[#6351d5] font-bold">GEO</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-600">
+            <tr class="border-b border-slate-100">
+              <td class="py-4 pr-6 font-bold text-[#032149]">Objetivo</td>
+              <td class="py-4 pr-6">Posición en lista de resultados</td>
+              <td class="py-4">Ser citado en la respuesta de IA</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="py-4 pr-6 font-bold text-[#032149]">Formato</td>
+              <td class="py-4 pr-6">10 enlaces azules</td>
+              <td class="py-4">Respuesta conversacional directa</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="py-4 pr-6 font-bold text-[#032149]">Señales clave</td>
+              <td class="py-4 pr-6">Backlinks, keywords, autoridad de dominio</td>
+              <td class="py-4">Citabilidad, schema, menciones, autoridad E-E-A-T</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="py-4 pr-6 font-bold text-[#032149]">Plataformas</td>
+              <td class="py-4 pr-6">Google, Bing</td>
+              <td class="py-4">ChatGPT, Perplexity, Gemini, Google AI Overviews</td>
+            </tr>
+            <tr>
+              <td class="py-4 pr-6 font-bold text-[#032149]">Tiempo a resultados</td>
+              <td class="py-4 pr-6">6-12 meses</td>
+              <td class="py-4">4-8 semanas (primeros resultados)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metodología GEO -->
+  <section class="py-20 bg-slate-50 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-4">Nuestro GEO Stack para Fintechs: 4 capas</h2>
+      <p class="text-lg text-slate-600 mb-12">Un proceso probado para posicionar fintechs en los motores de IA del mercado español.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-2xl p-8 border border-slate-100">
+          <div class="w-10 h-10 bg-[#6351d5]/10 rounded-xl flex items-center justify-center mb-4">
+            <span class="text-[#6351d5] font-extrabold text-lg">1</span>
+          </div>
+          <h3 class="text-xl font-extrabold text-[#032149] mb-3">Auditoría de Visibilidad IA</h3>
+          <p class="text-slate-600 leading-relaxed">Analizamos cómo los LLMs perciben tu marca hoy. Testeamos queries reales en ChatGPT, Perplexity y Gemini para medir tu Share of Mind actual en el mercado español fintech.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 border border-slate-100">
+          <div class="w-10 h-10 bg-[#6351d5]/10 rounded-xl flex items-center justify-center mb-4">
+            <span class="text-[#6351d5] font-extrabold text-lg">2</span>
+          </div>
+          <h3 class="text-xl font-extrabold text-[#032149] mb-3">Optimización Técnica</h3>
+          <p class="text-slate-600 leading-relaxed">Implementamos schema markup avanzado (Service, Organization, FAQPage), archivo llms.txt, contenido estructurado para extracción por IA, y optimización de crawlers de IA.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 border border-slate-100">
+          <div class="w-10 h-10 bg-[#6351d5]/10 rounded-xl flex items-center justify-center mb-4">
+            <span class="text-[#6351d5] font-extrabold text-lg">3</span>
+          </div>
+          <h3 class="text-xl font-extrabold text-[#032149] mb-3">Autoridad de Contenido</h3>
+          <p class="text-slate-600 leading-relaxed">Creamos contenido citável con datos propios, definiciones claras, y estructuras que los LLMs pueden extraer y referenciar. Priorizamos contenido en español sobre fintech y regulación española.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 border border-slate-100">
+          <div class="w-10 h-10 bg-[#6351d5]/10 rounded-xl flex items-center justify-center mb-4">
+            <span class="text-[#6351d5] font-extrabold text-lg">4</span>
+          </div>
+          <h3 class="text-xl font-extrabold text-[#032149] mb-3">Red de Citaciones</h3>
+          <p class="text-slate-600 leading-relaxed">Construimos una red de menciones en fuentes que los LLMs indexan: medios especializados, directorios fintech, publicaciones del sector financiero español y bases de conocimiento relevantes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resultados -->
+  <section class="py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">Resultados con GEO en Fintech</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div class="text-center">
+          <p class="text-5xl font-extrabold bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent mb-2">+340%</p>
+          <p class="text-slate-600 font-medium">Crecimiento orgánico en 6 meses</p>
+        </div>
+        <div class="text-center">
+          <p class="text-5xl font-extrabold bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent mb-2">12%</p>
+          <p class="text-slate-600 font-medium">Share of Mind en queries IA</p>
+        </div>
+        <div class="text-center">
+          <p class="text-5xl font-extrabold bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent mb-2">-70%</p>
+          <p class="text-slate-600 font-medium">Reducción de CAC (BIT2ME)</p>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/casos-de-exito/bit2me/" class="inline-flex items-center justify-center gap-2 border border-[#6351d5] text-[#6351d5] font-bold py-3 px-6 rounded-full hover:bg-[#6351d5]/5 transition-all">
+          Ver caso BIT2ME
+        </a>
+        <a href="/casos-de-exito/bnext/" class="inline-flex items-center justify-center gap-2 border border-[#6351d5] text-[#6351d5] font-bold py-3 px-6 rounded-full hover:bg-[#6351d5]/5 transition-all">
+          Ver caso BNEXT
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Por qué fintech necesita GEO -->
+  <section class="py-20 bg-slate-50 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">¿Por qué las fintechs en España necesitan GEO?</h2>
+      <div class="space-y-6 text-lg text-slate-600 leading-relaxed">
+        <p>El sector fintech español vive un momento de transformación. Con la entrada en vigor progresiva de PSD3 y el EU AI Act, los usuarios buscan cada vez más recomendaciones de confianza. Y las buscan en ChatGPT, no en Google.</p>
+        <p>Las fintechs que no optimicen para motores generativos se enfrentan a un problema crítico: <strong>invisibilidad en el canal de adquisición de mayor crecimiento</strong>. Cuando un CEO busca "mejor plataforma de pagos B2B España" en ChatGPT y tu competidor aparece pero tú no, pierdes un lead de alta intención sin siquiera saberlo.</p>
+        <p>GEO es especialmente relevante para fintechs porque el sector financiero es categoría YMYL (Your Money Your Life) en Google y en los LLMs. Esto significa que los estándares de calidad, confianza y autoridad son más exigentes, y las marcas que cumplan estos criterios serán las citadas por defecto.</p>
+        <p>En Growth4U combinamos GEO con nuestro <a href="/servicios/trust-engine/" class="text-[#6351d5] font-bold hover:underline">Trust Engine</a> para crear un efecto multiplicador: la confianza que construimos offline refuerza la citabilidad online, y viceversa.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">Preguntas frecuentes sobre GEO</h2>
+      <div class="space-y-4">
+        <details class="group bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
+          <summary class="flex items-center justify-between cursor-pointer p-6 font-bold text-[#032149] hover:text-[#6351d5] transition-colors">
+            ¿Qué es GEO (Generative Engine Optimization)?
+            <svg class="w-5 h-5 transition-transform group-open:rotate-180 flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-6 text-slate-600 leading-relaxed">
+            GEO es la disciplina de optimizar la presencia de una marca en motores de respuesta generativos como ChatGPT, Perplexity, Google AI Overviews y Gemini. A diferencia del SEO tradicional que posiciona en listas de resultados, GEO se centra en que la IA cite y recomiende tu marca directamente en sus respuestas.
+          </div>
+        </details>
+        <details class="group bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
+          <summary class="flex items-center justify-between cursor-pointer p-6 font-bold text-[#032149] hover:text-[#6351d5] transition-colors">
+            ¿Por qué las fintechs en España necesitan GEO?
+            <svg class="w-5 h-5 transition-transform group-open:rotate-180 flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-6 text-slate-600 leading-relaxed">
+            Cada vez más usuarios españoles consultan IA para recomendaciones financieras. Si tu fintech no aparece cuando alguien pregunta "mejor app de pagos en España" o "neobancos recomendados", pierdes tráfico cualificado que va directamente a competidores optimizados para IA.
+          </div>
+        </details>
+        <details class="group bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
+          <summary class="flex items-center justify-between cursor-pointer p-6 font-bold text-[#032149] hover:text-[#6351d5] transition-colors">
+            ¿Cuánto tarda en verse resultados con GEO?
+            <svg class="w-5 h-5 transition-transform group-open:rotate-180 flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-6 text-slate-600 leading-relaxed">
+            Los primeros resultados en GEO se ven entre 4-8 semanas, ya que los modelos de IA actualizan sus fuentes con mayor frecuencia que el índice tradicional de Google. El posicionamiento pleno suele consolidarse en 3-6 meses.
+          </div>
+        </details>
+        <details class="group bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
+          <summary class="flex items-center justify-between cursor-pointer p-6 font-bold text-[#032149] hover:text-[#6351d5] transition-colors">
+            ¿GEO sustituye al SEO tradicional?
+            <svg class="w-5 h-5 transition-transform group-open:rotate-180 flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-6 text-slate-600 leading-relaxed">
+            No. GEO complementa al SEO. El SEO sigue siendo importante para Google Search. GEO añade optimización específica para ChatGPT, Perplexity, Google AI Overviews y otros motores generativos que captan cada vez más tráfico de búsqueda.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Otros servicios -->
+  <section class="py-20 bg-slate-50 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl font-extrabold text-[#032149] mb-8">Servicios complementarios</h2>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/servicios/growth-marketing-fintech/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">
+          Growth Marketing Fintech
+        </a>
+        <a href="/servicios/trust-engine/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">
+          Trust Engine
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog posts relacionados -->
+  <section class="py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-2xl font-extrabold text-[#032149] mb-8">Artículos sobre GEO</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="/blog/geo-para-fintechs-como-aparecer-cuando-chatgpt-busca-mejor-banco-digital-espana/" class="group bg-slate-50 rounded-xl p-6 hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100 transition-all">
+          <h3 class="font-bold text-[#032149] group-hover:text-[#6351d5] transition-colors mb-2">GEO para Fintechs: cómo aparecer cuando ChatGPT busca "mejor banco digital España"</h3>
+          <p class="text-sm text-slate-500">El GEO Stack de 4 capas para pasar de ser un resultado de Google a ser la respuesta de la IA.</p>
+        </a>
+        <a href="/blog/ha-muerto-el-seo-bienvenido-a-la-era-del-geo-generative-engine-optimization/" class="group bg-slate-50 rounded-xl p-6 hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100 transition-all">
+          <h3 class="font-bold text-[#032149] group-hover:text-[#6351d5] transition-colors mb-2">¿Ha muerto el SEO? Bienvenido a la era del GEO</h3>
+          <p class="text-sm text-slate-500">La evolución del posicionamiento orgánico hacia los motores generativos.</p>
+        </a>
+        <a href="/blog/como-aparecer-en-chatgpt-cuando-un-ceo-busca-mejor-fintech-espana/" class="group bg-slate-50 rounded-xl p-6 hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100 transition-all">
+          <h3 class="font-bold text-[#032149] group-hover:text-[#6351d5] transition-colors mb-2">Cómo aparecer en ChatGPT cuando un CEO busca "mejor fintech España"</h3>
+          <p class="text-sm text-slate-500">Guía práctica para posicionar tu marca en las respuestas de IA.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-gradient-to-br from-[#6351d5] to-[#3f45fe] rounded-3xl p-12 md:p-16 text-center text-white">
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">¿Tu fintech aparece en ChatGPT?</h2>
+        <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Agenda una consulta GEO gratuita y te mostramos cómo los LLMs ven tu marca hoy.</p>
+        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-white text-[#6351d5] font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all">
+          Consulta GEO Gratis
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer t={t} bookingLink={BOOKING_LINK} />
+</BaseLayout>

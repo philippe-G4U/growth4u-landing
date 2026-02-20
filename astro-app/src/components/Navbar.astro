@@ -21,12 +21,15 @@ const langToggleHref = lang === 'es' ? '/en/' : '/';
 const langToggleLabel = lang === 'es' ? 'EN' : 'ES';
 const blogHref = lang === 'es' ? '/blog/' : '/en/blog/';
 
+const servicesHref = lang === 'es' ? '/servicios/' : '/en/servicios/';
+
 const navLinks = [
   { href: '#problema', label: t.nav.problem },
   { href: '#resultados', label: t.nav.results },
   { href: '#etapas', label: t.nav.methodology },
   { href: '#casos', label: t.nav.cases },
   { href: '#team', label: t.nav.team },
+  { href: servicesHref, label: 'Servicios' },
 ];
 ---
 

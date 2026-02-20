@@ -28,15 +28,33 @@ const { t, bookingLink } = Astro.props;
         {t.footer.ctaCall}
       </a>
     </div>
-    <div class="border-t border-white/10 py-8 flex flex-col md:flex-row justify-between items-center text-slate-400 text-sm">
-      <p>{t.footer.rights}</p>
-      <div class="flex gap-6 mt-4 md:mt-0">
-        <a href="/privacidad/" class="hover:text-white transition-colors duration-300 hover:underline underline-offset-4">
-          {t.footer.privacy}
-        </a>
-        <a href="/cookies/" class="hover:text-white transition-colors duration-300 hover:underline underline-offset-4">
-          {t.footer.terms}
-        </a>
+    <div class="border-t border-white/10 py-8">
+      <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Servicios</p>
+          <div class="flex flex-col gap-2">
+            <a href="/servicios/geo-para-fintechs/" class="text-slate-400 hover:text-white transition-colors text-sm">GEO para Fintechs</a>
+            <a href="/servicios/growth-marketing-fintech/" class="text-slate-400 hover:text-white transition-colors text-sm">Growth Marketing Fintech</a>
+            <a href="/servicios/trust-engine/" class="text-slate-400 hover:text-white transition-colors text-sm">Trust Engine</a>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Recursos</p>
+          <div class="flex flex-col gap-2">
+            <a href="/blog/" class="text-slate-400 hover:text-white transition-colors text-sm">Blog</a>
+            <a href="/casos-de-exito/" class="text-slate-400 hover:text-white transition-colors text-sm">Casos de Éxito</a>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Legal</p>
+          <div class="flex flex-col gap-2">
+            <a href="/privacidad/" class="text-slate-400 hover:text-white transition-colors text-sm">{t.footer.privacy}</a>
+            <a href="/cookies/" class="text-slate-400 hover:text-white transition-colors text-sm">{t.footer.terms}</a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-slate-400 text-sm">
+        <p>{t.footer.rights}</p>
       </div>
     </div>
   </div>

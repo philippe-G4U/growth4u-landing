@@ -1,0 +1,49 @@
+---
+import type { BlogPost } from '../lib/firebase-fetch';
+
+interface Props {
+  currentSlug: string;
+  currentCategory: string;
+  allPosts: BlogPost[];
+  maxPosts?: number;
+}
+
+const { currentSlug, currentCategory, allPosts, maxPosts = 3 } = Astro.props;
+
+const relatedPosts = allPosts
+  .filter((p) => p.slug !== currentSlug)
+  .sort((a, b) => {
+    const aMatch = a.category === currentCategory ? 1 : 0;
+    const bMatch = b.category === currentCategory ? 1 : 0;
+    if (aMatch !== bMatch) return bMatch - aMatch;
+    return (b.createdAt || '').localeCompare(a.createdAt || '');
+  })
+  .slice(0, maxPosts);
+---
+
+{relatedPosts.length > 0 && (
+  <section class="mt-16 pt-10 border-t border-slate-200">
+    <h3 class="text-2xl font-bold text-[#032149] mb-8">Artículos relacionados</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {relatedPosts.map((post) => (
+        <a href={`/blog/${post.slug}/`} class="group">
+          <div class="relative overflow-hidden rounded-xl mb-3 aspect-video bg-slate-100">
+            {post.image && (
+              <img
+                src={post.image}
+                alt={post.title}
+                class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+            )}
+            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide">
+              {post.category}
+            </div>
+          </div>
+          <h4 class="font-bold text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2 mb-1">{post.title}</h4>
+          <p class="text-sm text-slate-500">{post.readTime}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+)}

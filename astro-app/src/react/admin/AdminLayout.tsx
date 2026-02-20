@@ -12,7 +12,9 @@ import {
   Loader2,
   FileText,
   MessageSquare,
-  Trophy
+  Trophy,
+  BookOpen,
+  Download,
 } from 'lucide-react';
 import type { User } from 'firebase/auth';
 import { signInWithGoogle, signOutUser, onAuthChange } from '../../lib/firebase-client';
@@ -51,6 +53,8 @@ export default function AdminLayout() {
     { name: 'Dashboard', href: '/admin/', icon: LayoutDashboard },
     { name: 'Blog', href: '/admin/blog/', icon: FileText },
     { name: 'Casos de Éxito', href: '/admin/casos-de-exito/', icon: Trophy },
+    { name: 'Artículos', href: '/admin/articulos/', icon: BookOpen },
+    { name: 'Lead Magnets', href: '/admin/lead-magnets/', icon: Download },
     { name: 'Validación Técnica', href: '/admin/validation/', icon: CheckCircle },
     { name: 'Métricas SEO', href: '/admin/seo/', icon: Search },
     { name: 'Tracker GEO', href: '/admin/geo/', icon: Bot },

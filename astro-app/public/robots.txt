@@ -20,5 +20,14 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
 # Mapa del sitio
 Sitemap: https://growth4u.io/sitemap-index.xml

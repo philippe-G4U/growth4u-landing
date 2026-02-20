@@ -1,0 +1,104 @@
+---
+interface Props {
+  category: string;
+}
+
+const { category } = Astro.props;
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const categoryFAQs: Record<string, FAQItem[]> = {
+  'GEO': [
+    {
+      question: '¿Cómo puedo hacer que mi fintech aparezca en ChatGPT?',
+      answer: 'Para aparecer en ChatGPT necesitas: contenido de alta autoridad citado por fuentes externas, schema markup correcto (Organization, Service), presencia en directorios relevantes, y un perfil de menciones consistente. Growth4U implementa todo esto con su servicio GEO para Fintechs.',
+    },
+    {
+      question: '¿GEO sustituye al SEO tradicional?',
+      answer: 'No, GEO complementa al SEO. El SEO tradicional sigue siendo importante para Google Search. GEO añade optimización específica para ChatGPT, Perplexity, Google AI Overviews y otros motores generativos que cada vez captan más tráfico.',
+    },
+    {
+      question: '¿Qué métricas se usan para medir GEO?',
+      answer: 'Las métricas clave de GEO incluyen: frecuencia de citación en respuestas de IA, share of voice en queries generativas relevantes, tráfico referido desde plataformas de IA, y posición en AI Overviews de Google.',
+    },
+  ],
+  'Estrategia': [
+    {
+      question: '¿Cuál es la mejor estrategia de growth para una fintech en España?',
+      answer: 'Depende de tu etapa. Para fintechs buscando PMF: iteración rápida de canales y mensajes. Para fintechs escalando (10K-500K usuarios): Trust Engine con posicionamiento en medios de autoridad y referral. Para expansión: go-to-market localizado.',
+    },
+    {
+      question: '¿Cuánto tarda en funcionar una estrategia de growth marketing fintech?',
+      answer: 'Los primeros indicadores de mejora se ven en 8-12 semanas. El efecto compuesto del Trust Engine se consolida entre los 4-6 meses. A diferencia del paid media, los resultados mejoran con el tiempo en lugar de degradarse.',
+    },
+    {
+      question: '¿Qué diferencia a Growth4U de otras agencias de marketing en España?',
+      answer: 'Somos la única agencia en España especializada exclusivamente en growth para fintechs. Entendemos la regulación (CNMV), la fricción de confianza del usuario financiero y las métricas que importan (CAC, LTV, activación).',
+    },
+  ],
+  'Growth': [
+    {
+      question: '¿Cómo se reduce el CAC de una fintech?',
+      answer: 'Reducimos el CAC sustituyendo la dependencia de paid media por sistemas de confianza orgánica: posicionamiento en medios de autoridad, programas de referral estructurados, automatización con IA y optimización GEO. Hemos demostrado reducciones de hasta el 70%.',
+    },
+    {
+      question: '¿Qué es el Trust Engine?',
+      answer: 'El Trust Engine es la metodología propietaria de Growth4U que construye motores de crecimiento basados en confianza. Sustituye el gasto publicitario inflado por sistemas de confianza orgánica y viralidad estructurada.',
+    },
+    {
+      question: '¿Es posible escalar una fintech sin paid media?',
+      answer: 'Sí. Con el método de los 100 nichos y el Trust Engine, hemos escalado fintechs a 500K usuarios sin depender de Meta Ads o Google Ads. La clave es construir activos de crecimiento propios que se compoundan con el tiempo.',
+    },
+  ],
+  'Producto': [
+    {
+      question: '¿Cómo mejorar la tasa de activación de una fintech?',
+      answer: 'La clave es la regla de los 10 minutos: el usuario debe llegar a su momento de valor en los primeros 10 minutos. Esto implica simplificar KYC, eliminar fricciones innecesarias y diseñar un onboarding que genere confianza desde el primer segundo.',
+    },
+    {
+      question: '¿Por qué los leads mueren en el KYC?',
+      answer: 'El 90% de los leads abandonan el KYC porque el proceso genera desconfianza o es demasiado largo. La solución es diseño de confianza: explicar por qué pides cada dato, mostrar sellos de seguridad y reducir pasos al mínimo viable regulatorio.',
+    },
+    {
+      question: '¿Qué métricas de producto importan en fintech?',
+      answer: 'Las métricas clave son: tasa de activación (no registros), tiempo al valor, ratio de completación KYC, retención a 30/60/90 días, y NPS. Las vanity metrics como descargas o registros no predicen crecimiento sostenible.',
+    },
+  ],
+};
+
+const faqs = categoryFAQs[category] || categoryFAQs['Estrategia'];
+
+const faqSchemaData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<section class="mt-12 pt-8 border-t border-slate-100">
+  <h3 class="text-2xl font-bold text-[#032149] mb-6">Preguntas frecuentes</h3>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="group bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
+        <summary class="flex items-center justify-between cursor-pointer p-5 font-bold text-[#032149] hover:text-[#6351d5] transition-colors text-sm md:text-base">
+          {faq.question}
+          <svg class="w-5 h-5 transition-transform group-open:rotate-180 flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="px-5 pb-5 text-slate-600 leading-relaxed text-sm md:text-base">
+          {faq.answer}
+        </div>
+      </details>
+    ))}
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchemaData)} />
+</section>

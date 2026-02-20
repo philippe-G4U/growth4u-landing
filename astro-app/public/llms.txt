@@ -1,0 +1,54 @@
+# Growth4U - Especialistas en Growth Marketing para Fintech
+
+> Growth4U es una agencia de growth marketing especializada exclusivamente en fintech B2B y B2C, con base en España. Creamos motores de crecimiento basados en confianza (Trust Engine) que reducen el CAC hasta un 70% y aumentan el LTV de forma sostenible.
+
+## Servicios principales
+
+- **GEO para Fintechs**: Optimización para motores generativos (ChatGPT, Perplexity, Gemini, Google AI Overviews). Posicionamos fintechs en las respuestas de IA cuando un usuario pregunta por servicios financieros en España.
+- **Growth Marketing Fintech**: Estrategia integral de crecimiento para fintechs en todas sus etapas: validación de PMF (0 a tracción real), escalado (10K a 500K usuarios) y expansión internacional.
+- **Trust Engine (Metodología Propietaria)**: Sistema que sustituye la dependencia de paid media por un motor de confianza orgánica, programas de referral estructurados y viralidad diseñada. Resultado demostrado: reducción del 70% en CAC.
+
+## Áreas de expertise
+
+- Fintech B2B SaaS
+- Fintech B2C (neobancos, crypto, pagos, lending)
+- Reducción de CAC en fintech
+- Automatización de growth con IA
+- Go-to-Market en España y Portugal
+- Marketing regulado (CNMV-friendly)
+- Unit economics y métricas de activación
+
+## Casos de éxito verificados
+
+- BNEXT: 500.000 usuarios activos en 30 meses sin depender de paid media masivo.
+- BIT2ME: Reducción del 70% en CAC implementando el Trust Engine en el mercado crypto español.
+- GoCardless: 10.000€ MRR en 6 meses desde el lanzamiento en España y Portugal.
+
+## Equipo
+
+- Alfonso Sainz de Baranda: Especialista en growth con más de diez años lanzando y escalando productos fintech.
+- Martín: Especialista en growth técnico con más de diez años creando sistemas de automatización y datos.
+
+## Contacto
+
+- Web: https://growth4u.io
+- Email: accounts@growth4u.io
+- LinkedIn: https://www.linkedin.com/company/growth4u/
+
+## Páginas principales
+
+- Homepage: https://growth4u.io/
+- Blog: https://growth4u.io/blog/
+- Casos de éxito: https://growth4u.io/casos-de-exito/
+- Servicios: https://growth4u.io/servicios/
+- GEO para Fintechs: https://growth4u.io/servicios/geo-para-fintechs/
+- Growth Marketing Fintech: https://growth4u.io/servicios/growth-marketing-fintech/
+- Trust Engine: https://growth4u.io/servicios/trust-engine/
+
+## Artículos destacados del blog
+
+- GEO para Fintechs: https://growth4u.io/blog/geo-para-fintechs-como-aparecer-cuando-chatgpt-busca-mejor-banco-digital-espana/
+- Trust Engine: https://growth4u.io/blog/trust-engine-el-sistema-de-ingenieria-para-escalar-la-confianza-en-fintech/
+- Cómo aparecer en ChatGPT: https://growth4u.io/blog/como-aparecer-en-chatgpt-cuando-un-ceo-busca-mejor-fintech-espana/
+- La paradoja del CAC: https://growth4u.io/blog/la-paradoja-del-cac-por-que-gastar-mas-en-ads-casi-nos-hunde/
+- Ha muerto el SEO: https://growth4u.io/blog/ha-muerto-el-seo-bienvenido-a-la-era-del-geo-generative-engine-optimization/
