@@ -10,6 +10,7 @@ import ChecklistPage from './pages/ChecklistPage';
 import FeedbackAdminPage from './pages/FeedbackAdminPage';
 import ArticulosAdminPage from './pages/ArticulosAdminPage';
 import LeadMagnetsAdminPage from './pages/LeadMagnetsAdminPage';
+import LeadsAdminPage from './pages/LeadsAdminPage';
 
 export default function AdminApp() {
   return (
@@ -26,6 +27,7 @@ export default function AdminApp() {
           <Route path="/admin/validation/" element={<ValidationPage />} />
           <Route path="/admin/checklist/" element={<ChecklistPage />} />
           <Route path="/admin/feedback/" element={<FeedbackAdminPage />} />
+          <Route path="/admin/leads/" element={<LeadsAdminPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

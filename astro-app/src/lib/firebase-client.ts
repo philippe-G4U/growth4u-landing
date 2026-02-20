@@ -281,6 +281,8 @@ export interface LeadMagnetInput {
   slug: string;
   description: string;
   image: string;
+  excerpt: string;
+  content: string;
   contentUrl: string;
   published: boolean;
 }
@@ -365,6 +367,8 @@ export async function getAllLeadMagnets() {
       slug: slugVal,
       description: data.description || '',
       image: data.image || '',
+      excerpt: data.excerpt || '',
+      content: data.content || '',
       contentUrl: data.contentUrl || '',
       published: data.published !== false,
       createdAt: data.createdAt?.toDate() || null,
@@ -386,6 +390,13 @@ export async function updateLeadMagnet(id: string, magnet: Partial<LeadMagnetInp
 export async function deleteLeadMagnet(id: string): Promise<void> {
   const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnets', id);
   await deleteDoc(ref);
+}
+
+export async function getLeadMagnetById(id: string): Promise<{ content: string } | null> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnets', id);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return null;
+  return { content: snap.data().content || '' };
 }
 
 export async function saveLeadMagnetLead(data: LeadMagnetLead): Promise<void> {

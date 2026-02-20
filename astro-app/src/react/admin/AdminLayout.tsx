@@ -12,6 +12,7 @@ import {
   Trophy,
   BookOpen,
   Download,
+  Users,
 } from 'lucide-react';
 import type { User } from 'firebase/auth';
 import { signInWithGoogle, signOutUser, onAuthChange } from '../../lib/firebase-client';
@@ -54,6 +55,7 @@ export default function AdminLayout() {
     { name: 'Lead Magnets', href: '/admin/lead-magnets/', icon: Download },
     { name: 'SEO & GEO', href: '/admin/seo/', icon: Search },
     { name: 'Feedback', href: '/admin/feedback/', icon: MessageSquare },
+    { name: 'Leads', href: '/admin/leads/', icon: Users },
   ];
 
   if (loading) {

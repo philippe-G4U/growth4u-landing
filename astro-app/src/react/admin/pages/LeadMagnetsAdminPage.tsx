@@ -13,6 +13,8 @@ import {
   Link,
   Users,
   ExternalLink,
+  Copy,
+  Check,
 } from 'lucide-react';
 import {
   getAllLeadMagnets,
@@ -34,6 +36,8 @@ type LeadMagnet = {
   slug: string;
   description: string;
   image: string;
+  excerpt: string;
+  content: string;
   contentUrl: string;
   published: boolean;
   createdAt: Date | null;
@@ -54,12 +58,15 @@ export default function LeadMagnetsAdminPage() {
   const [showLeads, setShowLeads] = useState<string | null>(null);
   const [leads, setLeads] = useState<any[]>([]);
   const [loadingLeads, setLoadingLeads] = useState(false);
+  const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<LeadMagnetInput>({
     title: '',
     slug: '',
     description: '',
     image: '',
+    excerpt: '',
+    content: '',
     contentUrl: '',
     published: true,
   });
@@ -76,7 +83,7 @@ export default function LeadMagnetsAdminPage() {
   const handleNew = () => {
     setEditingMagnet(null);
     setSlugManuallyEdited(false);
-    setFormData({ title: '', slug: '', description: '', image: '', contentUrl: '', published: true });
+    setFormData({ title: '', slug: '', description: '', image: '', excerpt: '', content: '', contentUrl: '', published: true });
     setShowUrlInput(false);
     setShowEditor(true);
   };
@@ -84,7 +91,7 @@ export default function LeadMagnetsAdminPage() {
   const handleEdit = (magnet: LeadMagnet) => {
     setEditingMagnet(magnet);
     setSlugManuallyEdited(true);
-    setFormData({ title: magnet.title, slug: magnet.slug, description: magnet.description, image: magnet.image, contentUrl: magnet.contentUrl, published: magnet.published });
+    setFormData({ title: magnet.title, slug: magnet.slug, description: magnet.description, image: magnet.image, excerpt: magnet.excerpt, content: magnet.content, contentUrl: magnet.contentUrl, published: magnet.published });
     setShowUrlInput(false);
     setShowEditor(true);
   };
@@ -169,6 +176,12 @@ export default function LeadMagnetsAdminPage() {
     const all = await getAllLeadMagnetLeads();
     setLeads(all.filter((l: any) => l.magnetSlug === slug));
     setLoadingLeads(false);
+  };
+
+  const handleCopyUrl = (slug: string) => {
+    navigator.clipboard.writeText(`https://growth4u.io/recursos/${slug}/`);
+    setCopiedSlug(slug);
+    setTimeout(() => setCopiedSlug(null), 2000);
   };
 
   return (
@@ -267,10 +280,21 @@ export default function LeadMagnetsAdminPage() {
                       </span>
                     </div>
                     <p className="text-slate-400 text-sm line-clamp-1">{magnet.description}</p>
-                    <p className="text-slate-500 text-xs mt-1">/recursos/{magnet.slug}/</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <p className="text-slate-500 text-xs">growth4u.io/recursos/{magnet.slug}/</p>
+                      <button
+                        onClick={() => handleCopyUrl(magnet.slug)}
+                        className="p-0.5 text-slate-400 hover:text-[#6351d5] transition-colors"
+                        title="Copiar URL"
+                      >
+                        {copiedSlug === magnet.slug
+                          ? <Check className="w-3 h-3 text-green-500" />
+                          : <Copy className="w-3 h-3" />}
+                      </button>
+                    </div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <a href={`/recursos/${magnet.slug}/`} target="_blank" rel="noopener noreferrer" className="p-2 text-slate-400 hover:text-[#032149] transition-colors" title="Ver página">
+                    <a href={`https://growth4u.io/recursos/${magnet.slug}/`} target="_blank" rel="noopener noreferrer" className="p-2 text-slate-400 hover:text-[#032149] transition-colors" title="Ver página">
                       <ExternalLink className="w-4 h-4" />
                     </a>
                     <button onClick={() => handleShowLeads(magnet.slug)} className="p-2 text-slate-400 hover:text-yellow-400 transition-colors" title="Ver leads">
@@ -383,17 +407,43 @@ export default function LeadMagnetsAdminPage() {
                 />
               </div>
 
+              {/* Excerpt */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Extracto visible <span className="text-slate-400 font-normal">— contenido gratuito mostrado antes del gate (Markdown)</span>
+                </label>
+                <textarea
+                  value={formData.excerpt}
+                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] font-mono text-sm h-48"
+                  placeholder="## El problema que resuelves&#10;&#10;Escribe aquí el contenido libre que verán todos los visitantes antes de dejar sus datos..."
+                />
+              </div>
+
+              {/* Content */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Contenido completo <span className="text-slate-400 font-normal">— bloqueado hasta que dejen sus datos (Markdown)</span>
+                </label>
+                <textarea
+                  value={formData.content}
+                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] font-mono text-sm h-96"
+                  placeholder="## Parte 1: ...&#10;&#10;El framework completo, checklist, plan de acción..."
+                />
+              </div>
+
               {/* Content URL */}
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  URL de descarga / contenido <span className="text-slate-500 font-normal">— se muestra tras enviar el formulario</span>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  URL de descarga <span className="text-slate-400 font-normal">— opcional, botón de descarga que aparece tras desbloquear</span>
                 </label>
                 <input
                   type="url"
                   value={formData.contentUrl}
                   onChange={(e) => setFormData({ ...formData, contentUrl: e.target.value })}
                   className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
-                  placeholder="https://docs.google.com/... o https://drive.google.com/..."
+                  placeholder="https://drive.google.com/... (dejar vacío si el contenido es inline)"
                 />
               </div>
 

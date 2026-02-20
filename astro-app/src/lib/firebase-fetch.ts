@@ -256,6 +256,7 @@ export interface LeadMagnet {
   slug: string;
   description: string;
   image: string;
+  excerpt: string;
   contentUrl: string;
   published: boolean;
 }
@@ -276,6 +277,7 @@ export async function getAllLeadMagnets(): Promise<LeadMagnet[]> {
           slug: d.slug || createSlug(d.title || ''),
           description: d.description || '',
           image: d.image || '',
+          excerpt: d.excerpt || '',
           contentUrl: d.contentUrl || '',
           published: d.published !== false,
         };
