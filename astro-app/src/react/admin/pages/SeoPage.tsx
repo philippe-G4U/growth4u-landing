@@ -360,14 +360,14 @@ function MetricCard({
   const isExpanded = expandedMetric === metricKey;
 
   return (
-    <div className="bg-slate-800 rounded-xl overflow-hidden">
+    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-slate-400 text-sm">{label}</span>
           <Icon className={`w-5 h-5 ${color}`} />
         </div>
         <div className="flex items-end justify-between">
-          <span className="text-2xl font-bold text-white">{value}</span>
+          <span className="text-2xl font-bold text-[#032149]">{value}</span>
           {change && (
             <span className={`text-sm flex items-center gap-1 ${changePositive ? 'text-green-400' : 'text-red-400'}`}>
               {changePositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
@@ -378,14 +378,14 @@ function MetricCard({
       </div>
       <button
         onClick={() => setExpandedMetric(isExpanded ? null : metricKey)}
-        className="w-full px-6 py-2 bg-slate-700/50 hover:bg-slate-700 flex items-center justify-center gap-2 text-slate-400 text-xs transition-colors"
+        className="w-full px-6 py-2 bg-slate-100 hover:bg-slate-100 flex items-center justify-center gap-2 text-slate-400 text-xs transition-colors"
       >
         <Info className="w-3 h-3" />
         {isExpanded ? 'Ocultar info' : '¿Por qué medimos esto?'}
         {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
       </button>
       {isExpanded && (
-        <div className="px-6 py-4 bg-slate-900/50 border-t border-slate-700 space-y-3">
+        <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-200 space-y-3">
           <div>
             <p className="text-xs text-slate-500 uppercase mb-1">Por qué importa</p>
             <p className="text-sm text-slate-300">{info.why}</p>
@@ -415,12 +415,12 @@ function SectionHeader({
   return (
     <div className="flex items-start gap-4 mb-6">
       <div className={`w-10 h-10 rounded-lg ${priorityColors[priority - 1]} flex items-center justify-center flex-shrink-0`}>
-        <Icon className="w-5 h-5 text-white" />
+        <Icon className="w-5 h-5 text-[#032149]" />
       </div>
       <div>
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-bold text-white">{title}</h2>
-          <span className="px-2 py-0.5 bg-slate-700 rounded text-xs text-slate-400">Prioridad {priority}</span>
+          <h2 className="text-xl font-bold text-[#032149]">{title}</h2>
+          <span className="px-2 py-0.5 bg-slate-100 rounded text-xs text-slate-400">Prioridad {priority}</span>
         </div>
         <p className="text-slate-400 text-sm mt-1">{subtitle}</p>
       </div>
@@ -444,7 +444,7 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
         <Icon className={`w-5 h-5 ${style.iconColor} flex-shrink-0 mt-0.5`} />
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-medium text-white">{rec.title}</h4>
+            <h4 className="font-medium text-[#032149]">{rec.title}</h4>
             <span className={`px-2 py-0.5 rounded text-xs ${style.iconColor} bg-black/20`}>{style.label}</span>
           </div>
           <p className="text-slate-400 text-sm mb-2">{rec.description}</p>
@@ -812,13 +812,53 @@ export default function SeoPage() {
     );
   }
 
+  const [activeTab, setActiveTab] = useState<'seo' | 'geo'>('seo');
+
   return (
     <div className="space-y-10">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-white">Dashboard SEO</h1>
-        <p className="text-slate-400 mt-2">Métricas ordenadas por impacto en tu posicionamiento</p>
+        <h1 className="text-3xl font-bold text-[#032149]">SEO & GEO</h1>
+        <p className="text-slate-400 mt-2">Métricas y seguimiento de posicionamiento</p>
       </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2 border-b border-slate-200">
+        <button
+          onClick={() => setActiveTab('seo')}
+          className={`px-6 py-3 text-sm font-semibold rounded-t-lg transition-colors ${
+            activeTab === 'seo'
+              ? 'bg-[#6351d5] text-white'
+              : 'text-slate-500 hover:text-[#032149]'
+          }`}
+        >
+          SEO
+        </button>
+        <button
+          onClick={() => setActiveTab('geo')}
+          className={`px-6 py-3 text-sm font-semibold rounded-t-lg transition-colors ${
+            activeTab === 'geo'
+              ? 'bg-[#6351d5] text-white'
+              : 'text-slate-500 hover:text-[#032149]'
+          }`}
+        >
+          GEO
+        </button>
+      </div>
+
+      {/* GEO TBC */}
+      {activeTab === 'geo' && (
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <div className="bg-slate-100 rounded-2xl p-12">
+            <p className="text-5xl mb-4">🚧</p>
+            <h2 className="text-2xl font-bold text-[#032149] mb-2">GEO Tracker</h2>
+            <p className="text-slate-500 text-lg">TBC — Próximamente</p>
+          </div>
+        </div>
+      )}
+
+      {/* SEO Content */}
+      {activeTab === 'seo' && <>
 
       {/* ============================================ */}
       {/* PRIORITY 1: RECOMMENDATIONS */}
@@ -898,7 +938,7 @@ export default function SeoPage() {
             />
           </div>
         ) : (
-          <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
+          <div className="bg-white border border-slate-200 rounded-xl p-8 text-center mb-6">
             <Eye className="w-12 h-12 mx-auto mb-3 text-slate-600" />
             <p className="text-slate-400 mb-2">No hay datos de Search Console</p>
             <p className="text-slate-500 text-sm">Haz clic en "Añadir datos GSC" para registrar tus primeras métricas</p>
@@ -917,7 +957,7 @@ export default function SeoPage() {
             href="https://search.google.com/search-console"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             Abrir Search Console
@@ -927,12 +967,12 @@ export default function SeoPage() {
         {/* GSC History */}
         {gscMetrics.length > 0 && (
           <details className="mt-6">
-            <summary className="cursor-pointer text-slate-400 hover:text-white transition-colors">
+            <summary className="cursor-pointer text-slate-400 hover:text-[#032149] transition-colors">
               Ver historial ({gscMetrics.length} registros)
             </summary>
-            <div className="mt-4 bg-slate-800 rounded-xl overflow-hidden">
+            <div className="mt-4 bg-white border border-slate-200 rounded-xl overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-slate-700/50">
+                <thead className="bg-slate-100">
                   <tr>
                     <th className="px-4 py-3 text-left text-slate-400">Fecha</th>
                     <th className="px-4 py-3 text-left text-slate-400">Impresiones</th>
@@ -944,8 +984,8 @@ export default function SeoPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-700">
                   {gscMetrics.map(m => (
-                    <tr key={m.id} className="hover:bg-slate-700/30">
-                      <td className="px-4 py-3 text-white">{new Date(m.date).toLocaleDateString('es-ES')}</td>
+                    <tr key={m.id} className="hover:bg-slate-50">
+                      <td className="px-4 py-3 text-[#032149]">{new Date(m.date).toLocaleDateString('es-ES')}</td>
                       <td className="px-4 py-3 text-slate-300">{m.impressions.toLocaleString()}</td>
                       <td className="px-4 py-3 text-slate-300">{m.clicks.toLocaleString()}</td>
                       <td className="px-4 py-3 text-slate-300">{m.ctr.toFixed(2)}%</td>
@@ -987,33 +1027,33 @@ export default function SeoPage() {
               expandedMetric={expandedMetric}
               setExpandedMetric={setExpandedMetric}
             />
-            <div className="bg-slate-800 rounded-xl p-6">
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-slate-400 text-sm">LCP</span>
                 <Clock className={`w-5 h-5 ${webVitals.lcp <= 2.5 ? 'text-green-400' : webVitals.lcp <= 4 ? 'text-yellow-400' : 'text-red-400'}`} />
               </div>
-              <span className="text-2xl font-bold text-white">{webVitals.lcp.toFixed(2)}s</span>
+              <span className="text-2xl font-bold text-[#032149]">{webVitals.lcp.toFixed(2)}s</span>
               <p className="text-xs text-slate-500 mt-1">Objetivo: &lt;2.5s</p>
             </div>
-            <div className="bg-slate-800 rounded-xl p-6">
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-slate-400 text-sm">CLS</span>
                 <BarChart3 className={`w-5 h-5 ${webVitals.cls <= 0.1 ? 'text-green-400' : webVitals.cls <= 0.25 ? 'text-yellow-400' : 'text-red-400'}`} />
               </div>
-              <span className="text-2xl font-bold text-white">{webVitals.cls.toFixed(3)}</span>
+              <span className="text-2xl font-bold text-[#032149]">{webVitals.cls.toFixed(3)}</span>
               <p className="text-xs text-slate-500 mt-1">Objetivo: &lt;0.1</p>
             </div>
-            <div className="bg-slate-800 rounded-xl p-6">
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-slate-400 text-sm">FCP</span>
                 <Zap className={`w-5 h-5 ${webVitals.fcp <= 1.8 ? 'text-green-400' : webVitals.fcp <= 3 ? 'text-yellow-400' : 'text-red-400'}`} />
               </div>
-              <span className="text-2xl font-bold text-white">{webVitals.fcp.toFixed(2)}s</span>
+              <span className="text-2xl font-bold text-[#032149]">{webVitals.fcp.toFixed(2)}s</span>
               <p className="text-xs text-slate-500 mt-1">Objetivo: &lt;1.8s</p>
             </div>
           </div>
         ) : (
-          <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
+          <div className="bg-white border border-slate-200 rounded-xl p-8 text-center mb-6">
             <Gauge className="w-12 h-12 mx-auto mb-3 text-slate-600" />
             <p className="text-slate-400">No hay datos de rendimiento</p>
             <p className="text-slate-500 text-sm">Haz clic en "Analizar" para obtener métricas</p>
@@ -1033,7 +1073,7 @@ export default function SeoPage() {
             href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fgrowth4u.io"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             PageSpeed Insights
@@ -1137,7 +1177,7 @@ export default function SeoPage() {
             />
           </div>
         ) : (
-          <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
+          <div className="bg-white border border-slate-200 rounded-xl p-8 text-center mb-6">
             <BarChart3 className="w-12 h-12 mx-auto mb-3 text-slate-600" />
             <p className="text-slate-400 mb-2">No hay datos de Analytics</p>
             <p className="text-slate-500 text-sm mb-4">
@@ -1165,7 +1205,7 @@ export default function SeoPage() {
             href="https://analytics.google.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             Abrir Google Analytics
@@ -1175,12 +1215,12 @@ export default function SeoPage() {
         {/* Analytics History */}
         {analyticsMetrics.length > 0 && (
           <details className="mt-6">
-            <summary className="cursor-pointer text-slate-400 hover:text-white transition-colors">
+            <summary className="cursor-pointer text-slate-400 hover:text-[#032149] transition-colors">
               Ver historial ({analyticsMetrics.length} registros)
             </summary>
-            <div className="mt-4 bg-slate-800 rounded-xl overflow-hidden overflow-x-auto">
+            <div className="mt-4 bg-white border border-slate-200 rounded-xl overflow-hidden overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-slate-700/50">
+                <thead className="bg-slate-100">
                   <tr>
                     <th className="px-4 py-3 text-left text-slate-400">Fecha</th>
                     <th className="px-4 py-3 text-left text-slate-400">Sesiones</th>
@@ -1193,8 +1233,8 @@ export default function SeoPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-700">
                   {analyticsMetrics.map(m => (
-                    <tr key={m.id} className="hover:bg-slate-700/30">
-                      <td className="px-4 py-3 text-white">{new Date(m.date).toLocaleDateString('es-ES')}</td>
+                    <tr key={m.id} className="hover:bg-slate-50">
+                      <td className="px-4 py-3 text-[#032149]">{new Date(m.date).toLocaleDateString('es-ES')}</td>
                       <td className="px-4 py-3 text-slate-300">{m.sessions.toLocaleString()}</td>
                       <td className="px-4 py-3 text-slate-300">{m.users.toLocaleString()}</td>
                       <td className="px-4 py-3 text-slate-300">{m.pageviews.toLocaleString()}</td>
@@ -1229,52 +1269,52 @@ export default function SeoPage() {
           <div className="space-y-4 mb-6">
             {/* Main metrics */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-slate-800 rounded-xl p-6">
+              <div className="bg-white border border-slate-200 rounded-xl p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-slate-400 text-sm">Domain Rank</span>
                   <Globe className="w-5 h-5 text-purple-400" />
                 </div>
-                <span className="text-2xl font-bold text-white">{dataForSEO.domainRank}</span>
+                <span className="text-2xl font-bold text-[#032149]">{dataForSEO.domainRank}</span>
                 <p className="text-xs text-slate-500 mt-1">Similar a DA (0-1000)</p>
               </div>
-              <div className="bg-slate-800 rounded-xl p-6">
+              <div className="bg-white border border-slate-200 rounded-xl p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-slate-400 text-sm">Backlinks Totales</span>
                   <Link2 className="w-5 h-5 text-blue-400" />
                 </div>
-                <span className="text-2xl font-bold text-white">{dataForSEO.backlinks.toLocaleString()}</span>
+                <span className="text-2xl font-bold text-[#032149]">{dataForSEO.backlinks.toLocaleString()}</span>
               </div>
-              <div className="bg-slate-800 rounded-xl p-6">
+              <div className="bg-white border border-slate-200 rounded-xl p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-slate-400 text-sm">Dominios de Ref.</span>
                   <Users className="w-5 h-5 text-green-400" />
                 </div>
-                <span className="text-2xl font-bold text-white">{dataForSEO.referringDomains.toLocaleString()}</span>
+                <span className="text-2xl font-bold text-[#032149]">{dataForSEO.referringDomains.toLocaleString()}</span>
               </div>
-              <div className="bg-slate-800 rounded-xl p-6">
+              <div className="bg-white border border-slate-200 rounded-xl p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-slate-400 text-sm">IPs de Referencia</span>
                   <Globe className="w-5 h-5 text-cyan-400" />
                 </div>
-                <span className="text-2xl font-bold text-white">{dataForSEO.referringIps.toLocaleString()}</span>
+                <span className="text-2xl font-bold text-[#032149]">{dataForSEO.referringIps.toLocaleString()}</span>
               </div>
             </div>
 
             {/* Secondary metrics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-800/50 rounded-xl p-4">
+              <div className="bg-white border border-slate-200/50 rounded-xl p-4">
                 <span className="text-slate-400 text-xs block mb-1">DoFollow</span>
                 <span className="text-lg font-semibold text-green-400">{dataForSEO.dofollowBacklinks.toLocaleString()}</span>
               </div>
-              <div className="bg-slate-800/50 rounded-xl p-4">
+              <div className="bg-white border border-slate-200/50 rounded-xl p-4">
                 <span className="text-slate-400 text-xs block mb-1">NoFollow</span>
                 <span className="text-lg font-semibold text-yellow-400">{dataForSEO.nofollowBacklinks.toLocaleString()}</span>
               </div>
-              <div className="bg-slate-800/50 rounded-xl p-4">
+              <div className="bg-white border border-slate-200/50 rounded-xl p-4">
                 <span className="text-slate-400 text-xs block mb-1">Páginas con Enlaces</span>
                 <span className="text-lg font-semibold text-blue-400">{dataForSEO.referringPages.toLocaleString()}</span>
               </div>
-              <div className="bg-slate-800/50 rounded-xl p-4">
+              <div className="bg-white border border-slate-200/50 rounded-xl p-4">
                 <span className="text-slate-400 text-xs block mb-1">Enlaces Rotos</span>
                 <span className={`text-lg font-semibold ${dataForSEO.brokenBacklinks > 0 ? 'text-red-400' : 'text-green-400'}`}>
                   {dataForSEO.brokenBacklinks.toLocaleString()}
@@ -1287,7 +1327,7 @@ export default function SeoPage() {
             </p>
           </div>
         ) : (
-          <div className="bg-slate-800 rounded-xl p-8 text-center mb-6">
+          <div className="bg-white border border-slate-200 rounded-xl p-8 text-center mb-6">
             <Link2 className="w-12 h-12 mx-auto mb-3 text-slate-600" />
             <p className="text-slate-400 mb-2">No hay datos de backlinks</p>
             <p className="text-slate-500 text-sm mb-4">
@@ -1309,7 +1349,7 @@ export default function SeoPage() {
             href="https://app.dataforseo.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             Panel DataForSEO
@@ -1334,12 +1374,12 @@ export default function SeoPage() {
         {/* Domain History */}
         {domainMetrics.length > 0 && (
           <details className="mt-6">
-            <summary className="cursor-pointer text-slate-400 hover:text-white transition-colors">
+            <summary className="cursor-pointer text-slate-400 hover:text-[#032149] transition-colors">
               Ver historial ({domainMetrics.length} registros)
             </summary>
-            <div className="mt-4 bg-slate-800 rounded-xl overflow-hidden">
+            <div className="mt-4 bg-white border border-slate-200 rounded-xl overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-slate-700/50">
+                <thead className="bg-slate-100">
                   <tr>
                     <th className="px-4 py-3 text-left text-slate-400">Fecha</th>
                     <th className="px-4 py-3 text-left text-slate-400">DA</th>
@@ -1351,8 +1391,8 @@ export default function SeoPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-700">
                   {domainMetrics.map(m => (
-                    <tr key={m.id} className="hover:bg-slate-700/30">
-                      <td className="px-4 py-3 text-white">{new Date(m.date).toLocaleDateString('es-ES')}</td>
+                    <tr key={m.id} className="hover:bg-slate-50">
+                      <td className="px-4 py-3 text-[#032149]">{new Date(m.date).toLocaleDateString('es-ES')}</td>
                       <td className="px-4 py-3 text-slate-300">{m.domainAuthority}</td>
                       <td className="px-4 py-3 text-slate-300">{m.backlinks.toLocaleString()}</td>
                       <td className="px-4 py-3 text-slate-300">{m.referringDomains.toLocaleString()}</td>
@@ -1374,11 +1414,11 @@ export default function SeoPage() {
       {/* ============================================ */}
       {/* HOW TO GET DATA */}
       {/* ============================================ */}
-      <section className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-        <h3 className="text-lg font-bold text-white mb-4">¿Cómo obtener estos datos?</h3>
+      <section className="bg-white border border-slate-200/50 rounded-xl p-6 border border-slate-200">
+        <h3 className="text-lg font-bold text-[#032149] mb-4">¿Cómo obtener estos datos?</h3>
         <div className="grid md:grid-cols-3 gap-6 text-sm">
           <div>
-            <h4 className="font-medium text-white mb-2">Google Search Console</h4>
+            <h4 className="font-medium text-[#032149] mb-2">Google Search Console</h4>
             <ol className="text-slate-400 space-y-1">
               <li>1. Abre Search Console</li>
               <li>2. Ve a Rendimiento → Resultados</li>
@@ -1387,7 +1427,7 @@ export default function SeoPage() {
             </ol>
           </div>
           <div>
-            <h4 className="font-medium text-white mb-2">Backlinks (DataForSEO)</h4>
+            <h4 className="font-medium text-[#032149] mb-2">Backlinks (DataForSEO)</h4>
             <ol className="text-slate-400 space-y-1">
               <li>1. Configura credenciales en Netlify</li>
               <li>2. DATAFORSEO_LOGIN = tu email</li>
@@ -1396,7 +1436,7 @@ export default function SeoPage() {
             </ol>
           </div>
           <div>
-            <h4 className="font-medium text-white mb-2">Web Vitals</h4>
+            <h4 className="font-medium text-[#032149] mb-2">Web Vitals</h4>
             <ol className="text-slate-400 space-y-1">
               <li>1. Haz clic en "Analizar"</li>
               <li>2. Espera ~30 segundos</li>
@@ -1414,8 +1454,8 @@ export default function SeoPage() {
       {/* GSC Form Modal */}
       {showGscForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold text-white mb-4">Añadir datos de Search Console</h2>
+          <div className="bg-white border border-slate-200 rounded-xl p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold text-[#032149] mb-4">Añadir datos de Search Console</h2>
             <form onSubmit={handleAddGscMetric} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Fecha</label>
@@ -1423,7 +1463,7 @@ export default function SeoPage() {
                   type="date"
                   value={newGscMetric.date}
                   onChange={(e) => setNewGscMetric({ ...newGscMetric, date: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   required
                 />
               </div>
@@ -1434,7 +1474,7 @@ export default function SeoPage() {
                     type="number"
                     value={newGscMetric.impressions}
                     onChange={(e) => setNewGscMetric({ ...newGscMetric, impressions: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                     required
                   />
                 </div>
@@ -1444,7 +1484,7 @@ export default function SeoPage() {
                     type="number"
                     value={newGscMetric.clicks}
                     onChange={(e) => setNewGscMetric({ ...newGscMetric, clicks: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                     required
                   />
                 </div>
@@ -1456,7 +1496,7 @@ export default function SeoPage() {
                   step="0.1"
                   value={newGscMetric.position}
                   onChange={(e) => setNewGscMetric({ ...newGscMetric, position: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   required
                 />
               </div>
@@ -1466,7 +1506,7 @@ export default function SeoPage() {
                   type="text"
                   value={newGscMetric.notes}
                   onChange={(e) => setNewGscMetric({ ...newGscMetric, notes: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   placeholder="Ej: Publicado nuevo artículo"
                 />
               </div>
@@ -1474,7 +1514,7 @@ export default function SeoPage() {
                 <button
                   type="button"
                   onClick={() => setShowGscForm(false)}
-                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg"
+                  className="flex-1 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg"
                 >
                   Cancelar
                 </button>
@@ -1494,8 +1534,8 @@ export default function SeoPage() {
       {/* Domain Form Modal */}
       {showDomainForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold text-white mb-4">Añadir datos de Autoridad</h2>
+          <div className="bg-white border border-slate-200 rounded-xl p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold text-[#032149] mb-4">Añadir datos de Autoridad</h2>
             <form onSubmit={handleAddDomainMetric} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Fecha</label>
@@ -1503,7 +1543,7 @@ export default function SeoPage() {
                   type="date"
                   value={newDomainMetric.date}
                   onChange={(e) => setNewDomainMetric({ ...newDomainMetric, date: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   required
                 />
               </div>
@@ -1515,7 +1555,7 @@ export default function SeoPage() {
                   max="100"
                   value={newDomainMetric.domainAuthority}
                   onChange={(e) => setNewDomainMetric({ ...newDomainMetric, domainAuthority: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   required
                 />
               </div>
@@ -1526,7 +1566,7 @@ export default function SeoPage() {
                     type="number"
                     value={newDomainMetric.backlinks}
                     onChange={(e) => setNewDomainMetric({ ...newDomainMetric, backlinks: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                     required
                   />
                 </div>
@@ -1536,7 +1576,7 @@ export default function SeoPage() {
                     type="number"
                     value={newDomainMetric.referringDomains}
                     onChange={(e) => setNewDomainMetric({ ...newDomainMetric, referringDomains: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                     required
                   />
                 </div>
@@ -1546,7 +1586,7 @@ export default function SeoPage() {
                 <select
                   value={newDomainMetric.source}
                   onChange={(e) => setNewDomainMetric({ ...newDomainMetric, source: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                 >
                   <option value="Moz">Moz</option>
                   <option value="Ahrefs">Ahrefs</option>
@@ -1560,7 +1600,7 @@ export default function SeoPage() {
                   type="text"
                   value={newDomainMetric.notes}
                   onChange={(e) => setNewDomainMetric({ ...newDomainMetric, notes: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   placeholder="Ej: Conseguido backlink de X"
                 />
               </div>
@@ -1568,7 +1608,7 @@ export default function SeoPage() {
                 <button
                   type="button"
                   onClick={() => setShowDomainForm(false)}
-                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg"
+                  className="flex-1 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg"
                 >
                   Cancelar
                 </button>
@@ -1588,8 +1628,8 @@ export default function SeoPage() {
       {/* Analytics Form Modal */}
       {showAnalyticsForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold text-white mb-4">Añadir datos de Google Analytics</h2>
+          <div className="bg-white border border-slate-200 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl font-bold text-[#032149] mb-4">Añadir datos de Google Analytics</h2>
             <form onSubmit={handleAddAnalyticsMetric} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Período (fecha final)</label>
@@ -1597,7 +1637,7 @@ export default function SeoPage() {
                   type="date"
                   value={newAnalyticsMetric.date}
                   onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, date: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   required
                 />
               </div>
@@ -1608,7 +1648,7 @@ export default function SeoPage() {
                     type="number"
                     value={newAnalyticsMetric.sessions}
                     onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, sessions: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                     required
                   />
                 </div>
@@ -1618,7 +1658,7 @@ export default function SeoPage() {
                     type="number"
                     value={newAnalyticsMetric.users}
                     onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, users: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                     required
                   />
                 </div>
@@ -1629,7 +1669,7 @@ export default function SeoPage() {
                   type="number"
                   value={newAnalyticsMetric.pageviews}
                   onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, pageviews: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   required
                 />
               </div>
@@ -1643,7 +1683,7 @@ export default function SeoPage() {
                     max="100"
                     value={newAnalyticsMetric.bounceRate}
                     onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, bounceRate: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                     placeholder="ej: 45.2"
                     required
                   />
@@ -1655,7 +1695,7 @@ export default function SeoPage() {
                     step="1"
                     value={newAnalyticsMetric.avgSessionDuration}
                     onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, avgSessionDuration: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                    className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                     placeholder="ej: 120"
                     required
                   />
@@ -1670,7 +1710,7 @@ export default function SeoPage() {
                   max="100"
                   value={newAnalyticsMetric.organicPercent}
                   onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, organicPercent: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   placeholder="ej: 35.5"
                   required
                 />
@@ -1682,7 +1722,7 @@ export default function SeoPage() {
                   type="text"
                   value={newAnalyticsMetric.notes}
                   onChange={(e) => setNewAnalyticsMetric({ ...newAnalyticsMetric, notes: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149]"
                   placeholder="Ej: Campaña de email"
                 />
               </div>
@@ -1690,7 +1730,7 @@ export default function SeoPage() {
                 <button
                   type="button"
                   onClick={() => setShowAnalyticsForm(false)}
-                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg"
+                  className="flex-1 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg"
                 >
                   Cancelar
                 </button>
@@ -1706,6 +1746,7 @@ export default function SeoPage() {
           </div>
         </div>
       )}
+    </>}
     </div>
   );
 }

@@ -27,9 +27,8 @@ const navLinks = [
   { href: '#problema', label: t.nav.problem },
   { href: '#resultados', label: t.nav.results },
   { href: '#etapas', label: t.nav.methodology },
-  { href: '#casos', label: t.nav.cases },
   { href: '#team', label: t.nav.team },
-  { href: servicesHref, label: 'Servicios' },
+  { href: '#casos', label: t.nav.cases },
 ];
 ---
 
@@ -52,11 +51,11 @@ const navLinks = [
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center gap-6">
-          <div class="flex items-baseline space-x-6">
+          <div class="flex items-baseline space-x-4">
             {navLinks.map((link) => (
               <a
                 href={link.href}
-                class="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]"
+                class="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149] whitespace-nowrap"
               >
                 {link.label}
               </a>
@@ -80,7 +79,7 @@ const navLinks = [
         </div>
 
         <!-- Desktop CTA -->
-        <div class="hidden md:flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-4 ml-3">
           <a
             href={bookingLink}
             target="_blank"

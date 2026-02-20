@@ -222,14 +222,14 @@ export default function BlogAdminPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Gestión de Blog</h1>
+          <h1 className="text-3xl font-bold text-[#032149]">Gestión de Blog</h1>
           <p className="text-slate-400 mt-2">Crea, edita y elimina posts del blog</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={triggerDeploy}
             disabled={deploying}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 text-[#032149] rounded-lg transition-colors"
             title="Publicar cambios manualmente"
           >
             <Rocket className="w-5 h-5" />
@@ -246,9 +246,9 @@ export default function BlogAdminPage() {
       </div>
 
       {/* Auto-publish toggle */}
-      <div className="bg-slate-800 rounded-xl p-4 flex items-center justify-between">
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between">
         <div>
-          <p className="text-white font-medium">Publicar automáticamente</p>
+          <p className="text-[#032149] font-medium">Publicar automáticamente</p>
           <p className="text-slate-400 text-sm">Los cambios se publican automáticamente al guardar o eliminar un post</p>
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
@@ -264,37 +264,37 @@ export default function BlogAdminPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <span className="text-slate-400">Total Posts</span>
             <FileText className="w-5 h-5 text-blue-400" />
           </div>
-          <p className="text-3xl font-bold text-white mt-2">{posts.length}</p>
+          <p className="text-3xl font-bold text-[#032149] mt-2">{posts.length}</p>
         </div>
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <span className="text-slate-400">Categorías</span>
             <Tag className="w-5 h-5 text-purple-400" />
           </div>
-          <p className="text-3xl font-bold text-white mt-2">
+          <p className="text-3xl font-bold text-[#032149] mt-2">
             {new Set(posts.map(p => p.category)).size}
           </p>
         </div>
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <span className="text-slate-400">Último Post</span>
             <Clock className="w-5 h-5 text-green-400" />
           </div>
-          <p className="text-lg font-medium text-white mt-2 truncate">
+          <p className="text-lg font-medium text-[#032149] mt-2 truncate">
             {posts[0]?.title || 'Sin posts'}
           </p>
         </div>
       </div>
 
       {/* Posts List */}
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-700">
-          <h2 className="text-lg font-bold text-white">Posts Publicados</h2>
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200">
+          <h2 className="text-lg font-bold text-[#032149]">Posts Publicados</h2>
         </div>
 
         {loading ? (
@@ -313,10 +313,10 @@ export default function BlogAdminPage() {
         ) : (
           <div className="divide-y divide-slate-700">
             {posts.map((post) => (
-              <div key={post.id} className="p-4 hover:bg-slate-700/30 transition-colors">
+              <div key={post.id} className="p-4 hover:bg-slate-50 transition-colors">
                 <div className="flex items-start gap-4">
                   {/* Thumbnail */}
-                  <div className="w-20 h-20 bg-slate-700 rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-20 h-20 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
                     {post.image ? (
                       <img src={post.image} alt="" className="w-full h-full object-cover" />
                     ) : (
@@ -328,10 +328,10 @@ export default function BlogAdminPage() {
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-white truncate">{post.title}</h3>
+                    <h3 className="font-bold text-[#032149] truncate">{post.title}</h3>
                     <p className="text-slate-400 text-sm mt-1 line-clamp-2">{post.excerpt}</p>
                     <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
-                      <span className="px-2 py-0.5 bg-slate-700 rounded">{post.category}</span>
+                      <span className="px-2 py-0.5 bg-slate-100 rounded">{post.category}</span>
                       <span>{post.readTime}</span>
                       <span>{post.createdAt?.toLocaleDateString('es-ES') || 'Sin fecha'}</span>
                     </div>
@@ -343,7 +343,7 @@ export default function BlogAdminPage() {
                       href={`https://growth4u.io/blog/${post.slug}/`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 text-slate-400 hover:text-white transition-colors"
+                      className="p-2 text-slate-400 hover:text-[#032149] transition-colors"
                       title="Ver post"
                     >
                       <ExternalLink className="w-4 h-4" />
@@ -373,15 +373,15 @@ export default function BlogAdminPage() {
       {/* Editor Modal */}
       {showEditor && (
         <div className="fixed inset-0 bg-black/70 flex items-start justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-slate-800 rounded-xl w-full max-w-4xl my-8">
+          <div className="bg-white border border-slate-200 rounded-xl w-full max-w-4xl my-8">
             {/* Editor Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-              <h2 className="text-xl font-bold text-white">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-[#032149]">
                 {editingPost ? 'Editar Post' : 'Nuevo Post'}
               </h2>
               <button
                 onClick={() => setShowEditor(false)}
-                className="p-2 text-slate-400 hover:text-white transition-colors"
+                className="p-2 text-slate-400 hover:text-[#032149] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -398,7 +398,7 @@ export default function BlogAdminPage() {
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                   placeholder="Título del post"
                   required
                 />
@@ -418,7 +418,7 @@ export default function BlogAdminPage() {
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                   >
                     {categories.map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -433,7 +433,7 @@ export default function BlogAdminPage() {
                     type="text"
                     value={formData.readTime}
                     onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                     placeholder="5 min lectura"
                   />
                 </div>
@@ -448,7 +448,7 @@ export default function BlogAdminPage() {
                   type="text"
                   value={formData.author}
                   onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                   placeholder="Equipo Growth4U"
                 />
               </div>
@@ -464,7 +464,7 @@ export default function BlogAdminPage() {
                     <img
                       src={formData.image}
                       alt="Preview"
-                      className="w-full h-48 object-cover rounded-lg border border-slate-600"
+                      className="w-full h-48 object-cover rounded-lg border border-slate-200"
                     />
                     <button
                       type="button"
@@ -478,7 +478,7 @@ export default function BlogAdminPage() {
                   <div
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={handleImageDrop}
-                    className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center hover:border-slate-500 transition-colors"
+                    className="border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-500 transition-colors"
                   >
                     {uploadingImage ? (
                       <div className="flex flex-col items-center gap-2">
@@ -491,7 +491,7 @@ export default function BlogAdminPage() {
                         <p className="text-slate-400 text-sm mb-2">
                           Arrastra una imagen aquí o
                         </p>
-                        <label className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg cursor-pointer transition-colors">
+                        <label className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg cursor-pointer transition-colors">
                           <Upload className="w-4 h-4" />
                           Seleccionar archivo
                           <input
@@ -514,7 +514,7 @@ export default function BlogAdminPage() {
                             type="url"
                             value={formData.image}
                             onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                            className="w-full mt-3 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                            className="w-full mt-3 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[#032149] text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                             placeholder="https://..."
                           />
                         )}
@@ -532,7 +532,7 @@ export default function BlogAdminPage() {
                 <textarea
                   value={formData.excerpt}
                   onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-24"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-24"
                   placeholder="Breve descripción del post..."
                 />
               </div>
@@ -545,7 +545,7 @@ export default function BlogAdminPage() {
                 <textarea
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-96 font-mono text-sm"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-96 font-mono text-sm"
                   placeholder="# Título&#10;&#10;Tu contenido en Markdown..."
                 />
                 <p className="text-slate-500 text-xs mt-1">
@@ -554,11 +554,11 @@ export default function BlogAdminPage() {
               </div>
 
               {/* Actions */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-700">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowEditor(false)}
-                  className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                  className="px-6 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg transition-colors"
                 >
                   Cancelar
                 </button>
@@ -577,11 +577,11 @@ export default function BlogAdminPage() {
       )}
 
       {/* Info */}
-      <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-        <h3 className="text-lg font-bold text-white mb-2">¿Cómo funciona?</h3>
+      <div className="bg-white border border-slate-200/50 rounded-xl p-6 border border-slate-200">
+        <h3 className="text-lg font-bold text-[#032149] mb-2">¿Cómo funciona?</h3>
         <p className="text-slate-400 text-sm">
           Con "Publicar automáticamente" activado, cada vez que guardes o elimines un post se iniciará un deploy en Netlify.
-          Los cambios estarán visibles en <span className="text-white">~1-2 minutos</span>. El sitio usa generación estática (SSG) para máxima velocidad y SEO.
+          Los cambios estarán visibles en <span className="text-[#032149]">~1-2 minutos</span>. El sitio usa generación estática (SSG) para máxima velocidad y SEO.
         </p>
         <p className="text-slate-500 text-xs mt-3">
           Si necesitas publicar manualmente, usa el botón "Publicar" en la cabecera o visita{' '}

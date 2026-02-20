@@ -10,12 +10,14 @@ import {
   ChevronUp,
   MessageSquare,
   Loader2,
+  Trash2,
 } from 'lucide-react';
-import { getAllFeedback } from '../../../lib/firebase-client';
+import { getAllFeedback, deleteFeedback } from '../../../lib/firebase-client';
 import type { FeedbackResponse } from '../../../lib/firebase-client';
 
-function FeedbackCard({ feedback }: { feedback: FeedbackResponse }) {
+function FeedbackCard({ feedback, onDelete }: { feedback: FeedbackResponse; onDelete: (id: string) => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const formatDate = (date: Date | null) => {
     if (!date) return 'Fecha no disponible';
@@ -26,6 +28,14 @@ function FeedbackCard({ feedback }: { feedback: FeedbackResponse }) {
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm(`¿Eliminar el feedback de "${feedback.companyName}"?`)) return;
+    setDeleting(true);
+    await deleteFeedback(feedback.id);
+    onDelete(feedback.id);
   };
 
   return (
@@ -53,11 +63,19 @@ function FeedbackCard({ feedback }: { feedback: FeedbackResponse }) {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <span className="text-sm text-slate-400 flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               {formatDate(feedback.createdAt)}
             </span>
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+              title="Eliminar"
+            >
+              {deleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+            </button>
             {isExpanded ? (
               <ChevronUp className="w-5 h-5 text-slate-400" />
             ) : (
@@ -137,8 +155,12 @@ export default function FeedbackAdminPage() {
     loadFeedback();
   }, []);
 
+  const handleDelete = (id: string) => {
+    setFeedbacks((prev) => prev.filter((f) => f.id !== id));
+  };
+
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -171,7 +193,7 @@ export default function FeedbackAdminPage() {
         ) : (
           <div className="space-y-4">
             {feedbacks.map((feedback) => (
-              <FeedbackCard key={feedback.id} feedback={feedback} />
+              <FeedbackCard key={feedback.id} feedback={feedback} onDelete={handleDelete} />
             ))}
           </div>
         )}

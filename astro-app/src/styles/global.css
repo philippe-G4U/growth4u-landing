@@ -76,20 +76,20 @@ body {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1.5px solid rgba(148, 163, 184, 0.9);
   box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.03),
-    0 10px 25px -5px rgba(0, 0, 0, 0.05),
-    0 0 0 1px rgba(0, 0, 0, 0.02);
+    0 4px 10px -1px rgba(0, 0, 0, 0.08),
+    0 14px 35px -5px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
   border-radius: 9999px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-island:hover {
   box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.04),
-    0 12px 30px -5px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.03);
+    0 4px 12px -1px rgba(0, 0, 0, 0.10),
+    0 18px 40px -5px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .animation-delay-2000 {
@@ -166,6 +166,23 @@ body {
 
 .prose td {
   @apply px-6 py-4 whitespace-nowrap text-sm text-slate-600 border-t border-slate-100;
+}
+
+.prose .table-wrapper {
+  @apply overflow-x-auto -mx-4 px-4 mb-6;
+}
+
+/* Task list checkboxes */
+.prose ul.contains-task-list {
+  @apply list-none pl-0;
+}
+
+.prose .task-list-item {
+  @apply flex items-start gap-2 pl-0;
+}
+
+.prose .task-list-item input[type="checkbox"] {
+  @apply mt-1 flex-shrink-0 w-4 h-4 rounded border-slate-300 accent-[#6351d5];
 }
 
 /* Selection colors */

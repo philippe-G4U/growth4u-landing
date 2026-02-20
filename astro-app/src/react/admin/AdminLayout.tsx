@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard,
-  CheckCircle,
   Search,
-  Bot,
-  ClipboardList,
   LogOut,
   Menu,
   X,
@@ -55,16 +52,13 @@ export default function AdminLayout() {
     { name: 'Casos de Éxito', href: '/admin/casos-de-exito/', icon: Trophy },
     { name: 'Artículos', href: '/admin/articulos/', icon: BookOpen },
     { name: 'Lead Magnets', href: '/admin/lead-magnets/', icon: Download },
-    { name: 'Validación Técnica', href: '/admin/validation/', icon: CheckCircle },
-    { name: 'Métricas SEO', href: '/admin/seo/', icon: Search },
-    { name: 'Tracker GEO', href: '/admin/geo/', icon: Bot },
-    { name: 'Checklists', href: '/admin/checklist/', icon: ClipboardList },
+    { name: 'SEO & GEO', href: '/admin/seo/', icon: Search },
     { name: 'Feedback', href: '/admin/feedback/', icon: MessageSquare },
   ];
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-[#6351d5] animate-spin" />
       </div>
     );
@@ -72,24 +66,24 @@ export default function AdminLayout() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-        <div className="bg-slate-800 rounded-2xl p-8 w-full max-w-md shadow-xl">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-xl border border-slate-200">
           <div className="text-center mb-8">
             <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" className="h-8 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-white">Panel Admin</h1>
-            <p className="text-slate-400 mt-2">Dashboard SEO & GEO</p>
+            <h1 className="text-2xl font-bold text-[#032149]">Panel Admin</h1>
+            <p className="text-slate-500 mt-2">Dashboard SEO & GEO</p>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
-              <p className="text-red-400 text-sm text-center">{error}</p>
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm text-center">{error}</p>
             </div>
           )}
 
           <button
             onClick={handleGoogleSignIn}
             disabled={signingIn}
-            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-800 font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-50 text-slate-700 font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 border border-slate-200 shadow-sm"
           >
             {signingIn ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -104,7 +98,7 @@ export default function AdminLayout() {
             {signingIn ? 'Iniciando sesión...' : 'Continuar con Google'}
           </button>
 
-          <p className="text-slate-500 text-xs text-center mt-4">
+          <p className="text-slate-400 text-xs text-center mt-4">
             Solo cuentas @growth4u.io
           </p>
         </div>
@@ -116,35 +110,35 @@ export default function AdminLayout() {
   const normalizedPath = pathname.endsWith('/') ? pathname : pathname + '/';
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-slate-50">
       {/* Mobile sidebar toggle */}
       <div className="lg:hidden fixed top-4 left-4 z-50">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 bg-slate-800 rounded-lg text-white"
+          className="p-2 bg-white rounded-lg text-slate-600 border border-slate-200 shadow-sm"
         >
           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-800 transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
-          <div className="p-6 border-b border-slate-700">
+          <div className="p-6 border-b border-slate-200">
             <a href="/" className="flex items-center gap-2">
               <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" className="h-6" />
             </a>
-            <p className="text-xs text-slate-400 mt-2">Dashboard SEO & GEO</p>
+            <p className="text-xs text-slate-500 mt-2">Dashboard SEO & GEO</p>
           </div>
 
-          <div className="px-6 py-4 border-b border-slate-700">
+          <div className="px-6 py-4 border-b border-slate-200">
             <div className="flex items-center gap-3">
               {user.photoURL && (
                 <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full" />
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{user.displayName}</p>
-                <p className="text-xs text-slate-400 truncate">{user.email}</p>
+                <p className="text-sm font-medium text-[#032149] truncate">{user.displayName}</p>
+                <p className="text-xs text-slate-500 truncate">{user.email}</p>
               </div>
             </div>
           </div>
@@ -160,7 +154,7 @@ export default function AdminLayout() {
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                     isActive
                       ? 'bg-[#6351d5] text-white'
-                      : 'text-slate-300 hover:bg-slate-700'
+                      : 'text-slate-600 hover:bg-slate-100'
                   }`}
                 >
                   <item.icon className="w-5 h-5" />
@@ -170,10 +164,10 @@ export default function AdminLayout() {
             })}
           </nav>
 
-          <div className="p-4 border-t border-slate-700">
+          <div className="p-4 border-t border-slate-200">
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 px-4 py-3 w-full text-slate-300 hover:bg-slate-700 rounded-lg transition-colors"
+              className="flex items-center gap-3 px-4 py-3 w-full text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
             >
               <LogOut className="w-5 h-5" />
               Cerrar sesión
@@ -192,7 +186,7 @@ export default function AdminLayout() {
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/30 z-30 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}

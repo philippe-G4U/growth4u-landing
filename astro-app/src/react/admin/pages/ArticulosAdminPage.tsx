@@ -191,11 +191,11 @@ export default function ArticulosAdminPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Artículos</h1>
+          <h1 className="text-3xl font-bold text-[#032149]">Artículos</h1>
           <p className="text-slate-400 mt-2">Contenido premium con gate de leads</p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={triggerDeploy} disabled={deploying} className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white rounded-lg transition-colors">
+          <button onClick={triggerDeploy} disabled={deploying} className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 text-[#032149] rounded-lg transition-colors">
             <Rocket className="w-5 h-5" />Publicar
           </button>
           <button onClick={handleNew} className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg transition-colors">
@@ -205,9 +205,9 @@ export default function ArticulosAdminPage() {
       </div>
 
       {/* Auto-publish toggle */}
-      <div className="bg-slate-800 rounded-xl p-4 flex items-center justify-between">
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between">
         <div>
-          <p className="text-white font-medium">Publicar automáticamente</p>
+          <p className="text-[#032149] font-medium">Publicar automáticamente</p>
           <p className="text-slate-400 text-sm">Los cambios se publican al guardar artículos publicados</p>
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
@@ -218,26 +218,26 @@ export default function ArticulosAdminPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <span className="text-slate-400">Total Artículos</span>
             <FileText className="w-5 h-5 text-[#6351d5]" />
           </div>
-          <p className="text-3xl font-bold text-white mt-2">{articles.length}</p>
+          <p className="text-3xl font-bold text-[#032149] mt-2">{articles.length}</p>
         </div>
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <span className="text-slate-400">Publicados</span>
             <CheckCircle className="w-5 h-5 text-green-400" />
           </div>
-          <p className="text-3xl font-bold text-white mt-2">{articles.filter(a => a.published).length}</p>
+          <p className="text-3xl font-bold text-[#032149] mt-2">{articles.filter(a => a.published).length}</p>
         </div>
       </div>
 
       {/* Article List */}
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-700">
-          <h2 className="text-lg font-bold text-white">Artículos</h2>
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200">
+          <h2 className="text-lg font-bold text-[#032149]">Artículos</h2>
         </div>
         {loading ? (
           <div className="p-8 text-center text-slate-400">Cargando...</div>
@@ -252,20 +252,20 @@ export default function ArticulosAdminPage() {
         ) : (
           <div className="divide-y divide-slate-700">
             {articles.map((article) => (
-              <div key={article.id} className="p-4 hover:bg-slate-700/30 transition-colors">
+              <div key={article.id} className="p-4 hover:bg-slate-50 transition-colors">
                 <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-slate-700 rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-16 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
                     {article.image ? (
                       <img src={article.image} alt="" className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#6351d5] to-[#3f45fe]">
-                        <FileText className="w-6 h-6 text-white" />
+                        <FileText className="w-6 h-6 text-[#032149]" />
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-white truncate">{article.title}</h3>
+                      <h3 className="font-bold text-[#032149] truncate">{article.title}</h3>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${article.published ? 'bg-green-500/20 text-green-400' : 'bg-slate-600 text-slate-400'}`}>
                         {article.published ? 'Publicado' : 'Borrador'}
                       </span>
@@ -295,13 +295,13 @@ export default function ArticulosAdminPage() {
       {/* Leads Modal */}
       {showLeads && (
         <div className="fixed inset-0 bg-black/70 flex items-start justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-slate-800 rounded-xl w-full max-w-2xl my-8">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <div className="bg-white border border-slate-200 rounded-xl w-full max-w-2xl my-8">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-[#032149] flex items-center gap-2">
                 <Users className="w-5 h-5 text-yellow-400" />
                 Leads — {showLeads}
               </h2>
-              <button onClick={() => setShowLeads(null)} className="p-2 text-slate-400 hover:text-white">
+              <button onClick={() => setShowLeads(null)} className="p-2 text-slate-400 hover:text-[#032149]">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -314,10 +314,10 @@ export default function ArticulosAdminPage() {
                 <div className="space-y-3">
                   <p className="text-slate-400 text-sm">{leads.length} lead{leads.length !== 1 ? 's' : ''}</p>
                   {leads.map((lead) => (
-                    <div key={lead.id} className="bg-slate-700 rounded-lg p-4">
+                    <div key={lead.id} className="bg-slate-100 rounded-lg p-4">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <p className="text-white font-medium">{lead.nombre}</p>
+                          <p className="text-[#032149] font-medium">{lead.nombre}</p>
                           <p className="text-slate-300 text-sm">{lead.email}</p>
                           {lead.tag && <p className="text-slate-400 text-sm mt-1">🔍 "{lead.tag}"</p>}
                         </div>
@@ -337,10 +337,10 @@ export default function ArticulosAdminPage() {
       {/* Editor Modal */}
       {showEditor && (
         <div className="fixed inset-0 bg-black/70 flex items-start justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-slate-800 rounded-xl w-full max-w-4xl my-8">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-              <h2 className="text-xl font-bold text-white">{editingArticle ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
-              <button onClick={() => setShowEditor(false)} className="p-2 text-slate-400 hover:text-white transition-colors">
+          <div className="bg-white border border-slate-200 rounded-xl w-full max-w-4xl my-8">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-[#032149]">{editingArticle ? 'Editar Artículo' : 'Nuevo Artículo'}</h2>
+              <button onClick={() => setShowEditor(false)} className="p-2 text-slate-400 hover:text-[#032149] transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -354,7 +354,7 @@ export default function ArticulosAdminPage() {
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                     placeholder="Título del artículo"
                     required
                   />
@@ -365,7 +365,7 @@ export default function ArticulosAdminPage() {
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                   >
                     <option value="GEO">GEO</option>
                     <option value="Estrategia">Estrategia</option>
@@ -383,7 +383,7 @@ export default function ArticulosAdminPage() {
                 <textarea
                   value={formData.excerpt}
                   onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-28"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-28"
                   placeholder="Las primeras líneas del artículo que serán visibles antes del gate..."
                 />
               </div>
@@ -396,7 +396,7 @@ export default function ArticulosAdminPage() {
                 <textarea
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-56 font-mono text-sm"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-56 font-mono text-sm"
                   placeholder="## Introducción&#10;&#10;Contenido en Markdown..."
                 />
               </div>
@@ -409,7 +409,7 @@ export default function ArticulosAdminPage() {
                     type="text"
                     value={formData.readTime}
                     onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                     placeholder="5 min lectura"
                   />
                 </div>
@@ -419,7 +419,7 @@ export default function ArticulosAdminPage() {
                     type="text"
                     value={formData.author}
                     onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                     placeholder="Equipo Growth4U"
                   />
                 </div>
@@ -430,20 +430,20 @@ export default function ArticulosAdminPage() {
                 <label className="block text-sm font-medium text-slate-300 mb-2">Imagen destacada</label>
                 {formData.image ? (
                   <div className="relative">
-                    <img src={formData.image} alt="Preview" className="w-full h-48 object-cover rounded-lg border border-slate-600" />
+                    <img src={formData.image} alt="Preview" className="w-full h-48 object-cover rounded-lg border border-slate-200" />
                     <button type="button" onClick={() => setFormData({ ...formData, image: '' })} className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full">
                       <X className="w-4 h-4" />
                     </button>
                   </div>
                 ) : (
-                  <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f?.type.startsWith('image/')) uploadImageToCloudinary(f); }} className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center hover:border-slate-500 transition-colors">
+                  <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f?.type.startsWith('image/')) uploadImageToCloudinary(f); }} className="border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-500 transition-colors">
                     {uploadingImage ? (
                       <div className="flex flex-col items-center gap-2"><Loader2 className="w-8 h-8 text-[#6351d5] animate-spin" /><span className="text-slate-400">Subiendo imagen...</span></div>
                     ) : (
                       <>
                         <Upload className="w-8 h-8 text-slate-500 mx-auto mb-2" />
                         <p className="text-slate-400 text-sm mb-2">Arrastra una imagen aquí o</p>
-                        <label className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg cursor-pointer transition-colors">
+                        <label className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg cursor-pointer transition-colors">
                           <Upload className="w-4 h-4" />Seleccionar archivo
                           <input type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImageToCloudinary(f); }} className="hidden" />
                         </label>
@@ -451,7 +451,7 @@ export default function ArticulosAdminPage() {
                           <Link className="w-3 h-3" />{showUrlInput ? 'Ocultar URL' : 'O pegar URL'}
                         </button>
                         {showUrlInput && (
-                          <input type="url" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} className="w-full mt-3 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="https://..." />
+                          <input type="url" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} className="w-full mt-3 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[#032149] text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="https://..." />
                         )}
                       </>
                     )}
@@ -460,9 +460,9 @@ export default function ArticulosAdminPage() {
               </div>
 
               {/* Published toggle */}
-              <div className="flex items-center justify-between bg-slate-700/50 rounded-lg p-4">
+              <div className="flex items-center justify-between bg-slate-100 rounded-lg p-4">
                 <div>
-                  <p className="text-white font-medium">Publicado</p>
+                  <p className="text-[#032149] font-medium">Publicado</p>
                   <p className="text-slate-400 text-sm">El artículo será visible en /articulos/</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -472,8 +472,8 @@ export default function ArticulosAdminPage() {
               </div>
 
               {/* Actions */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-700">
-                <button type="button" onClick={() => setShowEditor(false)} className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+                <button type="button" onClick={() => setShowEditor(false)} className="px-6 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg transition-colors">
                   Cancelar
                 </button>
                 <button type="submit" disabled={saving} className="flex items-center gap-2 px-6 py-2 bg-[#6351d5] hover:bg-[#5242b8] disabled:bg-slate-600 text-white rounded-lg transition-colors">

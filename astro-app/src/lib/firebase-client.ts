@@ -400,4 +400,9 @@ export async function getAllLeadMagnetLeads() {
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() as any }));
 }
 
+export async function deleteFeedback(id: string): Promise<void> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'feedback', id);
+  await deleteDoc(ref);
+}
+
 export { db, auth, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy, limit, where, serverTimestamp };

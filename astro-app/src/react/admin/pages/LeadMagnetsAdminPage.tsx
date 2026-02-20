@@ -187,11 +187,11 @@ export default function LeadMagnetsAdminPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Lead Magnets</h1>
+          <h1 className="text-3xl font-bold text-[#032149]">Lead Magnets</h1>
           <p className="text-slate-400 mt-2">Recursos descargables con captura de leads</p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={triggerDeploy} disabled={deploying} className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white rounded-lg transition-colors">
+          <button onClick={triggerDeploy} disabled={deploying} className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 text-[#032149] rounded-lg transition-colors">
             <Rocket className="w-5 h-5" />Publicar
           </button>
           <button onClick={handleNew} className="flex items-center gap-2 px-4 py-2 bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg transition-colors">
@@ -201,9 +201,9 @@ export default function LeadMagnetsAdminPage() {
       </div>
 
       {/* Auto-publish toggle */}
-      <div className="bg-slate-800 rounded-xl p-4 flex items-center justify-between">
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between">
         <div>
-          <p className="text-white font-medium">Publicar automáticamente</p>
+          <p className="text-[#032149] font-medium">Publicar automáticamente</p>
           <p className="text-slate-400 text-sm">Los cambios se publican al guardar lead magnets publicados</p>
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
@@ -214,26 +214,26 @@ export default function LeadMagnetsAdminPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <span className="text-slate-400">Total</span>
             <Download className="w-5 h-5 text-[#6351d5]" />
           </div>
-          <p className="text-3xl font-bold text-white mt-2">{magnets.length}</p>
+          <p className="text-3xl font-bold text-[#032149] mt-2">{magnets.length}</p>
         </div>
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <span className="text-slate-400">Publicados</span>
             <CheckCircle className="w-5 h-5 text-green-400" />
           </div>
-          <p className="text-3xl font-bold text-white mt-2">{magnets.filter(m => m.published).length}</p>
+          <p className="text-3xl font-bold text-[#032149] mt-2">{magnets.filter(m => m.published).length}</p>
         </div>
       </div>
 
       {/* List */}
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-700">
-          <h2 className="text-lg font-bold text-white">Lead Magnets</h2>
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200">
+          <h2 className="text-lg font-bold text-[#032149]">Lead Magnets</h2>
         </div>
         {loading ? (
           <div className="p-8 text-center text-slate-400">Cargando...</div>
@@ -248,20 +248,20 @@ export default function LeadMagnetsAdminPage() {
         ) : (
           <div className="divide-y divide-slate-700">
             {magnets.map((magnet) => (
-              <div key={magnet.id} className="p-4 hover:bg-slate-700/30 transition-colors">
+              <div key={magnet.id} className="p-4 hover:bg-slate-50 transition-colors">
                 <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-slate-700 rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-16 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
                     {magnet.image ? (
                       <img src={magnet.image} alt="" className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#6351d5] to-[#3f45fe]">
-                        <Download className="w-6 h-6 text-white" />
+                        <Download className="w-6 h-6 text-[#032149]" />
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-white truncate">{magnet.title}</h3>
+                      <h3 className="font-bold text-[#032149] truncate">{magnet.title}</h3>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${magnet.published ? 'bg-green-500/20 text-green-400' : 'bg-slate-600 text-slate-400'}`}>
                         {magnet.published ? 'Publicado' : 'Borrador'}
                       </span>
@@ -270,7 +270,7 @@ export default function LeadMagnetsAdminPage() {
                     <p className="text-slate-500 text-xs mt-1">/recursos/{magnet.slug}/</p>
                   </div>
                   <div className="flex items-center gap-1">
-                    <a href={`/recursos/${magnet.slug}/`} target="_blank" rel="noopener noreferrer" className="p-2 text-slate-400 hover:text-white transition-colors" title="Ver página">
+                    <a href={`/recursos/${magnet.slug}/`} target="_blank" rel="noopener noreferrer" className="p-2 text-slate-400 hover:text-[#032149] transition-colors" title="Ver página">
                       <ExternalLink className="w-4 h-4" />
                     </a>
                     <button onClick={() => handleShowLeads(magnet.slug)} className="p-2 text-slate-400 hover:text-yellow-400 transition-colors" title="Ver leads">
@@ -293,13 +293,13 @@ export default function LeadMagnetsAdminPage() {
       {/* Leads Modal */}
       {showLeads && (
         <div className="fixed inset-0 bg-black/70 flex items-start justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-slate-800 rounded-xl w-full max-w-2xl my-8">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <div className="bg-white border border-slate-200 rounded-xl w-full max-w-2xl my-8">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-[#032149] flex items-center gap-2">
                 <Users className="w-5 h-5 text-yellow-400" />
                 Leads — {showLeads}
               </h2>
-              <button onClick={() => setShowLeads(null)} className="p-2 text-slate-400 hover:text-white">
+              <button onClick={() => setShowLeads(null)} className="p-2 text-slate-400 hover:text-[#032149]">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -312,10 +312,10 @@ export default function LeadMagnetsAdminPage() {
                 <div className="space-y-3">
                   <p className="text-slate-400 text-sm">{leads.length} lead{leads.length !== 1 ? 's' : ''}</p>
                   {leads.map((lead) => (
-                    <div key={lead.id} className="bg-slate-700 rounded-lg p-4">
+                    <div key={lead.id} className="bg-slate-100 rounded-lg p-4">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <p className="text-white font-medium">{lead.nombre}</p>
+                          <p className="text-[#032149] font-medium">{lead.nombre}</p>
                           <p className="text-slate-300 text-sm">{lead.email}</p>
                           {lead.tag && <p className="text-slate-400 text-sm mt-1">🔍 "{lead.tag}"</p>}
                         </div>
@@ -335,10 +335,10 @@ export default function LeadMagnetsAdminPage() {
       {/* Editor Modal */}
       {showEditor && (
         <div className="fixed inset-0 bg-black/70 flex items-start justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-slate-800 rounded-xl w-full max-w-3xl my-8">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-              <h2 className="text-xl font-bold text-white">{editingMagnet ? 'Editar Lead Magnet' : 'Nuevo Lead Magnet'}</h2>
-              <button onClick={() => setShowEditor(false)} className="p-2 text-slate-400 hover:text-white">
+          <div className="bg-white border border-slate-200 rounded-xl w-full max-w-3xl my-8">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-[#032149]">{editingMagnet ? 'Editar Lead Magnet' : 'Nuevo Lead Magnet'}</h2>
+              <button onClick={() => setShowEditor(false)} className="p-2 text-slate-400 hover:text-[#032149]">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -351,7 +351,7 @@ export default function LeadMagnetsAdminPage() {
                   type="text"
                   value={formData.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                   placeholder="Ej: Guía GEO para Fintechs 2026"
                   required
                 />
@@ -366,7 +366,7 @@ export default function LeadMagnetsAdminPage() {
                   type="text"
                   value={formData.slug}
                   onChange={(e) => handleSlugChange(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] font-mono"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] font-mono"
                   placeholder="guia-geo-fintechs-2026"
                   required
                 />
@@ -378,7 +378,7 @@ export default function LeadMagnetsAdminPage() {
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-28"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-28"
                   placeholder="Describe qué recibirá el lead y por qué es valioso..."
                 />
               </div>
@@ -392,7 +392,7 @@ export default function LeadMagnetsAdminPage() {
                   type="url"
                   value={formData.contentUrl}
                   onChange={(e) => setFormData({ ...formData, contentUrl: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                   placeholder="https://docs.google.com/... o https://drive.google.com/..."
                 />
               </div>
@@ -402,20 +402,20 @@ export default function LeadMagnetsAdminPage() {
                 <label className="block text-sm font-medium text-slate-300 mb-2">Imagen de portada</label>
                 {formData.image ? (
                   <div className="relative">
-                    <img src={formData.image} alt="Preview" className="w-full h-48 object-cover rounded-lg border border-slate-600" />
+                    <img src={formData.image} alt="Preview" className="w-full h-48 object-cover rounded-lg border border-slate-200" />
                     <button type="button" onClick={() => setFormData({ ...formData, image: '' })} className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full">
                       <X className="w-4 h-4" />
                     </button>
                   </div>
                 ) : (
-                  <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f?.type.startsWith('image/')) uploadImageToCloudinary(f); }} className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center hover:border-slate-500 transition-colors">
+                  <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f?.type.startsWith('image/')) uploadImageToCloudinary(f); }} className="border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-500 transition-colors">
                     {uploadingImage ? (
                       <div className="flex flex-col items-center gap-2"><Loader2 className="w-8 h-8 text-[#6351d5] animate-spin" /><span className="text-slate-400">Subiendo...</span></div>
                     ) : (
                       <>
                         <Upload className="w-8 h-8 text-slate-500 mx-auto mb-2" />
                         <p className="text-slate-400 text-sm mb-2">Arrastra una imagen o</p>
-                        <label className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg cursor-pointer transition-colors">
+                        <label className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg cursor-pointer transition-colors">
                           <Upload className="w-4 h-4" />Seleccionar
                           <input type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImageToCloudinary(f); }} className="hidden" />
                         </label>
@@ -423,7 +423,7 @@ export default function LeadMagnetsAdminPage() {
                           <Link className="w-3 h-3" />{showUrlInput ? 'Ocultar' : 'O pegar URL'}
                         </button>
                         {showUrlInput && (
-                          <input type="url" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} className="w-full mt-3 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="https://..." />
+                          <input type="url" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} className="w-full mt-3 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[#032149] text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]" placeholder="https://..." />
                         )}
                       </>
                     )}
@@ -432,9 +432,9 @@ export default function LeadMagnetsAdminPage() {
               </div>
 
               {/* Published toggle */}
-              <div className="flex items-center justify-between bg-slate-700/50 rounded-lg p-4">
+              <div className="flex items-center justify-between bg-slate-100 rounded-lg p-4">
                 <div>
-                  <p className="text-white font-medium">Publicado</p>
+                  <p className="text-[#032149] font-medium">Publicado</p>
                   <p className="text-slate-400 text-sm">La landing page será accesible en /recursos/{formData.slug}/</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -444,8 +444,8 @@ export default function LeadMagnetsAdminPage() {
               </div>
 
               {/* Actions */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-700">
-                <button type="button" onClick={() => setShowEditor(false)} className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+                <button type="button" onClick={() => setShowEditor(false)} className="px-6 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg transition-colors">
                   Cancelar
                 </button>
                 <button type="submit" disabled={saving} className="flex items-center gap-2 px-6 py-2 bg-[#6351d5] hover:bg-[#5242b8] disabled:bg-slate-600 text-white rounded-lg transition-colors">

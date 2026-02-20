@@ -151,7 +151,7 @@ export default function GeoPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Tracker GEO</h1>
+          <h1 className="text-3xl font-bold text-[#032149]">Tracker GEO</h1>
           <p className="text-slate-400 mt-2">Monitorea cómo los motores de IA mencionan tu marca</p>
         </div>
         <button
@@ -165,50 +165,50 @@ export default function GeoPage() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-slate-400 text-sm">Pruebas Totales</span>
             <Bot className="w-5 h-5 text-purple-400" />
           </div>
-          <span className="text-2xl font-bold text-white">{totalTests}</span>
+          <span className="text-2xl font-bold text-[#032149]">{totalTests}</span>
         </div>
 
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-slate-400 text-sm">Tasa de Mención</span>
             <CheckCircle2 className="w-5 h-5 text-green-400" />
           </div>
-          <span className="text-2xl font-bold text-white">{mentionRate}%</span>
+          <span className="text-2xl font-bold text-[#032149]">{mentionRate}%</span>
           <span className="text-slate-400 text-sm ml-2">({mentionedTests}/{totalTests})</span>
         </div>
 
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-slate-400 text-sm">Sentimiento Positivo</span>
             <ThumbsUp className="w-5 h-5 text-blue-400" />
           </div>
-          <span className="text-2xl font-bold text-white">{positiveTests}</span>
+          <span className="text-2xl font-bold text-[#032149]">{positiveTests}</span>
         </div>
 
-        <div className="bg-slate-800 rounded-xl p-6">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-slate-400 text-sm">Con Cita/Link</span>
             <Link2 className="w-5 h-5 text-orange-400" />
           </div>
-          <span className="text-2xl font-bold text-white">{citedTests}</span>
+          <span className="text-2xl font-bold text-[#032149]">{citedTests}</span>
         </div>
       </div>
 
       {/* Platform Breakdown */}
-      <div className="bg-slate-800 rounded-xl p-6">
-        <h2 className="text-lg font-bold text-white mb-4">Menciones por Plataforma</h2>
+      <div className="bg-white border border-slate-200 rounded-xl p-6">
+        <h2 className="text-lg font-bold text-[#032149] mb-4">Menciones por Plataforma</h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {platformStats.map(p => (
             <div key={p.value} className="text-center">
               <div className={`w-12 h-12 ${p.color} rounded-xl mx-auto mb-2 flex items-center justify-center`}>
-                <Bot className="w-6 h-6 text-white" />
+                <Bot className="w-6 h-6 text-[#032149]" />
               </div>
-              <p className="text-white font-medium">{p.label}</p>
+              <p className="text-[#032149] font-medium">{p.label}</p>
               <p className="text-slate-400 text-sm">
                 {p.mentioned}/{p.total} mencionado
               </p>
@@ -218,11 +218,11 @@ export default function GeoPage() {
       </div>
 
       {/* Suggested Prompts */}
-      <div className="bg-slate-800 rounded-xl p-6">
-        <h2 className="text-lg font-bold text-white mb-4">Prompts Sugeridos para Probar</h2>
+      <div className="bg-white border border-slate-200 rounded-xl p-6">
+        <h2 className="text-lg font-bold text-[#032149] mb-4">Prompts Sugeridos para Probar</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {suggestedPrompts.map((sp, i) => (
-            <div key={i} className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
+            <div key={i} className="flex items-center justify-between p-3 bg-slate-100 rounded-lg">
               <div className="flex-1">
                 <span className={`text-xs px-2 py-0.5 rounded mr-2 ${
                   sp.type === 'discovery' ? 'bg-blue-500/20 text-blue-400' :
@@ -236,7 +236,7 @@ export default function GeoPage() {
               </div>
               <button
                 onClick={() => copyPrompt(sp.prompt)}
-                className="p-2 text-slate-400 hover:text-white transition-colors"
+                className="p-2 text-slate-400 hover:text-[#032149] transition-colors"
                 title="Copiar prompt"
               >
                 <Copy className="w-4 h-4" />
@@ -247,9 +247,9 @@ export default function GeoPage() {
       </div>
 
       {/* Tests Table */}
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-700">
-          <h2 className="text-lg font-bold text-white">Historial de Pruebas</h2>
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200">
+          <h2 className="text-lg font-bold text-[#032149]">Historial de Pruebas</h2>
         </div>
 
         {loading ? (
@@ -263,7 +263,7 @@ export default function GeoPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-700/50">
+              <thead className="bg-slate-100">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase">Fecha</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase">Plataforma</th>
@@ -276,12 +276,12 @@ export default function GeoPage() {
               </thead>
               <tbody className="divide-y divide-slate-700">
                 {tests.map((test) => (
-                  <tr key={test.id} className="hover:bg-slate-700/30">
-                    <td className="px-6 py-4 text-white text-sm">
+                  <tr key={test.id} className="hover:bg-slate-50">
+                    <td className="px-6 py-4 text-[#032149] text-sm">
                       {new Date(test.date).toLocaleDateString('es-ES')}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded text-xs text-white ${
+                      <span className={`px-2 py-1 rounded text-xs text-[#032149] ${
                         platforms.find(p => p.value === test.platform)?.color || 'bg-slate-500'
                       }`}>
                         {platforms.find(p => p.value === test.platform)?.label || test.platform}
@@ -334,8 +334,8 @@ export default function GeoPage() {
       {/* Add Test Modal */}
       {showAddForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold text-white mb-4">Registrar Prueba GEO</h2>
+          <div className="bg-white border border-slate-200 rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl font-bold text-[#032149] mb-4">Registrar Prueba GEO</h2>
 
             <form onSubmit={handleAddTest} className="space-y-4">
               <div>
@@ -348,8 +348,8 @@ export default function GeoPage() {
                       onClick={() => setNewTest({ ...newTest, platform: p.value })}
                       className={`p-2 rounded-lg text-sm font-medium transition-colors ${
                         newTest.platform === p.value
-                          ? `${p.color} text-white`
-                          : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                          ? `${p.color} text-[#032149]`
+                          : 'bg-slate-100 text-slate-300 hover:bg-slate-200'
                       }`}
                     >
                       {p.label}
@@ -369,7 +369,7 @@ export default function GeoPage() {
                       className={`p-3 rounded-lg text-left transition-colors ${
                         newTest.promptType === pt.value
                           ? 'bg-[#6351d5] text-white'
-                          : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                          : 'bg-slate-100 text-slate-300 hover:bg-slate-200'
                       }`}
                     >
                       <p className="font-medium">{pt.label}</p>
@@ -384,7 +384,7 @@ export default function GeoPage() {
                 <textarea
                   value={newTest.prompt}
                   onChange={(e) => setNewTest({ ...newTest, prompt: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-24"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149] focus:outline-none focus:ring-2 focus:ring-[#6351d5] h-24"
                   placeholder="Escribe la pregunta que hiciste a la IA"
                   required
                 />
@@ -399,7 +399,7 @@ export default function GeoPage() {
                     className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg transition-colors ${
                       newTest.mentioned
                         ? 'bg-green-500 text-white'
-                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        : 'bg-slate-100 text-slate-300 hover:bg-slate-200'
                     }`}
                   >
                     <CheckCircle2 className="w-5 h-5" /> Sí
@@ -410,7 +410,7 @@ export default function GeoPage() {
                     className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg transition-colors ${
                       !newTest.mentioned
                         ? 'bg-red-500 text-white'
-                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        : 'bg-slate-100 text-slate-300 hover:bg-slate-200'
                     }`}
                   >
                     <XCircle className="w-5 h-5" /> No
@@ -427,7 +427,7 @@ export default function GeoPage() {
                     className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg transition-colors ${
                       newTest.sentiment === 'positive'
                         ? 'bg-green-500 text-white'
-                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        : 'bg-slate-100 text-slate-300 hover:bg-slate-200'
                     }`}
                   >
                     <ThumbsUp className="w-5 h-5" />
@@ -437,8 +437,8 @@ export default function GeoPage() {
                     onClick={() => setNewTest({ ...newTest, sentiment: 'neutral' })}
                     className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg transition-colors ${
                       newTest.sentiment === 'neutral'
-                        ? 'bg-slate-500 text-white'
-                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        ? 'bg-slate-500 text-[#032149]'
+                        : 'bg-slate-100 text-slate-300 hover:bg-slate-200'
                     }`}
                   >
                     <Minus className="w-5 h-5" />
@@ -449,7 +449,7 @@ export default function GeoPage() {
                     className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg transition-colors ${
                       newTest.sentiment === 'negative'
                         ? 'bg-red-500 text-white'
-                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        : 'bg-slate-100 text-slate-300 hover:bg-slate-200'
                     }`}
                   >
                     <ThumbsDown className="w-5 h-5" />
@@ -463,7 +463,7 @@ export default function GeoPage() {
                   type="url"
                   value={newTest.citedUrl}
                   onChange={(e) => setNewTest({ ...newTest, citedUrl: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149] focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                   placeholder="https://growth4u.io/blog/..."
                 />
               </div>
@@ -474,7 +474,7 @@ export default function GeoPage() {
                   type="text"
                   value={newTest.notes}
                   onChange={(e) => setNewTest({ ...newTest, notes: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+                  className="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-[#032149] focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
                   placeholder="Observaciones adicionales"
                 />
               </div>
@@ -483,7 +483,7 @@ export default function GeoPage() {
                 <button
                   type="button"
                   onClick={() => setShowAddForm(false)}
-                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                  className="flex-1 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#032149] rounded-lg transition-colors"
                 >
                   Cancelar
                 </button>

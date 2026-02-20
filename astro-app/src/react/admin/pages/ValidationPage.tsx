@@ -123,12 +123,12 @@ export default function ValidationPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-white">Validación Técnica</h1>
+        <h1 className="text-3xl font-bold text-[#032149]">Validación Técnica</h1>
         <p className="text-slate-400 mt-2">Fase A: ¿Me pueden leer? - Verificar Schema, robots.txt y estado de indexación</p>
       </div>
 
       {/* URL Input */}
-      <div className="bg-slate-800 rounded-xl p-6">
+      <div className="bg-white border border-slate-200 rounded-xl p-6">
         <label className="block text-sm font-medium text-slate-300 mb-2">
           URL a validar
         </label>
@@ -137,7 +137,7 @@ export default function ValidationPage() {
             type="url"
             value={urlToValidate}
             onChange={(e) => setUrlToValidate(e.target.value)}
-            className="flex-1 px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
+            className="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
             placeholder="https://growth4u.io/blog/tu-post"
           />
         </div>
@@ -145,17 +145,17 @@ export default function ValidationPage() {
 
       {/* Validation Tools */}
       <div>
-        <h2 className="text-xl font-bold text-white mb-4">Herramientas de Validación</h2>
+        <h2 className="text-xl font-bold text-[#032149] mb-4">Herramientas de Validación</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {validationTools.map((tool) => (
-            <div key={tool.name} className="bg-slate-800 rounded-xl p-6">
+            <div key={tool.name} className="bg-white border border-slate-200 rounded-xl p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className={`p-2 rounded-lg ${tool.category === 'SEO' ? 'bg-blue-500/20' : 'bg-purple-500/20'}`}>
                     <tool.icon className={`w-5 h-5 ${tool.category === 'SEO' ? 'text-blue-400' : 'text-purple-400'}`} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white">{tool.name}</h3>
+                    <h3 className="font-bold text-[#032149]">{tool.name}</h3>
                     <span className={`text-xs px-2 py-0.5 rounded ${tool.category === 'SEO' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}>
                       {tool.category}
                     </span>
@@ -165,7 +165,7 @@ export default function ValidationPage() {
                   href={tool.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
+                  className="p-2 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
                 >
                   <ExternalLink className="w-4 h-4 text-slate-300" />
                 </a>
@@ -189,10 +189,10 @@ export default function ValidationPage() {
 
       {/* Manual Checks */}
       <div>
-        <h2 className="text-xl font-bold text-white mb-4">Verificaciones Manuales</h2>
-        <div className="bg-slate-800 rounded-xl overflow-hidden">
+        <h2 className="text-xl font-bold text-[#032149] mb-4">Verificaciones Manuales</h2>
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
           <table className="w-full">
-            <thead className="bg-slate-700/50">
+            <thead className="bg-slate-100">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-400 uppercase">Check</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-400 uppercase">Cómo probar</th>
@@ -201,8 +201,8 @@ export default function ValidationPage() {
             </thead>
             <tbody className="divide-y divide-slate-700">
               {manualChecks.map((check, i) => (
-                <tr key={i} className="hover:bg-slate-700/30">
-                  <td className="px-6 py-4 text-white font-medium">{check.title}</td>
+                <tr key={i} className="hover:bg-slate-50">
+                  <td className="px-6 py-4 text-[#032149] font-medium">{check.title}</td>
                   <td className="px-6 py-4 text-slate-300 text-sm font-mono">{check.test}</td>
                   <td className="px-6 py-4 text-slate-400 text-sm">{check.expected}</td>
                 </tr>
@@ -214,18 +214,18 @@ export default function ValidationPage() {
 
       {/* GEO Content Validation */}
       <div>
-        <h2 className="text-xl font-bold text-white mb-2">Validación de Contenido GEO</h2>
+        <h2 className="text-xl font-bold text-[#032149] mb-2">Validación de Contenido GEO</h2>
         <p className="text-slate-400 mb-4">Fase B: ¿Me entienden? - Probar que la IA interpreta bien tu contenido</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {geoTests.map((test, i) => (
-            <div key={i} className="bg-slate-800 rounded-xl p-6">
+            <div key={i} className="bg-white border border-slate-200 rounded-xl p-6">
               <div className="flex items-center gap-2 mb-3">
                 <Bot className="w-5 h-5 text-purple-400" />
-                <span className="font-bold text-white">{test.platform}</span>
+                <span className="font-bold text-[#032149]">{test.platform}</span>
               </div>
 
-              <div className="bg-slate-700/50 rounded-lg p-3 mb-4">
+              <div className="bg-slate-100 rounded-lg p-3 mb-4">
                 <p className="text-sm text-slate-300 italic">"{test.prompt}"</p>
               </div>
 
@@ -239,13 +239,13 @@ export default function ValidationPage() {
 
       {/* Quick Links */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-700 rounded-xl p-6">
-        <h2 className="text-lg font-bold text-white mb-4">Accesos Rápidos</h2>
+        <h2 className="text-lg font-bold text-[#032149] mb-4">Accesos Rápidos</h2>
         <div className="flex flex-wrap gap-3">
           <a
             href={`${urlToValidate}/robots.txt`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-colors"
+            className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-[#032149] rounded-lg text-sm transition-colors"
           >
             Ver robots.txt
           </a>
@@ -253,7 +253,7 @@ export default function ValidationPage() {
             href={`${urlToValidate}/sitemap.xml`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-colors"
+            className="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-[#032149] rounded-lg text-sm transition-colors"
           >
             Ver sitemap.xml
           </a>
@@ -261,7 +261,7 @@ export default function ValidationPage() {
             href={`https://validator.schema.org/#url=${encodeURIComponent(urlToValidate)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm transition-colors"
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-[#032149] rounded-lg text-sm transition-colors"
           >
             Validar Schema
           </a>
