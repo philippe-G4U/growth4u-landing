@@ -160,7 +160,7 @@ export default function ArticleGate({ excerpt, articleSlug, articleTitle, articl
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="maria@tufintech.com"
+                  placeholder="maria@tuempresa.com"
                   className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent"
                   required
                 />
@@ -172,7 +172,7 @@ export default function ArticleGate({ excerpt, articleSlug, articleTitle, articl
                   type="text"
                   value={formData.tag}
                   onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
-                  placeholder="Ej: reducir CAC, GEO para fintechs..."
+                  placeholder="Ej: reducir CAC, GEO para empresas tech..."
                   className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent"
                 />
               </div>

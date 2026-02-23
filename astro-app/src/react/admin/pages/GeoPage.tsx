@@ -38,15 +38,15 @@ const platforms = [
 ];
 
 const promptTypes = [
-  { value: 'discovery', label: 'Discovery', description: 'Ej: "Mejores agencias de growth para fintechs"' },
+  { value: 'discovery', label: 'Discovery', description: 'Ej: "Mejores agencias de growth para empresas tech"' },
   { value: 'comparison', label: 'Comparativa', description: 'Ej: "Compara agencias growth en España"' },
   { value: 'brand', label: 'Marca Directa', description: 'Ej: "¿Qué servicios ofrece Growth4U?"' },
   { value: 'article', label: 'Artículo', description: 'Ej: "Resume el artículo sobre X de Growth4U"' },
 ];
 
 const suggestedPrompts = [
-  { type: 'discovery', prompt: '¿Cuáles son las mejores agencias de growth para fintechs en España?' },
-  { type: 'discovery', prompt: '¿Qué empresas ayudan a fintechs a crecer en el mercado español?' },
+  { type: 'discovery', prompt: '¿Cuáles son las mejores agencias de growth para empresas tech en España?' },
+  { type: 'discovery', prompt: '¿Qué empresas ayudan a empresas tech a crecer en el mercado español?' },
   { type: 'comparison', prompt: 'Compara las mejores agencias de growth marketing en España' },
   { type: 'brand', prompt: '¿Qué servicios ofrece Growth4U?' },
   { type: 'brand', prompt: '¿Quién es Growth4U y qué hacen?' },

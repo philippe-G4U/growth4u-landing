@@ -376,7 +376,7 @@ export default function LeadMagnetsAdminPage() {
                   value={formData.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5]"
-                  placeholder="Ej: Guía GEO para Fintechs 2026"
+                  placeholder="Ej: Guía GEO para Empresas Tech 2026"
                   required
                 />
               </div>
@@ -391,7 +391,7 @@ export default function LeadMagnetsAdminPage() {
                   value={formData.slug}
                   onChange={(e) => handleSlugChange(e.target.value)}
                   className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-[#032149] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] font-mono"
-                  placeholder="guia-geo-fintechs-2026"
+                  placeholder="guia-geo-empresas tech-2026"
                   required
                 />
               </div>

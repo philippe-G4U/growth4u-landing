@@ -117,7 +117,7 @@ export default function LeadMagnetGate({ magnetId, magnetSlug, magnetTitle, exce
           </div>
         )}
         <div className="mt-16 bg-[#032149] rounded-2xl p-8 text-center">
-          <p className="text-white/70 text-sm font-medium uppercase tracking-wider mb-3">¿Quieres implementarlo en tu fintech?</p>
+          <p className="text-white/70 text-sm font-medium uppercase tracking-wider mb-3">¿Quieres implementarlo en tu empresa tech?</p>
           <h3 className="text-2xl font-bold text-white mb-4">Hablamos 30 minutos y te digo dónde está tu mayor oportunidad</h3>
           <a
             href="https://now.growth4u.io/widget/bookings/growth4u_demo"
@@ -185,7 +185,7 @@ export default function LeadMagnetGate({ magnetId, magnetSlug, magnetTitle, exce
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="maria@tufintech.com"
+                  placeholder="maria@tuempresa.com"
                   className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent"
                   required
                 />
@@ -196,7 +196,7 @@ export default function LeadMagnetGate({ magnetId, magnetSlug, magnetTitle, exce
                   type="text"
                   value={formData.empresa}
                   onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-                  placeholder="Nombre de tu fintech"
+                  placeholder="Nombre de tu empresa tech"
                   className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent"
                 />
               </div>

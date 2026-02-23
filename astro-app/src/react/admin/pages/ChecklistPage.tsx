@@ -38,7 +38,7 @@ const weeklyChecklist: Omit<ChecklistItem, 'checked'>[] = [
   {
     id: 'geo-test-1',
     label: 'Prueba GEO: Pregunta discovery en Perplexity',
-    description: 'Ej: "Mejores agencias growth fintechs España"'
+    description: 'Ej: "Mejores agencias growth empresas tech España"'
   },
   {
     id: 'geo-test-2',

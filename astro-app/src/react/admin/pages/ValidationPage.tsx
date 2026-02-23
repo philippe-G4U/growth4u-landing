@@ -107,7 +107,7 @@ export default function ValidationPage() {
     },
     {
       platform: 'Perplexity.ai',
-      prompt: '¿Cuáles son las mejores agencias de growth para fintechs en España?',
+      prompt: '¿Cuáles son las mejores agencias de growth para empresas tech en España?',
       validation: 'Verificar si Growth4U aparece en la lista'
     }
   ];

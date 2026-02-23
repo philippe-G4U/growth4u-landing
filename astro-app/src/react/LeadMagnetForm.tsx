@@ -97,7 +97,7 @@ export default function LeadMagnetForm({ magnetSlug, magnetTitle, contentUrl }: 
             type="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            placeholder="maria@tufintech.com"
+            placeholder="maria@tuempresa.com"
             className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent"
             required
           />
@@ -109,7 +109,7 @@ export default function LeadMagnetForm({ magnetSlug, magnetTitle, contentUrl }: 
             type="text"
             value={formData.tag}
             onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
-            placeholder="Ej: GEO para fintechs, reducir CAC..."
+            placeholder="Ej: GEO para empresas tech, reducir CAC..."
             className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent"
           />
         </div>

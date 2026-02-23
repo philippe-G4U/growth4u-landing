@@ -51,7 +51,7 @@ export default function BlogAdminPage() {
     'Estrategia',
     'Growth',
     'Marketing',
-    'Fintech',
+    'Tech',
     'SEO',
     'GEO',
     'Producto',
@@ -333,7 +333,7 @@ export default function BlogAdminPage() {
                     <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
                       <span className="px-2 py-0.5 bg-slate-100 rounded">{post.category}</span>
                       <span>{post.readTime}</span>
-                      <span>{post.createdAt?.toLocaleDateString('es-ES') || 'Sin fecha'}</span>
+                      <span>{post.createdAt ? new Date(post.createdAt).toLocaleDateString('es-ES') : 'Sin fecha'}</span>
                     </div>
                   </div>
 

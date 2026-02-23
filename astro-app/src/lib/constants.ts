@@ -1,6 +1,6 @@
 export const SITE_URL = 'https://growth4u.io';
 export const SITE_NAME = 'Growth4U';
-export const SITE_DESCRIPTION = 'Especialistas en Growth Fintech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.';
+export const SITE_DESCRIPTION = 'Especialistas en Growth para Empresas Tech. Te ayudamos a crear un motor de crecimiento que perdura en el tiempo y reduce tu CAC apoyándonos en el valor de la confianza.';
 
 export const BOOKING_LINK = 'https://now.growth4u.io/widget/bookings/growth4u_demo';
 

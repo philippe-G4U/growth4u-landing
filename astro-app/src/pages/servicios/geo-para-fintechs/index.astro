@@ -11,8 +11,8 @@ const t = getTranslations('es');
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'GEO para Fintechs - Generative Engine Optimization',
-  description: 'Servicio de optimización para motores generativos (ChatGPT, Perplexity, Gemini) especializado en fintechs. Posicionamos tu fintech en las respuestas de IA en el mercado español.',
+  name: 'GEO para Empresas Tech - Generative Engine Optimization',
+  description: 'Servicio de optimización para motores generativos (ChatGPT, Perplexity, Gemini) especializado en empresas tech. Posicionamos tu empresa tech en las respuestas de IA en el mercado español.',
   provider: {
     '@type': 'ProfessionalService',
     name: 'Growth4U',
@@ -23,7 +23,7 @@ const serviceSchema = {
     { '@type': 'Country', name: 'Portugal' },
   ],
   serviceType: 'Generative Engine Optimization',
-  audience: { '@type': 'Audience', audienceType: 'Fintech B2B y B2C' },
+  audience: { '@type': 'Audience', audienceType: 'Tech B2B y B2C' },
 };
 
 const breadcrumbSchema = {
@@ -32,7 +32,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
     { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${SITE_URL}/servicios/` },
-    { '@type': 'ListItem', position: 3, name: 'GEO para Fintechs', item: `${SITE_URL}/servicios/geo-para-fintechs/` },
+    { '@type': 'ListItem', position: 3, name: 'GEO para Empresas Tech', item: `${SITE_URL}/servicios/geo-para-empresas tech/` },
   ],
 };
 
@@ -50,10 +50,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: '¿Por qué las fintechs en España necesitan GEO?',
+      name: '¿Por qué las empresas tech en España necesitan GEO?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Cada vez más usuarios españoles consultan IA para recomendaciones financieras. Si tu fintech no aparece cuando alguien pregunta "mejor app de pagos en España" o "neobancos recomendados", pierdes tráfico cualificado que va directamente a competidores optimizados para IA.',
+        text: 'Cada vez más usuarios españoles consultan IA para recomendaciones financieras. Si tu empresa tech no aparece cuando alguien pregunta "mejor app de pagos en España" o "neobancos recomendados", pierdes tráfico cualificado que va directamente a competidores optimizados para IA.',
       },
     },
     {
@@ -77,8 +77,8 @@ const faqSchema = {
 ---
 
 <BaseLayout
-  title="GEO para Fintechs: Generative Engine Optimization en España | Growth4U"
-  description="Posiciona tu fintech en las respuestas de ChatGPT, Perplexity y Gemini. Servicio GEO especializado en fintechs para el mercado español. Primera agencia GEO fintech en España."
+  title="GEO para Empresas Tech: Generative Engine Optimization en España | Growth4U"
+  description="Posiciona tu empresa tech en las respuestas de ChatGPT, Perplexity y Gemini. Servicio GEO especializado en empresas tech para el mercado español. Primera agencia GEO tech en España."
   jsonLd={[serviceSchema, breadcrumbSchema, faqSchema]}
 >
   <Navbar t={t} lang="es" bookingLink={BOOKING_LINK} />
@@ -91,10 +91,10 @@ const faqSchema = {
         GENERATIVE ENGINE OPTIMIZATION
       </span>
       <h1 class="text-4xl md:text-6xl font-extrabold text-[#032149] mb-6">
-        GEO para Fintechs: <span class="bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent">aparece en las respuestas de la IA</span>
+        GEO para Empresas Tech: <span class="bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent">aparece en las respuestas de la IA</span>
       </h1>
       <p class="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-        Cuando un usuario pregunta a ChatGPT "mejor neobanco en España", ¿aparece tu fintech? Si no, estás perdiendo los clientes más cualificados del mercado.
+        Cuando un usuario pregunta a ChatGPT "mejor neobanco en España", ¿aparece tu empresa tech? Si no, estás perdiendo los clientes más cualificados del mercado.
       </p>
       <div class="mt-10">
         <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transition-all transform hover:-translate-y-0.5">
@@ -114,7 +114,7 @@ const faqSchema = {
           <strong>GEO (Generative Engine Optimization)</strong> es la disciplina que optimiza la presencia digital de una marca para que los motores de IA generativa la citen, recomienden y posicionen en sus respuestas.
         </p>
         <p class="text-lg text-slate-600 leading-relaxed">
-          Mientras el SEO tradicional busca posicionar en una lista de 10 resultados azules, <strong>GEO busca ser LA respuesta</strong>. Cuando un usuario pregunta a ChatGPT, Perplexity, Gemini o Google AI Overviews "¿cuál es la mejor fintech para pagos B2B en España?", el motor generativo sintetiza información de múltiples fuentes y produce una recomendación directa. Si tu marca no está optimizada para este proceso, simplemente no existes en el canal de adquisición de mayor crecimiento.
+          Mientras el SEO tradicional busca posicionar en una lista de 10 resultados azules, <strong>GEO busca ser LA respuesta</strong>. Cuando un usuario pregunta a ChatGPT, Perplexity, Gemini o Google AI Overviews "¿cuál es la mejor empresa tech para pagos B2B en España?", el motor generativo sintetiza información de múltiples fuentes y produce una recomendación directa. Si tu marca no está optimizada para este proceso, simplemente no existes en el canal de adquisición de mayor crecimiento.
         </p>
         <p class="text-lg text-slate-600 leading-relaxed">
           Según estudios recientes, <strong>el 83% de usuarios prefieren buscar en IA</strong> antes que en Google tradicional, y en el sector financiero español esta tendencia se acelera: los usuarios buscan confianza y recomendaciones claras, exactamente lo que los motores generativos ofrecen.
@@ -171,8 +171,8 @@ const faqSchema = {
   <!-- Metodología GEO -->
   <section class="py-20 bg-slate-50 px-4">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-4">Nuestro GEO Stack para Fintechs: 4 capas</h2>
-      <p class="text-lg text-slate-600 mb-12">Un proceso probado para posicionar fintechs en los motores de IA del mercado español.</p>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-4">Nuestro GEO Stack para Empresas Tech: 4 capas</h2>
+      <p class="text-lg text-slate-600 mb-12">Un proceso probado para posicionar empresas tech en los motores de IA del mercado español.</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="bg-white rounded-2xl p-8 border border-slate-100">
@@ -180,7 +180,7 @@ const faqSchema = {
             <span class="text-[#6351d5] font-extrabold text-lg">1</span>
           </div>
           <h3 class="text-xl font-extrabold text-[#032149] mb-3">Auditoría de Visibilidad IA</h3>
-          <p class="text-slate-600 leading-relaxed">Analizamos cómo los LLMs perciben tu marca hoy. Testeamos queries reales en ChatGPT, Perplexity y Gemini para medir tu Share of Mind actual en el mercado español fintech.</p>
+          <p class="text-slate-600 leading-relaxed">Analizamos cómo los LLMs perciben tu marca hoy. Testeamos queries reales en ChatGPT, Perplexity y Gemini para medir tu Share of Mind actual en el mercado español tech.</p>
         </div>
         <div class="bg-white rounded-2xl p-8 border border-slate-100">
           <div class="w-10 h-10 bg-[#6351d5]/10 rounded-xl flex items-center justify-center mb-4">
@@ -194,14 +194,14 @@ const faqSchema = {
             <span class="text-[#6351d5] font-extrabold text-lg">3</span>
           </div>
           <h3 class="text-xl font-extrabold text-[#032149] mb-3">Autoridad de Contenido</h3>
-          <p class="text-slate-600 leading-relaxed">Creamos contenido citável con datos propios, definiciones claras, y estructuras que los LLMs pueden extraer y referenciar. Priorizamos contenido en español sobre fintech y regulación española.</p>
+          <p class="text-slate-600 leading-relaxed">Creamos contenido citável con datos propios, definiciones claras, y estructuras que los LLMs pueden extraer y referenciar. Priorizamos contenido en español sobre tech y regulación española.</p>
         </div>
         <div class="bg-white rounded-2xl p-8 border border-slate-100">
           <div class="w-10 h-10 bg-[#6351d5]/10 rounded-xl flex items-center justify-center mb-4">
             <span class="text-[#6351d5] font-extrabold text-lg">4</span>
           </div>
           <h3 class="text-xl font-extrabold text-[#032149] mb-3">Red de Citaciones</h3>
-          <p class="text-slate-600 leading-relaxed">Construimos una red de menciones en fuentes que los LLMs indexan: medios especializados, directorios fintech, publicaciones del sector financiero español y bases de conocimiento relevantes.</p>
+          <p class="text-slate-600 leading-relaxed">Construimos una red de menciones en fuentes que los LLMs indexan: medios especializados, directorios tech, publicaciones del sector financiero español y bases de conocimiento relevantes.</p>
         </div>
       </div>
     </div>
@@ -210,7 +210,7 @@ const faqSchema = {
   <!-- Resultados -->
   <section class="py-20 px-4">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">Resultados con GEO en Fintech</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">Resultados con GEO en Empresas Tech</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <div class="text-center">
           <p class="text-5xl font-extrabold bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent mb-2">+340%</p>
@@ -239,11 +239,11 @@ const faqSchema = {
   <!-- Por qué fintech necesita GEO -->
   <section class="py-20 bg-slate-50 px-4">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">¿Por qué las fintechs en España necesitan GEO?</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">¿Por qué las empresas tech en España necesitan GEO?</h2>
       <div class="space-y-6 text-lg text-slate-600 leading-relaxed">
-        <p>El sector fintech español vive un momento de transformación. Con la entrada en vigor progresiva de PSD3 y el EU AI Act, los usuarios buscan cada vez más recomendaciones de confianza. Y las buscan en ChatGPT, no en Google.</p>
-        <p>Las fintechs que no optimicen para motores generativos se enfrentan a un problema crítico: <strong>invisibilidad en el canal de adquisición de mayor crecimiento</strong>. Cuando un CEO busca "mejor plataforma de pagos B2B España" en ChatGPT y tu competidor aparece pero tú no, pierdes un lead de alta intención sin siquiera saberlo.</p>
-        <p>GEO es especialmente relevante para fintechs porque el sector financiero es categoría YMYL (Your Money Your Life) en Google y en los LLMs. Esto significa que los estándares de calidad, confianza y autoridad son más exigentes, y las marcas que cumplan estos criterios serán las citadas por defecto.</p>
+        <p>El sector tech español vive un momento de transformación. Con la entrada en vigor progresiva de PSD3 y el EU AI Act, los usuarios buscan cada vez más recomendaciones de confianza. Y las buscan en ChatGPT, no en Google.</p>
+        <p>Las empresas tech que no optimicen para motores generativos se enfrentan a un problema crítico: <strong>invisibilidad en el canal de adquisición de mayor crecimiento</strong>. Cuando un CEO busca "mejor plataforma de pagos B2B España" en ChatGPT y tu competidor aparece pero tú no, pierdes un lead de alta intención sin siquiera saberlo.</p>
+        <p>GEO es especialmente relevante para empresas tech porque el sector financiero es categoría YMYL (Your Money Your Life) en Google y en los LLMs. Esto significa que los estándares de calidad, confianza y autoridad son más exigentes, y las marcas que cumplan estos criterios serán las citadas por defecto.</p>
         <p>En Growth4U combinamos GEO con nuestro <a href="/servicios/trust-engine/" class="text-[#6351d5] font-bold hover:underline">Trust Engine</a> para crear un efecto multiplicador: la confianza que construimos offline refuerza la citabilidad online, y viceversa.</p>
       </div>
     </div>
@@ -265,11 +265,11 @@ const faqSchema = {
         </details>
         <details class="group bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
           <summary class="flex items-center justify-between cursor-pointer p-6 font-bold text-[#032149] hover:text-[#6351d5] transition-colors">
-            ¿Por qué las fintechs en España necesitan GEO?
+            ¿Por qué las empresas tech en España necesitan GEO?
             <svg class="w-5 h-5 transition-transform group-open:rotate-180 flex-shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
           </summary>
           <div class="px-6 pb-6 text-slate-600 leading-relaxed">
-            Cada vez más usuarios españoles consultan IA para recomendaciones financieras. Si tu fintech no aparece cuando alguien pregunta "mejor app de pagos en España" o "neobancos recomendados", pierdes tráfico cualificado que va directamente a competidores optimizados para IA.
+            Cada vez más usuarios españoles consultan IA para recomendaciones financieras. Si tu empresa tech no aparece cuando alguien pregunta "mejor app de pagos en España" o "neobancos recomendados", pierdes tráfico cualificado que va directamente a competidores optimizados para IA.
           </div>
         </details>
         <details class="group bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
@@ -300,7 +300,7 @@ const faqSchema = {
       <h2 class="text-2xl font-extrabold text-[#032149] mb-8">Servicios complementarios</h2>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="/servicios/growth-marketing-fintech/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">
-          Growth Marketing Fintech
+          Growth Marketing para Empresas Tech
         </a>
         <a href="/servicios/trust-engine/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">
           Trust Engine
@@ -314,8 +314,8 @@ const faqSchema = {
     <div class="max-w-4xl mx-auto">
       <h2 class="text-2xl font-extrabold text-[#032149] mb-8">Artículos sobre GEO</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <a href="/blog/geo-para-fintechs-como-aparecer-cuando-chatgpt-busca-mejor-banco-digital-espana/" class="group bg-slate-50 rounded-xl p-6 hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100 transition-all">
-          <h3 class="font-bold text-[#032149] group-hover:text-[#6351d5] transition-colors mb-2">GEO para Fintechs: cómo aparecer cuando ChatGPT busca "mejor banco digital España"</h3>
+        <a href="/blog/geo-para-empresas tech-como-aparecer-cuando-chatgpt-busca-mejor-banco-digital-espana/" class="group bg-slate-50 rounded-xl p-6 hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100 transition-all">
+          <h3 class="font-bold text-[#032149] group-hover:text-[#6351d5] transition-colors mb-2">GEO para Empresas Tech: cómo aparecer cuando ChatGPT busca "mejor banco digital España"</h3>
           <p class="text-sm text-slate-500">El GEO Stack de 4 capas para pasar de ser un resultado de Google a ser la respuesta de la IA.</p>
         </a>
         <a href="/blog/ha-muerto-el-seo-bienvenido-a-la-era-del-geo-generative-engine-optimization/" class="group bg-slate-50 rounded-xl p-6 hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100 transition-all">
@@ -323,7 +323,7 @@ const faqSchema = {
           <p class="text-sm text-slate-500">La evolución del posicionamiento orgánico hacia los motores generativos.</p>
         </a>
         <a href="/blog/como-aparecer-en-chatgpt-cuando-un-ceo-busca-mejor-fintech-espana/" class="group bg-slate-50 rounded-xl p-6 hover:bg-white hover:shadow-lg border border-transparent hover:border-slate-100 transition-all">
-          <h3 class="font-bold text-[#032149] group-hover:text-[#6351d5] transition-colors mb-2">Cómo aparecer en ChatGPT cuando un CEO busca "mejor fintech España"</h3>
+          <h3 class="font-bold text-[#032149] group-hover:text-[#6351d5] transition-colors mb-2">Cómo aparecer en ChatGPT cuando un CEO busca "mejor empresa tech España"</h3>
           <p class="text-sm text-slate-500">Guía práctica para posicionar tu marca en las respuestas de IA.</p>
         </a>
       </div>
@@ -334,7 +334,7 @@ const faqSchema = {
   <section class="py-24 px-4">
     <div class="max-w-4xl mx-auto">
       <div class="bg-gradient-to-br from-[#6351d5] to-[#3f45fe] rounded-3xl p-12 md:p-16 text-center text-white">
-        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">¿Tu fintech aparece en ChatGPT?</h2>
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">¿Tu empresa tech aparece en ChatGPT?</h2>
         <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Agenda una consulta GEO gratuita y te mostramos cómo los LLMs ven tu marca hoy.</p>
         <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-white text-[#6351d5] font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all">
           Consulta GEO Gratis

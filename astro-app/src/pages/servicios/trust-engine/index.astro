@@ -12,11 +12,11 @@ const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: 'Trust Engine - Motor de Crecimiento Basado en Confianza',
-  description: 'Metodología propietaria de Growth4U que reduce el CAC hasta un 70% construyendo confianza orgánica, programas de referral estructurados y viralidad diseñada para fintechs.',
+  description: 'Metodología propietaria de Growth4U que reduce el CAC hasta un 70% construyendo confianza orgánica, programas de referral estructurados y viralidad diseñada para empresas tech.',
   provider: { '@type': 'ProfessionalService', name: 'Growth4U', url: SITE_URL },
   areaServed: [{ '@type': 'Country', name: 'Spain' }, { '@type': 'Country', name: 'Portugal' }],
   serviceType: 'Trust Engine - Growth Marketing',
-  audience: { '@type': 'Audience', audienceType: 'Fintech B2B y B2C' },
+  audience: { '@type': 'Audience', audienceType: 'Tech B2B y B2C' },
 };
 
 const breadcrumbSchema = {
@@ -59,10 +59,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: '¿Por qué la confianza reduce el CAC en fintech?',
+      name: '¿Por qué la confianza reduce el CAC en tech?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'El usuario fintech necesita confiar antes de dar sus datos bancarios o financieros. Cuando tu marca tiene autoridad y presencia en medios de confianza, el usuario llega pre-convencido: no necesitas gastar tanto en ads para convencerle. Además, los usuarios satisfechos refieren a otros, creando un efecto de crecimiento compuesto.',
+        text: 'El usuario tech necesita confiar antes de dar sus datos bancarios o financieros. Cuando tu marca tiene autoridad y presencia en medios de confianza, el usuario llega pre-convencido: no necesitas gastar tanto en ads para convencerle. Además, los usuarios satisfechos refieren a otros, creando un efecto de crecimiento compuesto.',
       },
     },
   ],
@@ -71,12 +71,12 @@ const faqSchema = {
 const pillars = [
   {
     title: 'Posicionamiento de Autoridad',
-    desc: 'Colocamos tu marca en medios financieros de referencia, directorios especializados y entornos de confianza del ecosistema fintech español. No se trata de PR genérico: se trata de estar donde tus usuarios validan sus decisiones financieras.',
+    desc: 'Colocamos tu marca en medios financieros de referencia, directorios especializados y entornos de confianza del ecosistema tech español. No se trata de PR genérico: se trata de estar donde tus usuarios validan sus decisiones financieras.',
     icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
   },
   {
     title: 'Ingeniería de Referral',
-    desc: 'Diseñamos programas de referral que funcionan en fintech (donde la fricción de compartir es alta). Estructura de incentivos, timing de activación y mecánicas de viralidad adaptadas al usuario financiero español.',
+    desc: 'Diseñamos programas de referral que funcionan en tech (donde la fricción de compartir es alta). Estructura de incentivos, timing de activación y mecánicas de viralidad adaptadas al usuario financiero español.',
     icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
   },
   {
@@ -86,15 +86,15 @@ const pillars = [
   },
   {
     title: 'GEO y Visibilidad IA',
-    desc: 'Optimizamos la presencia de tu fintech en motores generativos para que cuando un usuario pregunte a ChatGPT o Perplexity por recomendaciones financieras en España, tu marca sea la citada.',
+    desc: 'Optimizamos la presencia de tu empresa tech en motores generativos para que cuando un usuario pregunte a ChatGPT o Perplexity por recomendaciones financieras en España, tu marca sea la citada.',
     icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
   },
 ];
 ---
 
 <BaseLayout
-  title="Trust Engine: Reduce el CAC de tu Fintech un 70% | Growth4U"
-  description="El Trust Engine es la metodología propietaria de Growth4U para fintechs en España. Motor de crecimiento basado en confianza que reduce el CAC hasta un 70% sin depender de paid media."
+  title="Trust Engine: Reduce el CAC de tu Empresa Tech un 70% | Growth4U"
+  description="El Trust Engine es la metodología propietaria de Growth4U para empresas tech en España. Motor de crecimiento basado en confianza que reduce el CAC hasta un 70% sin depender de paid media."
   jsonLd={[serviceSchema, breadcrumbSchema, faqSchema]}
 >
   <Navbar t={t} lang="es" bookingLink={BOOKING_LINK} />
@@ -110,7 +110,7 @@ const pillars = [
         Trust Engine: <span class="bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent">reduce tu CAC un 70%</span>
       </h1>
       <p class="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-        La desconfianza es el mayor impuesto a la conversión. El Trust Engine transforma la percepción de tu fintech en una ventaja competitiva que tus competidores no pueden copiar.
+        La desconfianza es el mayor impuesto a la conversión. El Trust Engine transforma la percepción de tu empresa tech en una ventaja competitiva que tus competidores no pueden copiar.
       </p>
       <div class="mt-10">
         <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transition-all transform hover:-translate-y-0.5">
@@ -124,11 +124,11 @@ const pillars = [
   <!-- Por qué confianza -->
   <section class="py-20 bg-slate-50 px-4">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">¿Por qué la confianza es el motor de crecimiento más potente en fintech?</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">¿Por qué la confianza es el motor de crecimiento más potente en tech?</h2>
       <div class="space-y-6 text-lg text-slate-600 leading-relaxed">
-        <p>En fintech, la confianza no es un nice-to-have. Es el prerequisito de toda conversión. Un usuario no va a dar sus datos bancarios, vincular su cuenta corriente o confiar su dinero a una app que no conoce o que no percibe como segura.</p>
+        <p>En tech, la confianza no es un nice-to-have. Es el prerequisito de toda conversión. Un usuario no va a dar sus datos bancarios, vincular su cuenta corriente o confiar su dinero a una app que no conoce o que no percibe como segura.</p>
         <p>El modelo tradicional intenta solucionar esto con más presupuesto publicitario: más impresiones, más retargeting, más descuentos. Pero <strong>más ruido no genera confianza</strong>. De hecho, en el sector financiero español, el exceso de publicidad genera el efecto contrario: desconfianza.</p>
-        <p>El Trust Engine aborda el problema desde la raíz. En lugar de gastar más para convencer, <strong>construimos un entorno de confianza</strong> donde el usuario llega pre-convencido. Cuando tu fintech aparece en medios de autoridad, es recomendada por otros usuarios y está validada por fuentes de IA, el coste de adquisición baja drásticamente porque la barrera de confianza ya está superada.</p>
+        <p>El Trust Engine aborda el problema desde la raíz. En lugar de gastar más para convencer, <strong>construimos un entorno de confianza</strong> donde el usuario llega pre-convencido. Cuando tu empresa tech aparece en medios de autoridad, es recomendada por otros usuarios y está validada por fuentes de IA, el coste de adquisición baja drásticamente porque la barrera de confianza ya está superada.</p>
       </div>
     </div>
   </section>
@@ -213,7 +213,7 @@ const pillars = [
           <div class="w-10 h-10 bg-[#6351d5] rounded-full flex items-center justify-center flex-shrink-0"><span class="text-white font-bold text-sm">2</span></div>
           <div>
             <h3 class="font-extrabold text-[#032149] mb-1">Entorno de Confianza (Semanas 3-8)</h3>
-            <p class="text-slate-600">Posicionamos tu marca en medios de autoridad financiera, directorios fintech, y entornos donde tu usuario toma decisiones. Implementamos GEO para visibilidad en IA.</p>
+            <p class="text-slate-600">Posicionamos tu marca en medios de autoridad financiera, directorios tech, y entornos donde tu usuario toma decisiones. Implementamos GEO para visibilidad en IA.</p>
           </div>
         </div>
         <div class="flex gap-6 items-start">
@@ -287,8 +287,8 @@ const pillars = [
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-2xl font-extrabold text-[#032149] mb-8">Servicios complementarios</h2>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/servicios/geo-para-fintechs/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">GEO para Fintechs</a>
-        <a href="/servicios/growth-marketing-fintech/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">Growth Marketing Fintech</a>
+        <a href="/servicios/geo-para-empresas tech/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">GEO para Empresas Tech</a>
+        <a href="/servicios/growth-marketing-fintech/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">Growth Marketing para Empresas Tech</a>
       </div>
     </div>
   </section>
@@ -298,7 +298,7 @@ const pillars = [
     <div class="max-w-4xl mx-auto">
       <div class="bg-gradient-to-br from-[#6351d5] to-[#3f45fe] rounded-3xl p-12 md:p-16 text-center text-white">
         <h2 class="text-3xl md:text-4xl font-extrabold mb-4">¿Cuál es tu Trust Score?</h2>
-        <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Agenda una llamada y evaluamos el nivel de confianza actual de tu fintech con recomendaciones accionables.</p>
+        <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Agenda una llamada y evaluamos el nivel de confianza actual de tu empresa tech con recomendaciones accionables.</p>
         <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-white text-[#6351d5] font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all">
           Evalúa tu Trust Score
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>

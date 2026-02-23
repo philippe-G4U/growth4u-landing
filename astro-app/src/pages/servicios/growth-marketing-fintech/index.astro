@@ -11,12 +11,12 @@ const t = getTranslations('es');
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Growth Marketing para Fintechs',
-  description: 'Estrategia integral de growth marketing para fintechs B2B y B2C en España. Motor de crecimiento para cada etapa: PMF, escalado y expansión internacional.',
+  name: 'Growth Marketing para Empresas Tech',
+  description: 'Estrategia integral de growth marketing para empresas tech B2B y B2C en España. Motor de crecimiento para cada etapa: PMF, escalado y expansión internacional.',
   provider: { '@type': 'ProfessionalService', name: 'Growth4U', url: SITE_URL },
   areaServed: [{ '@type': 'Country', name: 'Spain' }, { '@type': 'Country', name: 'Portugal' }],
   serviceType: 'Growth Marketing',
-  audience: { '@type': 'Audience', audienceType: 'Fintech B2B y B2C' },
+  audience: { '@type': 'Audience', audienceType: 'Tech B2B y B2C' },
 };
 
 const breadcrumbSchema = {
@@ -25,7 +25,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
     { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${SITE_URL}/servicios/` },
-    { '@type': 'ListItem', position: 3, name: 'Growth Marketing Fintech', item: `${SITE_URL}/servicios/growth-marketing-fintech/` },
+    { '@type': 'ListItem', position: 3, name: 'Growth Marketing para Empresas Tech', item: `${SITE_URL}/servicios/growth-marketing-fintech/` },
   ],
 };
 
@@ -35,7 +35,7 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: '¿Cómo se reduce el CAC de una fintech?',
+      name: '¿Cómo se reduce el CAC de una empresa tech?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Reducimos el CAC sustituyendo la dependencia de paid media por sistemas de confianza orgánica: posicionamiento en medios de autoridad, programas de referral estructurados, automatización con IA y optimización GEO. El Trust Engine de Growth4U ha demostrado reducciones de hasta el 70% en CAC.',
@@ -43,23 +43,23 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: '¿Cuál es la mejor estrategia de growth para una fintech en España?',
+      name: '¿Cuál es la mejor estrategia de growth para una empresa tech en España?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Depende de tu etapa. Para fintechs buscando PMF: iteración rápida de canales y mensajes. Para fintechs escalando (10K-500K usuarios): Trust Engine con posicionamiento en medios de autoridad y referral. Para expansión: go-to-market localizado al mercado español.',
+        text: 'Depende de tu etapa. Para empresas tech buscando PMF: iteración rápida de canales y mensajes. Para empresas tech escalando (10K-500K usuarios): Trust Engine con posicionamiento en medios de autoridad y referral. Para expansión: go-to-market localizado al mercado español.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Cuánto cuesta una agencia de growth marketing para fintech?',
+      name: '¿Cuánto cuesta una agencia de growth marketing para empresas tech?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'El coste depende de la etapa y necesidades de tu fintech. Trabajamos con sprints de validación para startups en fase temprana y proyectos integrales para fintechs en escalado. Contacta con nosotros para una propuesta personalizada.',
+        text: 'El coste depende de la etapa y necesidades de tu empresa tech. Trabajamos con sprints de validación para startups en fase temprana y proyectos integrales para empresas tech en escalado. Contacta con nosotros para una propuesta personalizada.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Qué métricas de growth son más importantes en fintech?',
+      name: '¿Qué métricas de growth son más importantes en tech?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Las métricas clave son: CAC real (no solo CPL), tasa de activación (no registros), LTV por cohorte, ratio LTV:CAC (mínimo 3:1), y velocidad de activación. Dejamos atrás vanity metrics como impresiones o clics.',
@@ -94,8 +94,8 @@ const stages = [
 ---
 
 <BaseLayout
-  title="Growth Marketing para Fintechs en España | Growth4U"
-  description="Agencia de growth marketing especializada en fintechs B2B y B2C en España. Reducimos tu CAC hasta un 70% con estrategias de crecimiento probadas. PMF, escalado y expansión."
+  title="Growth Marketing para Empresas Tech en España | Growth4U"
+  description="Agencia de growth marketing especializada en empresas tech B2B y B2C en España. Reducimos tu CAC hasta un 70% con estrategias de crecimiento probadas. PMF, escalado y expansión."
   jsonLd={[serviceSchema, breadcrumbSchema, faqSchema]}
 >
   <Navbar t={t} lang="es" bookingLink={BOOKING_LINK} />
@@ -105,13 +105,13 @@ const stages = [
   <section class="pt-44 pb-20 bg-white">
     <div class="max-w-4xl mx-auto px-4 text-center">
       <span class="inline-block px-4 py-2 rounded-full bg-[#6351d5]/10 text-[#6351d5] font-bold text-sm mb-6">
-        GROWTH MARKETING FINTECH
+        GROWTH MARKETING TECH
       </span>
       <h1 class="text-4xl md:text-6xl font-extrabold text-[#032149] mb-6">
-        Escala tu fintech <span class="bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent">sin quemar presupuesto en ads</span>
+        Escala tu empresa tech <span class="bg-gradient-to-r from-[#6351d5] to-[#3f45fe] bg-clip-text text-transparent">sin quemar presupuesto en ads</span>
       </h1>
       <p class="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-        El CAC medio en fintech es de 1.450€ por cliente. Nuestras fintechs lo reducen un 70% con sistemas de crecimiento basados en confianza, no en gasto publicitario.
+        El CAC medio en tech es de 1.450€ por cliente. Nuestras empresas tech lo reducen un 70% con sistemas de crecimiento basados en confianza, no en gasto publicitario.
       </p>
       <div class="mt-10">
         <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg shadow-[#6351d5]/20 hover:shadow-[#6351d5]/40 transition-all transform hover:-translate-y-0.5">
@@ -125,7 +125,7 @@ const stages = [
   <!-- El problema -->
   <section class="py-20 bg-slate-50 px-4">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">El modelo de crecimiento tradicional en fintech está roto</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-8">El modelo de crecimiento tradicional en tech está roto</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-white rounded-2xl p-6 border border-slate-100">
           <h3 class="font-extrabold text-[#032149] mb-2">Alquiler de atención</h3>
@@ -137,7 +137,7 @@ const stages = [
         </div>
         <div class="bg-white rounded-2xl p-6 border border-slate-100">
           <h3 class="font-extrabold text-[#032149] mb-2">Fricción de confianza</h3>
-          <p class="text-slate-600">El usuario fintech español es escéptico. Atraes tráfico con ads, pero no conviertes por falta de autoridad de marca.</p>
+          <p class="text-slate-600">El usuario tech español es escéptico. Atraes tráfico con ads, pero no conviertes por falta de autoridad de marca.</p>
         </div>
         <div class="bg-white rounded-2xl p-6 border border-slate-100">
           <h3 class="font-extrabold text-[#032149] mb-2">Churn silencioso</h3>
@@ -151,7 +151,7 @@ const stages = [
   <section class="py-20 px-4">
     <div class="max-w-4xl mx-auto">
       <h2 class="text-3xl md:text-4xl font-extrabold text-[#032149] mb-4">El motor de crecimiento adecuado para cada etapa</h2>
-      <p class="text-lg text-slate-600 mb-12">Infraestructura escalable según la fase de tu fintech.</p>
+      <p class="text-lg text-slate-600 mb-12">Infraestructura escalable según la fase de tu empresa tech.</p>
       <div class="space-y-8">
         {stages.map((stage) => (
           <div class="bg-white rounded-2xl border border-slate-100 p-8 hover:border-[#6351d5]/20 hover:shadow-lg transition-all">
@@ -227,8 +227,8 @@ const stages = [
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-2xl font-extrabold text-[#032149] mb-8">Servicios complementarios</h2>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/servicios/geo-para-fintechs/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">
-          GEO para Fintechs
+        <a href="/servicios/geo-para-empresas tech/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">
+          GEO para Empresas Tech
         </a>
         <a href="/servicios/trust-engine/" class="inline-flex items-center gap-2 border border-slate-200 bg-white text-[#032149] font-bold py-3 px-6 rounded-full hover:border-[#6351d5] hover:text-[#6351d5] transition-all">
           Trust Engine
@@ -241,7 +241,7 @@ const stages = [
   <section class="py-24 px-4">
     <div class="max-w-4xl mx-auto">
       <div class="bg-gradient-to-br from-[#6351d5] to-[#3f45fe] rounded-3xl p-12 md:p-16 text-center text-white">
-        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">¿Listo para escalar tu fintech?</h2>
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">¿Listo para escalar tu empresa tech?</h2>
         <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Agenda una llamada y recibe un diagnóstico gratuito con recomendaciones accionables.</p>
         <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-white text-[#6351d5] font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all">
           Agendar Llamada Gratis
