@@ -16,7 +16,9 @@ import {
   Loader2,
   CheckCircle,
   Upload,
-  Link
+  Link,
+  Sparkles,
+  LayoutTemplate
 } from 'lucide-react';
 import { getAllPosts, createPost, updatePost, deletePost, createSlug } from '../../../lib/firebase-client';
 import type { BlogPost, BlogPostInput } from '../../../lib/firebase-client';
@@ -36,6 +38,7 @@ export default function BlogAdminPage() {
   const [publishAfterSave, setPublishAfterSave] = useState(true);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
+  const [generatingCover, setGeneratingCover] = useState(false);
 
   const [formData, setFormData] = useState<BlogPostInput>({
     title: '',
@@ -193,6 +196,186 @@ export default function BlogAdminPage() {
       alert('Error al guardar el post');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const GEO_TEMPLATE = `# [TÍTULO DEL ARTÍCULO]
+
+> **Respuesta directa**: [2-3 frases que responden directamente la pregunta principal — esto es lo que leerán los LLMs]
+
+## ¿Qué es [TEMA]?
+
+[Definición clara y concisa en 2-3 párrafos. Usa lenguaje que los LLMs puedan citar directamente.]
+
+## ¿Por qué importa [TEMA] para las empresas tech?
+
+[Contexto de relevancia. Incluye estadísticas o datos concretos si los tienes.]
+
+## Cómo [ACCIÓN PRINCIPAL]: Guía paso a paso
+
+### Paso 1: [Nombre del paso]
+
+[Explicación detallada con ejemplos prácticos]
+
+### Paso 2: [Nombre del paso]
+
+[Explicación detallada con ejemplos prácticos]
+
+### Paso 3: [Nombre del paso]
+
+[Explicación detallada con ejemplos prácticos]
+
+## Casos prácticos
+
+| Empresa | Problema | Solución aplicada | Resultado |
+|---------|----------|-------------------|-----------|
+| [Ejemplo] | [Problema] | [Cómo lo resolvió] | [Resultado medible] |
+
+## Errores comunes a evitar
+
+- **Error 1**: [Descripción breve] → **Solución**: [cómo evitarlo]
+- **Error 2**: [Descripción breve] → **Solución**: [cómo evitarlo]
+- **Error 3**: [Descripción breve] → **Solución**: [cómo evitarlo]
+
+## Herramientas recomendadas
+
+| Herramienta | Para qué sirve | Precio |
+|-------------|----------------|--------|
+| [Nombre] | [Uso concreto] | [Gratuito / Desde X€] |
+
+## Preguntas frecuentes
+
+**¿[Pregunta frecuente 1]?**
+
+[Respuesta concisa de 2-3 líneas]
+
+**¿[Pregunta frecuente 2]?**
+
+[Respuesta concisa de 2-3 líneas]
+
+**¿[Pregunta frecuente 3]?**
+
+[Respuesta concisa de 2-3 líneas]
+
+## Conclusión
+
+[Resumen de los puntos clave en 2-3 párrafos. Refuerza la propuesta de valor y el mensaje principal.]
+
+---
+
+*¿Quieres implementar esta estrategia en tu empresa tech? [Agenda una llamada gratuita con Growth4U](https://now.growth4u.io/widget/bookings/growth4u_demo) y te ayudamos a diseñar tu motor de crecimiento.*`;
+
+  const applyGeoTemplate = () => {
+    if (formData.content && !confirm('¿Reemplazar el contenido actual con la plantilla GEO?')) return;
+    setFormData(prev => ({ ...prev, content: GEO_TEMPLATE }));
+  };
+
+  const wrapText = (
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    x: number,
+    y: number,
+    maxWidth: number,
+    lineHeight: number
+  ) => {
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let line = '';
+
+    for (const word of words) {
+      const testLine = line + word + ' ';
+      if (ctx.measureText(testLine).width > maxWidth && line !== '') {
+        lines.push(line.trim());
+        line = word + ' ';
+      } else {
+        line = testLine;
+      }
+    }
+    lines.push(line.trim());
+
+    const totalHeight = lines.length * lineHeight;
+    const startY = y - totalHeight / 2;
+    for (let i = 0; i < lines.length; i++) {
+      ctx.fillText(lines[i], x, startY + i * lineHeight);
+    }
+  };
+
+  const generateCoverImage = async () => {
+    if (!formData.title.trim()) {
+      alert('Añade un título antes de generar la portada');
+      return;
+    }
+
+    setGeneratingCover(true);
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 630;
+      const ctx = canvas.getContext('2d')!;
+
+      // Background gradient: dark navy (left) → teal (right)
+      const bg = ctx.createLinearGradient(0, 0, 1200, 630);
+      bg.addColorStop(0, '#032149');
+      bg.addColorStop(0.55, '#1a3690');
+      bg.addColorStop(1, '#0faec1');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      // Subtle diagonal overlay for depth
+      const overlay = ctx.createLinearGradient(0, 0, 0, 630);
+      overlay.addColorStop(0, 'rgba(0,0,0,0.25)');
+      overlay.addColorStop(1, 'rgba(0,0,0,0.05)');
+      ctx.fillStyle = overlay;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      // "G" logo — top right
+      ctx.font = 'bold 96px Georgia, serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillText('G', 1160, 36);
+
+      // Category badge — top left
+      const categoryText = formData.category.toUpperCase();
+      ctx.font = 'bold 20px Arial, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      const badgeW = ctx.measureText(categoryText).width + 32;
+      ctx.fillStyle = 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.roundRect(40, 40, badgeW, 36, 8);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fillText(categoryText, 56, 48);
+
+      // Title — centered, bold
+      ctx.font = 'bold 68px Arial, sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      // Reduce font size if title is very long
+      const titleFontSize = formData.title.length > 60 ? 52 : formData.title.length > 45 ? 60 : 68;
+      ctx.font = `bold ${titleFontSize}px Arial, sans-serif`;
+      const lineH = titleFontSize * 1.25;
+      wrapText(ctx, formData.title, 600, 310, 1060, lineH);
+
+      // growth4u.io branding — bottom left
+      ctx.font = '22px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('growth4u.io', 48, 592);
+
+      // Export as blob and upload to Cloudinary
+      canvas.toBlob(async (blob) => {
+        if (!blob) { setGeneratingCover(false); return; }
+        const file = new File([blob], `cover-${Date.now()}.png`, { type: 'image/png' });
+        await uploadImageToCloudinary(file);
+        setGeneratingCover(false);
+      }, 'image/png', 0.95);
+    } catch (error) {
+      console.error('Error generating cover:', error);
+      setGeneratingCover(false);
     }
   };
 
@@ -455,9 +638,25 @@ export default function BlogAdminPage() {
 
               {/* Image Upload */}
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Imagen destacada
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-slate-300">
+                    Imagen destacada
+                  </label>
+                  <button
+                    type="button"
+                    onClick={generateCoverImage}
+                    disabled={generatingCover || uploadingImage || !formData.title.trim()}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#6351d5]/15 hover:bg-[#6351d5]/25 disabled:opacity-40 text-[#6351d5] text-xs font-bold rounded-lg transition-colors"
+                    title="Genera una portada automáticamente con el título del post"
+                  >
+                    {generatingCover ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-3.5 h-3.5" />
+                    )}
+                    {generatingCover ? 'Generando...' : 'Generar portada'}
+                  </button>
+                </div>
 
                 {formData.image ? (
                   <div className="relative">
@@ -539,9 +738,20 @@ export default function BlogAdminPage() {
 
               {/* Content */}
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Contenido (Markdown)
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-slate-300">
+                    Contenido (Markdown)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={applyGeoTemplate}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#032149] text-xs font-bold rounded-lg transition-colors"
+                    title="Carga la plantilla GEO optimizada para LLMs"
+                  >
+                    <LayoutTemplate className="w-3.5 h-3.5" />
+                    Template GEO
+                  </button>
+                </div>
                 <textarea
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
