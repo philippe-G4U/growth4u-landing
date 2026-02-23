@@ -308,15 +308,6 @@ export default function BlogAdminPage() {
 
     setGeneratingCover(true);
     try {
-      // Load Growth4U logo before drawing
-      const logo = await new Promise<HTMLImageElement>((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-        img.src = 'https://i.imgur.com/h5sWS3W.png';
-      });
-
       const canvas = document.createElement('canvas');
       canvas.width = 1200;
       canvas.height = 630;
@@ -336,10 +327,6 @@ export default function BlogAdminPage() {
       overlay.addColorStop(1, 'rgba(0,0,0,0.05)');
       ctx.fillStyle = overlay;
       ctx.fillRect(0, 0, 1200, 630);
-
-      // Growth4U logo — top right (80×80px)
-      const logoSize = 80;
-      ctx.drawImage(logo, 1200 - logoSize - 40, 30, logoSize, logoSize);
 
       // Category badge — top left
       const categoryText = formData.category.toUpperCase();
