@@ -92,7 +92,7 @@ const formattedDate = post.createdAt
       <span>&bull;</span>
       <span>{formattedDate}</span>
     </div>
-    <img src={post.image} alt={post.title} class="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" loading="lazy" />
+    {post.image && <img src={post.image} alt={post.title} class="w-full h-auto object-cover rounded-3xl shadow-xl mb-12" loading="lazy" />}
 
     <div class="prose prose-lg prose-slate mx-auto text-[#032149]">
       <p class="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">
