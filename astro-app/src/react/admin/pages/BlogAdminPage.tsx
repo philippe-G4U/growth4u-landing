@@ -308,6 +308,15 @@ export default function BlogAdminPage() {
 
     setGeneratingCover(true);
     try {
+      // Load Growth4U logo before drawing
+      const logo = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = 'https://i.imgur.com/h5sWS3W.png';
+      });
+
       const canvas = document.createElement('canvas');
       canvas.width = 1200;
       canvas.height = 630;
@@ -321,19 +330,16 @@ export default function BlogAdminPage() {
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, 1200, 630);
 
-      // Subtle diagonal overlay for depth
+      // Subtle overlay for depth
       const overlay = ctx.createLinearGradient(0, 0, 0, 630);
       overlay.addColorStop(0, 'rgba(0,0,0,0.25)');
       overlay.addColorStop(1, 'rgba(0,0,0,0.05)');
       ctx.fillStyle = overlay;
       ctx.fillRect(0, 0, 1200, 630);
 
-      // "G" logo — top right
-      ctx.font = 'bold 96px Georgia, serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.92)';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
-      ctx.fillText('G', 1160, 36);
+      // Growth4U logo — top right (80×80px)
+      const logoSize = 80;
+      ctx.drawImage(logo, 1200 - logoSize - 40, 30, logoSize, logoSize);
 
       // Category badge — top left
       const categoryText = formData.category.toUpperCase();
@@ -349,11 +355,9 @@ export default function BlogAdminPage() {
       ctx.fillText(categoryText, 56, 48);
 
       // Title — centered, bold
-      ctx.font = 'bold 68px Arial, sans-serif';
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      // Reduce font size if title is very long
       const titleFontSize = formData.title.length > 60 ? 52 : formData.title.length > 45 ? 60 : 68;
       ctx.font = `bold ${titleFontSize}px Arial, sans-serif`;
       const lineH = titleFontSize * 1.25;
