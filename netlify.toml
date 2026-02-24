@@ -1,7 +1,7 @@
 [build]
-  base = "next-app"
+  base = "astro-app"
   command = "npm run build"
-  publish = "out"
+  publish = "dist"
 
 [functions]
   node_bundler = "esbuild"
@@ -30,7 +30,7 @@
 
 # Headers for caching
 [[headers]]
-  for = "/_next/static/*"
+  for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
