@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Download, ExternalLink, Users, TrendingUp, Search, Filter } from 'lucide-react';
+import { Download, ExternalLink, Users, Search, Filter } from 'lucide-react';
 
 const APP_ID = 'growth4u-public-app';
 
@@ -17,6 +17,7 @@ interface Lead {
 }
 
 const LEAD_MAGNET_LABELS: Record<string, string> = {
+  'framework-nichos-60-dias': 'Framework Nichos 60 Días',
   'cac-sostenible': 'CAC Sostenible',
   'meseta-de-crecimiento': 'Meseta de Crecimiento',
   'sistema-de-growth': 'Sistema de Growth',
@@ -26,6 +27,7 @@ const LEAD_MAGNET_LABELS: Record<string, string> = {
 };
 
 const LEAD_MAGNET_COLORS: Record<string, string> = {
+  'framework-nichos-60-dias': 'bg-yellow-500/20 text-yellow-300',
   'cac-sostenible': 'bg-purple-500/20 text-purple-300',
   'meseta-de-crecimiento': 'bg-blue-500/20 text-blue-300',
   'sistema-de-growth': 'bg-green-500/20 text-green-300',
