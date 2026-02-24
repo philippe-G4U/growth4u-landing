@@ -1,0 +1,257 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StaticLeadMagnetGate from '../../react/StaticLeadMagnetGate';
+import { SITE_URL } from '../../lib/constants';
+
+const slug = 'kit-de-liberacion';
+const title = 'Kit de Liberación del Fundador';
+const description = '5 recursos para dejar de ser el cuello de botella de tu propio crecimiento. Sistemas, procesos y herramientas para que el equipo ejecute sin ti.';
+
+const excerpt = `## El fundador como cuello de botella
+
+Cada decisión pasa por ti. Cada campaña necesita tu aprobación. Cada brief lo escribes tú. Tu empresa no puede crecer más rápido de lo que tú puedes pensar.
+
+**Esto no es un problema de talento del equipo.** Es un problema de sistemas.
+
+Los fundadores que consiguen salir de la operación diaria no son más inteligentes ni trabajan menos horas — han construido sistemas que permiten al equipo tomar buenas decisiones sin ellos.
+
+Este kit incluye los 5 recursos que más han ayudado a los fundadores con los que trabajamos a dar este salto.`;
+
+const fullContent = `<div style="font-family:inherit">
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:8px">Por qué el fundador se convierte en el problema</h2>
+    <p style="color:#64748b;font-size:15px;margin-bottom:16px">En la fase 0-1, el fundador tiene que hacer de todo. Es necesario y correcto. El problema es cuando el equipo crece pero los sistemas no: el equipo aprende a esperarte a ti en lugar de aprender a decidir.</p>
+    <p style="color:#64748b;font-size:15px;margin-bottom:0">El resultado: el equipo es capaz pero no actúa sin ti. Cada día que no estás, el crecimiento se ralentiza. Y tú no puedes escalar porque primero tienes que aprobar todo.</p>
+    <div style="background:white;border-radius:10px;padding:16px;margin-top:16px;border:1px solid #e2e8f0">
+      <p style="color:#032149;font-size:14px;font-weight:700;margin-bottom:6px">La señal más clara de que eres el cuello de botella:</p>
+      <p style="color:#64748b;font-size:14px;margin:0">Cuando estás de vacaciones, el número de campañas activas baja. Cuando llegas el lunes, tienes 20 mensajes esperando tu aprobación. El crecimiento de tu empresa está limitado por tu calendario.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:20px;margin-bottom:28px">
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#6351d5,#4f3dbf);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">1</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Sistema de Briefing</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">Template de brief de campaña de 1 página</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:14px">El 80% del tiempo que el fundador pasa en marketing es revisando briefs mal escritos y preguntando por contexto que debería estar documentado. Este template estandariza lo que tu equipo necesita saber antes de lanzar cualquier campaña.</p>
+        <p style="color:#032149;font-size:13px;font-weight:700;margin-bottom:8px">El template incluye:</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px">
+          <div style="background:#f5f3ff;border-radius:6px;padding:8px 10px;color:#6351d5;font-size:13px">Objetivo de la campaña (en KPI, no en intención)</div>
+          <div style="background:#f5f3ff;border-radius:6px;padding:8px 10px;color:#6351d5;font-size:13px">Audiencia objetivo con criterios de exclusión</div>
+          <div style="background:#f5f3ff;border-radius:6px;padding:8px 10px;color:#6351d5;font-size:13px">Presupuesto y límites de CPA/CPL</div>
+          <div style="background:#f5f3ff;border-radius:6px;padding:8px 10px;color:#6351d5;font-size:13px">Mensajes clave y restricciones de marca</div>
+          <div style="background:#f5f3ff;border-radius:6px;padding:8px 10px;color:#6351d5;font-size:13px">Criterio de éxito y fecha de revisión</div>
+          <div style="background:#f5f3ff;border-radius:6px;padding:8px 10px;color:#6351d5;font-size:13px">Decisiones que el equipo puede tomar solo</div>
+        </div>
+        <div style="background:#f5f3ff;border-radius:8px;padding:12px">
+          <p style="color:#6351d5;font-size:13px;font-weight:600;margin:0">Impacto típico: El fundador pasa de revisar 15 elementos por campaña a revisar 2-3. El equipo lanza campañas 3x más rápido.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#0284c7,#0369a1);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">2</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Guía de Agentes IA</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">Cómo usar IA para multiplicar la producción del equipo</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:14px">No se trata de usar ChatGPT para escribir posts. Se trata de construir agentes específicos que replican tu criterio de decisión para que el equipo pueda actuar sin ti en el 80% de los casos.</p>
+        <p style="color:#032149;font-size:13px;font-weight:700;margin-bottom:8px">Los 5 agentes que más impacto tienen:</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span style="background:#0284c7;color:white;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">IA</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Agente de Brief:</strong> Genera un brief completo a partir de 3 inputs del equipo. Elimina el 90% de las preguntas al fundador.</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span style="background:#0284c7;color:white;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">IA</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Agente de Copy:</strong> Genera variantes de ad copy dentro de los límites de marca. El equipo itera sin esperarte.</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span style="background:#0284c7;color:white;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">IA</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Agente de Análisis:</strong> Analiza datos de campañas y genera un informe con recomendaciones de acción cada semana.</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span style="background:#0284c7;color:white;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">IA</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Agente de Respuesta a Reseñas:</strong> Genera respuestas personalizadas a reseñas de Trustpilot en el tono de marca.</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <span style="background:#0284c7;color:white;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">IA</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Agente de Contenido:</strong> Genera el calendario de contenido del mes a partir de 5 inputs del fundador una vez por trimestre.</p>
+          </div>
+        </div>
+        <div style="background:#f0f9ff;border-radius:8px;padding:12px">
+          <p style="color:#0284c7;font-size:13px;font-weight:600;margin:0">Impacto típico: El equipo pasa de producir 40 piezas/mes a 120-150. El fundador dedica 2h/semana a revisión en lugar de 12h.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#16a34a,#15803d);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">3</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Checklist de Delegación</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">Los 20 signos de que eres el cuello de botella</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:16px">Antes de poder delegar, necesitas diagnosticar en qué área eres el cuello de botella. Marca lo que es verdad en tu caso:</p>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> El equipo no lanza campañas sin mi aprobación explícita</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Escribo o reviso al menos 1 brief de campaña por semana</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Cuando estoy en reuniones, hay decisiones de marketing que se retrasan</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Mi equipo me pregunta "¿esto está bien?" antes de publicar</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> No tenemos criterios documentados de qué es "una buena campaña"</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> El calendario de contenido lo construyo yo o necesita mi input cada semana</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Las decisiones de presupuesto de campaña requieren mi aprobación</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> El equipo no sabe cuándo parar una campaña que no funciona sin consultarme</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> No hay un proceso documentado para la revisión semanal de resultados</label>
+          <label style="display:flex;align-items:flex-start;gap:9px;color:#475569;font-size:13px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Las reuniones de marketing solo funcionan cuando yo estoy presente</label>
+        </div>
+        <div style="background:#f0fdf4;border-radius:8px;padding:12px">
+          <p style="color:#15803d;font-size:13px;font-weight:600;margin:0">Si marcaste 5 o más: Eres el cuello de botella. El playbook de 30 días (recurso 4) es tu siguiente paso.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#d97706,#b45309);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">4</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Playbook de 30 Días</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">Semana a semana, cómo delegar growth</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:16px">El error de los fundadores es intentar delegar todo a la vez. Este playbook lo hace gradual, con checkpoints claros para que ni tú ni tu equipo se pierdan en el proceso.</p>
+        <div style="display:grid;gap:10px;margin-bottom:16px">
+          <div style="background:#fffbeb;border-radius:8px;padding:14px">
+            <p style="color:#92400e;font-size:13px;font-weight:700;margin-bottom:6px">Semana 1: Documenta antes de delegar</p>
+            <p style="color:#78350f;font-size:13px;margin:0">Graba en video las 3 decisiones que más veces tomas en marketing. Esos videos son la base del sistema de decisión que vas a crear.</p>
+          </div>
+          <div style="background:#fffbeb;border-radius:8px;padding:14px">
+            <p style="color:#92400e;font-size:13px;font-weight:700;margin-bottom:6px">Semana 2: Crea los criterios de decisión</p>
+            <p style="color:#78350f;font-size:13px;margin:0">Convierte los videos en documentos: "Si pasa X, haz Y. Si pasa Z, escalame." El equipo no necesita tu cerebro — necesita tus criterios.</p>
+          </div>
+          <div style="background:#fffbeb;border-radius:8px;padding:14px">
+            <p style="color:#92400e;font-size:13px;font-weight:700;margin-bottom:6px">Semana 3: Primera delegación con red de seguridad</p>
+            <p style="color:#78350f;font-size:13px;margin:0">El equipo ejecuta usando los criterios. Tú revisas el resultado (no el proceso) el viernes. Corrige los criterios, no las acciones.</p>
+          </div>
+          <div style="background:#fffbeb;border-radius:8px;padding:14px">
+            <p style="color:#92400e;font-size:13px;font-weight:700;margin-bottom:6px">Semana 4: Retira la red de seguridad</p>
+            <p style="color:#78350f;font-size:13px;margin:0">El equipo opera con autonomía completa en las áreas delegadas. Tu rol: revisar métricas semanales y actualizar criterios cuando algo no funcione.</p>
+          </div>
+        </div>
+        <div style="background:#fffbeb;border-radius:8px;padding:12px">
+          <p style="color:#92400e;font-size:13px;font-weight:600;margin:0">Impacto típico: El fundador recupera 8-12 horas semanales. El equipo lanza 2-3x más iniciativas por mes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#9333ea,#7e22ce);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">5</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Sesión de Implementación</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">45 minutos para diseñar tu sistema de delegación</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:14px">Los 4 recursos anteriores son el marco. La sesión es donde lo aplicamos a tu situación específica: tu equipo, tus procesos actuales, tus cuellos de botella concretos.</p>
+        <p style="color:#032149;font-size:13px;font-weight:700;margin-bottom:10px">En 45 minutos diseñamos juntos:</p>
+        <ul style="color:#475569;font-size:14px;margin:0 0 16px 0;padding-left:20px;line-height:2">
+          <li>El mapa de las 5 decisiones donde eres más cuello de botella</li>
+          <li>Los criterios de decisión para las 2 más impactantes</li>
+          <li>El plan de delegación para los próximos 30 días</li>
+          <li>Las métricas para saber si el sistema está funcionando</li>
+        </ul>
+        <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer" style="display:block;background:linear-gradient(135deg,#9333ea,#6351d5);color:white;font-weight:700;font-size:15px;padding:14px 24px;border-radius:8px;text-decoration:none;text-align:center">Agendar sesión gratuita →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background:linear-gradient(135deg,#6351d5,#032149);border-radius:16px;padding:28px;text-align:center">
+    <h2 style="color:white;font-size:22px;font-weight:800;margin-bottom:10px">¿Listo para salir de la operación diaria?</h2>
+    <p style="color:rgba(255,255,255,0.8);font-size:15px;margin-bottom:20px">Los fundadores que trabajan con nosotros recuperan de media 10 horas semanales en los primeros 60 días. Sus equipos lanzan el doble de iniciativas. Y el crecimiento no para cuando ellos se van de vacaciones.</p>
+    <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:white;color:#6351d5;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none">Agendar sesión gratuita →</a>
+  </div>
+
+</div>`;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${SITE_URL}/recursos/` },
+    { '@type': 'ListItem', position: 3, name: title, item: `${SITE_URL}/recursos/${slug}/` },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${title} | Growth4U`}
+  description={description}
+  canonical={`${SITE_URL}/recursos/${slug}/`}
+  jsonLd={[breadcrumbSchema]}
+>
+  <main class="min-h-screen bg-white">
+    <section class="bg-[#032149] pt-20 pb-14">
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="flex items-center gap-2 mb-6">
+          <a href="/" class="text-white/50 hover:text-white text-sm transition-colors">Growth4U</a>
+          <span class="text-white/30">/</span>
+          <span class="text-white/50 text-sm">Recursos</span>
+        </div>
+        <span class="inline-block px-3 py-1 bg-[#6351d5]/30 text-[#a89cf7] rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          Recurso Gratuito
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">{title}</h1>
+        <p class="text-xl text-slate-300 leading-relaxed mb-8">{description}</p>
+        <div class="flex flex-wrap items-center gap-6 text-slate-400 text-sm">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>100% gratuito</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Acceso inmediato</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Sin spam</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="max-w-3xl mx-auto px-4 py-12 pb-20">
+      <StaticLeadMagnetGate
+        client:only="react"
+        magnetSlug={slug}
+        magnetTitle={title}
+        excerpt={excerpt}
+        fullContent={fullContent}
+      />
+    </section>
+  </main>
+</BaseLayout>

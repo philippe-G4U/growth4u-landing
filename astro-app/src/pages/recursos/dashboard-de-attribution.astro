@@ -1,0 +1,339 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StaticLeadMagnetGate from '../../react/StaticLeadMagnetGate';
+import { SITE_URL } from '../../lib/constants';
+
+const slug = 'dashboard-de-attribution';
+const title = 'Dashboard de Attribution para Fintech';
+const description = 'Para de adivinar qué funciona. El sistema completo de medición para saber exactamente qué canales y qué creatividades generan usuarios rentables.';
+
+const excerpt = `## No sabes qué funciona. Y eso cuesta dinero.
+
+Tienes GA4. Tienes Meta Ads. Tienes el dashboard del banco. Pero cuando te preguntan "¿qué canal nos está trayendo los mejores usuarios?" — no sabes la respuesta.
+
+**Criptan tenía este problema.** Gastaban en 6 canales y no sabían cuáles eran rentables. Cuando implementaron el sistema de attribution, descubrieron que 2 canales representaban el 80% de los usuarios rentables. Cortaron los otros 4 y reinvirtieron. En 3 meses: +40% de ROI con el mismo presupuesto.
+
+La attribution no es un problema técnico. Es un problema de sistema.`;
+
+const fullContent = `<div style="font-family:inherit">
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:8px">Por qué la attribution en fintech es diferente</h2>
+    <p style="color:#64748b;font-size:15px;margin-bottom:16px">En e-commerce, la conversión es inmediata: el usuario llega, compra, listo. En fintech, la cadena es: registro → verificación → activación → primer uso → retención. Cada paso puede tomar días o semanas.</p>
+    <p style="color:#64748b;font-size:15px;margin-bottom:0">Atribuir el registro al canal correcto es fácil. Atribuir el usuario rentable a 90 días al canal correcto — eso requiere un sistema.</p>
+    <div style="background:white;border-radius:10px;padding:16px;margin-top:16px;border-left:4px solid #dc2626">
+      <p style="color:#991b1b;font-size:14px;font-weight:700;margin-bottom:6px">El error más costoso en attribution fintech:</p>
+      <p style="color:#7f1d1d;font-size:14px;margin:0">Optimizar para registros cuando deberías optimizar para usuarios activados y retenidos. Meta Ads reporta "500 registros a 4€". Lo que no reporta: que el 70% de esos usuarios no activaron y el CAC real fue de 13€ — y que el canal con el CAC real más bajo fue uno al que le dabas el 15% del presupuesto.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:20px;margin-bottom:28px">
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#6351d5,#4f3dbf);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">1</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Google Sheet de Attribution</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">6 pestañas: el sistema completo de medición</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:16px">Un Google Sheet diseñado específicamente para fintechs. No es un dashboard genérico — cada pestaña responde una pregunta específica del negocio.</p>
+        <div style="display:grid;gap:10px;margin-bottom:16px">
+          <div style="background:#f5f3ff;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;gap-8px;margin-bottom:6px">
+              <span style="background:#6351d5;color:white;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:8px">Tab 1</span>
+              <strong style="color:#032149;font-size:14px">Canales</strong>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Registros, activaciones, retención a 30/60/90 días y CAC real por canal. Vista semanal y mensual.</p>
+          </div>
+          <div style="background:#f5f3ff;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;gap-8px;margin-bottom:6px">
+              <span style="background:#6351d5;color:white;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:8px">Tab 2</span>
+              <strong style="color:#032149;font-size:14px">Creatividades</strong>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Performance de cada ad hasta la activación. No solo CTR y CPL — también tasa de activación de los usuarios que generó.</p>
+          </div>
+          <div style="background:#f5f3ff;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;gap-8px;margin-bottom:6px">
+              <span style="background:#6351d5;color:white;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:8px">Tab 3</span>
+              <strong style="color:#032149;font-size:14px">Cohortes</strong>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Análisis de retención por cohorte de captación. Ver cómo se comportan los usuarios del mes X comparado con los del mes Y.</p>
+          </div>
+          <div style="background:#f5f3ff;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;gap-8px;margin-bottom:6px">
+              <span style="background:#6351d5;color:white;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:8px">Tab 4</span>
+              <strong style="color:#032149;font-size:14px">CAC / LTV</strong>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">El ratio que importa: cuánto cuesta adquirir un usuario vs cuánto genera en los primeros 90 días. Por canal y por cohorte.</p>
+          </div>
+          <div style="background:#f5f3ff;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;gap-8px;margin-bottom:6px">
+              <span style="background:#6351d5;color:white;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:8px">Tab 5</span>
+              <strong style="color:#032149;font-size:14px">Retención</strong>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">D7, D14, D30, D60, D90 retention por canal. Visualización del churn por semana de activación.</p>
+          </div>
+          <div style="background:#f5f3ff;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;gap-8px;margin-bottom:6px">
+              <span style="background:#6351d5;color:white;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:8px">Tab 6</span>
+              <strong style="color:#032149;font-size:14px">Dashboard Ejecutivo</strong>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Una página con las 8 métricas críticas. La que abres en las reuniones del equipo directivo cada lunes.</p>
+          </div>
+        </div>
+        <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer" style="display:block;background:linear-gradient(135deg,#6351d5,#4f3dbf);color:white;font-weight:700;font-size:14px;padding:12px 20px;border-radius:8px;text-decoration:none;text-align:center">Acceder al Google Sheet en la sesión →</a>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#0284c7,#0369a1);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">2</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Guía Attribution Real en 7 Días</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">Día a día, cómo implementar el sistema</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:16px">No necesitas un equipo de data ni un data warehouse para tener attribution real. En 7 días, con las herramientas que ya tienes, puedes tener respuestas reales.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="background:#0284c7;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;min-width:36px;text-align:center">D1</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Mapear canales actuales:</strong> Lista todos los canales activos, el gasto mensual y el número de registros que atribuyes a cada uno. Baseline.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="background:#0284c7;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;min-width:36px;text-align:center">D2</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Configurar UTMs:</strong> Estandarizar el etiquetado UTM para todos los canales. Sin UTMs consistentes, la attribution es imposible.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="background:#0284c7;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;min-width:36px;text-align:center">D3</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Configurar tracking de activación:</strong> Asegúrate de que el evento "usuario activado" llega a tu analytics con el canal de origen. Si no lo tienes, este es el paso más importante.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="background:#0284c7;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;min-width:36px;text-align:center">D4</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Crear el dashboard:</strong> Configura las 6 pestañas del Google Sheet con los datos de los últimos 90 días. Primera visión real del sistema.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="background:#0284c7;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;min-width:36px;text-align:center">D5</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Analizar primera cohorte:</strong> Toma los usuarios de hace 90 días. ¿Cuántos siguen activos? ¿De qué canal venían? Este análisis suele ser revelador.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="background:#0284c7;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;min-width:36px;text-align:center">D6</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Calcular CAC real:</strong> Divide el gasto total por canal (incluyendo tiempo de equipo) entre usuarios activados y retenidos a 30 días, no entre registros.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="background:#0284c7;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;min-width:36px;text-align:center">D7</span>
+            <p style="color:#475569;font-size:14px;margin:0"><strong>Decisión de presupuesto:</strong> Con el CAC real por canal en mano, toma la primera decisión basada en datos reales. ¿Qué canal matas? ¿Qué canal escala?</p>
+          </div>
+        </div>
+        <div style="background:#f0f9ff;border-radius:8px;padding:12px">
+          <p style="color:#0284c7;font-size:13px;font-weight:600;margin:0">Al final del día 7 tendrás más información de la que has tenido nunca sobre qué realmente genera crecimiento en tu empresa.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#16a34a,#15803d);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">3</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Checklist: 8 Métricas Críticas</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">Las métricas que importan, en orden de importancia</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:16px">No midas todo. Mide esto. Las 8 métricas que predicen la salud real de tu crecimiento fintech.</p>
+        <div style="display:grid;gap:10px;margin-bottom:16px">
+          <div style="background:#f0fdf4;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <strong style="color:#032149;font-size:14px">1. CAC por canal (real)</strong>
+              <span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Prioridad 1</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Gasto total del canal / usuarios activados (no registros). Si no mides activación, este número es falso.</p>
+          </div>
+          <div style="background:#f0fdf4;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <strong style="color:#032149;font-size:14px">2. LTV a 90 días por canal</strong>
+              <span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Prioridad 1</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Revenue generado por usuario en sus primeros 90 días, segmentado por canal de origen. La diferencia entre canales suele ser 3-5x.</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <strong style="color:#032149;font-size:14px">3. Payback period</strong>
+              <span style="background:#e2e8f0;color:#475569;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Prioridad 2</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Meses hasta que el usuario genera suficiente revenue para cubrir su CAC. Objetivo: &lt;12 meses para sostenibilidad.</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <strong style="color:#032149;font-size:14px">4. Activation rate</strong>
+              <span style="background:#e2e8f0;color:#475569;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Prioridad 2</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">% de registros que llegan al momento aha en las primeras 72h. El multiplicador de todo el sistema.</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <strong style="color:#032149;font-size:14px">5. D7 y D30 retention</strong>
+              <span style="background:#e2e8f0;color:#475569;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Prioridad 2</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">% de usuarios activos en día 7 y día 30 tras el registro. Alerta temprana del churn antes de que impacte en el LTV.</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <strong style="color:#032149;font-size:14px">6. NPS por canal</strong>
+              <span style="background:#e2e8f0;color:#475569;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Prioridad 3</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Satisfacción segmentada por canal de origen. Si el NPS de un canal es bajo, sus usuarios refieren menos y tienen mayor churn.</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <strong style="color:#032149;font-size:14px">7. CAC:LTV ratio</strong>
+              <span style="background:#e2e8f0;color:#475569;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Prioridad 3</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">La métrica de eficiencia de capital. Objetivo: ratio &gt;3 para escalar con seguridad. Por debajo de 2, hay un problema estructural.</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <strong style="color:#032149;font-size:14px">8. Contribution margin</strong>
+              <span style="background:#e2e8f0;color:#475569;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Prioridad 3</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0">Revenue menos costes variables por usuario. La prueba de que el modelo es sostenible independientemente del volumen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="background:linear-gradient(135deg,#d97706,#b45309);padding:20px 24px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="background:rgba(255,255,255,0.2);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">4</span>
+          <div>
+            <h3 style="color:white;font-size:17px;font-weight:700;margin:0">Caso Criptan: +40% ROI</h3>
+            <p style="color:rgba(255,255,255,0.75);font-size:13px;margin:0">Cómo la attribution reveló lo que ningún dashboard mostraba</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px">
+        <p style="color:#475569;font-size:14px;margin-bottom:16px">Criptan llevaba 18 meses con un mix de 6 canales: Meta, Google, YouTube, Podcast, LinkedIn y un canal de afiliados. El equipo de marketing estaba contento — el CPA de registro era razonable en todos.</p>
+        <div style="background:#fffbeb;border-radius:10px;padding:18px;margin-bottom:16px">
+          <p style="color:#92400e;font-size:14px;font-weight:700;margin-bottom:10px">Lo que descubrieron cuando midieron bien:</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <span style="color:#d97706;font-weight:700;flex-shrink:0">Meta:</span>
+              <span style="color:#475569;font-size:14px">CPA de registro de 6€. CAC real (usuarios activos a 90 días): 42€. Tasa de activación: 14%.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <span style="color:#d97706;font-weight:700;flex-shrink:0">Google:</span>
+              <span style="color:#475569;font-size:14px">CPA de registro de 11€. CAC real: 19€. Tasa de activación: 58%. LTV a 90 días: 3x el de Meta.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <span style="color:#d97706;font-weight:700;flex-shrink:0">Podcast:</span>
+              <span style="color:#475569;font-size:14px">CPA de registro de 28€. CAC real: 31€. Tasa de activación: 91%. LTV a 90 días: 5x el de Meta. NPS de 72.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <span style="color:#d97706;font-weight:700;flex-shrink:0">LinkedIn:</span>
+              <span style="color:#475569;font-size:14px">CPA de registro de 35€. CAC real: 38€. Pero solo generaba usuarios con ticket promedio 8x superior al resto.</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:#f0fdf4;border-radius:10px;padding:18px;margin-bottom:16px">
+          <p style="color:#15803d;font-size:14px;font-weight:700;margin-bottom:10px">Las decisiones que tomaron:</p>
+          <ul style="color:#475569;font-size:14px;margin:0;padding-left:20px;line-height:1.9">
+            <li>Cortaron el 70% del presupuesto de Meta (alto volumen, bajo valor)</li>
+            <li>Triplicaron el presupuesto de Google Search</li>
+            <li>Aumentaron el presupuesto de Podcast x4 (mayor LTV y activación)</li>
+            <li>Mantuvieron LinkedIn para el segmento de alto ticket</li>
+            <li>Eliminaron afiliados completamente (fraude de registros)</li>
+          </ul>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;color:#22c55e">+40%</div>
+            <div style="color:#64748b;font-size:12px;margin-top:4px">ROI con mismo presupuesto</div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;color:#6351d5">3 meses</div>
+            <div style="color:#64748b;font-size:12px;margin-top:4px">Para ver el impacto</div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;color:#0284c7">-58%</div>
+            <div style="color:#64748b;font-size:12px;margin-top:4px">Reducción del CAC real</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background:linear-gradient(135deg,#6351d5,#032149);border-radius:16px;padding:28px;text-align:center">
+    <h2 style="color:white;font-size:22px;font-weight:800;margin-bottom:10px">¿Quieres saber qué canales te generan usuarios rentables?</h2>
+    <p style="color:rgba(255,255,255,0.8);font-size:15px;margin-bottom:20px">En una sesión de 45 minutos revisamos tu mix de canales actual, configuramos el Google Sheet con tus datos y te damos las primeras conclusiones de attribution. Gratis.</p>
+    <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:white;color:#6351d5;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none">Agendar sesión gratuita →</a>
+  </div>
+
+</div>`;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${SITE_URL}/recursos/` },
+    { '@type': 'ListItem', position: 3, name: title, item: `${SITE_URL}/recursos/${slug}/` },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${title} | Growth4U`}
+  description={description}
+  canonical={`${SITE_URL}/recursos/${slug}/`}
+  jsonLd={[breadcrumbSchema]}
+>
+  <main class="min-h-screen bg-white">
+    <section class="bg-[#032149] pt-20 pb-14">
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="flex items-center gap-2 mb-6">
+          <a href="/" class="text-white/50 hover:text-white text-sm transition-colors">Growth4U</a>
+          <span class="text-white/30">/</span>
+          <span class="text-white/50 text-sm">Recursos</span>
+        </div>
+        <span class="inline-block px-3 py-1 bg-[#6351d5]/30 text-[#a89cf7] rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          Recurso Gratuito
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">{title}</h1>
+        <p class="text-xl text-slate-300 leading-relaxed mb-8">{description}</p>
+        <div class="flex flex-wrap items-center gap-6 text-slate-400 text-sm">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>100% gratuito</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Acceso inmediato</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Sin spam</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="max-w-3xl mx-auto px-4 py-12 pb-20">
+      <StaticLeadMagnetGate
+        client:only="react"
+        magnetSlug={slug}
+        magnetTitle={title}
+        excerpt={excerpt}
+        fullContent={fullContent}
+      />
+    </section>
+  </main>
+</BaseLayout>

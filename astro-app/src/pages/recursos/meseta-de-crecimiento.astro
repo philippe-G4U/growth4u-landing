@@ -1,0 +1,228 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StaticLeadMagnetGate from '../../react/StaticLeadMagnetGate';
+import { SITE_URL } from '../../lib/constants';
+
+const slug = 'meseta-de-crecimiento';
+const title = 'Romper la Meseta de Crecimiento';
+const description = 'Por qué tu crecimiento se ha estancado y los 4 palancas para desbloquearlo. Con los casos de Bnext (50K→500K usuarios) y Lydia (4-5x en 18 meses).';
+
+const excerpt = `## Tu crecimiento se ha estancado. ¿Por qué?
+
+Llevas meses con los mismos números. Los mismos canales. Las mismas tasas de conversión. Estás haciendo todo "bien" — pero el crecimiento no llega.
+
+**Esto es la meseta de crecimiento.** No es mala suerte. Es una señal de que los primeros 2-3 años de crecimiento fácil han terminado y que necesitas un sistema diferente.
+
+Bnext llegó a 50.000 usuarios y se quedó atascado durante 8 meses. Lydia en Francia tenía 200.000 usuarios activos pero no crecía. Ambas identificaron el mismo patrón: habían agotado su mercado inicial y no tenían un sistema para romper al siguiente nivel.
+
+Lo que usaron para salir de la meseta son las 4 palancas que vamos a ver.`;
+
+const fullContent = `<div style="font-family:inherit">
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:8px">Por qué se produce la meseta</h2>
+    <p style="color:#64748b;font-size:15px;margin-bottom:16px">El crecimiento temprano es fácil: captas a los primeros adoptantes que estaban buscando activamente una solución como la tuya. Son fáciles de convencer, tienen alta tolerancia a los problemas del producto y te perdonan los bugs.</p>
+    <p style="color:#64748b;font-size:15px;margin-bottom:0">Cuando los agotes, entras en la meseta. Los siguientes usuarios son más escépticos, necesitan más confianza y son más fáciles de perder. Tus canales actuales siguen funcionando — pero cada vez peor. Necesitas un sistema diferente.</p>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:28px;margin-bottom:28px;border:1px solid #e2e8f0">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:20px">Las 4 Palancas para Romper la Meseta</h2>
+
+    <div style="display:grid;gap:20px">
+
+      <div style="background:#f5f3ff;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <span style="background:#6351d5;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">1</span>
+          <h3 style="color:#032149;font-size:18px;font-weight:700;margin:0">Trust Fortress: Construir credibilidad escalable</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin-bottom:12px">En la fase inicial, la credibilidad viene del fundador. Para el siguiente nivel, necesitas credibilidad institucional que funcione sin ti: medios, reseñas verificadas, casos de éxito documentados, certificaciones regulatorias visibles.</p>
+        <div style="background:white;border-radius:8px;padding:14px">
+          <p style="color:#6351d5;font-size:13px;font-weight:700;margin-bottom:8px">Acciones concretas:</p>
+          <ul style="color:#64748b;font-size:13px;margin:0;padding-left:18px;line-height:1.9">
+            <li>Campaña de reseñas a usuarios activos con NPS alto</li>
+            <li>Entrevistas en profundidad para 3 casos de éxito con cifras reales</li>
+            <li>Press kit + outreach a medios del sector (no nota de prensa genérica)</li>
+            <li>Badges de reguladores, certificaciones y partners visibles en landing</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background:#f0f9ff;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <span style="background:#0284c7;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">2</span>
+          <h3 style="color:#032149;font-size:18px;font-weight:700;margin:0">Activation Engine: Del registro al hábito</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin-bottom:12px">El crecimiento se estanca cuando el churn supera la captación. En la meseta, el churn temprano (primeros 30 días) suele subir porque los nuevos usuarios son menos motivados que los primeros adoptantes. Optimizar el onboarding para llegar al momento aha más rápido es la palanca de mayor impacto.</p>
+        <div style="background:white;border-radius:8px;padding:14px">
+          <p style="color:#0284c7;font-size:13px;font-weight:700;margin-bottom:8px">Cómo encontrar tu momento aha:</p>
+          <ul style="color:#64748b;font-size:13px;margin:0;padding-left:18px;line-height:1.9">
+            <li>Analiza qué acción en los primeros 7 días mejor predice retención a 90 días</li>
+            <li>Rediseña el onboarding para llevar al usuario a esa acción lo antes posible</li>
+            <li>Elimina todos los pasos del registro que no son estrictamente necesarios</li>
+            <li>Implementa secuencias de reactivación para usuarios que no llegaron al aha</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background:#f0fdf4;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <span style="background:#16a34a;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">3</span>
+          <h3 style="color:#032149;font-size:18px;font-weight:700;margin:0">Referral Loop: El canal que escala con la base</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin-bottom:12px">En la meseta, el CAC de los canales pagados sube porque estás llegando a audiencias menos cualificadas. El referido tiene un CAC efectivo cercano a cero y usuarios con LTV 2x superior. Pero para funcionar, necesita activarse en el momento correcto y con el incentivo correcto.</p>
+        <div style="background:white;border-radius:8px;padding:14px">
+          <p style="color:#16a34a;font-size:13px;font-weight:700;margin-bottom:8px">El referral de alta conversión tiene 3 elementos:</p>
+          <ul style="color:#64748b;font-size:13px;margin:0;padding-left:18px;line-height:1.9">
+            <li><strong>Timing:</strong> Se activa después del momento aha, no en el registro</li>
+            <li><strong>Incentivo:</strong> Bilateral y vinculado a activación (no solo registro)</li>
+            <li><strong>Framing:</strong> "Compartir una ventaja" no "ganar dinero por referir"</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background:#fffbeb;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <span style="background:#d97706;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">4</span>
+          <h3 style="color:#032149;font-size:18px;font-weight:700;margin:0">Attribution: Mata lo que no funciona, escala lo que sí</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin-bottom:12px">En la meseta, la mayoría de los equipos están gastando presupuesto en canales que "parecen funcionar" pero no generan usuarios rentables. Attribution real (CAC por canal cruzado con LTV a 90 días) revela qué matar y qué escalar.</p>
+        <div style="background:white;border-radius:8px;padding:14px">
+          <p style="color:#d97706;font-size:13px;font-weight:700;margin-bottom:8px">La pregunta que rompe la meseta:</p>
+          <p style="color:#64748b;font-size:13px;margin:0">¿Cuál es el LTV a 90 días de los usuarios de cada canal? No el volumen, no el CTR — el valor real. Con esta respuesta, en 2 semanas puedes reconfigurar el presupuesto para crecer sin añadir un euro.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:20px">Caso Bnext: De 50K a 500K en 14 Meses</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+      <div style="background:white;border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="font-size:28px;font-weight:800;color:#6351d5">50K</div>
+        <div style="color:#64748b;font-size:13px;margin-top:4px">Usuarios al inicio</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="font-size:28px;font-weight:800;color:#22c55e">500K</div>
+        <div style="color:#64748b;font-size:13px;margin-top:4px">Usuarios al final</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="font-size:28px;font-weight:800;color:#0284c7">14</div>
+        <div style="color:#64748b;font-size:13px;margin-top:4px">Meses para lograrlo</div>
+      </div>
+    </div>
+    <p style="color:#475569;font-size:14px;margin-bottom:16px">Bnext llevaba 8 meses estancada en torno a 50.000 usuarios. Los canales pagados subían de coste y la retención no mejoraba. El equipo probaba nuevas creatividades cada semana sin resultados.</p>
+    <p style="color:#475569;font-size:14px;margin-bottom:16px">Las 3 acciones que desbloquearon el crecimiento:</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#6351d5;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px">1</span>
+        <p style="color:#475569;font-size:14px;margin:0"><strong>Rediseño del onboarding:</strong> Identificaron que "realizar el primer pago" en las primeras 48h predicaba retención a 90 días. Rediseñaron el flujo para eliminar 4 pasos de fricción y llevar al usuario al primer pago lo antes posible. Churn a 90 días: del 52% al 21%.</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#6351d5;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px">2</span>
+        <p style="color:#475569;font-size:14px;margin:0"><strong>Programa de referidos bilateral:</strong> Lanzaron el referral en el momento post-primer pago. Incentivo: 10€ para el referidor + 10€ para el referido en su primer pago. En 6 meses, el 38% de nuevos registros venían por referral con CAC efectivo de 3,20€.</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <span style="background:#6351d5;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px">3</span>
+        <p style="color:#475569;font-size:14px;margin:0"><strong>Attribution por LTV:</strong> Descubrieron que Facebook daba el 60% del volumen pero solo el 20% del valor a 90 días. Redirigieron el 40% del presupuesto de Facebook a YouTube y SEO. CAC efectivo bajó de 62€ a 24€.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:28px;margin-bottom:28px;border:1px solid #e2e8f0">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:6px">Caso Lydia: 4-5x en 18 Meses</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:20px">La fintech francesa de pagos entre amigos, con 200.000 usuarios activos pero crecimiento plano durante 10 meses.</p>
+    <p style="color:#475569;font-size:14px;margin-bottom:14px">La clave de Lydia fue identificar que su crecimiento orgánico venía de grupos de amigos, no de individuos. Rediseñaron el producto para facilitar la adopción grupal: cuando un usuario invitaba a sus contactos a un "grupo de gastos compartidos", el incentivo de adopción era mucho más fuerte que el referido individual.</p>
+    <div style="background:#f5f3ff;border-radius:10px;padding:16px">
+      <p style="color:#6351d5;font-size:14px;font-weight:700;margin-bottom:8px">El insight que lo cambió todo:</p>
+      <p style="color:#475569;font-size:14px;margin:0">El CAC bajó un 68% y el K-factor subió a 1.4 cuando activaron el referral grupal vs el individual. Un usuario que viene de un grupo tiene 4x más probabilidad de hacer su primera transacción en las primeras 24h.</p>
+    </div>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:16px">Autodiagnóstico: ¿En qué palanca estás fallando?</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:20px">Marca lo que NO tienes implementado. Cada punto sin marcar es una palanca sin activar.</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Mi landing convierte por encima del 5% del tráfico de pago</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tengo +50 reseñas verificadas con score &gt;4.2 visible en landing</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tengo definido mi "momento aha" con datos (no intuición)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> El 60%+ de los registros llegan al momento aha en 72h</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Mi churn a 30 días está por debajo del 25%</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tengo un programa de referidos activo con K-factor &gt;0.3</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Sé el LTV a 90 días de cada canal de captación</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> He parado canales basándome en datos de LTV en los últimos 3 meses</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tengo presencia activa en waterholes donde mi usuario busca soluciones</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tengo contenido SEO para queries de problema (no solo de marca)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Mi equipo revisa el sistema de growth semanalmente (no solo las campañas)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tengo un proceso documentado para escalar lo que funciona</label>
+    </div>
+    <div style="background:#fef2f2;border-radius:10px;padding:16px;margin-top:16px">
+      <p style="color:#991b1b;font-size:14px;margin:0"><strong>Si marcaste menos de 8:</strong> Tienes al menos una palanca sin activar que está limitando tu crecimiento. El primer paso es identificar cuál tiene más impacto en tu caso específico.</p>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#6351d5,#032149);border-radius:16px;padding:28px;text-align:center">
+    <h2 style="color:white;font-size:22px;font-weight:800;margin-bottom:10px">¿Cuál es tu palanca de mayor impacto?</h2>
+    <p style="color:rgba(255,255,255,0.8);font-size:15px;margin-bottom:20px">En 45 minutos analizamos tu situación específica, identificamos la palanca que más está limitando tu crecimiento y te damos un plan de acción concreto.</p>
+    <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:white;color:#6351d5;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none">Agendar sesión gratuita →</a>
+  </div>
+
+</div>`;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${SITE_URL}/recursos/` },
+    { '@type': 'ListItem', position: 3, name: title, item: `${SITE_URL}/recursos/${slug}/` },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${title} | Growth4U`}
+  description={description}
+  canonical={`${SITE_URL}/recursos/${slug}/`}
+  jsonLd={[breadcrumbSchema]}
+>
+  <main class="min-h-screen bg-white">
+    <section class="bg-[#032149] pt-20 pb-14">
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="flex items-center gap-2 mb-6">
+          <a href="/" class="text-white/50 hover:text-white text-sm transition-colors">Growth4U</a>
+          <span class="text-white/30">/</span>
+          <span class="text-white/50 text-sm">Recursos</span>
+        </div>
+        <span class="inline-block px-3 py-1 bg-[#6351d5]/30 text-[#a89cf7] rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          Recurso Gratuito
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">{title}</h1>
+        <p class="text-xl text-slate-300 leading-relaxed mb-8">{description}</p>
+        <div class="flex flex-wrap items-center gap-6 text-slate-400 text-sm">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>100% gratuito</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Acceso inmediato</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Sin spam</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="max-w-3xl mx-auto px-4 py-12 pb-20">
+      <StaticLeadMagnetGate
+        client:only="react"
+        magnetSlug={slug}
+        magnetTitle={title}
+        excerpt={excerpt}
+        fullContent={fullContent}
+      />
+    </section>
+  </main>
+</BaseLayout>

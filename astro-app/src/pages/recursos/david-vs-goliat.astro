@@ -1,0 +1,262 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StaticLeadMagnetGate from '../../react/StaticLeadMagnetGate';
+import { SITE_URL } from '../../lib/constants';
+
+const slug = 'david-vs-goliat';
+const title = 'David vs Goliat: Compite con 10x Menos Presupuesto';
+const description = 'Cómo ganar cuando tu competidor tiene 10 veces tu presupuesto. El framework Place to Win con los casos de Bnext vs N26 y Criptan vs Binance.';
+
+const excerpt = `## Tu competidor tiene 10 veces tu presupuesto. ¿Y ahora qué?
+
+N26 gastaba 50€ de CAC en España. Bnext consiguió 12,50€. No porque tuvieran más dinero — sino porque eligieron una batalla diferente.
+
+Binance domina el mercado cripto con presupuestos que ninguna startup puede igualar. Criptan encontró un segmento donde Binance era débil y creció un 160% en depósitos en un año.
+
+La clave no es competir mejor en el mismo terreno. Es encontrar el terreno donde tus ventajas son más grandes que las de ellos.
+
+Eso es lo que enseña el framework **Place to Win**.`;
+
+const fullContent = `<div style="font-family:inherit">
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:8px">El error estratégico más común</h2>
+    <p style="color:#64748b;font-size:15px;margin-bottom:16px">La mayoría de las fintechs compiten en el terreno del líder: mismos mensajes, mismos canales, mismo posicionamiento. Solo con menos presupuesto.</p>
+    <p style="color:#64748b;font-size:15px;margin-bottom:0">El resultado es predecible: el líder gana. No porque sea mejor — sino porque puede gastar más en el mismo terreno.</p>
+    <div style="background:#fef2f2;border-radius:10px;padding:16px;margin-top:16px">
+      <p style="color:#991b1b;font-size:14px;font-weight:700;margin-bottom:4px">La trampa del "mejor producto"</p>
+      <p style="color:#7f1d1d;font-size:14px;margin:0">Tener el mejor producto no es suficiente si estás compitiendo en el segmento donde el líder ya tiene la credibilidad y el presupuesto. El "mejor producto" necesita el "terreno correcto" para ganar.</p>
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:28px;margin-bottom:28px;border:1px solid #e2e8f0">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:20px">El Framework Place to Win</h2>
+    <p style="color:#64748b;font-size:15px;margin-bottom:24px">Tres círculos que, cuando se superponen, revelan el terreno donde ganar. No es el terreno más grande — es el terreno donde tus ventajas son desproporcionadamente altas.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+      <div style="background:#f5f3ff;border-radius:12px;padding:20px;text-align:center">
+        <div style="width:56px;height:56px;background:#6351d5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <h3 style="color:#032149;font-size:15px;font-weight:700;margin-bottom:8px">Círculo 1</h3>
+        <p style="color:#6351d5;font-size:13px;font-weight:600;margin-bottom:8px">Dolor de mercado sin resolver</p>
+        <p style="color:#64748b;font-size:13px;margin:0">¿Qué problema real tiene el segmento al que apuntas que el líder no resuelve bien? No el problema genérico — el problema específico que les quita el sueño.</p>
+      </div>
+      <div style="background:#fef2f2;border-radius:12px;padding:20px;text-align:center">
+        <div style="width:56px;height:56px;background:#dc2626;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3 style="color:#032149;font-size:15px;font-weight:700;margin-bottom:8px">Círculo 2</h3>
+        <p style="color:#dc2626;font-size:13px;font-weight:600;margin-bottom:8px">Punto de fallo del competidor</p>
+        <p style="color:#64748b;font-size:13px;margin:0">¿Dónde falla el líder específicamente con ese segmento? Onboarding lento, falta de idioma local, soporte deficiente, producto demasiado complejo para el usuario.</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:12px;padding:20px;text-align:center">
+        <div style="width:56px;height:56px;background:#16a34a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3 style="color:#032149;font-size:15px;font-weight:700;margin-bottom:8px">Círculo 3</h3>
+        <p style="color:#16a34a;font-size:13px;font-weight:600;margin-bottom:8px">Tu ventaja real</p>
+        <p style="color:#64748b;font-size:13px;margin:0">¿Qué puedes hacer tú que el líder no puede o no quiere hacer? Velocidad, personalización, conocimiento del segmento, integración local, equipo fundador.</p>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#f5f3ff,#f0f9ff);border-radius:12px;padding:20px;text-align:center">
+      <p style="color:#032149;font-size:15px;font-weight:700;margin-bottom:6px">La intersección = Tu Place to Win</p>
+      <p style="color:#64748b;font-size:14px;margin:0">El segmento donde el dolor es real, el competidor falla y tú tienes ventaja real. No es el mercado más grande — es el mercado donde puedes ganar con menos recursos.</p>
+    </div>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:20px">Caso 1: Bnext vs N26</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div style="background:#fef2f2;border-radius:10px;padding:18px">
+        <p style="color:#991b1b;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">N26 (el Goliat)</p>
+        <ul style="color:#475569;font-size:13px;margin:0;padding-left:18px;line-height:2">
+          <li>CAC: 50€ en España</li>
+          <li>Presupuesto de marketing 8 cifras</li>
+          <li>Posicionamiento: banco digital premium</li>
+          <li>Fuerte en perfil urbano millennials</li>
+          <li>Onboarding 100% digital sin fricción</li>
+        </ul>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:18px">
+        <p style="color:#15803d;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Bnext (el David)</p>
+        <ul style="color:#475569;font-size:13px;margin:0;padding-left:18px;line-height:2">
+          <li>CAC: 12,50€ en España</li>
+          <li>Presupuesto 20x menor</li>
+          <li>Posicionamiento: para los que no tienen cuenta</li>
+          <li>Foco en no bancarizados e inmigrantes</li>
+          <li>Onboarding sin requisitos de historial</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:12px;padding:20px;border-left:4px solid #6351d5">
+      <p style="color:#6351d5;font-size:14px;font-weight:700;margin-bottom:10px">El Place to Win de Bnext:</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;gap-8px;align-items:flex-start">
+          <span style="color:#6351d5;font-weight:700;margin-right:8px;flex-shrink:0">Dolor:</span>
+          <span style="color:#475569;font-size:14px">1.2M de personas en España sin acceso a cuenta bancaria (inmigrantes, jóvenes sin historial, trabajadores informales)</span>
+        </div>
+        <div style="display:flex;gap-8px;align-items:flex-start">
+          <span style="color:#dc2626;font-weight:700;margin-right:8px;flex-shrink:0">Fallo N26:</span>
+          <span style="color:#475569;font-size:14px">N26 requería historial crediticio y documentación que muchos de estos usuarios no tenían</span>
+        </div>
+        <div style="display:flex;gap-8px;align-items:flex-start">
+          <span style="color:#16a34a;font-weight:700;margin-right:8px;flex-shrink:0">Ventaja:</span>
+          <span style="color:#475569;font-size:14px">Bnext podía abrir cuentas sin historial. Además, el equipo conocía el segmento inmigrante y tenía comunidad en grupos de Facebook de emigrantes españoles</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#f5f3ff;border-radius:10px;padding:16px;margin-top:16px">
+      <p style="color:#6351d5;font-size:14px;font-weight:700;margin-bottom:8px">Las tácticas que hicieron la diferencia:</p>
+      <ul style="color:#475569;font-size:14px;margin:0;padding-left:20px;line-height:1.9">
+        <li>Contenido en grupos de Facebook de españoles en Alemania, UK, Francia</li>
+        <li>Asociaciones con ONGs que trabajaban con población inmigrante</li>
+        <li>Campaña de referidos en WhatsApp groups de comunidades latinas</li>
+        <li>Onboarding en 5 minutos vs 15-20 minutos de N26</li>
+        <li>Soporte en castellano vs inglés</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:28px;margin-bottom:28px;border:1px solid #e2e8f0">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:20px">Caso 2: Criptan vs Binance</h2>
+    <div style="background:#fffbeb;border-radius:10px;padding:18px;margin-bottom:20px">
+      <p style="color:#92400e;font-size:14px;font-weight:700;margin-bottom:8px">El contexto: Binance tiene el 65% del mercado spot global y presupuestos de nueve cifras</p>
+      <p style="color:#78350f;font-size:14px;margin:0">Competir con Binance en el mercado trader activo es imposible con menos de 10M€ de presupuesto. Criptan no compitió ahí.</p>
+    </div>
+    <div style="background:white;border-radius:12px;padding:20px;border-left:4px solid #d97706;margin-bottom:16px">
+      <p style="color:#d97706;font-size:14px;font-weight:700;margin-bottom:10px">El Place to Win de Criptan:</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:flex-start">
+          <span style="color:#6351d5;font-weight:700;margin-right:8px;flex-shrink:0;min-width:60px">Dolor:</span>
+          <span style="color:#475569;font-size:14px">Inversores conservadores españoles (45-65 años) con patrimonio significativo que querían exposición a cripto pero sin la complejidad técnica de Binance ni el riesgo percibido</span>
+        </div>
+        <div style="display:flex;align-items:flex-start">
+          <span style="color:#dc2626;font-weight:700;margin-right:8px;flex-shrink:0;min-width:60px">Fallo:</span>
+          <span style="color:#475569;font-size:14px">Binance era percibido como plataforma para traders jóvenes, con UX compleja, soporte no hispanohablante y sin regulación española visible</span>
+        </div>
+        <div style="display:flex;align-items:flex-start">
+          <span style="color:#16a34a;font-weight:700;margin-right:8px;flex-shrink:0;min-width:60px">Ventaja:</span>
+          <span style="color:#475569;font-size:14px">Criptan estaba regulado por Banco de España, equipo español con experiencia en banca privada, producto simplificado para ahorradores</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+      <div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:24px;font-weight:800;color:#22c55e">+160%</div>
+        <div style="color:#64748b;font-size:12px;margin-top:4px">Crecimiento en depósitos</div>
+      </div>
+      <div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:24px;font-weight:800;color:#6351d5">12 meses</div>
+        <div style="color:#64748b;font-size:12px;margin-top:4px">Para conseguirlo</div>
+      </div>
+      <div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:24px;font-weight:800;color:#0284c7">3x</div>
+        <div style="color:#64748b;font-size:12px;margin-top:4px">Mayor ticket promedio que Binance ES</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:16px">Ejercicio Guiado en 4 Pasos</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:20px">Dedica 90 minutos a este ejercicio. Al final tendrás tu Place to Win definido.</p>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="background:white;border-radius:10px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#6351d5;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">1</span>
+          <h3 style="color:#032149;font-size:15px;font-weight:700;margin:0">Mapea los segmentos que tu competidor sirve mal</h3>
+        </div>
+        <p style="color:#64748b;font-size:14px;margin:0">Lee las reseñas negativas del líder (1-2 estrellas en Trustpilot, App Store). ¿Qué tipo de usuarios se queja? ¿Qué problema específico tienen? Busca el patrón en 50-100 reseñas.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#6351d5;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">2</span>
+          <h3 style="color:#032149;font-size:15px;font-weight:700;margin:0">Valida el dolor con entrevistas</h3>
+        </div>
+        <p style="color:#64748b;font-size:14px;margin:0">Habla con 10-15 personas del segmento identificado. Una sola pregunta: "¿Qué te frustra de [nombre del líder]?" No valides hipótesis — escucha. El dolor real suele ser más específico de lo que imaginas.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#6351d5;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">3</span>
+          <h3 style="color:#032149;font-size:15px;font-weight:700;margin:0">Identifica tu ventaja estructural</h3>
+        </div>
+        <p style="color:#64748b;font-size:14px;margin:0">¿Qué puedes hacer tú en ese segmento que el líder no puede hacer aunque quisiera? Velocidad de decisión, conocimiento cultural, regulación local, integración específica, equipo con experiencia en ese segmento.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#6351d5;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">4</span>
+          <h3 style="color:#032149;font-size:15px;font-weight:700;margin:0">Verifica la intersección</h3>
+        </div>
+        <p style="color:#64748b;font-size:14px;margin:0">¿El segmento tiene dolor real + el competidor falla ahí + tú tienes ventaja real? Si las tres respuestas son sí, tienes tu Place to Win. Si no, repite el ejercicio con otro segmento.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#6351d5,#032149);border-radius:16px;padding:28px;text-align:center">
+    <h2 style="color:white;font-size:22px;font-weight:800;margin-bottom:10px">¿Quieres encontrar tu Place to Win?</h2>
+    <p style="color:rgba(255,255,255,0.8);font-size:15px;margin-bottom:20px">En una sesión de 45 minutos analizamos tu competencia, identificamos los segmentos mal servidos y definimos la estrategia asimétrica para tu caso específico.</p>
+    <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:white;color:#6351d5;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none">Agendar sesión gratuita →</a>
+  </div>
+
+</div>`;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${SITE_URL}/recursos/` },
+    { '@type': 'ListItem', position: 3, name: title, item: `${SITE_URL}/recursos/${slug}/` },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${title} | Growth4U`}
+  description={description}
+  canonical={`${SITE_URL}/recursos/${slug}/`}
+  jsonLd={[breadcrumbSchema]}
+>
+  <main class="min-h-screen bg-white">
+    <section class="bg-[#032149] pt-20 pb-14">
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="flex items-center gap-2 mb-6">
+          <a href="/" class="text-white/50 hover:text-white text-sm transition-colors">Growth4U</a>
+          <span class="text-white/30">/</span>
+          <span class="text-white/50 text-sm">Recursos</span>
+        </div>
+        <span class="inline-block px-3 py-1 bg-[#6351d5]/30 text-[#a89cf7] rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          Recurso Gratuito
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">{title}</h1>
+        <p class="text-xl text-slate-300 leading-relaxed mb-8">{description}</p>
+        <div class="flex flex-wrap items-center gap-6 text-slate-400 text-sm">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>100% gratuito</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Acceso inmediato</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Sin spam</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="max-w-3xl mx-auto px-4 py-12 pb-20">
+      <StaticLeadMagnetGate
+        client:only="react"
+        magnetSlug={slug}
+        magnetTitle={title}
+        excerpt={excerpt}
+        fullContent={fullContent}
+      />
+    </section>
+  </main>
+</BaseLayout>

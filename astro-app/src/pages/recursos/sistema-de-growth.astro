@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StaticLeadMagnetGate from '../../react/StaticLeadMagnetGate';
+import { SITE_URL } from '../../lib/constants';
+
+const slug = 'sistema-de-growth';
+const title = 'De Tácticas a Sistema de Growth';
+const description = 'Por qué tus campañas no se acumulan. El framework de 5 bloques que convierte acciones aisladas en un flywheel de crecimiento compuesto.';
+
+const excerpt = `## El problema con las tácticas aisladas
+
+Haces ads. Publicas contenido. Mandas emails. Organizas webinars. Cada cosa funciona un poco, pero nada se acumula. Cuando paras de pagar, el crecimiento para.
+
+**Esto es lo contrario de un sistema.**
+
+Un sistema es cuando cada acción refuerza la siguiente. Cuando los usuarios que traes hoy reducen el coste de traer usuarios mañana. Cuando el crecimiento se vuelve compuesto en lugar de lineal.
+
+La diferencia entre una fintech que crece al 15% mensual sostenido y otra que crece en ráfagas y se estanca está casi siempre aquí: una tiene un sistema, la otra tiene un conjunto de tácticas.`;
+
+const fullContent = `<div style="font-family:inherit">
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:8px">Tácticas vs Sistema: La diferencia que importa</h2>
+    <div style="overflow-x:auto;margin-top:16px">
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead>
+          <tr>
+            <th style="padding:12px 16px;text-align:left;background:#fef2f2;color:#991b1b;border-bottom:2px solid #fecaca">Conjunto de Tácticas</th>
+            <th style="padding:12px 16px;text-align:left;background:#f0fdf4;color:#15803d;border-bottom:2px solid #bbf7d0">Sistema de Growth</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:11px 16px;color:#475569;border-bottom:1px solid #f1f5f9">Cada acción es independiente</td>
+            <td style="padding:11px 16px;color:#475569;border-bottom:1px solid #f1f5f9">Cada acción refuerza las demás</td>
+          </tr>
+          <tr style="background:#fafafa">
+            <td style="padding:11px 16px;color:#475569;border-bottom:1px solid #f1f5f9">Cuando paras de pagar, paras de crecer</td>
+            <td style="padding:11px 16px;color:#475569;border-bottom:1px solid #f1f5f9">El crecimiento pasado reduce el coste futuro</td>
+          </tr>
+          <tr>
+            <td style="padding:11px 16px;color:#475569;border-bottom:1px solid #f1f5f9">CAC sube con el tiempo</td>
+            <td style="padding:11px 16px;color:#475569;border-bottom:1px solid #f1f5f9">CAC baja con el tiempo</td>
+          </tr>
+          <tr style="background:#fafafa">
+            <td style="padding:11px 16px;color:#475569;border-bottom:1px solid #f1f5f9">Crecimiento lineal (si escala el presupuesto)</td>
+            <td style="padding:11px 16px;color:#475569;border-bottom:1px solid #f1f5f9">Crecimiento compuesto (el flywheel acelera)</td>
+          </tr>
+          <tr>
+            <td style="padding:11px 16px;color:#475569">Éxito depende de quién ejecuta</td>
+            <td style="padding:11px 16px;color:#475569">Éxito depende del sistema, no del individuo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:28px;margin-bottom:28px;border:1px solid #e2e8f0">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:20px">El Framework de 5 Bloques</h2>
+    <p style="color:#64748b;font-size:15px;margin-bottom:24px">Cada bloque es una pieza del sistema. Sin uno de ellos, el flywheel no gira.</p>
+
+    <div style="position:relative;margin-bottom:28px">
+      <div style="display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+        <div style="background:linear-gradient(135deg,#6351d5,#032149);border-radius:50%;width:120px;height:120px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px">
+          <span style="color:white;font-weight:800;font-size:13px;line-height:1.4">Flywheel<br>de Growth</span>
+        </div>
+      </div>
+      <p style="color:#64748b;font-size:13px;text-align:center;margin-bottom:24px;font-style:italic">Cada bloque alimenta al siguiente. El círculo completo acelera con el tiempo.</p>
+    </div>
+
+    <div style="display:grid;gap:16px">
+
+      <div style="background:#f5f3ff;border-radius:12px;padding:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#6351d5;color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">Bloque 1</span>
+          <h3 style="color:#032149;font-size:16px;font-weight:700;margin:0">Credibilidad</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 8px 0">Reseñas verificadas, casos de éxito, menciones en medios. La base del sistema. Sin ella, el tráfico que entra no convierte y cada euro de ads se desperdicia.</p>
+        <p style="color:#6351d5;font-size:13px;font-weight:600;margin:0">Alimenta a: Captación (mayor tasa de conversión)</p>
+      </div>
+
+      <div style="background:#f0f9ff;border-radius:12px;padding:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#0284c7;color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">Bloque 2</span>
+          <h3 style="color:#032149;font-size:16px;font-weight:700;margin:0">Captación</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 8px 0">Paid media optimizado + SEO de problema + waterholes orgánicos. El objetivo no es traer volumen — es traer usuarios con alta probabilidad de activar.</p>
+        <p style="color:#0284c7;font-size:13px;font-weight:600;margin:0">Alimenta a: Activación (usuarios mejor cualificados activan más)</p>
+      </div>
+
+      <div style="background:#f0fdf4;border-radius:12px;padding:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#16a34a;color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">Bloque 3</span>
+          <h3 style="color:#032149;font-size:16px;font-weight:700;margin:0">Activación</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 8px 0">Onboarding diseñado para llevar al momento aha en menos de 72h. La activación alta es el multiplicador de todo lo demás: duplicar la activación equivale a duplicar el CAC efectivo.</p>
+        <p style="color:#16a34a;font-size:13px;font-weight:600;margin:0">Alimenta a: Retención y Referido (usuarios activados retienen y refieren)</p>
+      </div>
+
+      <div style="background:#fffbeb;border-radius:12px;padding:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#d97706;color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">Bloque 4</span>
+          <h3 style="color:#032149;font-size:16px;font-weight:700;margin:0">Retención y Referido</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 8px 0">Usuarios retenidos generan LTV. Usuarios satisfechos refieren. El programa de referidos bien diseñado convierte a los mejores usuarios en canal de captación — cerrando el flywheel.</p>
+        <p style="color:#d97706;font-size:13px;font-weight:600;margin:0">Alimenta a: Credibilidad (reseñas y casos de éxito) y Captación (referidos)</p>
+      </div>
+
+      <div style="background:#fdf2f8;border-radius:12px;padding:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="background:#9333ea;color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700">Bloque 5</span>
+          <h3 style="color:#032149;font-size:16px;font-weight:700;margin:0">Medición</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 8px 0">El sistema de attribution que cruza CAC con LTV a 90 días por canal. Sin medición real, el sistema no puede optimizarse. Es el tejido conectivo que hace que los otros 4 bloques mejoren con el tiempo.</p>
+        <p style="color:#9333ea;font-size:13px;font-weight:600;margin:0">Alimenta a: Todos los bloques (datos para optimizar cada uno)</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:8px">El Caso del -70% de CAC</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:20px">Una fintech B2C de pagos internacionales con 30.000 usuarios activos. CAC de 78€, churn a 90 días del 48%, crecimiento plano durante 6 meses.</p>
+
+    <div style="display:grid;gap:12px;margin-bottom:20px">
+      <div style="background:white;border-radius:10px;padding:16px;border-left:4px solid #6351d5">
+        <p style="color:#6351d5;font-size:13px;font-weight:700;margin-bottom:6px">Mes 1-2: Credibilidad</p>
+        <p style="color:#475569;font-size:14px;margin:0">Campaña de reseñas a 500 usuarios con NPS &gt;8. Resultado: 87 reseñas en Trustpilot (4.4 estrellas). Tasa de conversión de landing: +2.8 puntos.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:16px;border-left:4px solid #0284c7">
+        <p style="color:#0284c7;font-size:13px;font-weight:700;margin-bottom:6px">Mes 2-3: Activación</p>
+        <p style="color:#475569;font-size:14px;margin:0">Identificaron que "enviar 500€+" en las primeras 48h predecía retención a 90 días. Rediseñaron el onboarding para guiar al primer envío lo antes posible. Churn a 90 días: del 48% al 26%.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:16px;border-left:4px solid #16a34a">
+        <p style="color:#16a34a;font-size:13px;font-weight:700;margin-bottom:6px">Mes 3-4: Referido</p>
+        <p style="color:#475569;font-size:14px;margin:0">Lanzaron referral bilateral en el momento post-primer envío. En 3 meses, el 29% de nuevos registros venían por referral. CAC efectivo de referidos: 4,20€.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:16px;border-left:4px solid #d97706">
+        <p style="color:#d97706;font-size:13px;font-weight:700;margin-bottom:6px">Mes 4-5: Medición</p>
+        <p style="color:#475569;font-size:14px;margin:0">Dashboard CAC/LTV por canal reveló que Instagram daba el 40% del volumen pero solo el 10% del valor. Redirigieron presupuesto a Google Search y YouTube. CAC promedio: de 78€ a 23€.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="font-size:26px;font-weight:800;color:#22c55e">-70%</div>
+        <div style="color:#64748b;font-size:12px;margin-top:4px">Reducción de CAC</div>
+      </div>
+      <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="font-size:26px;font-weight:800;color:#6351d5">-46%</div>
+        <div style="color:#64748b;font-size:12px;margin-top:4px">Reducción de churn</div>
+      </div>
+      <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="font-size:26px;font-weight:800;color:#0284c7">5 meses</div>
+        <div style="color:#64748b;font-size:12px;margin-top:4px">Para implementarlo</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:28px;margin-bottom:28px;border:1px solid #e2e8f0">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:16px">¿Por Dónde Empezar?</h2>
+    <p style="color:#64748b;font-size:14px;margin-bottom:20px">No implementes los 5 bloques a la vez. Empieza por el que más limita tu sistema hoy.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="background:#f8fafc;border-radius:10px;padding:14px">
+        <p style="color:#032149;font-size:14px;font-weight:700;margin-bottom:4px">Si tu tasa de conversión de landing es baja (&lt;4%)</p>
+        <p style="color:#64748b;font-size:13px;margin:0">Empieza por Credibilidad. El problema no es el tráfico — es la confianza.</p>
+      </div>
+      <div style="background:#f8fafc;border-radius:10px;padding:14px">
+        <p style="color:#032149;font-size:14px;font-weight:700;margin-bottom:4px">Si tu churn a 30 días supera el 35%</p>
+        <p style="color:#64748b;font-size:13px;margin:0">Empieza por Activación. Estás perdiendo usuarios antes de que el sistema tenga tiempo de funcionar.</p>
+      </div>
+      <div style="background:#f8fafc;border-radius:10px;padding:14px">
+        <p style="color:#032149;font-size:14px;font-weight:700;margin-bottom:4px">Si no sabes qué canal genera usuarios rentables</p>
+        <p style="color:#64748b;font-size:13px;margin:0">Empieza por Medición. Sin datos, no puedes optimizar ningún otro bloque.</p>
+      </div>
+      <div style="background:#f8fafc;border-radius:10px;padding:14px">
+        <p style="color:#032149;font-size:14px;font-weight:700;margin-bottom:4px">Si tu CAC sube cada trimestre</p>
+        <p style="color:#64748b;font-size:13px;margin:0">Empieza por Referido. El canal de mayor CAC es casi siempre paid, y el referido es su antídoto directo.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#6351d5,#032149);border-radius:16px;padding:28px;text-align:center">
+    <h2 style="color:white;font-size:22px;font-weight:800;margin-bottom:10px">¿Quieres construir tu sistema de growth?</h2>
+    <p style="color:rgba(255,255,255,0.8);font-size:15px;margin-bottom:20px">En una sesión de 45 minutos auditamos los 5 bloques en tu caso específico, identificamos el cuello de botella principal y te damos un roadmap para los próximos 90 días.</p>
+    <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:white;color:#6351d5;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none">Agendar sesión gratuita →</a>
+  </div>
+
+</div>`;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${SITE_URL}/recursos/` },
+    { '@type': 'ListItem', position: 3, name: title, item: `${SITE_URL}/recursos/${slug}/` },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${title} | Growth4U`}
+  description={description}
+  canonical={`${SITE_URL}/recursos/${slug}/`}
+  jsonLd={[breadcrumbSchema]}
+>
+  <main class="min-h-screen bg-white">
+    <section class="bg-[#032149] pt-20 pb-14">
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="flex items-center gap-2 mb-6">
+          <a href="/" class="text-white/50 hover:text-white text-sm transition-colors">Growth4U</a>
+          <span class="text-white/30">/</span>
+          <span class="text-white/50 text-sm">Recursos</span>
+        </div>
+        <span class="inline-block px-3 py-1 bg-[#6351d5]/30 text-[#a89cf7] rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          Recurso Gratuito
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">{title}</h1>
+        <p class="text-xl text-slate-300 leading-relaxed mb-8">{description}</p>
+        <div class="flex flex-wrap items-center gap-6 text-slate-400 text-sm">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>100% gratuito</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Acceso inmediato</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Sin spam</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="max-w-3xl mx-auto px-4 py-12 pb-20">
+      <StaticLeadMagnetGate
+        client:only="react"
+        magnetSlug={slug}
+        magnetTitle={title}
+        excerpt={excerpt}
+        fullContent={fullContent}
+      />
+    </section>
+  </main>
+</BaseLayout>

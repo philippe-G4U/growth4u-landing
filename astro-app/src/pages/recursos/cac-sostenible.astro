@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StaticLeadMagnetGate from '../../react/StaticLeadMagnetGate';
+import { SITE_URL } from '../../lib/constants';
+
+const slug = 'cac-sostenible';
+const title = 'El Sistema CAC Sostenible';
+const description = 'Cómo Bit2Me y Bnext redujeron su CAC un 60% sin aumentar presupuesto. El framework de 5 bloques para crecer sin quemarte el presupuesto en ads.';
+
+const excerpt = `## El problema con el CAC en fintech B2C
+
+Cada año el CAC sube. Los CPMs de Meta aumentan. Los competidores con más dinero pujan más alto. Y tú sigues en la misma rueda: más presupuesto → más usuarios → más CAC → necesitas más presupuesto.
+
+**Bit2Me tenía este problema en 2021.** CAC de 85€, churn del 40% en 90 días, y un equipo de marketing quemado optimizando campañas que nunca daban para más.
+
+Lo que hicieron después redujo su CAC a 34€ en 18 meses. Sin aumentar el presupuesto. Sin contratar a nadie nuevo.
+
+El cambio no fue en las campañas. Fue en la arquitectura de crecimiento.`;
+
+const fullContent = `<div style="font-family:inherit">
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:8px">El Framework de 5 Bloques</h2>
+    <p style="color:#64748b;font-size:15px;margin-bottom:24px">Cada bloque ataca una causa distinta del CAC elevado. Juntos, crean un sistema donde el crecimiento se vuelve más barato con el tiempo, no más caro.</p>
+    <div style="display:grid;gap:16px">
+
+      <div style="background:white;border-radius:12px;padding:20px;border-left:4px solid #6351d5;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <span style="background:#6351d5;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">1</span>
+          <h3 style="color:#032149;font-size:17px;font-weight:700;margin:0">Trust Fortress</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 10px 0"><strong>Construye credibilidad antes del primer euro de ads.</strong></p>
+        <p style="color:#64748b;font-size:14px;margin:0">El 73% del CAC elevado viene de usuarios que llegan a tu landing y no confían lo suficiente para registrarse. Trustpilot, casos de éxito, medios y certificaciones reducen la fricción antes de que empiece la campaña. Bit2Me aumentó su tasa de conversión de landing del 3.2% al 7.8% solo con este bloque.</p>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:20px;border-left:4px solid #45b6f7;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <span style="background:#45b6f7;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">2</span>
+          <h3 style="color:#032149;font-size:17px;font-weight:700;margin:0">Waterholes</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 10px 0"><strong>Capta donde tu usuario ya está.</strong></p>
+        <p style="color:#64748b;font-size:14px;margin:0">En lugar de interrumpir, aparece en los lugares donde tu usuario ya busca soluciones: comunidades de Reddit, grupos de Telegram de inversión, foros de expatriados, eventos de CFOs. El tráfico orgánico desde waterholes convierte a 3-4x del tráfico de pago porque la intención ya está activada.</p>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:20px;border-left:4px solid #0faec1;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <span style="background:#0faec1;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">3</span>
+          <h3 style="color:#032149;font-size:17px;font-weight:700;margin:0">Activation Engine</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 10px 0"><strong>Convierte el registro en hábito.</strong></p>
+        <p style="color:#64748b;font-size:14px;margin:0">Un usuario que no activa no vale nada — y su CAC es el mismo que el de uno que sí activa. Diseñar el flujo de onboarding para llegar al "momento aha" en menos de 72 horas reduce el churn temprano y hace que el CAC efectivo baje drásticamente. Bnext redujo el churn de 90 días del 52% al 21% con este trabajo.</p>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:20px;border-left:4px solid #22c55e;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <span style="background:#22c55e;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">4</span>
+          <h3 style="color:#032149;font-size:17px;font-weight:700;margin:0">Referral Loop</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 10px 0"><strong>Usuarios activos traen usuarios activos.</strong></p>
+        <p style="color:#64748b;font-size:14px;margin:0">El referido bien diseñado no es un descuento — es una experiencia social. Los usuarios que llegan por referido tienen un CAC efectivo de 0 y un LTV 2.3x superior al promedio. Bit2Me lanzó su programa de referidos en el mes 8 y en 6 meses el 34% de los nuevos registros venían por esta vía.</p>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:20px;border-left:4px solid #f59e0b;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <span style="background:#f59e0b;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">5</span>
+          <h3 style="color:#032149;font-size:17px;font-weight:700;margin:0">Attribution</h3>
+        </div>
+        <p style="color:#475569;font-size:14px;margin:0 0 10px 0"><strong>Mide lo que importa, no lo que es fácil de medir.</strong></p>
+        <p style="color:#64748b;font-size:14px;margin:0">El 80% del presupuesto de marketing fintech va a canales que parecen funcionar en los dashboards pero no generan usuarios rentables. Attribution real (CAC por canal + LTV a 90 días) revela qué matar y qué escalar. Típicamente se descubre que 1-2 canales generan el 80% del valor.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:28px;margin-bottom:28px;border:1px solid #e2e8f0">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:20px">Los números de Bit2Me y Bnext</h2>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead>
+          <tr style="background:#032149;color:white">
+            <th style="padding:12px 16px;text-align:left;border-radius:8px 0 0 0">Empresa</th>
+            <th style="padding:12px 16px;text-align:center">CAC inicial</th>
+            <th style="padding:12px 16px;text-align:center">CAC final</th>
+            <th style="padding:12px 16px;text-align:center">Período</th>
+            <th style="padding:12px 16px;text-align:center;border-radius:0 8px 0 0">Reducción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#f8fafc">
+            <td style="padding:12px 16px;font-weight:700;color:#032149">Bit2Me</td>
+            <td style="padding:12px 16px;text-align:center;color:#64748b">85€</td>
+            <td style="padding:12px 16px;text-align:center;color:#22c55e;font-weight:700">34€</td>
+            <td style="padding:12px 16px;text-align:center;color:#64748b">18 meses</td>
+            <td style="padding:12px 16px;text-align:center"><span style="background:#dcfce7;color:#15803d;padding:4px 10px;border-radius:20px;font-weight:700">-60%</span></td>
+          </tr>
+          <tr>
+            <td style="padding:12px 16px;font-weight:700;color:#032149">Bnext</td>
+            <td style="padding:12px 16px;text-align:center;color:#64748b">62€</td>
+            <td style="padding:12px 16px;text-align:center;color:#22c55e;font-weight:700">24€</td>
+            <td style="padding:12px 16px;text-align:center;color:#64748b">14 meses</td>
+            <td style="padding:12px 16px;text-align:center"><span style="background:#dcfce7;color:#15803d;padding:4px 10px;border-radius:20px;font-weight:700">-61%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:#64748b;font-size:13px;margin-top:12px;margin-bottom:0">* Resultados reales de clientes Growth4U. Las cifras incluyen todos los canales de captación, no solo paid media.</p>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:16px;padding:28px;margin-bottom:28px">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:6px">Checklist de los 15 Puntos</h2>
+    <p style="color:#64748b;font-size:15px;margin-bottom:24px">Audita tu sistema actual. Cada punto que no tienes implementado es CAC que estás dejando de reducir.</p>
+
+    <div style="margin-bottom:20px">
+      <h3 style="color:#6351d5;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Bloque 1: Trust Fortress</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tienes +50 reseñas verificadas en Trustpilot o Google (score &gt;4.2)</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tienes 2-3 casos de éxito con nombres, cifras y resultados concretos</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Apareces mencionado en al menos 3 medios del sector (no press releases)</label>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <h3 style="color:#45b6f7;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Bloque 2: Waterholes</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tienes mapeados los 5 principales lugares donde tu usuario busca soluciones</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tienes presencia activa (no publicitaria) en al menos 2 de esos lugares</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tienes SEO para las queries de problema (no solo de marca)</label>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <h3 style="color:#0faec1;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Bloque 3: Activation Engine</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tienes definido tu "momento aha" con datos (qué acción predice retención)</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> El 60%+ de los registros llegan al momento aha en las primeras 72h</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tienes secuencia de onboarding automatizada por comportamiento (no por tiempo)</label>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <h3 style="color:#22c55e;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Bloque 4: Referral Loop</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Tienes un programa de referidos activo con incentivo bilateral</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> El referral se activa en el momento de mayor satisfacción del usuario</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Mides el K-factor y el CAC efectivo de usuarios referidos vs pagados</label>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:#f59e0b;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Bloque 5: Attribution</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Conoces el CAC real por canal (incluyendo tiempo de equipo, no solo ad spend)</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Cruzas CAC con LTV a 90 días para saber qué canales son rentables</label>
+        <label style="display:flex;align-items:flex-start;gap:10px;color:#475569;font-size:14px"><input type="checkbox" style="margin-top:2px;flex-shrink:0"> Revisas esta data semanalmente y tomas decisiones de presupuesto sobre ella</label>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:28px;margin-bottom:28px;border:1px solid #e2e8f0">
+    <h2 style="color:#032149;font-size:22px;font-weight:800;margin-bottom:20px">Plan de 30 Días</h2>
+    <div style="display:grid;gap:12px">
+      <div style="background:#f0f0ff;border-radius:12px;padding:18px">
+        <h3 style="color:#6351d5;font-size:15px;font-weight:700;margin-bottom:8px">Semana 1: Diagnóstico y Trust</h3>
+        <ul style="color:#475569;font-size:14px;margin:0;padding-left:20px;line-height:1.8">
+          <li>Calcula tu CAC real por canal (no solo ad spend)</li>
+          <li>Audita la tasa de conversión de tu landing por fuente de tráfico</li>
+          <li>Lanza campaña de reseñas Trustpilot a usuarios activos</li>
+          <li>Identifica tus 3 mejores casos de éxito y propón entrevistarlos</li>
+        </ul>
+      </div>
+      <div style="background:#f0f9ff;border-radius:12px;padding:18px">
+        <h3 style="color:#0284c7;font-size:15px;font-weight:700;margin-bottom:8px">Semana 2: Waterholes y Activation</h3>
+        <ul style="color:#475569;font-size:14px;margin:0;padding-left:20px;line-height:1.8">
+          <li>Mapea los 5 waterholes principales de tu usuario ideal</li>
+          <li>Crea un perfil de valor (no publicitario) en los 2 más relevantes</li>
+          <li>Define tu "momento aha" cruzando datos de activación y retención</li>
+          <li>Diseña el nuevo flujo de onboarding optimizado para el momento aha</li>
+        </ul>
+      </div>
+      <div style="background:#f0fdf4;border-radius:12px;padding:18px">
+        <h3 style="color:#15803d;font-size:15px;font-weight:700;margin-bottom:8px">Semana 3: Referral Loop</h3>
+        <ul style="color:#475569;font-size:14px;margin:0;padding-left:20px;line-height:1.8">
+          <li>Diseña el mecanismo de referido (incentivo + flujo + momento de activación)</li>
+          <li>Implementa el referral en el punto de mayor satisfacción del usuario</li>
+          <li>Lanza a los 20% de usuarios más activos como beta</li>
+          <li>Mide el K-factor y ajusta el incentivo si es necesario</li>
+        </ul>
+      </div>
+      <div style="background:#fffbeb;border-radius:12px;padding:18px">
+        <h3 style="color:#b45309;font-size:15px;font-weight:700;margin-bottom:8px">Semana 4: Attribution y Optimización</h3>
+        <ul style="color:#475569;font-size:14px;margin:0;padding-left:20px;line-height:1.8">
+          <li>Implementa el dashboard de CAC/LTV por canal</li>
+          <li>Identifica los 2 canales con mejor ratio CAC:LTV a 90 días</li>
+          <li>Redirige el 30% del presupuesto de los canales peores a los mejores</li>
+          <li>Establece la cadencia de revisión semanal del sistema completo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#6351d5,#032149);border-radius:16px;padding:28px;text-align:center">
+    <h2 style="color:white;font-size:22px;font-weight:800;margin-bottom:10px">¿Quieres implementar esto en tu fintech?</h2>
+    <p style="color:rgba(255,255,255,0.8);font-size:15px;margin-bottom:20px">En una sesión de 45 minutos auditamos tu CAC actual, identificamos los 2-3 palancas de mayor impacto para tu caso específico y te damos un plan de acción concreto.</p>
+    <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:white;color:#6351d5;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none">Agendar sesión gratuita →</a>
+  </div>
+
+</div>`;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${SITE_URL}/recursos/` },
+    { '@type': 'ListItem', position: 3, name: title, item: `${SITE_URL}/recursos/${slug}/` },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${title} | Growth4U`}
+  description={description}
+  canonical={`${SITE_URL}/recursos/${slug}/`}
+  jsonLd={[breadcrumbSchema]}
+>
+  <main class="min-h-screen bg-white">
+    <section class="bg-[#032149] pt-20 pb-14">
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="flex items-center gap-2 mb-6">
+          <a href="/" class="text-white/50 hover:text-white text-sm transition-colors">Growth4U</a>
+          <span class="text-white/30">/</span>
+          <span class="text-white/50 text-sm">Recursos</span>
+        </div>
+        <span class="inline-block px-3 py-1 bg-[#6351d5]/30 text-[#a89cf7] rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          Recurso Gratuito
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">{title}</h1>
+        <p class="text-xl text-slate-300 leading-relaxed mb-8">{description}</p>
+        <div class="flex flex-wrap items-center gap-6 text-slate-400 text-sm">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>100% gratuito</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Acceso inmediato</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Sin spam</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="max-w-3xl mx-auto px-4 py-12 pb-20">
+      <StaticLeadMagnetGate
+        client:only="react"
+        magnetSlug={slug}
+        magnetTitle={title}
+        excerpt={excerpt}
+        fullContent={fullContent}
+      />
+    </section>
+  </main>
+</BaseLayout>
