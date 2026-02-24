@@ -301,9 +301,12 @@ export default function KitDeLiberacionPage() {
                   <Clock className="w-4 h-4 text-violet-600 flex-shrink-0" />
                   <p className="text-violet-800 text-xs font-semibold">Ahorra ~5h/semana en coordinación y seguimiento de clientes</p>
                 </div>
-                <div className="mt-4 bg-slate-800 rounded-xl p-4">
-                  <p className="text-white/60 text-xs mb-2 uppercase tracking-wide font-semibold">Cómo acceder al template:</p>
-                  <p className="text-white text-sm">Contacta con nosotros en <span className="text-[#45b6f7]">hola@growth4u.io</span> con el asunto "Kit Liberación - Template Notion" y te enviamos el enlace de duplicado en menos de 24h.</p>
+                <div className="mt-4 bg-slate-800 rounded-xl p-4 flex items-center justify-between gap-4 flex-wrap">
+                  <p className="text-white/70 text-sm">Agenda una llamada y te enviamos el enlace de duplicado antes de que termine.</p>
+                  <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2.5 px-5 rounded-full transition-all text-xs whitespace-nowrap flex-shrink-0">
+                    Agendar llamada <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
                 </div>
               </ResourceCard>
 
@@ -448,9 +451,13 @@ export default function KitDeLiberacionPage() {
                 </div>
                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3">
                   <Play className="w-8 h-8 text-red-500 flex-shrink-0" />
-                  <div>
+                  <div className="flex-1">
                     <p className="font-bold text-[#032149] text-sm">Solicitar acceso al video</p>
-                    <p className="text-slate-500 text-xs">Escríbenos a <span className="text-[#6351d5]">hola@growth4u.io</span> con el asunto "Kit Liberación - Video Demo" y te enviamos el enlace en menos de 24h.</p>
+                    <p className="text-slate-500 text-xs mb-2">Agenda una llamada y te compartimos el screen recording durante la sesión.</p>
+                    <a href="https://calendly.com/growth4u/consulta-estrategica" target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-4 rounded-full transition-all text-xs">
+                      Agendar llamada <ArrowRight className="w-3 h-3" />
+                    </a>
                   </div>
                 </div>
               </ResourceCard>
