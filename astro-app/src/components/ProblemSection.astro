@@ -15,6 +15,13 @@ const icons = [
   // Users
   `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
 ];
+
+const cardStyles = [
+  { bg: 'bg-red-50',    border: 'border-red-200/70',    topBorder: 'border-t-red-400',    iconBg: 'bg-red-100',    iconColor: 'text-red-500' },
+  { bg: 'bg-amber-50',  border: 'border-amber-200/70',  topBorder: 'border-t-amber-400',  iconBg: 'bg-amber-100',  iconColor: 'text-amber-500' },
+  { bg: 'bg-blue-50',   border: 'border-blue-200/70',   topBorder: 'border-t-blue-500',   iconBg: 'bg-blue-100',   iconColor: 'text-blue-500' },
+  { bg: 'bg-violet-50', border: 'border-violet-200/70', topBorder: 'border-t-violet-500', iconBg: 'bg-violet-100', iconColor: 'text-violet-500' },
+];
 ---
 
 <section id="problema" class="py-24 bg-slate-50">
@@ -25,9 +32,9 @@ const icons = [
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
       {t.problem.cards.map((item: any, i: number) => (
-        <div class="bg-white p-6 rounded-2xl border border-slate-200/60 transition-all duration-300 ease-out group shadow-sm hover:shadow-md hover:border-slate-300/60 hover:-translate-y-1">
-          <div class="bg-[#3f45fe]/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-[#3f45fe]/15 transition-colors duration-300 border border-[#3f45fe]/5">
-            <span class="text-[#3f45fe] w-6 h-6 flex items-center justify-center" set:html={icons[i]} />
+        <div class={`${cardStyles[i].bg} p-6 rounded-2xl border-t-4 ${cardStyles[i].topBorder} border ${cardStyles[i].border} transition-all duration-300 ease-out group shadow-sm hover:shadow-md hover:-translate-y-1`}>
+          <div class={`${cardStyles[i].iconBg} w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-300`}>
+            <span class={`${cardStyles[i].iconColor} w-6 h-6 flex items-center justify-center`} set:html={icons[i]} />
           </div>
           <h3 class="text-lg font-bold mb-2.5 text-[#032149]">{item.title}</h3>
           <p class="text-slate-600 text-sm leading-relaxed">{item.desc}</p>

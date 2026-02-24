@@ -50,19 +50,19 @@ const navLinks = [
         </a>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center gap-6">
-          <div class="flex items-baseline space-x-4">
+        <div class="hidden md:flex items-center gap-3">
+          <div class="flex items-baseline space-x-1">
             {navLinks.map((link) => (
               <a
                 href={link.href}
-                class="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149] whitespace-nowrap"
+                class="hover:text-[#6351d5] transition-colors px-1.5 py-2 rounded-md text-sm font-medium text-[#032149] whitespace-nowrap"
               >
                 {link.label}
               </a>
             ))}
             <a
               href={blogHref}
-              class="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]"
+              class="hover:text-[#6351d5] transition-colors px-1.5 py-2 rounded-md text-sm font-medium text-[#032149]"
             >
               {t.nav.blog}
             </a>
@@ -79,7 +79,7 @@ const navLinks = [
         </div>
 
         <!-- Desktop CTA -->
-        <div class="hidden md:flex items-center gap-4 ml-3">
+        <div class="hidden md:flex items-center gap-4 ml-1">
           <a
             href={bookingLink}
             target="_blank"
