@@ -328,34 +328,14 @@ export default function BlogAdminPage() {
       ctx.fillStyle = overlay;
       ctx.fillRect(0, 0, 1200, 630);
 
-      // Category badge — top left
-      const categoryText = formData.category.toUpperCase();
-      ctx.font = 'bold 20px Arial, sans-serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      const badgeW = ctx.measureText(categoryText).width + 32;
-      ctx.fillStyle = 'rgba(255,255,255,0.15)';
-      ctx.beginPath();
-      ctx.roundRect(40, 40, badgeW, 36, 8);
-      ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.fillText(categoryText, 56, 48);
-
       // Title — centered, bold
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      const titleFontSize = formData.title.length > 60 ? 52 : formData.title.length > 45 ? 60 : 68;
+      const titleFontSize = formData.title.length > 60 ? 64 : formData.title.length > 45 ? 72 : 80;
       ctx.font = `bold ${titleFontSize}px Arial, sans-serif`;
       const lineH = titleFontSize * 1.25;
-      wrapText(ctx, formData.title, 600, 310, 1060, lineH);
-
-      // growth4u.io branding — bottom left
-      ctx.font = '22px Arial, sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.45)';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('growth4u.io', 48, 592);
+      wrapText(ctx, formData.title, 600, 315, 1060, lineH);
 
       // Export as blob and upload to Cloudinary
       canvas.toBlob(async (blob) => {
