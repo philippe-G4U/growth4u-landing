@@ -15,7 +15,7 @@
 import type { Config } from '@netlify/functions';
 
 const NOTION_TOKEN   = process.env.NOTION_TOKEN ?? '';
-const NOTION_DB_ID   = process.env.NOTION_DB_ID ?? '2fd5dacf4f1481d6848ed27ede8f3316';
+const NOTION_DB_ID   = process.env.NOTION_DB_ID ?? '2c75dacf4f1481da8426d2e4411aa286';
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_API_KEY ?? '';
 const NETLIFY_HOOK   = 'https://api.netlify.com/build_hooks/69738cc3fc679a8f858929cd';
 
@@ -78,14 +78,29 @@ function getPropSelect(props: any, key: string): string {
   return prop[prop.type]?.name ?? '';
 }
 
+/**
+ * Busca las 100 páginas más recientes del workspace y filtra por
+ * database_id + Status=Ready (select). La DB es multi-source y no
+ * acepta query directa.
+ */
 async function fetchReadyPages() {
-  const res = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB_ID}/query`, {
+  const targetDb = NOTION_DB_ID.replace(/-/g, '');
+  const res = await fetch('https://api.notion.com/v1/search', {
     method: 'POST',
     headers: NOTION_HEADERS,
-    body: JSON.stringify({ filter: { property: 'Status', status: { equals: 'Ready' } } }),
+    body: JSON.stringify({
+      filter: { value: 'page', property: 'object' },
+      page_size: 100,
+      sort: { direction: 'descending', timestamp: 'last_edited_time' },
+    }),
   });
   const data = await res.json();
-  return (data.results ?? []) as any[];
+  return (data.results ?? [] as any[]).filter((page: any) => {
+    const pageDb = (page.parent?.database_id ?? '').replace(/-/g, '');
+    if (pageDb !== targetDb) return false;
+    const status = page.properties?.Status?.select?.name;
+    return status === 'Ready';
+  });
 }
 
 async function fetchPageContent(pageId: string): Promise<string> {
@@ -116,7 +131,7 @@ async function markPublished(pageId: string) {
   await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
     method: 'PATCH',
     headers: NOTION_HEADERS,
-    body: JSON.stringify({ properties: { Status: { status: { name: 'Published' } } } }),
+    body: JSON.stringify({ properties: { Status: { select: { name: 'Published' } } } }),
   });
 }
 
