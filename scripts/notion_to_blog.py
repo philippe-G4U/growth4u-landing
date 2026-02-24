@@ -196,13 +196,23 @@ def generate_geo_content(title, draft_content, category):
 
     client = anthropic.Anthropic(api_key=ANTHROPIC_KEY)
     print('  🤖 Generando GEO con Claude...')
-    msg = client.messages.create(
-        model='claude-sonnet-4-6',
-        max_tokens=4096,
-        system=GEO_SYSTEM_PROMPT,
-        messages=[{'role': 'user', 'content': f'Título: {title}\nCategoría: {category}\n\nBorrador:\n{draft_content}'}],
-    )
-    return msg.content[0].text
+    for attempt in range(5):
+        try:
+            msg = client.messages.create(
+                model='claude-sonnet-4-6',
+                max_tokens=4096,
+                system=GEO_SYSTEM_PROMPT,
+                messages=[{'role': 'user', 'content': f'Título: {title}\nCategoría: {category}\n\nBorrador:\n{draft_content}'}],
+            )
+            return msg.content[0].text
+        except Exception as e:
+            if '529' in str(e) or 'overloaded' in str(e).lower():
+                wait = 30 * (attempt + 1)
+                print(f'  ⏳ API sobrecargada, esperando {wait}s...')
+                time.sleep(wait)
+            else:
+                raise
+    raise Exception('API de Anthropic sigue sobrecargada tras 5 intentos')
 
 
 # ── Cover Image ──────────────────────────────────────────────────────────
@@ -367,11 +377,30 @@ def publish_to_firebase(title, category, excerpt, content, image_url=''):
     return result['name'].split('/')[-1]
 
 
-def trigger_deploy():
-    req = urllib.request.Request(NETLIFY_HOOK, data=b'', method='POST')
-    with urllib.request.urlopen(req):
-        pass
-    print('  🚀 Deploy en Netlify disparado')
+def trigger_deploy(count):
+    """
+    Dispara un rebuild de producción en Netlify haciendo un commit vacío
+    en main — más fiable que el hook (que apuntaba a una rama incorrecta).
+    """
+    import subprocess
+    repo_root = os.path.join(os.path.dirname(__file__), '..')
+    msg = f'chore: publish {count} new blog post(s) from Notion'
+    try:
+        subprocess.run(['git', 'commit', '--allow-empty', '-m', msg],
+                       cwd=repo_root, check=True, capture_output=True)
+        subprocess.run(['git', 'push', 'origin', 'main'],
+                       cwd=repo_root, check=True, capture_output=True)
+        print('  🚀 Deploy de producción disparado (git push → main)')
+    except subprocess.CalledProcessError as e:
+        print(f'  ⚠️  Git push falló: {e.stderr.decode().strip()}')
+        # Fallback al hook original
+        try:
+            req = urllib.request.Request(NETLIFY_HOOK, data=b'', method='POST')
+            with urllib.request.urlopen(req):
+                pass
+            print('  🚀 Deploy disparado via hook (fallback)')
+        except Exception as he:
+            print(f'  ⚠️  Hook también falló: {he}')
 
 
 # ── Main ─────────────────────────────────────────────────────────────────
@@ -453,7 +482,7 @@ def main():
         time.sleep(1)
 
     if published_count > 0:
-        trigger_deploy()
+        trigger_deploy(published_count)
         print(f'\n✅ {published_count} post(s) publicado(s).')
     else:
         print('\nNingún post nuevo publicado.')
