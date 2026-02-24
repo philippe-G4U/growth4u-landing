@@ -15,7 +15,8 @@ import {
   Loader2,
   FileText,
   MessageSquare,
-  Trophy
+  Trophy,
+  Target
 } from 'lucide-react';
 import { User } from 'firebase/auth';
 import { signInWithGoogle, signOutUser, onAuthChange } from '@/lib/firebase';
@@ -67,6 +68,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: 'Tracker GEO', href: '/admin/geo', icon: Bot },
     { name: 'Checklists', href: '/admin/checklist', icon: ClipboardList },
     { name: 'Feedback', href: '/admin/feedback', icon: MessageSquare },
+    { name: 'Lead Magnets', href: '/admin/lead-magnets', icon: Target },
   ];
 
   if (loading) {
