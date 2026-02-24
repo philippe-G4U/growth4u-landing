@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CookieBanner from '../../react/CookieBanner';
+import NewsletterCTA from '../../react/NewsletterCTA';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import ServiceBanner from '../../components/ServiceBanner.astro';
 import BlogFAQ from '../../components/BlogFAQ.astro';
@@ -55,6 +56,29 @@ const breadcrumbSchema = {
 const formattedDate = post.createdAt
   ? new Date(post.createdAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
   : 'Fecha no disponible';
+
+// Split HTML at middle H2 to inject mid-content CTA
+const h2Positions = [...(htmlContent as string).matchAll(/<\/h2>/g)];
+const midH2 = Math.floor(h2Positions.length / 2);
+let contentFirst = htmlContent as string;
+let contentSecond = '';
+if (h2Positions.length >= 2 && midH2 > 0) {
+  const splitPos = (h2Positions[midH2].index ?? 0) + '</h2>'.length;
+  contentFirst = (htmlContent as string).slice(0, splitPos);
+  contentSecond = (htmlContent as string).slice(splitPos);
+}
+
+// Rotate lead magnets based on post slug hash
+const LEAD_MAGNETS = [
+  { slug: 'cac-sostenible', title: 'El Sistema CAC Sostenible', desc: 'Reduce tu CAC sin sacrificar calidad de leads. Framework en 5 pasos.' },
+  { slug: 'meseta-de-crecimiento', title: 'Romper la Meseta de Crecimiento', desc: '4 palancas para volver a escalar cuando el crecimiento se estanca.' },
+  { slug: 'sistema-de-growth', title: 'De Tácticas a Sistema de Growth', desc: 'Construye un flywheel de crecimiento que funciona solo.' },
+  { slug: 'david-vs-goliat', title: 'David vs Goliat: Ventaja Asimétrica', desc: 'Gana cuota de mercado con recursos limitados.' },
+  { slug: 'kit-de-liberacion', title: 'Kit de Liberación del Fundador', desc: 'Deja de ser el cuello de botella de tu empresa.' },
+  { slug: 'dashboard-de-attribution', title: 'Dashboard de Attribution', desc: 'Sabe exactamente qué canal te trae los mejores clientes.' },
+];
+const lmIndex = post.slug.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0) % LEAD_MAGNETS.length;
+const featuredMagnet = LEAD_MAGNETS[lmIndex];
 ---
 
 <BaseLayout
@@ -98,7 +122,58 @@ const formattedDate = post.createdAt
       <p class="text-xl text-slate-600 font-medium mb-10 leading-relaxed italic border-l-4 border-[#6351d5] pl-6">
         {post.excerpt}
       </p>
-      <div set:html={htmlContent} />
+    </div>
+
+    <!-- CTA 1: Newsletter sutil (tras excerpt) -->
+    <NewsletterCTA client:visible />
+
+    <div class="prose prose-lg prose-slate mx-auto text-[#032149]">
+      <!-- Contenido primera mitad -->
+      <div set:html={contentFirst} />
+    </div>
+
+    <!-- CTA 2: Lead magnet contextual (mitad del artículo) -->
+    {contentSecond && (
+      <a
+        href={`/recursos/${featuredMagnet.slug}/`}
+        class="my-10 flex items-start gap-4 bg-[#032149] rounded-2xl p-6 no-underline group hover:bg-[#0a2d5c] transition-colors"
+      >
+        <div class="w-10 h-10 bg-[#6351d5]/30 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+          <svg class="w-5 h-5 text-[#a89cf7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="text-[#a89cf7] text-xs font-bold uppercase tracking-wider mb-1">Recurso gratuito relacionado</p>
+          <p class="text-white font-bold text-base mb-1 group-hover:text-[#a89cf7] transition-colors">{featuredMagnet.title}</p>
+          <p class="text-slate-400 text-sm">{featuredMagnet.desc}</p>
+        </div>
+        <div class="text-[#6351d5] group-hover:translate-x-1 transition-transform mt-1">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+    )}
+
+    <div class="prose prose-lg prose-slate mx-auto text-[#032149]">
+      <!-- Contenido segunda mitad -->
+      {contentSecond && <div set:html={contentSecond} />}
+    </div>
+
+    <!-- CTA 3: Demo prominente (antes de ServiceBanner) -->
+    <div class="mt-12 bg-[#032149] rounded-2xl p-8 text-center">
+      <p class="text-[#a89cf7] text-xs font-bold uppercase tracking-wider mb-3">¿Listo para aplicarlo?</p>
+      <h3 class="text-2xl font-bold text-white mb-3">Hablamos 30 minutos y te digo<br/>dónde está tu mayor oportunidad</h3>
+      <p class="text-slate-400 text-sm mb-6">Sin compromiso. Sin ventas agresivas. Solo estrategia.</p>
+      <a
+        href={BOOKING_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 bg-[#6351d5] hover:bg-[#5242b8] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg shadow-[#6351d5]/30"
+      >
+        Agendar sesión gratuita →
+      </a>
     </div>
 
     <!-- Service cross-link -->
