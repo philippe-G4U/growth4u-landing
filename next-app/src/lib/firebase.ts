@@ -345,4 +345,26 @@ export async function deleteCaseStudy(caseId: string): Promise<void> {
   await deleteDoc(caseRef);
 }
 
+// Lead Magnet Leads
+export interface LeadMagnetLead {
+  name: string;
+  email: string;
+  company: string;
+  leadMagnet: string;
+}
+
+export async function saveLeadMagnetLead(data: LeadMagnetLead): Promise<string> {
+  try {
+    const leadsRef = collection(db, 'artifacts', APP_ID, 'public', 'data', 'leads');
+    const docRef = await addDoc(leadsRef, {
+      ...data,
+      createdAt: serverTimestamp(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error('Error saving lead:', error);
+    throw error;
+  }
+}
+
 export { db, auth, doc, getDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy };
