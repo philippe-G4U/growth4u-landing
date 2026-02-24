@@ -379,28 +379,30 @@ def publish_to_firebase(title, category, excerpt, content, image_url=''):
 
 def trigger_deploy(count):
     """
-    Dispara un rebuild de producción en Netlify haciendo un commit vacío
-    en main — más fiable que el hook (que apuntaba a una rama incorrecta).
+    Dispara un rebuild de producción en Netlify actualizando un archivo
+    real en astro-app/ para que Netlify no cancele el build por smart-builds.
     """
     import subprocess
+    from datetime import datetime, timezone
     repo_root = os.path.join(os.path.dirname(__file__), '..')
-    msg = f'chore: publish {count} new blog post(s) from Notion'
+    trigger_file = os.path.join(repo_root, 'astro-app', 'public', 'build-trigger.txt')
+
+    # Escribe timestamp en el archivo para que Netlify detecte un cambio real
+    now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    with open(trigger_file, 'w') as f:
+        f.write(f'{now}\n')
+
+    msg = f'chore: publish {count} new blog post(s) from Notion [{now}]'
     try:
-        subprocess.run(['git', 'commit', '--allow-empty', '-m', msg],
+        subprocess.run(['git', 'add', 'astro-app/public/build-trigger.txt'],
+                       cwd=repo_root, check=True, capture_output=True)
+        subprocess.run(['git', 'commit', '-m', msg],
                        cwd=repo_root, check=True, capture_output=True)
         subprocess.run(['git', 'push', 'origin', 'main'],
                        cwd=repo_root, check=True, capture_output=True)
         print('  🚀 Deploy de producción disparado (git push → main)')
     except subprocess.CalledProcessError as e:
         print(f'  ⚠️  Git push falló: {e.stderr.decode().strip()}')
-        # Fallback al hook original
-        try:
-            req = urllib.request.Request(NETLIFY_HOOK, data=b'', method='POST')
-            with urllib.request.urlopen(req):
-                pass
-            print('  🚀 Deploy disparado via hook (fallback)')
-        except Exception as he:
-            print(f'  ⚠️  Hook también falló: {he}')
 
 
 # ── Main ─────────────────────────────────────────────────────────────────
