@@ -399,9 +399,11 @@ export async function getLeadMagnetById(id: string): Promise<{ content: string }
   return { content: snap.data().content || '' };
 }
 
-const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/BnXWP5dcLVMgUudLv10O/webhook-trigger/80a057fa-778c-43af-9ca1-5186e4b0d058';
+const GHL_WEBHOOK_LEADMAGNET = 'https://services.leadconnectorhq.com/hooks/BnXWP5dcLVMgUudLv10O/webhook-trigger/80a057fa-778c-43af-9ca1-5186e4b0d058';
+const GHL_WEBHOOK_NEWSLETTER = 'https://services.leadconnectorhq.com/hooks/BnXWP5dcLVMgUudLv10O/webhook-trigger/dc7377a6-1e39-41aa-8080-93cb3d03fd33';
 
 function sendToGHL(data: LeadMagnetLead): void {
+  const isNewsletter = data.magnetSlug === 'newsletter';
   const nameParts = data.nombre.trim().split(' ');
   const firstName = nameParts[0] || data.nombre;
   const lastName = nameParts.slice(1).join(' ') || '';
@@ -409,9 +411,7 @@ function sendToGHL(data: LeadMagnetLead): void {
     firstName,
     lastName,
     email: data.email,
-    tags: data.magnetSlug === 'newsletter'
-      ? ['newsletter-subscriber']
-      : ['lead-magnet', data.magnetSlug],
+    tags: isNewsletter ? ['newsletter-subscriber'] : ['lead-magnet', data.magnetSlug],
     source: `Growth4U - ${data.magnetTitle}`,
     customData: {
       magnetSlug: data.magnetSlug,
@@ -419,8 +419,8 @@ function sendToGHL(data: LeadMagnetLead): void {
       tag: data.tag,
     },
   };
-  // Fire and forget — no bloqueamos el flujo si GHL falla
-  fetch(GHL_WEBHOOK_URL, {
+  const webhookUrl = isNewsletter ? GHL_WEBHOOK_NEWSLETTER : GHL_WEBHOOK_LEADMAGNET;
+  fetch(webhookUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
