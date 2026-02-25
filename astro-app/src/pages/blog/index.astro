@@ -56,11 +56,24 @@ try {
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Filtro por categoría -->
+      <div class="flex flex-wrap justify-center gap-2 mb-10" id="category-filters">
+        {['Todos', 'Estrategia', 'Growth', 'Marketing', 'GEO', 'Producto'].map((cat) => (
+          <button
+            data-filter={cat}
+            class={`filter-btn px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 ${cat === 'Todos' ? 'bg-[#6351d5] text-white border-[#6351d5]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#6351d5] hover:text-[#6351d5]'}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="posts-grid">
         {posts.map((post) => (
           <a
             href={`/blog/${post.slug}/`}
-            class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1"
+            data-category={post.category}
+            class="post-card bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1"
           >
             <div class="relative aspect-video bg-slate-100 overflow-hidden">
               <img src={post.image} alt={post.title} class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" loading="lazy" />
@@ -87,6 +100,29 @@ try {
           </a>
         ))}
       </div>
+
+      <script>
+        const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+        const cards = document.querySelectorAll<HTMLElement>('.post-card');
+
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const filter = btn.dataset.filter;
+
+            buttons.forEach(b => {
+              b.classList.remove('bg-[#6351d5]', 'text-white', 'border-[#6351d5]');
+              b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+            });
+            btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+            btn.classList.add('bg-[#6351d5]', 'text-white', 'border-[#6351d5]');
+
+            cards.forEach(card => {
+              const show = filter === 'Todos' || card.dataset.category === filter;
+              card.style.display = show ? '' : 'none';
+            });
+          });
+        });
+      </script>
     </div>
   </section>
 
