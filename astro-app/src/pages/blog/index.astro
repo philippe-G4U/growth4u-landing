@@ -15,33 +15,56 @@ try {
   console.warn('Could not fetch blog posts at build time:', e);
 }
 
-// ─── Temas / Pillar pages (navegación por clusters) ───────────────────────
-const TOPICS = [
-  // Cluster Agencia
-  { slug: 'agencia-growth-hacking-fintech-espana',                       label: 'Growth Hacking Fintech',   emoji: '🚀', group: 'Agencia' },
-  { slug: 'agencia-influencer-marketing-financiero-fintech-espana',       label: 'Influencer Marketing',     emoji: '📱', group: 'Agencia' },
-  { slug: 'agencia-outreach-b2b-fintech-espana',                         label: 'Outreach B2B',             emoji: '✉️', group: 'Agencia' },
-  { slug: 'agencia-afiliados-referidos-fintech-espana',                  label: 'Afiliados & Referidos',    emoji: '🤝', group: 'Agencia' },
-  { slug: 'agencia-estrategia-gtm-fintech-espana',                       label: 'Estrategia GTM',           emoji: '🗺️', group: 'Agencia' },
-  { slug: 'agencia-founder-led-growth-fintech',                          label: 'Founder-Led Growth',       emoji: '👤', group: 'Agencia' },
-  // Cluster Herramientas
-  { slug: 'herramientas-para-crear-contenido-digital',                   label: 'Crear Contenido',          emoji: '✍️', group: 'Herramientas' },
-  { slug: 'herramientas-outreach-y-prospeccion-b2b',                     label: 'Prospección B2B',          emoji: '🎯', group: 'Herramientas' },
-  { slug: 'plataformas-afiliados-e-influencers',                         label: 'Plataformas Afiliados',    emoji: '🔗', group: 'Herramientas' },
-  { slug: 'automatizacion-marketing-growth-fintech',                     label: 'Automatización',           emoji: '⚡', group: 'Herramientas' },
-  { slug: 'herramientas-gtm-lanzamiento-producto-b2b',                   label: 'GTM & Lanzamiento',        emoji: '📦', group: 'Herramientas' },
-  { slug: 'herramientas-atribucion-marketing-fintech',                   label: 'Atribución',               emoji: '📊', group: 'Herramientas' },
-  // Fundamentos
-  { slug: 'unit-economics-fintech-cac-ltv-payback',                      label: 'Unit Economics',           emoji: '💰', group: 'Fundamentos' },
-  { slug: 'geo-para-fintechs-guia-completa-ia-chatgpt-perplexity',       label: 'GEO & Búsqueda IA',        emoji: '🤖', group: 'Fundamentos' },
-  { slug: 'stack-martech-fintech-espana-guia-completa',                  label: 'Stack Martech',            emoji: '🛠️', group: 'Fundamentos' },
+// Pillar page slugs — aparecen en sección "Guías completas"
+const PILLAR_SLUGS = new Set([
+  'agencia-growth-hacking-fintech-espana',
+  'agencia-influencer-marketing-financiero-fintech-espana',
+  'agencia-outreach-b2b-fintech-espana',
+  'agencia-afiliados-referidos-fintech-espana',
+  'agencia-estrategia-gtm-fintech-espana',
+  'agencia-founder-led-growth-fintech',
+  'herramientas-para-crear-contenido-digital',
+  'herramientas-outreach-y-prospeccion-b2b',
+  'plataformas-afiliados-e-influencers',
+  'automatizacion-marketing-growth-fintech',
+  'herramientas-gtm-lanzamiento-producto-b2b',
+  'herramientas-atribucion-marketing-fintech',
+  'unit-economics-fintech-cac-ltv-payback',
+  'geo-para-fintechs-guia-completa-ia-chatgpt-perplexity',
+  'stack-martech-fintech-espana-guia-completa',
+]);
+
+// Secciones ordenadas: primero las guías, luego por categoría
+const SECTIONS = [
+  { key: 'guias',     label: 'Guías completas',  sub: 'PILLAR PAGES' },
+  { key: 'Growth',    label: 'Growth',            sub: 'ÚLTIMOS POSTS' },
+  { key: 'Marketing', label: 'Marketing',         sub: 'ÚLTIMOS POSTS' },
+  { key: 'GEO',       label: 'GEO & Búsqueda IA', sub: 'ÚLTIMOS POSTS' },
+  { key: 'Estrategia',label: 'Estrategia',        sub: 'ÚLTIMOS POSTS' },
+  { key: 'Producto',  label: 'Producto',          sub: 'ÚLTIMOS POSTS' },
 ];
 
-const pillarSlugs = new Set(TOPICS.map(t => t.slug));
-const postMap = new Map(posts.map(p => [p.slug, p]));
-// Solo mostrar topics que tienen post generado
-const availableTopics = TOPICS.filter(t => postMap.has(t.slug));
-const groups = ['Agencia', 'Herramientas', 'Fundamentos'];
+// Deduplica por slug (hay posts duplicados en el JSON)
+const seen = new Set<string>();
+const uniquePosts = posts.filter(p => {
+  if (seen.has(p.slug)) return false;
+  seen.add(p.slug);
+  return true;
+});
+
+function postsForSection(key: string) {
+  if (key === 'guias') return uniquePosts.filter(p => PILLAR_SLUGS.has(p.slug));
+  return uniquePosts.filter(p => p.category === key && !PILLAR_SLUGS.has(p.slug));
+}
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return '';
+  try {
+    return new Date(dateStr).toLocaleDateString('es-ES', {
+      day: 'numeric', month: 'long', year: 'numeric',
+    });
+  } catch { return ''; }
+}
 ---
 
 <BaseLayout
@@ -55,178 +78,203 @@ const groups = ['Agencia', 'Herramientas', 'Fundamentos'];
     <nav class="nav-island w-full max-w-6xl">
       <div class="px-6 sm:px-8">
         <div class="flex items-center justify-between h-16">
-          <a href="/" class="flex items-center gap-0 cursor-pointer group flex-shrink-0">
+          <a href="/" class="flex items-center cursor-pointer group flex-shrink-0">
             <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U Logo" width="133" height="20" class="h-5 md:h-6 w-auto object-contain transition-transform group-hover:scale-105" />
           </a>
           <div class="hidden md:flex items-center gap-6">
             <a href="/" class="hover:text-[#6351d5] transition-colors px-2 py-2 rounded-md text-sm font-medium text-[#032149]">Home</a>
             <span class="text-[#6351d5] px-2 py-2 rounded-md text-sm font-bold">Blog</span>
           </div>
-          <div class="flex items-center gap-4">
-            <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg">
-              {t.nav.cta}
-            </a>
-          </div>
+          <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" class="bg-[#6351d5] hover:bg-[#3f45fe] text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 shadow-lg">
+            {t.nav.cta}
+          </a>
         </div>
       </div>
     </nav>
   </div>
 
-  <section class="pt-40 pb-20 px-4">
-    <div class="max-w-7xl mx-auto">
+  <section class="pt-36 pb-24 px-4 bg-white">
+    <div class="max-w-6xl mx-auto">
 
       <!-- Header -->
-      <div class="text-center mb-14">
-        <span class="inline-block px-4 py-2 rounded-full bg-blue-50 text-[#6351d5] font-bold text-sm mb-4">
-          INSIGHTS & ESTRATEGIA
-        </span>
-        <h1 class="text-4xl md:text-6xl font-extrabold text-[#032149] mb-6">Blog Growth4U</h1>
-        <p class="text-xl text-slate-600 max-w-2xl mx-auto">
-          Recursos estratégicos para escalar tu empresa fintech sin depender de paid media.
+      <div class="text-center mb-10">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-[#032149] mb-3">Blog Growth4U</h1>
+        <p class="text-lg text-slate-500 max-w-xl mx-auto">
+          Recursos para escalar tu fintech sin depender de paid media.
         </p>
       </div>
 
-      <!-- ─── Temas principales (Pillar Pages) ─────────────────────────── -->
-      {availableTopics.length > 0 && (
-        <div class="mb-16">
-          <div class="flex items-center gap-4 mb-8">
-            <h2 class="text-lg font-bold text-[#032149] whitespace-nowrap">Guías completas</h2>
-            <div class="h-px flex-1 bg-slate-200"></div>
-          </div>
+      <!-- ── Buscador ─────────────────────────────────────────────────── -->
+      <div class="flex items-center gap-0 mb-14 max-w-2xl mx-auto shadow-md rounded-2xl overflow-hidden border border-slate-200">
+        <input
+          id="blog-search"
+          type="text"
+          placeholder="¿Qué estás buscando?"
+          class="flex-1 px-5 py-4 text-base text-[#032149] placeholder-slate-400 outline-none bg-white"
+        />
+        <button id="search-btn" class="bg-[#0faec1] hover:bg-[#0d9aaa] text-white px-6 py-4 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+      </div>
 
-          {groups.map(group => {
-            const groupTopics = availableTopics.filter(t => t.group === group);
-            if (groupTopics.length === 0) return null;
-            const groupLabels: Record<string, string> = {
-              'Agencia': 'Servicios de Agencia',
-              'Herramientas': 'Herramientas & Stack',
-              'Fundamentos': 'Fundamentos Growth',
-            };
-            return (
-              <div class="mb-6">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">{groupLabels[group]}</p>
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-                  {groupTopics.map(topic => (
+      <!-- ── Resultados de búsqueda (oculto por defecto) ──────────────── -->
+      <div id="search-results" class="hidden mb-16">
+        <div class="flex items-baseline gap-3 mb-6">
+          <h2 class="text-xl font-bold text-[#032149]">Resultados</h2>
+          <span id="search-count" class="text-sm text-slate-400"></span>
+          <button id="clear-search" class="ml-auto text-sm text-[#6351d5] hover:underline">Limpiar búsqueda</button>
+        </div>
+        <div id="search-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+
+      <!-- ── Secciones por categoría ──────────────────────────────────── -->
+      <div id="sections-container">
+        {SECTIONS.map((section) => {
+          const sectionPosts = postsForSection(section.key);
+          if (sectionPosts.length === 0) return null;
+          return (
+            <div class="mb-14 section-block" data-section={section.key}>
+              <!-- Cabecera sección -->
+              <div class="mb-5">
+                <h2 class="text-2xl font-extrabold text-[#032149]">{section.label}</h2>
+                <p class="text-xs font-bold text-slate-400 tracking-widest uppercase mt-0.5">{section.sub}</p>
+              </div>
+
+              <!-- Carrusel -->
+              <div class="relative group/carousel">
+                <!-- Flecha izquierda -->
+                <button
+                  class="carousel-prev absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-md flex items-center justify-center text-[#032149] hover:bg-[#6351d5] hover:text-white hover:border-[#6351d5] transition-all opacity-0 group-hover/carousel:opacity-100 disabled:opacity-0"
+                  aria-label="anterior"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+
+                <!-- Track -->
+                <div class="carousel-track flex gap-6 overflow-x-auto pb-2 scroll-smooth" style="scrollbar-width:none;-ms-overflow-style:none;">
+                  {sectionPosts.map((post) => (
                     <a
-                      href={`/blog/${topic.slug}/`}
-                      class="group flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-200 bg-white hover:border-[#6351d5] hover:bg-[#6351d5]/5 transition-all duration-200 text-center"
+                      href={`/blog/${post.slug}/`}
+                      data-title={post.title.toLowerCase()}
+                      data-excerpt={(post.excerpt || '').toLowerCase()}
+                      class="post-card flex-none w-[calc(33.333%-16px)] min-w-[280px] bg-white rounded-xl overflow-hidden border border-slate-100 hover:shadow-lg transition-all duration-300 group/card"
                     >
-                      <span class="text-2xl">{topic.emoji}</span>
-                      <span class="text-xs font-semibold text-slate-700 group-hover:text-[#6351d5] transition-colors leading-tight">{topic.label}</span>
+                      <!-- Imagen -->
+                      <div class="relative aspect-video bg-slate-100 overflow-hidden">
+                        {post.image ? (
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            class="object-cover w-full h-full group-hover/card:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div class="w-full h-full bg-gradient-to-br from-[#032149] to-[#0faec1] flex items-center justify-center">
+                            <span class="text-white/30 text-5xl font-black">{section.label.charAt(0)}</span>
+                          </div>
+                        )}
+                      </div>
+                      <!-- Contenido -->
+                      <div class="p-5">
+                        <h3 class="font-bold text-[#032149] group-hover/card:text-[#6351d5] transition-colors mb-2 line-clamp-2 leading-snug">
+                          {post.title}
+                        </h3>
+                        <p class="text-slate-500 text-sm line-clamp-3 leading-relaxed mb-4">{post.excerpt}</p>
+                        <div class="flex items-center justify-between">
+                          <span class="text-[#6351d5] text-sm font-semibold hover:underline">Leer más</span>
+                          <span class="text-slate-400 text-xs">{formatDate(post.createdAt)}</span>
+                        </div>
+                      </div>
                     </a>
                   ))}
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
 
-      <!-- ─── Filtro + Posts ────────────────────────────────────────────── -->
-      <div class="flex items-center gap-4 mb-8">
-        <h2 class="text-lg font-bold text-[#032149] whitespace-nowrap">Todos los artículos</h2>
-        <div class="h-px flex-1 bg-slate-200"></div>
-      </div>
-
-      <!-- Filtro -->
-      <div class="flex flex-wrap gap-2 mb-8" id="category-filters">
-        {(['Todos', 'Guías', 'Growth', 'Marketing', 'GEO', 'Estrategia'] as const).map((cat) => (
-          <button
-            data-filter={cat}
-            class={`filter-btn px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 ${cat === 'Todos' ? 'bg-[#6351d5] text-white border-[#6351d5]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#6351d5] hover:text-[#6351d5]'}`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      <!-- Grid de posts -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="posts-grid">
-        {posts.map((post) => {
-          const isPillar = pillarSlugs.has(post.slug);
-          return (
-            <a
-              href={`/blog/${post.slug}/`}
-              data-category={post.category}
-              data-is-pillar={isPillar ? 'true' : 'false'}
-              class={`post-card bg-white rounded-2xl overflow-hidden border shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1 ${isPillar ? 'border-[#6351d5]/30 ring-1 ring-[#6351d5]/10' : 'border-slate-100'}`}
-            >
-              <div class="relative aspect-video bg-slate-100 overflow-hidden">
-                {post.image ? (
-                  <img src={post.image} alt={post.title} class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                ) : (
-                  <div class="w-full h-full bg-gradient-to-br from-[#6351d5]/10 to-[#45b6f7]/10 flex items-center justify-center">
-                    <span class="text-4xl opacity-40">
-                      {isPillar ? '📖' : '💡'}
-                    </span>
-                  </div>
-                )}
-                <div class="absolute top-4 left-4 flex gap-2">
-                  {isPillar && (
-                    <span class="bg-[#6351d5] text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-sm">
-                      Guía completa
-                    </span>
-                  )}
-                  {!isPillar && (
-                    <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">
-                      {post.category}
-                    </span>
-                  )}
-                </div>
+                <!-- Flecha derecha -->
+                <button
+                  class="carousel-next absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-md flex items-center justify-center text-[#032149] hover:bg-[#6351d5] hover:text-white hover:border-[#6351d5] transition-all opacity-0 group-hover/carousel:opacity-100 disabled:opacity-0"
+                  aria-label="siguiente"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
               </div>
-              <div class="p-6">
-                <h3 class="text-xl font-bold mb-3 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
-                <p class="text-slate-600 text-sm mb-4 line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                <div class="flex items-center justify-between text-sm text-slate-500 pt-4 border-t border-slate-50">
-                  <div class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    {post.readTime}
-                  </div>
-                  <span class="text-[#6351d5] font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
-                    Leer más
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                  </span>
-                </div>
-              </div>
-            </a>
+            </div>
           );
         })}
       </div>
-
-      <script>
-        const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-        const cards = document.querySelectorAll<HTMLElement>('.post-card');
-
-        buttons.forEach(btn => {
-          btn.addEventListener('click', () => {
-            const filter = btn.dataset.filter;
-
-            buttons.forEach(b => {
-              b.classList.remove('bg-[#6351d5]', 'text-white', 'border-[#6351d5]');
-              b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
-            });
-            btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
-            btn.classList.add('bg-[#6351d5]', 'text-white', 'border-[#6351d5]');
-
-            cards.forEach(card => {
-              let show = false;
-              if (filter === 'Todos') {
-                show = true;
-              } else if (filter === 'Guías') {
-                show = card.dataset.isPillar === 'true';
-              } else {
-                show = card.dataset.category === filter;
-              }
-              card.style.display = show ? '' : 'none';
-            });
-          });
-        });
-      </script>
 
     </div>
   </section>
 
   <Footer t={t} bookingLink={BOOKING_LINK} />
+
+  <script>
+    // ── Carruseles ────────────────────────────────────────────────────────
+    document.querySelectorAll<HTMLElement>('.relative.group\\/carousel').forEach(wrapper => {
+      const track = wrapper.querySelector<HTMLElement>('.carousel-track')!;
+      const prev  = wrapper.querySelector<HTMLButtonElement>('.carousel-prev')!;
+      const next  = wrapper.querySelector<HTMLButtonElement>('.carousel-next')!;
+
+      const scroll = (dir: number) => {
+        const card = track.querySelector<HTMLElement>('.post-card');
+        const step = card ? card.offsetWidth + 24 : 320;
+        track.scrollBy({ left: dir * step, behavior: 'smooth' });
+      };
+
+      prev?.addEventListener('click', () => scroll(-1));
+      next?.addEventListener('click', () => scroll(1));
+    });
+
+    // ── Búsqueda ──────────────────────────────────────────────────────────
+    const input      = document.getElementById('blog-search') as HTMLInputElement;
+    const searchBtn  = document.getElementById('search-btn')!;
+    const clearBtn   = document.getElementById('clear-search')!;
+    const resultsBox = document.getElementById('search-results')!;
+    const sectionsBox= document.getElementById('sections-container')!;
+    const grid       = document.getElementById('search-grid')!;
+    const countEl    = document.getElementById('search-count')!;
+
+    // Recolecta todos los post-card del DOM para clonarlos en resultados
+    const allCards = Array.from(
+      document.querySelectorAll<HTMLElement>('#sections-container .post-card')
+    );
+
+    function doSearch() {
+      const q = input.value.trim().toLowerCase();
+      if (!q) { clearSearch(); return; }
+
+      const matches = allCards.filter(card =>
+        (card.dataset.title || '').includes(q) ||
+        (card.dataset.excerpt || '').includes(q)
+      );
+
+      grid.innerHTML = '';
+      matches.forEach(card => {
+        const clone = card.cloneNode(true) as HTMLElement;
+        clone.classList.remove('flex-none', 'w-[calc(33.333%-16px)]', 'min-w-[280px]');
+        grid.appendChild(clone);
+      });
+
+      countEl.textContent = `${matches.length} resultado${matches.length !== 1 ? 's' : ''}`;
+      resultsBox.classList.remove('hidden');
+      sectionsBox.classList.add('hidden');
+    }
+
+    function clearSearch() {
+      input.value = '';
+      resultsBox.classList.add('hidden');
+      sectionsBox.classList.remove('hidden');
+    }
+
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+    input.addEventListener('input', () => { if (!input.value) clearSearch(); });
+    searchBtn.addEventListener('click', doSearch);
+    clearBtn.addEventListener('click', clearSearch);
+  </script>
+
+  <style>
+    /* Ocultar scrollbar de los carruseles */
+    .carousel-track::-webkit-scrollbar { display: none; }
+  </style>
 </BaseLayout>
