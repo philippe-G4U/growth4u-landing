@@ -409,7 +409,9 @@ function sendToGHL(data: LeadMagnetLead): void {
     firstName,
     lastName,
     email: data.email,
-    tags: ['lead-magnet', data.magnetSlug],
+    tags: data.magnetSlug === 'newsletter'
+      ? ['newsletter-subscriber']
+      : ['lead-magnet', data.magnetSlug],
     source: `Growth4U - ${data.magnetTitle}`,
     customData: {
       magnetSlug: data.magnetSlug,
