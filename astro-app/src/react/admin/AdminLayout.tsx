@@ -10,7 +10,6 @@ import {
   FileText,
   MessageSquare,
   Trophy,
-  BookOpen,
   Download,
   Users,
 } from 'lucide-react';
@@ -51,7 +50,6 @@ export default function AdminLayout() {
     { name: 'Dashboard', href: '/admin/', icon: LayoutDashboard },
     { name: 'Blog', href: '/admin/blog/', icon: FileText },
     { name: 'Casos de Éxito', href: '/admin/casos-de-exito/', icon: Trophy },
-    { name: 'Artículos', href: '/admin/articulos/', icon: BookOpen },
     { name: 'Lead Magnets', href: '/admin/lead-magnets/', icon: Download },
     { name: 'SEO & GEO', href: '/admin/seo/', icon: Search },
     { name: 'Feedback', href: '/admin/feedback/', icon: MessageSquare },

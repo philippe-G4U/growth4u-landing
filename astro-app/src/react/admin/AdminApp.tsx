@@ -8,7 +8,6 @@ import GeoPage from './pages/GeoPage';
 import ValidationPage from './pages/ValidationPage';
 import ChecklistPage from './pages/ChecklistPage';
 import FeedbackAdminPage from './pages/FeedbackAdminPage';
-import ArticulosAdminPage from './pages/ArticulosAdminPage';
 import LeadMagnetsAdminPage from './pages/LeadMagnetsAdminPage';
 import LeadsAdminPage from './pages/LeadsAdminPage';
 
@@ -20,7 +19,6 @@ export default function AdminApp() {
           <Route path="/admin/" element={<DashboardPage />} />
           <Route path="/admin/blog/" element={<BlogAdminPage />} />
           <Route path="/admin/casos-de-exito/" element={<CasosAdminPage />} />
-          <Route path="/admin/articulos/" element={<ArticulosAdminPage />} />
           <Route path="/admin/lead-magnets/" element={<LeadMagnetsAdminPage />} />
           <Route path="/admin/seo/" element={<SeoPage />} />
           <Route path="/admin/geo/" element={<GeoPage />} />
