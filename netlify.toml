@@ -518,6 +518,34 @@
   status = 301
   force = true
 
+# ─── Fase 5: Pillar Pages Fundamentos (Feb 2026) ─────────────────────────────
+
+# Pillar: Unit Economics Fintech
+[[redirects]]
+  from = "/blog/unit-economics-en-fintech-la-mentira-del-ltv-proyectado/"
+  to = "/blog/unit-economics-fintech-cac-ltv-payback/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/la-paradoja-del-cac-por-que-gastar-mas-en-ads-casi-nos-hunde/"
+  to = "/blog/unit-economics-fintech-cac-ltv-payback/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/tu-cac-no-para-de-subir-el-trust-engine-lo-reduce-un-70-sin-gastar-mas-en-ads/"
+  to = "/blog/unit-economics-fintech-cac-ltv-payback/"
+  status = 301
+  force = true
+
+# Pillar: GEO para Fintechs
+[[redirects]]
+  from = "/blog/ha-muerto-el-seo-bienvenido-a-la-era-del-geo-generative-engine-optimization/"
+  to = "/blog/geo-para-fintechs-guia-completa-ia-chatgpt-perplexity/"
+  status = 301
+  force = true
+
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Headers for caching

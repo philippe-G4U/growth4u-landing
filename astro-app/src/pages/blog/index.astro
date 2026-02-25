@@ -14,11 +14,39 @@ try {
 } catch (e) {
   console.warn('Could not fetch blog posts at build time:', e);
 }
+
+// ─── Temas / Pillar pages (navegación por clusters) ───────────────────────
+const TOPICS = [
+  // Cluster Agencia
+  { slug: 'agencia-growth-hacking-fintech-espana',                       label: 'Growth Hacking Fintech',   emoji: '🚀', group: 'Agencia' },
+  { slug: 'agencia-influencer-marketing-financiero-fintech-espana',       label: 'Influencer Marketing',     emoji: '📱', group: 'Agencia' },
+  { slug: 'agencia-outreach-b2b-fintech-espana',                         label: 'Outreach B2B',             emoji: '✉️', group: 'Agencia' },
+  { slug: 'agencia-afiliados-referidos-fintech-espana',                  label: 'Afiliados & Referidos',    emoji: '🤝', group: 'Agencia' },
+  { slug: 'agencia-estrategia-gtm-fintech-espana',                       label: 'Estrategia GTM',           emoji: '🗺️', group: 'Agencia' },
+  { slug: 'agencia-founder-led-growth-fintech',                          label: 'Founder-Led Growth',       emoji: '👤', group: 'Agencia' },
+  // Cluster Herramientas
+  { slug: 'herramientas-para-crear-contenido-digital',                   label: 'Crear Contenido',          emoji: '✍️', group: 'Herramientas' },
+  { slug: 'herramientas-outreach-y-prospeccion-b2b',                     label: 'Prospección B2B',          emoji: '🎯', group: 'Herramientas' },
+  { slug: 'plataformas-afiliados-e-influencers',                         label: 'Plataformas Afiliados',    emoji: '🔗', group: 'Herramientas' },
+  { slug: 'automatizacion-marketing-growth-fintech',                     label: 'Automatización',           emoji: '⚡', group: 'Herramientas' },
+  { slug: 'herramientas-gtm-lanzamiento-producto-b2b',                   label: 'GTM & Lanzamiento',        emoji: '📦', group: 'Herramientas' },
+  { slug: 'herramientas-atribucion-marketing-fintech',                   label: 'Atribución',               emoji: '📊', group: 'Herramientas' },
+  // Fundamentos
+  { slug: 'unit-economics-fintech-cac-ltv-payback',                      label: 'Unit Economics',           emoji: '💰', group: 'Fundamentos' },
+  { slug: 'geo-para-fintechs-guia-completa-ia-chatgpt-perplexity',       label: 'GEO & Búsqueda IA',        emoji: '🤖', group: 'Fundamentos' },
+  { slug: 'stack-martech-fintech-espana-guia-completa',                  label: 'Stack Martech',            emoji: '🛠️', group: 'Fundamentos' },
+];
+
+const pillarSlugs = new Set(TOPICS.map(t => t.slug));
+const postMap = new Map(posts.map(p => [p.slug, p]));
+// Solo mostrar topics que tienen post generado
+const availableTopics = TOPICS.filter(t => postMap.has(t.slug));
+const groups = ['Agencia', 'Herramientas', 'Fundamentos'];
 ---
 
 <BaseLayout
   title="Blog | Growth4U"
-  description="Insights y estrategias de Growth para Empresas Tech B2B y B2C."
+  description="Guías y estrategias de Growth para Fintech en España: growth hacking, outreach B2B, influencer marketing, unit economics, GEO y más."
 >
   <CookieBanner client:idle />
 
@@ -46,19 +74,63 @@ try {
 
   <section class="pt-40 pb-20 px-4">
     <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-16">
+
+      <!-- Header -->
+      <div class="text-center mb-14">
         <span class="inline-block px-4 py-2 rounded-full bg-blue-50 text-[#6351d5] font-bold text-sm mb-4">
           INSIGHTS & ESTRATEGIA
         </span>
         <h1 class="text-4xl md:text-6xl font-extrabold text-[#032149] mb-6">Blog Growth4U</h1>
         <p class="text-xl text-slate-600 max-w-2xl mx-auto">
-          Recursos estratégicos para escalar tu empresa tech sin depender de paid media.
+          Recursos estratégicos para escalar tu empresa fintech sin depender de paid media.
         </p>
       </div>
 
-      <!-- Filtro por categoría -->
-      <div class="flex flex-wrap justify-center gap-2 mb-10" id="category-filters">
-        {['Todos', 'Estrategia', 'Growth', 'Marketing', 'GEO', 'Producto'].map((cat) => (
+      <!-- ─── Temas principales (Pillar Pages) ─────────────────────────── -->
+      {availableTopics.length > 0 && (
+        <div class="mb-16">
+          <div class="flex items-center gap-4 mb-8">
+            <h2 class="text-lg font-bold text-[#032149] whitespace-nowrap">Guías completas</h2>
+            <div class="h-px flex-1 bg-slate-200"></div>
+          </div>
+
+          {groups.map(group => {
+            const groupTopics = availableTopics.filter(t => t.group === group);
+            if (groupTopics.length === 0) return null;
+            const groupLabels: Record<string, string> = {
+              'Agencia': 'Servicios de Agencia',
+              'Herramientas': 'Herramientas & Stack',
+              'Fundamentos': 'Fundamentos Growth',
+            };
+            return (
+              <div class="mb-6">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">{groupLabels[group]}</p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                  {groupTopics.map(topic => (
+                    <a
+                      href={`/blog/${topic.slug}/`}
+                      class="group flex flex-col items-center gap-2 p-3 rounded-xl border border-slate-200 bg-white hover:border-[#6351d5] hover:bg-[#6351d5]/5 transition-all duration-200 text-center"
+                    >
+                      <span class="text-2xl">{topic.emoji}</span>
+                      <span class="text-xs font-semibold text-slate-700 group-hover:text-[#6351d5] transition-colors leading-tight">{topic.label}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <!-- ─── Filtro + Posts ────────────────────────────────────────────── -->
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-lg font-bold text-[#032149] whitespace-nowrap">Todos los artículos</h2>
+        <div class="h-px flex-1 bg-slate-200"></div>
+      </div>
+
+      <!-- Filtro -->
+      <div class="flex flex-wrap gap-2 mb-8" id="category-filters">
+        {(['Todos', 'Guías', 'Growth', 'Marketing', 'GEO', 'Estrategia'] as const).map((cat) => (
           <button
             data-filter={cat}
             class={`filter-btn px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 ${cat === 'Todos' ? 'bg-[#6351d5] text-white border-[#6351d5]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#6351d5] hover:text-[#6351d5]'}`}
@@ -68,37 +140,59 @@ try {
         ))}
       </div>
 
+      <!-- Grid de posts -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="posts-grid">
-        {posts.map((post) => (
-          <a
-            href={`/blog/${post.slug}/`}
-            data-category={post.category}
-            class="post-card bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1"
-          >
-            <div class="relative aspect-video bg-slate-100 overflow-hidden">
-              <img src={post.image} alt={post.title} class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-              <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">
-                {post.category}
-              </div>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-3 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">
-                {post.title}
-              </h3>
-              <p class="text-slate-600 text-sm mb-4 line-clamp-3 leading-relaxed">{post.excerpt}</p>
-              <div class="flex items-center justify-between text-sm text-slate-500 pt-4 border-t border-slate-50">
-                <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  {post.readTime}
+        {posts.map((post) => {
+          const isPillar = pillarSlugs.has(post.slug);
+          return (
+            <a
+              href={`/blog/${post.slug}/`}
+              data-category={post.category}
+              data-is-pillar={isPillar ? 'true' : 'false'}
+              class={`post-card bg-white rounded-2xl overflow-hidden border shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer hover:-translate-y-1 ${isPillar ? 'border-[#6351d5]/30 ring-1 ring-[#6351d5]/10' : 'border-slate-100'}`}
+            >
+              <div class="relative aspect-video bg-slate-100 overflow-hidden">
+                {post.image ? (
+                  <img src={post.image} alt={post.title} class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                ) : (
+                  <div class="w-full h-full bg-gradient-to-br from-[#6351d5]/10 to-[#45b6f7]/10 flex items-center justify-center">
+                    <span class="text-4xl opacity-40">
+                      {isPillar ? '📖' : '💡'}
+                    </span>
+                  </div>
+                )}
+                <div class="absolute top-4 left-4 flex gap-2">
+                  {isPillar && (
+                    <span class="bg-[#6351d5] text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-sm">
+                      Guía completa
+                    </span>
+                  )}
+                  {!isPillar && (
+                    <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#6351d5] uppercase tracking-wide border border-slate-200 shadow-sm">
+                      {post.category}
+                    </span>
+                  )}
                 </div>
-                <span class="text-[#6351d5] font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Leer más
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </span>
               </div>
-            </div>
-          </a>
-        ))}
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-3 text-[#032149] group-hover:text-[#6351d5] transition-colors line-clamp-2">
+                  {post.title}
+                </h3>
+                <p class="text-slate-600 text-sm mb-4 line-clamp-3 leading-relaxed">{post.excerpt}</p>
+                <div class="flex items-center justify-between text-sm text-slate-500 pt-4 border-t border-slate-50">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    {post.readTime}
+                  </div>
+                  <span class="text-[#6351d5] font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
+                    Leer más
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </span>
+                </div>
+              </div>
+            </a>
+          );
+        })}
       </div>
 
       <script>
@@ -117,12 +211,20 @@ try {
             btn.classList.add('bg-[#6351d5]', 'text-white', 'border-[#6351d5]');
 
             cards.forEach(card => {
-              const show = filter === 'Todos' || card.dataset.category === filter;
+              let show = false;
+              if (filter === 'Todos') {
+                show = true;
+              } else if (filter === 'Guías') {
+                show = card.dataset.isPillar === 'true';
+              } else {
+                show = card.dataset.category === filter;
+              }
               card.style.display = show ? '' : 'none';
             });
           });
         });
       </script>
+
     </div>
   </section>
 
