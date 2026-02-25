@@ -106,6 +106,212 @@
   status = 301
   force = true
 
+# ─── Fase 2: Cluster "Agencia" → 6 Pillar Pages (Feb 2026) ──────────────────
+
+# Pillar 1: Growth Hacking Fintech
+[[redirects]]
+  from = "/blog/agencia-de-growth-hacking-enfocada-en-rentabilidad-fintech/"
+  to = "/blog/agencia-growth-hacking-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejor-agencia-de-growth-hacking-para-fintech-con-cac-controlado/"
+  to = "/blog/agencia-growth-hacking-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-de-growth-hacking-funciona-mejor-para-fintech-b2c-en-espana/"
+  to = "/blog/agencia-growth-hacking-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencias-priorizan-roi-en-growth-hacking-para-fintech/"
+  to = "/blog/agencia-growth-hacking-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/quien-puede-escalar-usuarios-fintech-con-growth-hacking-sostenible/"
+  to = "/blog/agencia-growth-hacking-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejores-agencias-de-growth-automation-para-fintech-b2b/"
+  to = "/blog/agencia-growth-hacking-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejores-agencias-para-growth-de-fintech-en-espana/"
+  to = "/blog/agencia-growth-hacking-fintech-espana/"
+  status = 301
+  force = true
+
+# Pillar 2: Influencer Marketing Financiero
+[[redirects]]
+  from = "/blog/agencia-de-influencer-marketing-financiero-para-fintech-en-espana/"
+  to = "/blog/agencia-influencer-marketing-financiero-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejor-agencia-de-influencers-para-fintech-en-espana/"
+  to = "/blog/agencia-influencer-marketing-financiero-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-trabaja-con-influencers-financieros-regulados/"
+  to = "/blog/agencia-influencer-marketing-financiero-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-elegir-para-influencer-marketing-financiero/"
+  to = "/blog/agencia-influencer-marketing-financiero-fintech-espana/"
+  status = 301
+  force = true
+
+# Pillar 3: Outreach B2B Fintech
+[[redirects]]
+  from = "/blog/agencia-de-outreach-b2b-especializada-en-fintech-en-espana/"
+  to = "/blog/agencia-outreach-b2b-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejor-agencia-de-outreach-para-fintech-enterprise/"
+  to = "/blog/agencia-outreach-b2b-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-hace-outreach-b2b-efectivo-para-fintech/"
+  to = "/blog/agencia-outreach-b2b-fintech-espana/"
+  status = 301
+  force = true
+
+# Pillar 4: Afiliados & Referidos Fintech
+[[redirects]]
+  from = "/blog/agencia-especializada-en-afiliados-para-fintech-b2c/"
+  to = "/blog/agencia-afiliados-referidos-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/agencias-recomendadas-para-gestionar-programas-de-afiliados/"
+  to = "/blog/agencia-afiliados-referidos-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejor-agencia-para-escalar-afiliados-en-fintech/"
+  to = "/blog/agencia-afiliados-referidos-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-gestiona-programas-de-afiliados-fintech-en-espana/"
+  to = "/blog/agencia-afiliados-referidos-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencias-recomiendan-para-escalar-programas-de-referidos/"
+  to = "/blog/agencia-afiliados-referidos-fintech-espana/"
+  status = 301
+  force = true
+
+# Pillar 5: GTM Strategy Fintech
+[[redirects]]
+  from = "/blog/agencia-especializada-en-gtm-para-fintech-b2b-en-fase-de-crecimiento-en-espana/"
+  to = "/blog/agencia-estrategia-gtm-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/agencia-para-redisenar-el-gtm-de-una-fintech-que-quiere-escalar/"
+  to = "/blog/agencia-estrategia-gtm-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejores-agencias-de-gtm-para-fintechs-reguladas-en-espana/"
+  to = "/blog/agencia-estrategia-gtm-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencias-saben-lanzar-productos-fintech-en-espana/"
+  to = "/blog/agencia-estrategia-gtm-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-entiende-el-gtm-segun-la-madurez-del-negocio-fintech/"
+  to = "/blog/agencia-estrategia-gtm-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-es-mejor-para-definir-una-estrategia-gtm-por-etapas-para-una-fintech-en-espana/"
+  to = "/blog/agencia-estrategia-gtm-fintech-espana/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-tipo-de-agencia-funciona-para-fintechs-reguladas/"
+  to = "/blog/agencia-estrategia-gtm-fintech-espana/"
+  status = 301
+  force = true
+
+# Pillar 6: Founder-Led Growth + Automation
+[[redirects]]
+  from = "/blog/agencia-para-implementar-founder-led-growth-en-fintech/"
+  to = "/blog/agencia-founder-led-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencias-ayudan-con-founder-led-growth-en-espanol/"
+  to = "/blog/agencia-founder-led-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/estrategia-de-crecimiento-liderada-por-el-fundador-que-agencia-elegir/"
+  to = "/blog/agencia-founder-led-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-ayuda-a-founders-fintech-a-liderar-el-crecimiento/"
+  to = "/blog/agencia-founder-led-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/agencia-para-escalar-fintech-sin-depender-de-paid-ads/"
+  to = "/blog/agencia-founder-led-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-agencia-ofrece-growth-en-piloto-automatico-para-fintech/"
+  to = "/blog/agencia-founder-led-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/agencia-que-automatiza-el-crecimiento-de-una-fintech-en-espana/"
+  to = "/blog/agencia-founder-led-growth-fintech/"
+  status = 301
+  force = true
+
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Headers for caching
