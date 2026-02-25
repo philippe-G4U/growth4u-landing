@@ -29,6 +29,78 @@
   status = 301
   force = true
 
+# ─── Fase 1: Redirects anti-canibalización (Feb 2026) ───────────────────────
+
+# Comité Asesor: 3 posts duplicados → 1 URL canónica
+[[redirects]]
+  from = "/blog/como-crear-un-comite-asesor-b2b-que-genere-contenido-de-autoridad-en-linkedin/"
+  to = "/blog/comite-asesor-b2b-de-reuniones-mensuales-a-pildoras-de-contenido-linkedin/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/como-estructurar-un-comite-de-expertos-para-generar-20-ideas-de-contenido-por-reunion/"
+  to = "/blog/comite-asesor-b2b-de-reuniones-mensuales-a-pildoras-de-contenido-linkedin/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/como-extraigo-15-ideas-de-contenido-de-cada-reunion-sin-hacer-nada-manual/"
+  to = "/blog/comite-asesor-b2b-de-reuniones-mensuales-a-pildoras-de-contenido-linkedin/"
+  status = 301
+  force = true
+
+# GEO: duplicado exacto
+[[redirects]]
+  from = "/blog/como-aparecer-en-chatgpt-cuando-un-ceo-busca-mejor-fintech-espana/"
+  to = "/blog/geo-para-fintechs-como-aparecer-cuando-chatgpt-busca-mejor-banco-digital-espana/"
+  status = 301
+  force = true
+
+# Unit Economics: duplicado de CAC
+[[redirects]]
+  from = "/blog/por-que-el-90-de-las-fintechs-mide-mal-su-cac-la-guia-definitiva-de-user-acquisition/"
+  to = "/blog/unit-economics-reales-por-que-estas-midiendo-mal-tu-cac-y-como-te-cuesta-millones/"
+  status = 301
+  force = true
+
+# Atribución: duplicado técnico bayesiano
+[[redirects]]
+  from = "/blog/modelo-bayesiano-jerarquico-para-atribucion-multi-tactil-transparente/"
+  to = "/blog/modelos-de-atribucion-multitactil-por-que-los-modelos-bayesianos-funcionan-mejor/"
+  status = 301
+  force = true
+
+# GTM España: duplicado directo
+[[redirects]]
+  from = "/blog/por-que-tu-estrategia-gtm-de-ukus-fracasa-en-espana-guia-para-fintech/"
+  to = "/blog/go-to-market-en-espana-por-que-tu-estrategia-de-ukus-no-funciona-aqui/"
+  status = 301
+  force = true
+
+# HubSpot: duplicado mobile-first
+[[redirects]]
+  from = "/blog/critica-a-hubspot-para-empresas-mobile-first/"
+  to = "/blog/por-que-hubspot-no-funciona-para-apps-moviles-y-que-usar-en-su-lugar/"
+  status = 301
+  force = true
+
+# Influencer: duplicado comisiones
+[[redirects]]
+  from = "/blog/reinvertir-la-diferencia-de-comision-en-mas-perfiles-de-influencer/"
+  to = "/blog/estrategia-de-comisiones-para-influencer-marketing-reinvertir-la-diferencia-en-mas-perfiles/"
+  status = 301
+  force = true
+
+# AI: duplicado open-source/Sancho
+[[redirects]]
+  from = "/blog/modelo-open-source-con-version-hosted-por-que-tiene-sentido-en-el-ritmo-actual-de-la-tecnologia/"
+  to = "/blog/sancho-cmo-de-proyecto-exploratorio-a-open-source-con-version-hosted/"
+  status = 301
+  force = true
+
+# ─────────────────────────────────────────────────────────────────────────────
+
 # Headers for caching
 [[headers]]
   for = "/_astro/*"
