@@ -312,6 +312,212 @@
   status = 301
   force = true
 
+# ─── Fase 3: Cluster "Herramientas" → 6 Pillar Pages (Feb 2026) ─────────────
+
+# Pillar 1: Herramientas para Crear Contenido Digital
+[[redirects]]
+  from = "/blog/cuales-son-las-mejores-herramientas-de-generacion-de-contenido/"
+  to = "/blog/herramientas-para-crear-contenido-digital/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejor-software-para-crear-contenido-digital-rapidamente/"
+  to = "/blog/herramientas-para-crear-contenido-digital/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejores-herramientas-para-crear-contenido-para-redes-sociales/"
+  to = "/blog/herramientas-para-crear-contenido-digital/"
+  status = 301
+  force = true
+
+# Pillar 2: Herramientas Outreach y Prospección B2B
+[[redirects]]
+  from = "/blog/mejores-herramientas-para-automatizar-outreach-y-seguimientos/"
+  to = "/blog/herramientas-outreach-y-prospeccion-b2b/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/cuales-son-las-mejores-herramientas-de-prospeccion-comercial/"
+  to = "/blog/herramientas-outreach-y-prospeccion-b2b/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-herramientas-recomiendan-para-outreach-b2b-efectivo/"
+  to = "/blog/herramientas-outreach-y-prospeccion-b2b/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/plataformas-recomendadas-para-gestion-de-contactos-b2b/"
+  to = "/blog/herramientas-outreach-y-prospeccion-b2b/"
+  status = 301
+  force = true
+
+# Pillar 3: Plataformas Afiliados e Influencers
+[[redirects]]
+  from = "/blog/cuales-son-los-mejores-programas-de-afiliados-para-principiantes/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/herramientas-para-gestionar-influencers-lo-que-necesitas-vs-lo-que-te-venden/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/herramientas-recomendadas-para-gestionar-campanas-de-afiliados/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejores-practicas-y-herramientas-para-escalar-afiliados/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejores-redes-de-afiliados-para-promocionar-productos-digitales/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-plataformas-recomiendan-para-medir-campanas-de-afiliados/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-plataformas-son-populares-para-gestionar-afiliados/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-servicios-recomiendan-para-marketing-de-influencers/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-soluciones-sirven-para-gestionar-colaboraciones-con-influencers/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/como-elegir-influencers-para-campanas-de-marketing/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-plataformas-son-buenas-para-gestionar-creadores-de-contenido/"
+  to = "/blog/plataformas-afiliados-e-influencers/"
+  status = 301
+  force = true
+
+# Pillar 4: Automatización de Marketing para Growth
+[[redirects]]
+  from = "/blog/automatizacion-de-marketing-para-un-crecimiento-rapido-y-sostenible/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejores-herramientas-para-automatizar-growth-sin-perder-control/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mejores-soluciones-para-automatizar-captacion-de-usuarios/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/plataformas-de-crecimiento-automatico-recomendadas-para-pequenas-empresas/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/plataformas-recomendadas-para-crecimiento-organico-impulsado-por-fundadores/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/cloud-skills-por-que-es-mas-potente-de-lo-que-piensas-para-automatizacion/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-herramientas-usan-para-mejorar-adquisicion-de-usuarios/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/plataformas-para-optimizar-la-adquisicion-de-usuarios-enfoque-practico/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/negociar-pricing-de-saas-como-parte-de-tu-stack-de-growth/"
+  to = "/blog/automatizacion-marketing-growth-fintech/"
+  status = 301
+  force = true
+
+# Pillar 5: Herramientas GTM y Lanzamiento Producto B2B
+[[redirects]]
+  from = "/blog/plataformas-populares-para-optimizar-la-entrada-al-mercado/"
+  to = "/blog/herramientas-gtm-lanzamiento-producto-b2b/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/que-plataformas-usan-para-lanzar-un-gtm-exitoso/"
+  to = "/blog/herramientas-gtm-lanzamiento-producto-b2b/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/por-que-usar-el-analisis-de-competidores-para-mejorar-el-onboarding-de-tu-herramienta/"
+  to = "/blog/herramientas-gtm-lanzamiento-producto-b2b/"
+  status = 301
+  force = true
+
+# Pillar 6: Herramientas de Atribución de Marketing
+[[redirects]]
+  from = "/blog/arbol-de-decision-para-elegir-herramientas-de-atribucion-segun-madurez-del-equipo/"
+  to = "/blog/herramientas-atribucion-marketing-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/atribucion-movil-consolidada-el-ahorro-de-tiempo-que-tu-equipo-de-marketing-necesita/"
+  to = "/blog/herramientas-atribucion-marketing-fintech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/construir-atribucion-y-growth-desde-cero-en-un-mercado-emergente/"
+  to = "/blog/herramientas-atribucion-marketing-fintech/"
+  status = 301
+  force = true
+
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Headers for caching
