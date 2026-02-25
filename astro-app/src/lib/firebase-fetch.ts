@@ -1,10 +1,12 @@
 /**
  * Firebase Firestore REST API for build-time data fetching.
- * This module uses the REST API instead of the Firebase SDK,
- * so ZERO JavaScript is shipped to the browser for public pages.
+ * Uses a local JSON cache (src/data/posts.json) as primary source so builds
+ * never hit Firebase rate limits. Falls back to Firestore REST API if the cache
+ * is empty. The Python publish script keeps the cache up to date.
  */
 
 import { FIREBASE_PROJECT_ID, FIREBASE_APP_ID } from './constants';
+import postsCache from '../data/posts.json';
 
 const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
 const COLLECTION_BASE = `artifacts/${FIREBASE_APP_ID}/public/data`;
@@ -94,10 +96,16 @@ function parseDocument(doc: any): Record<string, any> {
   return result;
 }
 
-// Fetch all blog posts
+// Fetch all blog posts — uses local JSON cache as primary source
 export async function getAllPosts(): Promise<BlogPost[]> {
+  // Use the local JSON cache if populated (avoids Firestore rate limits at build time)
+  if (Array.isArray(postsCache) && postsCache.length > 0) {
+    return postsCache as BlogPost[];
+  }
+
+  // Fallback: fetch from Firestore REST API
   try {
-    const url = `${FIRESTORE_BASE}/${COLLECTION_BASE}/blog_posts?orderBy=createdAt desc`;
+    const url = `${FIRESTORE_BASE}/${COLLECTION_BASE}/blog_posts?pageSize=300`;
     const response = await fetch(url);
 
     if (!response.ok) {

@@ -332,6 +332,8 @@ def upload_cover_to_cloudinary(title):
 
 # ── Firebase ─────────────────────────────────────────────────────────────
 
+POSTS_CACHE_FILE = os.path.join(os.path.dirname(__file__), '..', 'astro-app', 'src', 'data', 'posts.json')
+
 def create_slug(text):
     text = unicodedata.normalize('NFD', text.lower())
     text = ''.join(c for c in text if unicodedata.category(c) != 'Mn')
@@ -340,17 +342,67 @@ def create_slug(text):
     return re.sub(r'--+', '-', text)
 
 
+def load_posts_cache():
+    """Carga el JSON cache local de posts."""
+    if os.path.exists(POSTS_CACHE_FILE):
+        with open(POSTS_CACHE_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            if isinstance(data, list):
+                return data
+    return []
+
+
+def save_post_to_cache(title, category, excerpt, content, image_url, doc_id):
+    """Añade un post al JSON cache local."""
+    now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    posts = load_posts_cache()
+    slug = create_slug(title)
+    # Evitar duplicados en el cache
+    posts = [p for p in posts if p.get('slug') != slug]
+    posts.insert(0, {
+        'id': doc_id or slug,
+        'title': title,
+        'slug': slug,
+        'category': category,
+        'excerpt': excerpt,
+        'content': content,
+        'image': image_url,
+        'readTime': '6 min lectura',
+        'author': 'Equipo Growth4U',
+        'createdAt': now,
+        'updatedAt': now,
+    })
+    with open(POSTS_CACHE_FILE, 'w', encoding='utf-8') as f:
+        json.dump(posts, f, ensure_ascii=False, indent=2)
+
+
+def post_exists_in_cache(title):
+    """Comprueba si ya existe un post con el mismo slug en el JSON cache."""
+    slug = create_slug(title)
+    posts = load_posts_cache()
+    return any(p.get('slug') == slug for p in posts)
+
+
 def post_exists_in_firebase(title):
-    """Comprueba si ya existe un post con el mismo título en Firebase."""
-    url = f'{FIRESTORE_BASE}/{COLLECTION_PATH}'
-    req = urllib.request.Request(url)
-    with urllib.request.urlopen(req) as response:
-        data = json.loads(response.read().decode('utf-8'))
-    for doc in data.get('documents', []):
-        existing_title = doc.get('fields', {}).get('title', {}).get('stringValue', '')
-        if existing_title.lower().strip() == title.lower().strip():
-            return True
-    return False
+    """Comprueba si ya existe un post con el mismo título en Firebase.
+    Primero comprueba el cache local para evitar lecturas a Firebase."""
+    # Comprobar cache local primero (sin cuota)
+    if post_exists_in_cache(title):
+        return True
+    # Fallback: comprobar Firebase (puede fallar con 429)
+    try:
+        url = f'{FIRESTORE_BASE}/{COLLECTION_PATH}'
+        req = urllib.request.Request(url)
+        with urllib.request.urlopen(req) as response:
+            data = json.loads(response.read().decode('utf-8'))
+        for doc in data.get('documents', []):
+            existing_title = doc.get('fields', {}).get('title', {}).get('stringValue', '')
+            if existing_title.lower().strip() == title.lower().strip():
+                return True
+        return False
+    except Exception:
+        # Si Firebase falla (429, etc.), confiar solo en el cache local
+        return False
 
 
 def publish_to_firebase(title, category, excerpt, content, image_url=''):
@@ -394,7 +446,9 @@ def trigger_deploy(count):
 
     msg = f'chore: publish {count} new blog post(s) from Notion [{now}]'
     try:
-        subprocess.run(['git', 'add', 'astro-app/public/build-trigger.txt'],
+        subprocess.run(['git', 'add',
+                        'astro-app/public/build-trigger.txt',
+                        'astro-app/src/data/posts.json'],
                        cwd=repo_root, check=True, capture_output=True)
         subprocess.run(['git', 'commit', '-m', msg],
                        cwd=repo_root, check=True, capture_output=True)
@@ -473,6 +527,9 @@ def main():
         except Exception as e:
             print(f'  ❌ Error Firebase: {e}\n')
             continue
+
+        # Guardar en cache JSON local (para que el build no necesite Firebase)
+        save_post_to_cache(title, category, excerpt, geo_content, image_url, doc_id)
 
         try:
             mark_published(page_id)
