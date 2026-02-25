@@ -399,9 +399,36 @@ export async function getLeadMagnetById(id: string): Promise<{ content: string }
   return { content: snap.data().content || '' };
 }
 
+const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/BnXWP5dcLVMgUudLv10O/webhook-trigger/80a057fa-778c-43af-9ca1-5186e4b0d058';
+
+function sendToGHL(data: LeadMagnetLead): void {
+  const nameParts = data.nombre.trim().split(' ');
+  const firstName = nameParts[0] || data.nombre;
+  const lastName = nameParts.slice(1).join(' ') || '';
+  const payload = {
+    firstName,
+    lastName,
+    email: data.email,
+    tags: ['lead-magnet', data.magnetSlug],
+    source: `Growth4U - ${data.magnetTitle}`,
+    customData: {
+      magnetSlug: data.magnetSlug,
+      magnetTitle: data.magnetTitle,
+      tag: data.tag,
+    },
+  };
+  // Fire and forget — no bloqueamos el flujo si GHL falla
+  fetch(GHL_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  }).catch(() => {});
+}
+
 export async function saveLeadMagnetLead(data: LeadMagnetLead): Promise<void> {
   const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'lead_magnet_leads');
   await addDoc(ref, { ...data, createdAt: serverTimestamp() });
+  sendToGHL(data);
 }
 
 export async function getAllLeadMagnetLeads() {
