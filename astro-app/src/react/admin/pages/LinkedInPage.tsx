@@ -43,9 +43,9 @@ const CLOUDINARY_PRESET = 'blog_uploads';
 const LI_TEMPLATE = {
   url: 'https://res.cloudinary.com/dsc0jsbkz/image/upload/v1772726703/li-template-0.jpg',
   textX: 88,
-  textY: 1100,
+  textY: 1000,
   textW: 1552,
-  textH: 500,
+  textH: 550,
 };
 
 // --- Canvas image generator ---
