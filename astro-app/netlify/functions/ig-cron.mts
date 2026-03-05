@@ -1,4 +1,4 @@
-import type { Config } from "@netlify/functions";
+import type { Config, Context } from "@netlify/functions";
 
 const IG_USER_ID = process.env.META_IG_USER_ID;
 const ACCESS_TOKEN = process.env.META_IG_ACCESS_TOKEN;
@@ -86,10 +86,10 @@ async function publishToIG(imageUrl: string, caption: string): Promise<string> {
   return published.id;
 }
 
-export default async () => {
+export default async (_req: Request, _context: Context) => {
   if (!IG_USER_ID || !ACCESS_TOKEN) {
     console.log("Instagram API not configured, skipping");
-    return;
+    return new Response("Not configured", { status: 200 });
   }
 
   const now = new Date();
@@ -118,6 +118,10 @@ export default async () => {
   }
 
   console.log("[ig-cron] Done");
+  return new Response(JSON.stringify({ processed: due.length }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 // Run every 15 minutes
