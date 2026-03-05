@@ -48,13 +48,12 @@ interface LIPost {
   likes: number;
   comments: number;
   shares: number;
+  impressions?: number;
+  clicks?: number;
 }
 
 interface LIAccount {
   name: string;
-  personUrn: string;
-  headline: string;
-  profilePicture: string;
 }
 
 interface LIMetrics {
@@ -63,7 +62,6 @@ interface LIMetrics {
 }
 
 const FUNCTION_URL = '/.netlify/functions/linkedin';
-const LINKEDIN_CLIENT_ID = '78u22bpyd8o0f0';
 const CLOUDINARY_CLOUD = 'dsc0jsbkz';
 const CLOUDINARY_PRESET = 'blog_uploads';
 
@@ -248,10 +246,7 @@ export default function LinkedInPage() {
   }
 
   function connectLinkedIn() {
-    const redirectUri = `${window.location.origin}/.netlify/functions/linkedin-callback`;
-    const scope = 'w_member_social';
-    const url = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${LINKEDIN_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
-    window.open(url, '_blank');
+    window.open('https://app.metricool.com', '_blank');
   }
 
   async function loadPosts() {
@@ -470,11 +465,11 @@ export default function LinkedInPage() {
           {metrics && !metricsLoading && (
             <>
               {/* Account overview */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
                 <div className="bg-white rounded-xl border border-slate-200 p-4">
                   <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
                     <TrendingUp className="w-3.5 h-3.5" />
-                    Total Posts
+                    Posts
                   </div>
                   <p className="text-2xl font-bold text-[#032149]">
                     {metrics.posts.length}
@@ -482,8 +477,17 @@ export default function LinkedInPage() {
                 </div>
                 <div className="bg-white rounded-xl border border-slate-200 p-4">
                   <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
+                    <Eye className="w-3.5 h-3.5" />
+                    Impresiones
+                  </div>
+                  <p className="text-2xl font-bold text-[#032149]">
+                    {metrics.posts.reduce((s, p) => s + (p.impressions || 0), 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="bg-white rounded-xl border border-slate-200 p-4">
+                  <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
                     <Heart className="w-3.5 h-3.5" />
-                    Total Likes
+                    Likes
                   </div>
                   <p className="text-2xl font-bold text-[#032149]">
                     {metrics.posts.reduce((s, p) => s + p.likes, 0).toLocaleString()}
@@ -492,7 +496,7 @@ export default function LinkedInPage() {
                 <div className="bg-white rounded-xl border border-slate-200 p-4">
                   <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
                     <MessageCircle className="w-3.5 h-3.5" />
-                    Total Comentarios
+                    Comentarios
                   </div>
                   <p className="text-2xl font-bold text-[#032149]">
                     {metrics.posts.reduce((s, p) => s + p.comments, 0).toLocaleString()}
@@ -501,7 +505,7 @@ export default function LinkedInPage() {
                 <div className="bg-white rounded-xl border border-slate-200 p-4">
                   <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
                     <Share2 className="w-3.5 h-3.5" />
-                    Total Shares
+                    Shares
                   </div>
                   <p className="text-2xl font-bold text-[#032149]">
                     {metrics.posts.reduce((s, p) => s + p.shares, 0).toLocaleString()}
