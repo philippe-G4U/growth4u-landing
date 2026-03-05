@@ -17,8 +17,9 @@ import {
   TrendingUp,
   Calendar,
   Clock,
+  Lock,
 } from 'lucide-react';
-import { getAllPosts } from '../../../lib/firebase-client';
+import { getAllPosts, getLIScheduledPosts, createLIScheduledPost, deleteLIScheduledPost } from '../../../lib/firebase-client';
 
 interface BlogPost {
   id: string;
@@ -34,10 +35,23 @@ interface QueueItem {
   post: BlogPost;
   caption: string;
   liImageUrl: string;
-  status: 'generating' | 'draft' | 'publishing' | 'published' | 'scheduling' | 'scheduled' | 'error';
+  status: 'generating' | 'draft' | 'sending' | 'sent' | 'scheduling' | 'scheduled' | 'error';
   error?: string;
   scheduledDate: string;
   scheduledTime: string;
+  firestoreId?: string;
+}
+
+interface SavedPost {
+  id: string;
+  imageUrl: string;
+  caption: string;
+  blogTitle: string;
+  blogSlug: string;
+  scheduledDate: string;
+  scheduledTime: string;
+  status: string;
+  createdAt: Date | null;
 }
 
 interface LIPost {
@@ -189,7 +203,7 @@ async function generateCaption(post: BlogPost): Promise<string> {
     console.error('AI caption generation failed, using fallback:', err);
   }
   // Fallback to basic template
-  return `${post.title}\n\nLee el artículo completo:\ngrowth4u.io/blog/${post.slug}/\n\n#GrowthMarketing #Growth4U #B2B`;
+  return `${post.title}\n\nLee el articulo completo:\ngrowth4u.io/blog/${post.slug}/\n\n#GrowthMarketing #Growth4U #B2B`;
 }
 
 // --- Main component ---
@@ -199,18 +213,32 @@ export default function LinkedInPage() {
   const [loading, setLoading] = useState(true);
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [publishedSlugs] = useState<Set<string>>(new Set());
+  const [publishedSlugs, setPublishedSlugs] = useState<Set<string>>(new Set());
   const [linkedinStatus, setLinkedinStatus] = useState<{ connected: boolean; org?: string } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [activeTab, setActiveTab] = useState<'publish' | 'metrics'>('publish');
   const [metrics, setMetrics] = useState<LIMetrics | null>(null);
   const [metricsLoading, setMetricsLoading] = useState(false);
   const [metricsError, setMetricsError] = useState('');
+  const [savedPosts, setSavedPosts] = useState<SavedPost[]>([]);
 
   useEffect(() => {
     loadPosts();
     checkLinkedInConnection();
+    loadSavedPosts();
   }, []);
+
+  async function loadSavedPosts() {
+    try {
+      const saved = await getLIScheduledPosts();
+      setSavedPosts(saved);
+      // Mark slugs as used
+      const slugs = new Set(saved.map((p) => p.blogSlug));
+      setPublishedSlugs(slugs);
+    } catch (err) {
+      console.error('Error loading saved LI posts:', err);
+    }
+  }
 
   async function loadMetrics() {
     setMetricsLoading(true);
@@ -222,14 +250,14 @@ export default function LinkedInPage() {
       try {
         data = JSON.parse(text);
       } catch {
-        throw new Error(`Función no disponible (${res.status})`);
+        throw new Error(`Funcion no disponible (${res.status})`);
       }
       if (!res.ok) {
         throw new Error((data.error as string) || `Error ${res.status}`);
       }
       setMetrics(data as unknown as LIMetrics);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Error cargando métricas';
+      const msg = err instanceof Error ? err.message : 'Error cargando metricas';
       setMetricsError(msg);
     }
     setMetricsLoading(false);
@@ -243,10 +271,6 @@ export default function LinkedInPage() {
     } catch {
       setLinkedinStatus({ connected: false });
     }
-  }
-
-  function connectLinkedIn() {
-    window.open('https://app.metricool.com', '_blank');
   }
 
   async function loadPosts() {
@@ -317,7 +341,7 @@ export default function LinkedInPage() {
 
   async function publishNow(index: number) {
     const item = queue[index];
-    updateItem(index, { status: 'publishing', error: undefined });
+    updateItem(index, { status: 'sending', error: undefined });
 
     try {
       const res = await fetch(FUNCTION_URL, {
@@ -330,16 +354,27 @@ export default function LinkedInPage() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error al publicar');
+      if (!res.ok) throw new Error(data.error || 'Error al enviar');
 
-      updateItem(index, { status: 'published' });
+      // Save to Firestore
+      const firestoreId = await createLIScheduledPost({
+        imageUrl: item.liImageUrl,
+        caption: item.caption,
+        blogTitle: item.post.title,
+        blogSlug: item.post.slug,
+        scheduledDate: new Date().toISOString().split('T')[0],
+        scheduledTime: new Date().toTimeString().slice(0, 5),
+        status: 'sent',
+      });
+
+      updateItem(index, { status: 'sent', firestoreId });
+      setPublishedSlugs((prev) => new Set([...prev, item.post.slug]));
+      loadSavedPosts();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error desconocido';
       updateItem(index, { status: 'error', error: msg });
     }
   }
-
-  const PUBLISH_DELAY_MSG = 'La publicaci\u00f3n se realiza a trav\u00e9s de Metricool. Puede tardar ~5 minutos en aparecer en LinkedIn.';
 
   async function publishAll() {
     const drafts = queue
@@ -376,15 +411,43 @@ export default function LinkedInPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error al programar');
 
-      updateItem(index, { status: 'scheduled' });
+      // Save to Firestore
+      const firestoreId = await createLIScheduledPost({
+        imageUrl: item.liImageUrl,
+        caption: item.caption,
+        blogTitle: item.post.title,
+        blogSlug: item.post.slug,
+        scheduledDate: item.scheduledDate,
+        scheduledTime: item.scheduledTime,
+        status: 'scheduled',
+      });
+
+      updateItem(index, { status: 'scheduled', firestoreId });
+      setPublishedSlugs((prev) => new Set([...prev, item.post.slug]));
+      loadSavedPosts();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error desconocido';
       updateItem(index, { status: 'error', error: msg });
     }
   }
 
-  const availablePosts = posts.filter((p) => !publishedSlugs.has(p.slug));
+  async function deleteSavedPost(id: string, slug: string) {
+    try {
+      await deleteLIScheduledPost(id);
+      setSavedPosts((prev) => prev.filter((p) => p.id !== id));
+      setPublishedSlugs((prev) => {
+        const next = new Set(prev);
+        next.delete(slug);
+        return next;
+      });
+    } catch (err) {
+      console.error('Error deleting saved post:', err);
+    }
+  }
+
   const draftCount = queue.filter((i) => i.status === 'draft').length;
+
+  const DELAY_MSG = 'Enviado a Metricool. Puede tardar ~5 min en aparecer en LinkedIn.';
 
   return (
     <div>
@@ -402,12 +465,9 @@ export default function LinkedInPage() {
                   <CheckCircle2 className="w-3 h-3" /> Conectado: {linkedinStatus.org}
                 </span>
               ) : (
-                <button
-                  onClick={connectLinkedIn}
-                  className="inline-flex items-center gap-1.5 text-xs text-white bg-[#0077B5] px-3 py-1.5 rounded-full hover:bg-[#005f8d] transition-colors"
-                >
-                  Conectar LinkedIn
-                </button>
+                <span className="inline-flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full">
+                  <AlertCircle className="w-3 h-3" /> No conectado
+                </span>
               )}
             </div>
           )}
@@ -445,7 +505,7 @@ export default function LinkedInPage() {
           }`}
         >
           <BarChart3 className="w-4 h-4" />
-          Métricas
+          Metricas
         </button>
       </div>
 
@@ -518,7 +578,7 @@ export default function LinkedInPage() {
               {/* Refresh button */}
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-[#032149]">
-                  Últimas publicaciones
+                  Ultimas publicaciones
                 </h2>
                 <button
                   onClick={loadMetrics}
@@ -562,7 +622,7 @@ export default function LinkedInPage() {
                               )}
                               <div className="min-w-0">
                                 <p className="text-xs text-[#032149] line-clamp-2 leading-tight">
-                                  {p.text?.split('\n')[0]?.slice(0, 100) || '—'}
+                                  {p.text?.split('\n')[0]?.slice(0, 100) || '\u2014'}
                                 </p>
                                 {p.createdAt && (
                                   <p className="text-[10px] text-slate-400 mt-0.5">
@@ -593,7 +653,7 @@ export default function LinkedInPage() {
       {queue.length > 0 && (
         <div className="mb-8">
           <h2 className="text-lg font-semibold text-[#032149] mb-4">
-            Cola de publicación ({queue.length})
+            Cola de publicacion ({queue.length})
           </h2>
           <div className="space-y-4">
             {queue.map((item, index) => (
@@ -645,9 +705,9 @@ export default function LinkedInPage() {
                             <CheckCircle2 className="w-3 h-3" /> Listo
                           </span>
                         )}
-                        {item.status === 'publishing' && (
+                        {item.status === 'sending' && (
                           <span className="flex items-center gap-1 text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                            <Loader2 className="w-3 h-3 animate-spin" /> Publicando...
+                            <Loader2 className="w-3 h-3 animate-spin" /> Enviando a Metricool...
                           </span>
                         )}
                         {item.status === 'scheduling' && (
@@ -655,14 +715,14 @@ export default function LinkedInPage() {
                             <Loader2 className="w-3 h-3 animate-spin" /> Programando...
                           </span>
                         )}
+                        {item.status === 'sent' && (
+                          <span className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                            <CheckCircle2 className="w-3 h-3" /> Enviado a Metricool
+                          </span>
+                        )}
                         {item.status === 'scheduled' && (
                           <span className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded-full">
                             <Calendar className="w-3 h-3" /> Programado
-                          </span>
-                        )}
-                        {item.status === 'published' && (
-                          <span className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                            <CheckCircle2 className="w-3 h-3" /> Publicado
                           </span>
                         )}
                         {item.status === 'error' && (
@@ -740,8 +800,8 @@ export default function LinkedInPage() {
                       )}
                     </div>
 
-                    {(item.status === 'published' || item.status === 'scheduled') && (
-                      <p className="text-xs text-slate-400 mt-1">{PUBLISH_DELAY_MSG}</p>
+                    {(item.status === 'sent' || item.status === 'scheduled') && (
+                      <p className="text-xs text-slate-400 mt-1">{DELAY_MSG}</p>
                     )}
 
                     {item.error && (
@@ -755,6 +815,71 @@ export default function LinkedInPage() {
         </div>
       )}
 
+      {/* Saved/Sent posts */}
+      {savedPosts.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-[#032149] mb-4">
+            Posts enviados ({savedPosts.length})
+          </h2>
+          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50">
+                    <th className="text-left p-3 font-medium text-slate-500">Post</th>
+                    <th className="text-left p-3 font-medium text-slate-500">Estado</th>
+                    <th className="text-left p-3 font-medium text-slate-500">Fecha</th>
+                    <th className="text-center p-3 font-medium text-slate-500">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {savedPosts.map((sp) => (
+                    <tr key={sp.id} className="border-b border-slate-100 hover:bg-slate-50">
+                      <td className="p-3">
+                        <div className="flex items-center gap-3">
+                          {sp.imageUrl && (
+                            <img
+                              src={sp.imageUrl}
+                              alt=""
+                              className="w-10 h-10 rounded-lg object-cover flex-shrink-0 cursor-pointer"
+                              onClick={() => setPreviewUrl(sp.imageUrl)}
+                            />
+                          )}
+                          <div className="min-w-0">
+                            <p className="text-xs font-medium text-[#032149] line-clamp-1">{sp.blogTitle}</p>
+                            <p className="text-[10px] text-slate-400 line-clamp-1">{sp.caption.split('\n')[0]?.slice(0, 80)}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-3">
+                        {sp.status === 'sent' && (
+                          <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Enviado</span>
+                        )}
+                        {sp.status === 'scheduled' && (
+                          <span className="text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">Programado</span>
+                        )}
+                      </td>
+                      <td className="p-3 text-xs text-slate-500">
+                        {sp.scheduledDate} {sp.scheduledTime}
+                      </td>
+                      <td className="p-3 text-center">
+                        <button
+                          onClick={() => deleteSavedPost(sp.id, sp.blogSlug)}
+                          className="p-1 text-slate-400 hover:text-red-500 transition-colors"
+                          title="Eliminar y desbloquear blog"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Blog posts grid */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-[#032149] mb-4">Seleccionar blog posts</h2>
@@ -764,17 +889,20 @@ export default function LinkedInPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {availablePosts.map((post) => {
+            {posts.map((post) => {
               const inQueue = queue.some((q) => q.post.slug === post.slug);
+              const isUsed = publishedSlugs.has(post.slug);
               return (
                 <div
                   key={post.id}
                   className={`bg-white rounded-xl border p-4 transition-all ${
-                    inQueue
+                    isUsed
+                      ? 'border-slate-200 opacity-50 cursor-not-allowed'
+                      : inQueue
                       ? 'border-[#0077B5] bg-blue-50 opacity-60'
                       : 'border-slate-200 hover:border-[#0077B5] hover:shadow-md cursor-pointer'
                   }`}
-                  onClick={() => !inQueue && addToQueue(post)}
+                  onClick={() => !inQueue && !isUsed && addToQueue(post)}
                 >
                   <div className="flex items-start gap-3">
                     {post.image ? (
@@ -790,7 +918,8 @@ export default function LinkedInPage() {
                         {post.category}
                       </span>
                     </div>
-                    {inQueue && <CheckCircle2 className="w-5 h-5 text-[#0077B5] flex-shrink-0" />}
+                    {isUsed && <Lock className="w-4 h-4 text-slate-400 flex-shrink-0" />}
+                    {inQueue && !isUsed && <CheckCircle2 className="w-5 h-5 text-[#0077B5] flex-shrink-0" />}
                   </div>
                 </div>
               );
@@ -800,7 +929,7 @@ export default function LinkedInPage() {
       </div>
 
       {/* Empty state */}
-      {queue.length === 0 && !loading && (
+      {queue.length === 0 && savedPosts.length === 0 && !loading && (
         <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
           <ImageIcon className="w-12 h-12 text-slate-300 mx-auto mb-3" />
           <p className="text-slate-500">Selecciona blog posts para generar contenido de LinkedIn</p>

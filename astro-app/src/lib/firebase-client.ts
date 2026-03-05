@@ -495,4 +495,52 @@ export async function deleteIGScheduledPost(id: string): Promise<void> {
   await deleteDoc(ref);
 }
 
+// LinkedIn Scheduled Posts
+export interface LIScheduledPost {
+  imageUrl: string;
+  caption: string;
+  blogTitle: string;
+  blogSlug: string;
+  scheduledDate: string;
+  scheduledTime: string;
+  status: 'sent' | 'scheduled' | 'error';
+  error?: string;
+  createdAt?: Date;
+}
+
+export async function getLIScheduledPosts() {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'li_scheduled_posts');
+  const q = query(ref, orderBy('createdAt', 'desc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => {
+    const data = d.data();
+    return {
+      id: d.id,
+      imageUrl: data.imageUrl || '',
+      caption: data.caption || '',
+      blogTitle: data.blogTitle || '',
+      blogSlug: data.blogSlug || '',
+      scheduledDate: data.scheduledDate || '',
+      scheduledTime: data.scheduledTime || '',
+      status: data.status || 'sent',
+      error: data.error || '',
+      createdAt: data.createdAt?.toDate() || null,
+    };
+  });
+}
+
+export async function createLIScheduledPost(post: Omit<LIScheduledPost, 'createdAt'>): Promise<string> {
+  const ref = collection(db, 'artifacts', APP_ID, 'public', 'data', 'li_scheduled_posts');
+  const docRef = await addDoc(ref, {
+    ...post,
+    createdAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
+
+export async function deleteLIScheduledPost(id: string): Promise<void> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'li_scheduled_posts', id);
+  await deleteDoc(ref);
+}
+
 export { db, auth, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy, limit, where, serverTimestamp };
