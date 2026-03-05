@@ -431,6 +431,24 @@ export default function LinkedInPage() {
     }
   }
 
+  async function markAsPublished(post: BlogPost) {
+    try {
+      await createLIScheduledPost({
+        imageUrl: post.image || '',
+        caption: '(publicado manualmente)',
+        blogTitle: post.title,
+        blogSlug: post.slug,
+        scheduledDate: new Date().toISOString().split('T')[0],
+        scheduledTime: new Date().toTimeString().slice(0, 5),
+        status: 'sent',
+      });
+      setPublishedSlugs((prev) => new Set([...prev, post.slug]));
+      loadSavedPosts();
+    } catch (err) {
+      console.error('Error marking as published:', err);
+    }
+  }
+
   async function deleteSavedPost(id: string, slug: string) {
     try {
       await deleteLIScheduledPost(id);
@@ -897,7 +915,7 @@ export default function LinkedInPage() {
                   key={post.id}
                   className={`bg-white rounded-xl border p-4 transition-all ${
                     isUsed
-                      ? 'border-slate-200 opacity-50 cursor-not-allowed'
+                      ? 'border-green-200 bg-green-50/50 opacity-60'
                       : inQueue
                       ? 'border-[#0077B5] bg-blue-50 opacity-60'
                       : 'border-slate-200 hover:border-[#0077B5] hover:shadow-md cursor-pointer'
@@ -914,11 +932,26 @@ export default function LinkedInPage() {
                     )}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-sm text-[#032149] line-clamp-2">{post.title}</h3>
-                      <span className="inline-block mt-1 text-xs px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">
-                        {post.category}
-                      </span>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">
+                          {post.category}
+                        </span>
+                        {isUsed && (
+                          <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
+                            Publicado en LI
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    {isUsed && <Lock className="w-4 h-4 text-slate-400 flex-shrink-0" />}
+                    {!isUsed && !inQueue && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); markAsPublished(post); }}
+                        className="p-1 text-slate-300 hover:text-green-500 transition-colors flex-shrink-0"
+                        title="Marcar como ya publicado"
+                      >
+                        <Lock className="w-4 h-4" />
+                      </button>
+                    )}
                     {inQueue && !isUsed && <CheckCircle2 className="w-5 h-5 text-[#0077B5] flex-shrink-0" />}
                   </div>
                 </div>
