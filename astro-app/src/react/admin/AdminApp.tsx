@@ -11,6 +11,7 @@ import FeedbackAdminPage from './pages/FeedbackAdminPage';
 import LeadMagnetsAdminPage from './pages/LeadMagnetsAdminPage';
 import LeadsAdminPage from './pages/LeadsAdminPage';
 import InstagramPage from './pages/InstagramPage';
+import LinkedInPage from './pages/LinkedInPage';
 
 export default function AdminApp() {
   return (
@@ -22,6 +23,7 @@ export default function AdminApp() {
           <Route path="/admin/casos-de-exito/" element={<CasosAdminPage />} />
           <Route path="/admin/lead-magnets/" element={<LeadMagnetsAdminPage />} />
           <Route path="/admin/instagram/" element={<InstagramPage />} />
+          <Route path="/admin/linkedin/" element={<LinkedInPage />} />
           <Route path="/admin/seo/" element={<SeoPage />} />
           <Route path="/admin/geo/" element={<GeoPage />} />
           <Route path="/admin/validation/" element={<ValidationPage />} />
