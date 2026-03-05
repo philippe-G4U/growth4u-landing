@@ -11,7 +11,7 @@ const CORS_HEADERS = {
 const LI_HEADERS = {
   Authorization: `Bearer ${ACCESS_TOKEN}`,
   "Content-Type": "application/json",
-  "LinkedIn-Version": "202501",
+  "LinkedIn-Version": "202602",
   "X-Restli-Protocol-Version": "2.0.0",
 };
 
