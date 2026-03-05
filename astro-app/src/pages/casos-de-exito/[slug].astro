@@ -112,19 +112,7 @@ const breadcrumbSchema = {
       )}
     </div>
 
-    <!-- Image -->
-    {caseStudy.image && (
-      <div class="mb-12">
-        <img
-          src={caseStudy.image}
-          alt={caseStudy.company}
-          class="w-full h-auto object-cover rounded-3xl shadow-xl"
-          loading="lazy"
-        />
-      </div>
-    )}
-
-    <!-- Video -->
+    <!-- Video (priority: shown first when available) -->
     {embedUrl && (
       <div class="mb-12">
         <div class="relative w-full aspect-video rounded-3xl overflow-hidden shadow-xl">
@@ -138,6 +126,18 @@ const breadcrumbSchema = {
             loading="lazy"
           ></iframe>
         </div>
+      </div>
+    )}
+
+    <!-- Image -->
+    {caseStudy.image && (
+      <div class="mb-12">
+        <img
+          src={caseStudy.image}
+          alt={caseStudy.company}
+          class="w-full h-auto object-cover rounded-3xl shadow-xl"
+          loading="lazy"
+        />
       </div>
     )}
 
@@ -185,7 +185,7 @@ const breadcrumbSchema = {
     <!-- Markdown Content -->
     {htmlContent && (
       <div class="mb-12">
-        <div class="prose prose-lg prose-slate mx-auto text-[#032149] max-w-none" set:html={htmlContent} />
+        <div class="prose prose-lg prose-slate mx-auto text-[#032149] max-w-none [&_table]:block [&_table]:overflow-x-auto [&_table]:w-full [&_th]:whitespace-nowrap [&_td]:whitespace-normal [&_table]:text-sm" set:html={htmlContent} />
       </div>
     )}
 

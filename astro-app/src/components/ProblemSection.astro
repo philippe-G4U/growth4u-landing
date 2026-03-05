@@ -7,37 +7,30 @@ const { t } = Astro.props;
 
 const icons = [
   // Megaphone
-  `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>`,
   // TrendingUp
-  `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
   // ShieldAlert
-  `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>`,
   // Users
-  `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-];
-
-const cardStyles = [
-  { bg: 'bg-red-50',    border: 'border-red-200/70',    topBorder: 'border-t-red-400',    iconBg: 'bg-red-100',    iconColor: 'text-red-500' },
-  { bg: 'bg-amber-50',  border: 'border-amber-200/70',  topBorder: 'border-t-amber-400',  iconBg: 'bg-amber-100',  iconColor: 'text-amber-500' },
-  { bg: 'bg-blue-50',   border: 'border-blue-200/70',   topBorder: 'border-t-blue-500',   iconBg: 'bg-blue-100',   iconColor: 'text-blue-500' },
-  { bg: 'bg-violet-50', border: 'border-violet-200/70', topBorder: 'border-t-violet-500', iconBg: 'bg-violet-100', iconColor: 'text-violet-500' },
+  `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
 ];
 ---
 
-<section id="problema" class="py-24 bg-slate-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#032149] tracking-tight">{t.problem.title}</h2>
-      <p class="text-slate-600 max-w-2xl mx-auto text-lg leading-relaxed">{t.problem.subtitle}</p>
+<section id="problema" class="py-20 bg-white">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold mb-3 text-[#032149] tracking-tight">{t.problem.title}</h2>
+      <p class="text-slate-500 max-w-xl mx-auto text-base">{t.problem.subtitle}</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {t.problem.cards.map((item: any, i: number) => (
-        <div class={`${cardStyles[i].bg} p-6 rounded-2xl border-t-4 ${cardStyles[i].topBorder} border ${cardStyles[i].border} transition-all duration-300 ease-out group shadow-sm hover:shadow-md hover:-translate-y-1`}>
-          <div class={`${cardStyles[i].iconBg} w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-300`}>
-            <span class={`${cardStyles[i].iconColor} w-6 h-6 flex items-center justify-center`} set:html={icons[i]} />
+        <div class="group bg-[#032149] rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-4">
+            <span class="text-[#45b6f7] w-[22px] h-[22px] flex items-center justify-center" set:html={icons[i]} />
           </div>
-          <h3 class="text-lg font-bold mb-2.5 text-[#032149]">{item.title}</h3>
-          <p class="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
+          <h3 class="text-base font-bold mb-2 text-white">{item.title}</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
         </div>
       ))}
     </div>
