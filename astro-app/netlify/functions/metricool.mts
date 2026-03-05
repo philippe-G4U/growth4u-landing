@@ -22,11 +22,17 @@ async function normalizeImage(imageUrl: string): Promise<string> {
   const res = await fetch(url, {
     headers: { "X-Mc-Auth": METRICOOL_TOKEN! },
   });
-  const data = await res.json();
+  const text = await res.text();
   if (!res.ok) {
-    throw new Error(data?.message || "Failed to normalize image");
+    throw new Error(`Normalize failed (${res.status}): ${text}`);
   }
-  return data.mediaId || data.id || data;
+  // Response may be plain text (mediaId) or JSON
+  try {
+    const data = JSON.parse(text);
+    return data.mediaId || data.id || String(data);
+  } catch {
+    return text.trim();
+  }
 }
 
 async function schedulePost(
@@ -73,11 +79,17 @@ async function schedulePost(
     body: JSON.stringify(body),
   });
 
-  const data = await res.json();
+  const responseText = await res.text();
   if (!res.ok) {
-    throw new Error(data?.message || JSON.stringify(data) || "Failed to schedule post");
+    throw new Error(`Schedule failed (${res.status}): ${responseText}`);
   }
-  return data as Record<string, unknown>;
+  // Response may be empty on success (204-like) or JSON
+  if (!responseText) return { scheduled: true };
+  try {
+    return JSON.parse(responseText) as Record<string, unknown>;
+  } catch {
+    return { scheduled: true, raw: responseText };
+  }
 }
 
 async function getScheduledPosts(): Promise<Record<string, unknown>> {
@@ -85,11 +97,16 @@ async function getScheduledPosts(): Promise<Record<string, unknown>> {
   const res = await fetch(url, {
     headers: { "X-Mc-Auth": METRICOOL_TOKEN! },
   });
-  const data = await res.json();
+  const text = await res.text();
   if (!res.ok) {
-    throw new Error(data?.message || "Failed to fetch scheduled posts");
+    throw new Error(`Fetch posts failed (${res.status}): ${text}`);
   }
-  return data as Record<string, unknown>;
+  if (!text) return { posts: [] };
+  try {
+    return JSON.parse(text) as Record<string, unknown>;
+  } catch {
+    return { posts: [], raw: text };
+  }
 }
 
 export default async (req: Request, _context: Context) => {
