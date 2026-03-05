@@ -79,13 +79,13 @@ const FUNCTION_URL = '/.netlify/functions/linkedin';
 const CLOUDINARY_CLOUD = 'dsc0jsbkz';
 const CLOUDINARY_PRESET = 'blog_uploads';
 
-// LinkedIn template on Cloudinary (1728x2304) — text area is the cyan-bordered rectangle
+// LinkedIn template on Cloudinary (1728x2304) — text area between quote marks and tagline
 const LI_TEMPLATE = {
   url: 'https://res.cloudinary.com/dsc0jsbkz/image/upload/v1772734314/li-template-1.jpg',
   textX: 100,
-  textY: 880,
+  textY: 700,
   textW: 1528,
-  textH: 520,
+  textH: 900,
 };
 
 // --- Canvas image generator ---
@@ -130,27 +130,31 @@ async function generateLIImage(text: string): Promise<Blob> {
 
   // Text area
   const { textX, textY, textW, textH } = LI_TEMPLATE;
-  const padding = 20;
+  const padding = 40;
   const innerW = textW - padding * 2;
   const innerH = textH - padding * 2;
+
+  // Clip to text area so text never overflows
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(textX, textY, textW, textH);
+  ctx.clip();
 
   // Determine font size (try from large to small) — start big to fill the box
   const upperText = text.toUpperCase();
   let fontSize = 120;
   let lines: string[] = [];
 
-  ctx.font = `900 ${fontSize}px "Inter", "Helvetica Neue", Arial, sans-serif`;
-
-  for (fontSize = 120; fontSize >= 36; fontSize -= 2) {
+  for (fontSize = 120; fontSize >= 28; fontSize -= 2) {
     ctx.font = `900 ${fontSize}px "Inter", "Helvetica Neue", Arial, sans-serif`;
     lines = wrapText(ctx, upperText, innerW);
-    const lineHeight = fontSize * 1.2;
+    const lineHeight = fontSize * 1.15;
     const totalH = lines.length * lineHeight;
     if (totalH <= innerH) break;
   }
 
   // Draw text centered in the box
-  const lineHeight = fontSize * 1.2;
+  const lineHeight = fontSize * 1.15;
   const totalTextH = lines.length * lineHeight;
   const startY = textY + padding + (innerH - totalTextH) / 2 + fontSize;
 
@@ -161,6 +165,8 @@ async function generateLIImage(text: string): Promise<Blob> {
   for (let i = 0; i < lines.length; i++) {
     ctx.fillText(lines[i], textX + textW / 2, startY + i * lineHeight);
   }
+
+  ctx.restore();
 
   return new Promise((resolve) => {
     canvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.92);
