@@ -121,6 +121,80 @@ async function fetchMetrics() {
   return { account, media };
 }
 
+// --- Cron: process scheduled posts from Firestore ---
+
+const FIREBASE_PROJECT_ID = "landing-growth4u";
+const FB_APP_ID = "growth4u-public-app";
+const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
+const IG_COLLECTION = `artifacts/${FB_APP_ID}/public/data/ig_scheduled_posts`;
+
+interface FirestoreDoc {
+  name: string;
+  fields: Record<string, { stringValue?: string; timestampValue?: string }>;
+}
+
+async function processScheduledPosts() {
+  // Read all pending scheduled posts
+  const res = await fetch(`${FIRESTORE_BASE}/${IG_COLLECTION}?pageSize=100`);
+  const data = await res.json();
+  if (!data.documents) return { processed: 0, message: "No documents" };
+
+  const now = new Date();
+  const pending = (data.documents as FirestoreDoc[])
+    .map((doc) => {
+      const f = doc.fields;
+      return {
+        id: doc.name.split("/").pop()!,
+        imageUrl: f.imageUrl?.stringValue || "",
+        caption: f.caption?.stringValue || "",
+        scheduledAt: new Date(f.scheduledAt?.timestampValue || 0),
+        status: f.status?.stringValue || "pending",
+      };
+    })
+    .filter((p) => p.status === "pending" && p.scheduledAt <= now);
+
+  let published = 0;
+  for (const post of pending) {
+    try {
+      // Mark as publishing
+      await patchFirestoreDoc(post.id, { status: "publishing" });
+
+      // Publish to Instagram
+      const container = await createMediaContainer(post.imageUrl, post.caption);
+      await new Promise((r) => setTimeout(r, 3000));
+      const result = await publishMedia(container.id);
+
+      // Mark as published
+      await patchFirestoreDoc(post.id, { status: "published", mediaId: result.id });
+      published++;
+
+      // Rate limit
+      await new Promise((r) => setTimeout(r, 5000));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      await patchFirestoreDoc(post.id, { status: "error", error: msg });
+    }
+  }
+
+  return { processed: published, total_due: pending.length };
+}
+
+async function patchFirestoreDoc(docId: string, fields: Record<string, string>) {
+  const masks = Object.keys(fields).map((k) => `updateMask.fieldPaths=${k}`).join("&");
+  const url = `${FIRESTORE_BASE}/${IG_COLLECTION}/${docId}?${masks}`;
+
+  const firestoreFields: Record<string, { stringValue: string }> = {};
+  for (const [k, v] of Object.entries(fields)) {
+    firestoreFields[k] = { stringValue: v };
+  }
+
+  await fetch(url, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fields: firestoreFields }),
+  });
+}
+
 export default async (req: Request, _context: Context) => {
   // CORS
   if (req.method === "OPTIONS") {
@@ -134,8 +208,23 @@ export default async (req: Request, _context: Context) => {
     );
   }
 
-  // GET = fetch metrics
+  // GET = fetch metrics OR run cron
   if (req.method === "GET") {
+    const url = new URL(req.url);
+    const action = url.searchParams.get("action");
+
+    // Cron: publish scheduled posts that are due
+    if (action === "cron") {
+      try {
+        const result = await processScheduledPosts();
+        return Response.json(result, { headers: CORS_HEADERS });
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        return Response.json({ error: message }, { status: 500, headers: CORS_HEADERS });
+      }
+    }
+
+    // Default: fetch metrics
     try {
       const data = await fetchMetrics();
       return Response.json(data, { headers: CORS_HEADERS });
