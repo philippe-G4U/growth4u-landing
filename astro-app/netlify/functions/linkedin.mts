@@ -45,10 +45,11 @@ async function fetchMetrics() {
   const start = new Date();
   start.setDate(start.getDate() - 90);
 
-  const startStr = start.toISOString().split("T")[0];
-  const endStr = end.toISOString().split("T")[0];
+  const fmt = (d: Date) => d.toISOString().slice(0, 10).replace(/-/g, "");
+  const startStr = fmt(start);
+  const endStr = fmt(end);
 
-  const url = `${METRICOOL_BASE}/stats/linkedin/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}&initDate=${startStr}&endDate=${endStr}`;
+  const url = `${METRICOOL_BASE}/stats/linkedin/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}&start=${startStr}&end=${endStr}`;
   const res = await fetch(url, { headers: mcHeaders() });
   const text = await res.text();
 
