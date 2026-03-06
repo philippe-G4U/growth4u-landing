@@ -132,15 +132,15 @@ export default async (req: Request, _context: Context) => {
       const startStr = fmt(start);
       const endStr = fmt(end);
 
-      const endpoints = [
-        `/v2/scheduler/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}`,
-        `/v2/scheduler/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}&status=PUBLISHED`,
-        `/v2/scheduler/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}&status=SENT`,
-        `/stats/linkedin/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}&start=${startStr}&end=${endStr}`,
-        `/v2/analytics/linkedin?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}&start=${startStr}&end=${endStr}`,
-        `/v2/stats/linkedin/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}&start=${startStr}&end=${endStr}`,
-        `/admin/simpleProfiles?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}`,
-      ];
+      // Test stats for each of the 3 known profile blogIds
+      const blogIds = [METRICOOL_BLOG_ID!, "4866014", "5911504", "5942085"];
+      const endpoints = blogIds.flatMap((bid) => [
+        `/stats/linkedin/posts?blogId=${bid}&userId=${METRICOOL_USER_ID}&start=${startStr}&end=${endStr}`,
+        `/v2/scheduler/posts?blogId=${bid}&userId=${METRICOOL_USER_ID}`,
+      ]);
+      // Also try list scheduled posts endpoint variations
+      endpoints.push(`/v2/scheduler/list?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}`);
+      endpoints.push(`/scheduler/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}`);
 
       const results: Record<string, unknown>[] = [];
       for (const ep of endpoints) {
