@@ -538,6 +538,11 @@ export async function createLIScheduledPost(post: Omit<LIScheduledPost, 'created
   return docRef.id;
 }
 
+export async function updateLIScheduledPost(id: string, updates: Partial<LIScheduledPost>): Promise<void> {
+  const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'li_scheduled_posts', id);
+  await updateDoc(ref, updates);
+}
+
 export async function deleteLIScheduledPost(id: string): Promise<void> {
   const ref = doc(db, 'artifacts', APP_ID, 'public', 'data', 'li_scheduled_posts', id);
   await deleteDoc(ref);

@@ -19,7 +19,7 @@ import {
   Clock,
   Lock,
 } from 'lucide-react';
-import { getAllPosts, getLIScheduledPosts, createLIScheduledPost, deleteLIScheduledPost } from '../../../lib/firebase-client';
+import { getAllPosts, getLIScheduledPosts, createLIScheduledPost, deleteLIScheduledPost, updateLIScheduledPost } from '../../../lib/firebase-client';
 
 interface BlogPost {
   id: string;
@@ -237,6 +237,17 @@ export default function LinkedInPage() {
   async function loadSavedPosts() {
     try {
       const saved = await getLIScheduledPosts();
+      const now = new Date();
+      // Auto-update scheduled posts whose date/time has passed
+      for (const sp of saved) {
+        if (sp.status === 'scheduled' && sp.scheduledDate && sp.scheduledTime) {
+          const scheduled = new Date(`${sp.scheduledDate}T${sp.scheduledTime}:00`);
+          if (scheduled <= now) {
+            sp.status = 'sent';
+            updateLIScheduledPost(sp.id, { status: 'sent' }).catch(() => {});
+          }
+        }
+      }
       setSavedPosts(saved);
       // Mark slugs as used
       const slugs = new Set(saved.map((p) => p.blogSlug));
