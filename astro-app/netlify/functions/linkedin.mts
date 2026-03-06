@@ -38,74 +38,6 @@ async function checkConnection(): Promise<{ connected: boolean; org?: string }> 
   return { connected: true, org: "LinkedIn (via Metricool)" };
 }
 
-// Fetch LinkedIn post metrics from Metricool scheduler (published posts)
-async function fetchMetrics() {
-  // Fetch published posts from the scheduler API
-  const url = `${METRICOOL_BASE}/v2/scheduler/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}&status=PUBLISHED`;
-  const res = await fetch(url, { headers: mcHeaders() });
-  const text = await res.text();
-
-  if (!res.ok) {
-    // Fallback: try without status filter
-    const fallbackUrl = `${METRICOOL_BASE}/v2/scheduler/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}`;
-    const fallbackRes = await fetch(fallbackUrl, { headers: mcHeaders() });
-    const fallbackText = await fallbackRes.text();
-
-    if (!fallbackRes.ok) {
-      throw new Error(`Metricool posts failed (${fallbackRes.status}): ${fallbackText}`);
-    }
-
-    return parseSchedulerResponse(fallbackText);
-  }
-
-  return parseSchedulerResponse(text);
-}
-
-function parseSchedulerResponse(text: string) {
-  let rawPosts: Record<string, unknown>[] = [];
-  try {
-    const parsed = JSON.parse(text);
-    rawPosts = Array.isArray(parsed)
-      ? parsed
-      : parsed.posts || parsed.content || parsed.elements || parsed.data || [];
-  } catch {
-    throw new Error(`Invalid response from Metricool`);
-  }
-
-  // Filter to LinkedIn posts only
-  const linkedinPosts = rawPosts.filter((p) => {
-    const providers = p.providers as Record<string, unknown>[] | undefined;
-    const network = p.network as string | undefined;
-    if (network?.toUpperCase() === "LINKEDIN") return true;
-    if (Array.isArray(providers)) {
-      return providers.some((prov) => (prov.network as string)?.toUpperCase() === "LINKEDIN");
-    }
-    return true; // If no network info, include it
-  });
-
-  const posts = linkedinPosts.map((p) => {
-    const pubDate = p.publicationDate as Record<string, string> | undefined;
-    return {
-      id: (p.id as string) || (p.postId as string) || "",
-      text: (p.text as string) || (p.caption as string) || "",
-      createdAt: pubDate?.dateTime || (p.date as string) || (p.publishedAt as string) || (p.createdAt as string) || null,
-      imageUrl: (p.imageUrl as string) || (p.image as string) || (p.mediaUrl as string) || "",
-      likes: (p.likes as number) || (p.reactions as number) || 0,
-      comments: (p.comments as number) || 0,
-      shares: (p.shares as number) || (p.reposts as number) || 0,
-      impressions: (p.impressions as number) || 0,
-      clicks: (p.clicks as number) || 0,
-    };
-  });
-
-  return {
-    account: {
-      name: "LinkedIn (via Metricool)",
-    },
-    posts,
-  };
-}
-
 export default async (req: Request, _context: Context) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
@@ -118,57 +50,8 @@ export default async (req: Request, _context: Context) => {
     );
   }
 
-  // GET = check connection or fetch metrics
+  // GET = connection check via Metricool
   if (req.method === "GET") {
-    const url = new URL(req.url);
-    const action = url.searchParams.get("action");
-
-    // ?action=debug → try multiple Metricool endpoints to find the right one
-    if (action === "debug") {
-      const end = new Date();
-      const start = new Date();
-      start.setDate(start.getDate() - 90);
-      const fmt = (d: Date) => d.toISOString().slice(0, 10).replace(/-/g, "");
-      const startStr = fmt(start);
-      const endStr = fmt(end);
-
-      // Test stats for each of the 3 known profile blogIds
-      const blogIds = [METRICOOL_BLOG_ID!, "4866014", "5911504", "5942085"];
-      const endpoints = blogIds.flatMap((bid) => [
-        `/stats/linkedin/posts?blogId=${bid}&userId=${METRICOOL_USER_ID}&start=${startStr}&end=${endStr}`,
-        `/v2/scheduler/posts?blogId=${bid}&userId=${METRICOOL_USER_ID}`,
-      ]);
-      // Also try list scheduled posts endpoint variations
-      endpoints.push(`/v2/scheduler/list?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}`);
-      endpoints.push(`/scheduler/posts?blogId=${METRICOOL_BLOG_ID}&userId=${METRICOOL_USER_ID}`);
-
-      const results: Record<string, unknown>[] = [];
-      for (const ep of endpoints) {
-        try {
-          const r = await fetch(`${METRICOOL_BASE}${ep}`, { headers: mcHeaders() });
-          const t = await r.text();
-          let parsed: unknown;
-          try { parsed = JSON.parse(t); } catch { parsed = t.slice(0, 500); }
-          results.push({ endpoint: ep.split("?")[0], status: r.status, data: parsed });
-        } catch (err: unknown) {
-          results.push({ endpoint: ep.split("?")[0], error: String(err) });
-        }
-      }
-      return Response.json({ results }, { headers: CORS_HEADERS });
-    }
-
-    // ?action=metrics → fetch posts + engagement via Metricool
-    if (action === "metrics") {
-      try {
-        const data = await fetchMetrics();
-        return Response.json(data, { headers: CORS_HEADERS });
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        return Response.json({ error: message }, { status: 500, headers: CORS_HEADERS });
-      }
-    }
-
-    // Default GET = connection check via Metricool
     try {
       const status = await checkConnection();
       return Response.json(status, { headers: CORS_HEADERS });

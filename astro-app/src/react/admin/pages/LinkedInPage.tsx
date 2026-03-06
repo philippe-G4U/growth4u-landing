@@ -11,9 +11,6 @@ import {
   Trash2,
   RefreshCw,
   BarChart3,
-  Heart,
-  MessageCircle,
-  Share2,
   TrendingUp,
   Calendar,
   Clock,
@@ -52,27 +49,6 @@ interface SavedPost {
   scheduledTime: string;
   status: string;
   createdAt: Date | null;
-}
-
-interface LIPost {
-  id: string;
-  text: string;
-  createdAt: string | null;
-  imageUrl: string;
-  likes: number;
-  comments: number;
-  shares: number;
-  impressions?: number;
-  clicks?: number;
-}
-
-interface LIAccount {
-  name: string;
-}
-
-interface LIMetrics {
-  account: LIAccount;
-  posts: LIPost[];
 }
 
 const FUNCTION_URL = '/.netlify/functions/linkedin';
@@ -223,9 +199,6 @@ export default function LinkedInPage() {
   const [linkedinStatus, setLinkedinStatus] = useState<{ connected: boolean; org?: string } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [activeTab, setActiveTab] = useState<'publish' | 'metrics'>('publish');
-  const [metrics, setMetrics] = useState<LIMetrics | null>(null);
-  const [metricsLoading, setMetricsLoading] = useState(false);
-  const [metricsError, setMetricsError] = useState('');
   const [savedPosts, setSavedPosts] = useState<SavedPost[]>([]);
 
   useEffect(() => {
@@ -255,29 +228,6 @@ export default function LinkedInPage() {
     } catch (err) {
       console.error('Error loading saved LI posts:', err);
     }
-  }
-
-  async function loadMetrics() {
-    setMetricsLoading(true);
-    setMetricsError('');
-    try {
-      const res = await fetch(`${FUNCTION_URL}?action=metrics`);
-      const text = await res.text();
-      let data: Record<string, unknown>;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error(`Funcion no disponible (${res.status})`);
-      }
-      if (!res.ok) {
-        throw new Error((data.error as string) || `Error ${res.status}`);
-      }
-      setMetrics(data as unknown as LIMetrics);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Error cargando metricas';
-      setMetricsError(msg);
-    }
-    setMetricsLoading(false);
   }
 
   async function checkLinkedInConnection() {
@@ -532,7 +482,7 @@ export default function LinkedInPage() {
           Publicar
         </button>
         <button
-          onClick={() => { setActiveTab('metrics'); if (!metrics && !metricsLoading) loadMetrics(); }}
+          onClick={() => setActiveTab('metrics')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             activeTab === 'metrics'
               ? 'bg-white text-[#032149] shadow-sm'
@@ -544,139 +494,102 @@ export default function LinkedInPage() {
         </button>
       </div>
 
-      {/* Metrics Tab */}
+      {/* Metrics Tab — shows posts from Firestore */}
       {activeTab === 'metrics' && (
         <div>
-          {metricsLoading && (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="w-8 h-8 text-[#0077B5] animate-spin" />
-            </div>
-          )}
-
-          {metricsError && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-600 text-sm">
-              {metricsError}
-            </div>
-          )}
-
-          {metrics && !metricsLoading && (
-            <>
-              {/* Account overview */}
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                <div className="bg-white rounded-xl border border-slate-200 p-4">
-                  <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
-                    <TrendingUp className="w-3.5 h-3.5" />
-                    Posts
-                  </div>
-                  <p className="text-2xl font-bold text-[#032149]">
-                    {metrics.posts.length}
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl border border-slate-200 p-4">
-                  <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
-                    <Eye className="w-3.5 h-3.5" />
-                    Impresiones
-                  </div>
-                  <p className="text-2xl font-bold text-[#032149]">
-                    {metrics.posts.reduce((s, p) => s + (p.impressions || 0), 0).toLocaleString()}
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl border border-slate-200 p-4">
-                  <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
-                    <Heart className="w-3.5 h-3.5" />
-                    Likes
-                  </div>
-                  <p className="text-2xl font-bold text-[#032149]">
-                    {metrics.posts.reduce((s, p) => s + p.likes, 0).toLocaleString()}
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl border border-slate-200 p-4">
-                  <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    Comentarios
-                  </div>
-                  <p className="text-2xl font-bold text-[#032149]">
-                    {metrics.posts.reduce((s, p) => s + p.comments, 0).toLocaleString()}
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl border border-slate-200 p-4">
-                  <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
-                    <Share2 className="w-3.5 h-3.5" />
-                    Shares
-                  </div>
-                  <p className="text-2xl font-bold text-[#032149]">
-                    {metrics.posts.reduce((s, p) => s + p.shares, 0).toLocaleString()}
-                  </p>
-                </div>
+          {/* Summary cards */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
+                <TrendingUp className="w-3.5 h-3.5" />
+                Total posts
               </div>
-
-              {/* Refresh button */}
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-[#032149]">
-                  Ultimas publicaciones
-                </h2>
-                <button
-                  onClick={loadMetrics}
-                  disabled={metricsLoading}
-                  className="flex items-center gap-2 text-sm text-slate-500 hover:text-[#0077B5] transition-colors"
-                >
-                  <RefreshCw className={`w-4 h-4 ${metricsLoading ? 'animate-spin' : ''}`} />
-                  Actualizar
-                </button>
+              <p className="text-2xl font-bold text-[#032149]">{savedPosts.length}</p>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Enviados
               </div>
+              <p className="text-2xl font-bold text-green-600">
+                {savedPosts.filter((p) => p.status === 'sent').length}
+              </p>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
+                <Calendar className="w-3.5 h-3.5" />
+                Programados
+              </div>
+              <p className="text-2xl font-bold text-purple-600">
+                {savedPosts.filter((p) => p.status === 'scheduled').length}
+              </p>
+            </div>
+          </div>
 
-              {/* Posts table */}
-              <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-slate-200 bg-slate-50">
-                        <th className="text-left p-3 font-medium text-slate-500">Post</th>
-                        <th className="text-center p-3 font-medium text-slate-500">
-                          <Heart className="w-4 h-4 mx-auto" />
-                        </th>
-                        <th className="text-center p-3 font-medium text-slate-500">
-                          <MessageCircle className="w-4 h-4 mx-auto" />
-                        </th>
-                        <th className="text-center p-3 font-medium text-slate-500">
-                          <Share2 className="w-4 h-4 mx-auto" />
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {metrics.posts.map((p) => (
-                        <tr key={p.id} className="border-b border-slate-100 hover:bg-slate-50">
-                          <td className="p-3">
-                            <div className="flex items-center gap-3">
-                              {p.imageUrl && (
-                                <img
-                                  src={p.imageUrl}
-                                  alt=""
-                                  className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
-                                />
-                              )}
-                              <div className="min-w-0">
-                                <p className="text-xs text-[#032149] line-clamp-2 leading-tight">
-                                  {p.text?.split('\n')[0]?.slice(0, 100) || '\u2014'}
-                                </p>
-                                {p.createdAt && (
-                                  <p className="text-[10px] text-slate-400 mt-0.5">
-                                    {new Date(p.createdAt).toLocaleDateString('es-ES')}
-                                  </p>
-                                )}
-                              </div>
+          {/* Posts history */}
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-[#032149]">Historial de publicaciones</h2>
+            <button
+              onClick={loadSavedPosts}
+              className="flex items-center gap-2 text-sm text-slate-500 hover:text-[#0077B5] transition-colors"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Actualizar
+            </button>
+          </div>
+
+          {savedPosts.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
+              <BarChart3 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+              <p className="text-slate-500">No hay posts publicados todavia</p>
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-slate-200 bg-slate-50">
+                      <th className="text-left p-3 font-medium text-slate-500">Post</th>
+                      <th className="text-left p-3 font-medium text-slate-500">Estado</th>
+                      <th className="text-left p-3 font-medium text-slate-500">Fecha</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {savedPosts.map((sp) => (
+                      <tr key={sp.id} className="border-b border-slate-100 hover:bg-slate-50">
+                        <td className="p-3">
+                          <div className="flex items-center gap-3">
+                            {sp.imageUrl && (
+                              <img
+                                src={sp.imageUrl}
+                                alt=""
+                                className="w-10 h-10 rounded-lg object-cover flex-shrink-0 cursor-pointer"
+                                onClick={() => setPreviewUrl(sp.imageUrl)}
+                              />
+                            )}
+                            <div className="min-w-0">
+                              <p className="text-xs font-medium text-[#032149] line-clamp-1">{sp.blogTitle}</p>
+                              <p className="text-[10px] text-slate-400 line-clamp-1">{sp.caption.split('\n')[0]?.slice(0, 80)}</p>
                             </div>
-                          </td>
-                          <td className="text-center p-3 text-slate-700 font-medium">{p.likes}</td>
-                          <td className="text-center p-3 text-slate-700 font-medium">{p.comments}</td>
-                          <td className="text-center p-3 text-slate-700 font-medium">{p.shares}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          {sp.status === 'sent' && (
+                            <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Enviado</span>
+                          )}
+                          {sp.status === 'scheduled' && (
+                            <span className="text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">Programado</span>
+                          )}
+                        </td>
+                        <td className="p-3 text-xs text-slate-500">
+                          {sp.scheduledDate} {sp.scheduledTime}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            </>
+            </div>
           )}
         </div>
       )}
