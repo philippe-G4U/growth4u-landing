@@ -400,74 +400,23 @@ export default function TrustScoreAnalyzer() {
 
       {result && !unlocked && (
         <>
-          {/* Trust Score summary — visible before gating */}
+          {/* Opportunity message */}
           <div className="text-center mb-8">
-            <h2 className="text-xl font-bold text-[#032149] mb-6">
-              Resultados para <span className="text-[#0faec1]">{result.company_name}</span>
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#6351d5]/10 rounded-full mb-6">
+              <span className="text-3xl">{"\u2728"}</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#032149] leading-tight mb-4">
+              Tu reporte est&aacute; listo y hemos encontrado oportunidades de mejora para{" "}
+              <span className="text-[#6351d5]">{result.company_name}</span>
             </h2>
-
-            {/* Score circle */}
-            <div className="inline-flex items-center justify-center w-28 h-28 rounded-full border-4 mb-4"
-              style={{ borderColor: result.trust_score >= 70 ? '#0faec1' : result.trust_score >= 40 ? '#d97706' : '#dc2626' }}>
-              <div>
-                <div className="text-4xl font-bold font-mono" style={{ color: result.trust_score >= 70 ? '#0faec1' : result.trust_score >= 40 ? '#d97706' : '#dc2626' }}>
-                  {result.trust_score}
-                </div>
-                <div className="text-xs text-gray-400">/100</div>
-              </div>
-            </div>
-            <p className="text-sm text-gray-500 mb-1">Trust Score</p>
-            <p className="text-xs text-gray-400 mb-8">{result.one_liner}</p>
-
-            {/* Pillar bars */}
-            <div className="space-y-3 text-left mb-8">
-              {Object.entries(result.pillars).map(([key, pillar]) => (
-                <div key={key}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-[#032149]">
-                      {PILLAR_ICONS[key]} {PILLAR_LABELS[key] || key}
-                    </span>
-                    <span className="text-sm font-bold font-mono" style={{ color: pillar.score >= 70 ? '#0faec1' : pillar.score >= 40 ? '#d97706' : '#dc2626' }}>
-                      {pillar.score}
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{
-                        width: `${pillar.score}%`,
-                        backgroundColor: pillar.score >= 70 ? '#0faec1' : pillar.score >= 40 ? '#d97706' : '#dc2626',
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Top gaps teaser */}
-            {result.top_gaps && result.top_gaps.length > 0 && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-left mb-8">
-                <h3 className="text-sm font-semibold text-amber-800 mb-3">Principales oportunidades de mejora</h3>
-                <ul className="space-y-2">
-                  {result.top_gaps.slice(0, 3).map((gap, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-amber-700">
-                      <span className="mt-0.5 w-1.5 h-1.5 bg-amber-400 rounded-full shrink-0" />
-                      {gap}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <p className="text-gray-500 leading-relaxed">
+              Hemos analizado 6 pilares de confianza digital. Completa tus datos para recibir el reporte completo con hallazgos,
+              gaps cr&iacute;ticos y recomendaciones en tu correo.
+            </p>
           </div>
 
-          {/* Gate: detailed report */}
+          {/* Contact form */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-8">
-            <div className="text-center mb-5">
-              <h3 className="text-lg font-bold text-[#032149] mb-2">Recibe el reporte detallado</h3>
-              <p className="text-sm text-gray-500">
-                Con hallazgos por pilar, comparaci&oacute;n con competidores y recomendaciones personalizadas.
-              </p>
-            </div>
             <form onSubmit={handleUnlock} className="space-y-4">
               <input
                 type="text"
@@ -475,7 +424,7 @@ export default function TrustScoreAnalyzer() {
                 onChange={e => setName(e.target.value)}
                 placeholder="Tu nombre"
                 disabled={sendingEmail}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0faec1] focus:border-transparent placeholder:text-gray-400 disabled:opacity-50"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent placeholder:text-gray-400 disabled:opacity-50"
               />
               <input
                 type="email"
@@ -483,7 +432,7 @@ export default function TrustScoreAnalyzer() {
                 onChange={e => setEmail(e.target.value)}
                 placeholder="tu@email.com"
                 disabled={sendingEmail}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0faec1] focus:border-transparent placeholder:text-gray-400 disabled:opacity-50"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent placeholder:text-gray-400 disabled:opacity-50"
               />
               <input
                 type="tel"
@@ -491,7 +440,7 @@ export default function TrustScoreAnalyzer() {
                 onChange={e => setPhone(e.target.value)}
                 placeholder="+34 600 000 000"
                 disabled={sendingEmail}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0faec1] focus:border-transparent placeholder:text-gray-400 disabled:opacity-50"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#6351d5] focus:border-transparent placeholder:text-gray-400 disabled:opacity-50"
               />
               <label className="flex items-start gap-2.5 cursor-pointer">
                 <input
@@ -499,11 +448,11 @@ export default function TrustScoreAnalyzer() {
                   checked={consent}
                   onChange={e => setConsent(e.target.checked)}
                   disabled={sendingEmail}
-                  className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#0faec1] focus:ring-[#0faec1]"
+                  className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#6351d5] focus:ring-[#6351d5]"
                 />
                 <span className="text-xs text-gray-500 leading-relaxed">
                   Acepto que Growth4U procese mis datos para enviarme el reporte.{" "}
-                  <a href="https://growth4u.io/privacidad" target="_blank" rel="noopener noreferrer" className="text-[#0faec1] hover:underline">
+                  <a href="/privacidad/" target="_blank" rel="noopener noreferrer" className="text-[#6351d5] hover:underline">
                     Pol&iacute;tica de privacidad
                   </a>
                 </span>
@@ -512,9 +461,9 @@ export default function TrustScoreAnalyzer() {
               <button
                 type="submit"
                 disabled={!canUnlock || sendingEmail}
-                className="w-full bg-[#6351d5] hover:bg-[#5242b8] disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg px-4 py-3.5 text-sm font-semibold transition-colors cursor-pointer disabled:cursor-not-allowed"
+                className="w-full bg-[#6351d5] hover:bg-[#5544b8] disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg px-4 py-3.5 text-sm font-semibold transition-colors cursor-pointer disabled:cursor-not-allowed"
               >
-                {sendingEmail ? "Enviando reporte..." : "Recibir reporte detallado gratis"}
+                {sendingEmail ? "Enviando reporte..." : "Recibir mi reporte completo"}
               </button>
             </form>
           </div>
@@ -524,7 +473,7 @@ export default function TrustScoreAnalyzer() {
       {/* ─── EMAIL SENT confirmation ─── */}
       {result && unlocked && (
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#0faec1]/10 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#6351d5]/10 rounded-full mb-6">
             <span className="text-3xl">{"\u{1F4EC}"}</span>
           </div>
           <h2 className="text-2xl font-bold text-[#032149] mb-3">
@@ -536,7 +485,7 @@ export default function TrustScoreAnalyzer() {
           <p className="text-gray-500 text-sm mb-2">
             El an&aacute;lisis completo ha sido enviado a:
           </p>
-          <p className="text-[#0faec1] font-semibold mb-6">{email}</p>
+          <p className="text-[#6351d5] font-semibold mb-6">{email}</p>
           <p className="text-sm text-gray-400 mb-10">
             Revisa tu bandeja de entrada (y spam, por si acaso). El reporte incluye
             hallazgos detallados, gaps cr&iacute;ticos y recomendaciones.
@@ -550,13 +499,19 @@ export default function TrustScoreAnalyzer() {
               href="https://api.leadconnectorhq.com/widget/booking/9VRbPAQQnH5AF0jDOPNE"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-[#6351d5] hover:bg-[#5242b8] text-white rounded-lg px-8 py-3.5 text-sm font-semibold transition-colors shadow-lg shadow-[#6351d5]/25"
+              className="inline-block bg-[#6351d5] hover:bg-[#5544b8] text-white rounded-lg px-8 py-3.5 text-sm font-semibold transition-colors shadow-lg shadow-[#6351d5]/25"
             >
               Agendar sesi&oacute;n estrat&eacute;gica gratuita
             </a>
           </div>
         </div>
       )}
+
+      <footer className="mt-12 border-t border-gray-100 pt-6 text-center">
+        <p className="text-xs text-gray-400">
+          Powered by <a href="/servicios/trust-engine/" className="text-[#6351d5] hover:underline">Growth4U</a> Trust Engine
+        </p>
+      </footer>
     </div>
   );
 }
