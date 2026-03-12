@@ -50,16 +50,16 @@ export default async (req: Request, context: Context) => {
   <div style="max-width:560px;margin:40px auto;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e5e5e5;">
     <!-- Header -->
     <div style="padding:32px 32px 24px;text-align:center;border-bottom:1px solid #f0f0f0;">
-      <img src="https://trust.growth4u.io/growth4u_logo.png" alt="Growth4U" width="140" style="display:inline-block;" />
+      <img src="https://i.imgur.com/imHxGWI.png" alt="Growth4U" width="140" style="display:inline-block;" />
     </div>
 
     <!-- Body -->
     <div style="padding:32px;">
-      <p style="font-size:16px;color:#0F1B2D;margin:0 0 16px;">
+      <p style="font-size:16px;color:#032149;margin:0 0 16px;">
         ${firstName}, tu reporte está listo.
       </p>
       <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.6;">
-        Hemos analizado la confianza digital de <strong style="color:#0F1B2D;">${companyName}</strong>
+        Hemos analizado la confianza digital de <strong style="color:#032149;">${companyName}</strong>
         en 6 pilares clave: presencia en Google, visibilidad en IAs, activos de marca y más.
       </p>
 
@@ -73,7 +73,7 @@ export default async (req: Request, context: Context) => {
 
       <!-- CTA button -->
       <div style="text-align:center;margin:0 0 24px;">
-        <a href="${reportUrl}" style="display:inline-block;background:#00C9A7;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:14px;font-weight:600;">
+        <a href="${reportUrl}" style="display:inline-block;background:#6351d5;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:14px;font-weight:600;">
           Ver reporte completo
         </a>
       </div>
@@ -98,7 +98,7 @@ export default async (req: Request, context: Context) => {
     <!-- Footer -->
     <div style="padding:20px 32px;background:#fafafa;border-top:1px solid #f0f0f0;text-align:center;">
       <p style="font-size:11px;color:#9ca3af;margin:0;">
-        Growth4U · <a href="https://growth4u.io" style="color:#00C9A7;text-decoration:none;">growth4u.io</a>
+        Growth4U · <a href="https://growth4u.io" style="color:#0faec1;text-decoration:none;">growth4u.io</a>
       </p>
     </div>
   </div>

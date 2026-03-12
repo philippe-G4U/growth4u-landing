@@ -376,7 +376,7 @@ export default function TrustScoreAnalyzer() {
 
   // ─── Results view: opportunity message + contact form (no scores shown) ───
   return (
-    <div className="max-w-lg mx-auto px-6 py-12">
+    <div className="max-w-xl mx-auto px-6 py-12">
       {/* New analysis button */}
       <div className="flex justify-end mb-6">
         <button
@@ -389,23 +389,74 @@ export default function TrustScoreAnalyzer() {
 
       {result && !unlocked && (
         <>
-          {/* Opportunity message */}
+          {/* Trust Score summary — visible before gating */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#0faec1]/10 rounded-full mb-6">
-              <span className="text-3xl">{"\u2728"}</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#032149] leading-tight mb-4">
-              Tu reporte est&aacute; listo y hemos encontrado oportunidades de mejora para{" "}
-              <span className="text-[#0faec1]">{result.company_name}</span>
+            <h2 className="text-xl font-bold text-[#032149] mb-6">
+              Resultados para <span className="text-[#0faec1]">{result.company_name}</span>
             </h2>
-            <p className="text-gray-500 leading-relaxed">
-              Hemos analizado 6 pilares de confianza digital. Completa tus datos para recibir el reporte completo con hallazgos,
-              gaps cr&iacute;ticos y recomendaciones en tu correo.
-            </p>
+
+            {/* Score circle */}
+            <div className="inline-flex items-center justify-center w-28 h-28 rounded-full border-4 mb-4"
+              style={{ borderColor: result.trust_score >= 70 ? '#0faec1' : result.trust_score >= 40 ? '#d97706' : '#dc2626' }}>
+              <div>
+                <div className="text-4xl font-bold font-mono" style={{ color: result.trust_score >= 70 ? '#0faec1' : result.trust_score >= 40 ? '#d97706' : '#dc2626' }}>
+                  {result.trust_score}
+                </div>
+                <div className="text-xs text-gray-400">/100</div>
+              </div>
+            </div>
+            <p className="text-sm text-gray-500 mb-1">Trust Score</p>
+            <p className="text-xs text-gray-400 mb-8">{result.one_liner}</p>
+
+            {/* Pillar bars */}
+            <div className="space-y-3 text-left mb-8">
+              {Object.entries(result.pillars).map(([key, pillar]) => (
+                <div key={key}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-[#032149]">
+                      {PILLAR_ICONS[key]} {PILLAR_LABELS[key] || key}
+                    </span>
+                    <span className="text-sm font-bold font-mono" style={{ color: pillar.score >= 70 ? '#0faec1' : pillar.score >= 40 ? '#d97706' : '#dc2626' }}>
+                      {pillar.score}
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{
+                        width: `${pillar.score}%`,
+                        backgroundColor: pillar.score >= 70 ? '#0faec1' : pillar.score >= 40 ? '#d97706' : '#dc2626',
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Top gaps teaser */}
+            {result.top_gaps && result.top_gaps.length > 0 && (
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-left mb-8">
+                <h3 className="text-sm font-semibold text-amber-800 mb-3">Principales oportunidades de mejora</h3>
+                <ul className="space-y-2">
+                  {result.top_gaps.slice(0, 3).map((gap, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-amber-700">
+                      <span className="mt-0.5 w-1.5 h-1.5 bg-amber-400 rounded-full shrink-0" />
+                      {gap}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
-          {/* Contact form */}
+          {/* Gate: detailed report */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-8">
+            <div className="text-center mb-5">
+              <h3 className="text-lg font-bold text-[#032149] mb-2">Recibe el reporte detallado</h3>
+              <p className="text-sm text-gray-500">
+                Con hallazgos por pilar, comparaci&oacute;n con competidores y recomendaciones personalizadas.
+              </p>
+            </div>
             <form onSubmit={handleUnlock} className="space-y-4">
               <input
                 type="text"
@@ -452,7 +503,7 @@ export default function TrustScoreAnalyzer() {
                 disabled={!canUnlock || sendingEmail}
                 className="w-full bg-[#6351d5] hover:bg-[#5242b8] disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg px-4 py-3.5 text-sm font-semibold transition-colors cursor-pointer disabled:cursor-not-allowed"
               >
-                {sendingEmail ? "Enviando reporte..." : "Recibir mi reporte completo"}
+                {sendingEmail ? "Enviando reporte..." : "Recibir reporte detallado gratis"}
               </button>
             </form>
           </div>
