@@ -154,7 +154,7 @@ export default function TrustScoreAnalyzer() {
             const entry: LogEntry = JSON.parse(line.slice(6));
             if (entry.type === "result") {
               setResult(entry.data!);
-            } else {
+            } else if (entry.type !== "heartbeat") {
               setLogs(prev => [...prev, entry]);
             }
           } catch { /* skip malformed SSE */ }
